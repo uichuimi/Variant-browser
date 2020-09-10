@@ -1,0 +1,2468 @@
+{
+
+"test":[
+  {
+    "id": 332048,
+    "alt": "C",
+    "ref": "T",
+    "identifier": "rs6744750",
+    "pos": 20867300,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 48,
+        "identifier": "WDH21001"
+      },
+      {
+        "id": 32,
+        "identifier": "SQZ001"
+      },
+      {
+        "id": 2,
+        "identifier": "DAM"
+      },
+      {
+        "id": 37,
+        "identifier": "SQZ030"
+      },
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11522735,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.261
+      },
+      {
+        "id": 11522734,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2287
+      },
+      {
+        "id": 11522733,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.1553
+      },
+      {
+        "id": 11522732,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.1983
+      },
+      {
+        "id": 11522731,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.6076
+      },
+      {
+        "id": 11522737,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.2578
+      },
+      {
+        "id": 11522736,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.1862
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332049,
+    "alt": "G",
+    "ref": "A",
+    "identifier": "rs4971534",
+    "pos": 20869505,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [],
+    "wildtype": [
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 36,
+        "identifier": "SQZ025"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11522744,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.193
+      },
+      {
+        "id": 11522743,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.1897
+      },
+      {
+        "id": 11522742,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.2003
+      },
+      {
+        "id": 11522741,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2109
+      },
+      {
+        "id": 11522740,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.2218
+      },
+      {
+        "id": 11522739,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.2594
+      },
+      {
+        "id": 11522738,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.0752
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332050,
+    "alt": "A",
+    "ref": "G",
+    "identifier": "rs12620467",
+    "pos": 20870205,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 19,
+        "identifier": "NIV032"
+      },
+      {
+        "id": 36,
+        "identifier": "SQZ025"
+      },
+      {
+        "id": 54,
+        "identifier": "JAGG"
+      },
+      {
+        "id": 14,
+        "identifier": "HCF002"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      },
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      },
+      {
+        "id": 2,
+        "identifier": "DAM"
+      },
+      {
+        "id": 37,
+        "identifier": "SQZ030"
+      },
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      },
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      },
+      {
+        "id": 10,
+        "identifier": "DTM033"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      }
+    ],
+    "heterozygous": [],
+    "frequencies": [
+      {
+        "id": 11522751,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.3528
+      },
+      {
+        "id": 11522750,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.2655
+      },
+      {
+        "id": 11522749,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.3483
+      },
+      {
+        "id": 11522748,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.3548
+      },
+      {
+        "id": 11522747,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.2796
+      },
+      {
+        "id": 11522746,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.3385
+      },
+      {
+        "id": 11522745,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.2828
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332051,
+    "alt": "G",
+    "ref": "GGTGTGTGTGTGT",
+    "identifier": "rs70939054",
+    "pos": 20870877,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 20,
+        "identifier": "NIV042"
+      },
+      {
+        "id": 31,
+        "identifier": "ROS"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 16,
+        "identifier": "MZ"
+      },
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      }
+    ],
+    "heterozygous": [],
+    "frequencies": [
+      {
+        "id": 11522758,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.3172
+      },
+      {
+        "id": 11522757,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.239
+      },
+      {
+        "id": 11522756,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.3181
+      },
+      {
+        "id": 11522755,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.3393
+      },
+      {
+        "id": 11522754,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.1927
+      },
+      {
+        "id": 11522753,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.252
+      },
+      {
+        "id": 11522752,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.2283
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332052,
+    "alt": "T",
+    "ref": "C",
+    "identifier": "rs1437404",
+    "pos": 20871176,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 42,
+        "identifier": "SQZ108"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11522765,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.4446
+      },
+      {
+        "id": 11522764,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.3379
+      },
+      {
+        "id": 11522763,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.437
+      },
+      {
+        "id": 11522762,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.43
+      },
+      {
+        "id": 11522761,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.2808
+      },
+      {
+        "id": 11522760,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.4194
+      },
+      {
+        "id": 11522759,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.7465
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332053,
+    "alt": "C",
+    "ref": "T",
+    "identifier": "rs7592541",
+    "pos": 20872262,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 36,
+        "identifier": "SQZ025"
+      },
+      {
+        "id": 20,
+        "identifier": "NIV042"
+      },
+      {
+        "id": 6,
+        "identifier": "DTM007"
+      },
+      {
+        "id": 41,
+        "identifier": "SQZ106"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 7,
+        "identifier": "DTM023"
+      }
+    ],
+    "heterozygous": [],
+    "frequencies": [
+      {
+        "id": 11522767,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.5829
+      },
+      {
+        "id": 11522766,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.767
+      },
+      {
+        "id": 11522772,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.5536
+      },
+      {
+        "id": 11522771,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.3993
+      },
+      {
+        "id": 11522770,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.5854
+      },
+      {
+        "id": 11522769,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.5251
+      },
+      {
+        "id": 11522768,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.5528
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332054,
+    "alt": "C",
+    "ref": "T",
+    "identifier": "rs7592662",
+    "pos": 20872329,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      }
+    ],
+    "wildtype": [],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11522779,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.8035
+      },
+      {
+        "id": 11522778,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.8276
+      },
+      {
+        "id": 11522777,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.7967
+      },
+      {
+        "id": 11522776,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.7934
+      },
+      {
+        "id": 11522775,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.7519
+      },
+      {
+        "id": 11522774,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.7818
+      },
+      {
+        "id": 11522773,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.9052
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332055,
+    "alt": "A",
+    "ref": "G",
+    "identifier": "rs35888467",
+    "pos": 20872761,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [],
+    "wildtype": [
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 36,
+        "identifier": "SQZ025"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11522783,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2071
+      },
+      {
+        "id": 11522782,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.2471
+      },
+      {
+        "id": 11522781,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.2175
+      },
+      {
+        "id": 11522780,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.0758
+      },
+      {
+        "id": 11527700,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.1965
+      },
+      {
+        "id": 11527699,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.1736
+      },
+      {
+        "id": 11527698,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.2032
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332056,
+    "alt": "A",
+    "ref": "G",
+    "identifier": "rs112968086",
+    "pos": 20874406,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      }
+    ],
+    "wildtype": [],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527707,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.2574
+      },
+      {
+        "id": 11527706,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.1517
+      },
+      {
+        "id": 11527705,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.2847
+      },
+      {
+        "id": 11527704,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2393
+      },
+      {
+        "id": 11527703,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.2091
+      },
+      {
+        "id": 11527702,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.2465
+      },
+      {
+        "id": 11527701,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.2469
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332057,
+    "alt": "T",
+    "ref": "C",
+    "identifier": "rs12619737",
+    "pos": 20876389,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      },
+      {
+        "id": 43,
+        "identifier": "SQZ201"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 37,
+        "identifier": "SQZ030"
+      },
+      {
+        "id": 38,
+        "identifier": "SQZ072"
+      },
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      },
+      {
+        "id": 40,
+        "identifier": "SQZ102"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527711,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2445
+      },
+      {
+        "id": 11527710,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.3037
+      },
+      {
+        "id": 11527709,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.2884
+      },
+      {
+        "id": 11527708,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.2467
+      },
+      {
+        "id": 11527714,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.267
+      },
+      {
+        "id": 11527713,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.1448
+      },
+      {
+        "id": 11527712,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.2948
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332058,
+    "alt": "T",
+    "ref": "A",
+    "identifier": "rs893251",
+    "pos": 20878293,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 20,
+        "identifier": "NIV042"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      }
+    ],
+    "heterozygous": [],
+    "frequencies": [
+      {
+        "id": 11527721,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.5436
+      },
+      {
+        "id": 11527720,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.3931
+      },
+      {
+        "id": 11527719,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.5749
+      },
+      {
+        "id": 11527718,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.5207
+      },
+      {
+        "id": 11527717,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.4587
+      },
+      {
+        "id": 11527716,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.5436
+      },
+      {
+        "id": 11527715,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.7897
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332059,
+    "alt": "GA",
+    "ref": "G",
+    "identifier": "rs11449237",
+    "pos": 20878859,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 32,
+        "identifier": "SQZ001"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 21,
+        "identifier": "NIV060"
+      },
+      {
+        "id": 23,
+        "identifier": "NIV084"
+      },
+      {
+        "id": 14,
+        "identifier": "HCF002"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527727,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.2376
+      },
+      {
+        "id": 11527726,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.3713
+      },
+      {
+        "id": 11527725,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2798
+      },
+      {
+        "id": 11527724,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.3167
+      },
+      {
+        "id": 11527723,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.273
+      },
+      {
+        "id": 11527722,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.1595
+      },
+      {
+        "id": 11527728,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.2824
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332060,
+    "alt": "G",
+    "ref": "A",
+    "identifier": "rs880973",
+    "pos": 20879119,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [],
+    "wildtype": [
+      {
+        "id": 32,
+        "identifier": "SQZ001"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 6,
+        "identifier": "DTM007"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527735,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.233
+      },
+      {
+        "id": 11527734,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.1172
+      },
+      {
+        "id": 11527733,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.2735
+      },
+      {
+        "id": 11527732,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2254
+      },
+      {
+        "id": 11527731,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.3033
+      },
+      {
+        "id": 11527730,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.263
+      },
+      {
+        "id": 11527729,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.1273
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332061,
+    "alt": "T",
+    "ref": "C",
+    "identifier": "rs4971520",
+    "pos": 20879791,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 48,
+        "identifier": "WDH21001"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 19,
+        "identifier": "NIV032"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 16,
+        "identifier": "MZ"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 37,
+        "identifier": "SQZ030"
+      },
+      {
+        "id": 7,
+        "identifier": "DTM023"
+      }
+    ],
+    "heterozygous": [],
+    "frequencies": [
+      {
+        "id": 11527742,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.4485
+      },
+      {
+        "id": 11527741,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.3241
+      },
+      {
+        "id": 11527740,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.4876
+      },
+      {
+        "id": 11527739,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.4458
+      },
+      {
+        "id": 11527738,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.4569
+      },
+      {
+        "id": 11527737,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.4608
+      },
+      {
+        "id": 11527736,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.3003
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332062,
+    "alt": "T",
+    "ref": "C",
+    "identifier": "rs116422319",
+    "pos": 20880512,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 0,
+        "identifier": "AHO"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 1,
+        "identifier": "BRQ"
+      },
+      {
+        "id": 2,
+        "identifier": "DAM"
+      },
+      {
+        "id": 4,
+        "identifier": "DTHM022"
+      },
+      {
+        "id": 6,
+        "identifier": "DTM007"
+      },
+      {
+        "id": 7,
+        "identifier": "DTM023"
+      },
+      {
+        "id": 9,
+        "identifier": "DTM032"
+      },
+      {
+        "id": 13,
+        "identifier": "HCF001"
+      },
+      {
+        "id": 15,
+        "identifier": "MNSG"
+      },
+      {
+        "id": 16,
+        "identifier": "MZ"
+      },
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 21,
+        "identifier": "NIV060"
+      },
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      },
+      {
+        "id": 26,
+        "identifier": "NIV103"
+      },
+      {
+        "id": 27,
+        "identifier": "NMN"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      },
+      {
+        "id": 29,
+        "identifier": "PM"
+      },
+      {
+        "id": 31,
+        "identifier": "ROS"
+      },
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 38,
+        "identifier": "SQZ072"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 40,
+        "identifier": "SQZ102"
+      },
+      {
+        "id": 41,
+        "identifier": "SQZ106"
+      },
+      {
+        "id": 42,
+        "identifier": "SQZ108"
+      },
+      {
+        "id": 43,
+        "identifier": "SQZ201"
+      },
+      {
+        "id": 47,
+        "identifier": "WDH11021"
+      },
+      {
+        "id": 48,
+        "identifier": "WDH21001"
+      },
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 20,
+        "identifier": "NIV042"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527743,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.0048
+      },
+      {
+        "id": 11527749,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.0314
+      },
+      {
+        "id": 11527748,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.031
+      },
+      {
+        "id": 11527747,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.0124
+      },
+      {
+        "id": 11527746,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.0205
+      },
+      {
+        "id": 11527745,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.1555
+      },
+      {
+        "id": 11527744,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.0083
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332063,
+    "alt": "G",
+    "ref": "A",
+    "identifier": "rs893252",
+    "pos": 20881431,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      },
+      {
+        "id": 40,
+        "identifier": "SQZ102"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      },
+      {
+        "id": 13,
+        "identifier": "HCF001"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      },
+      {
+        "id": 38,
+        "identifier": "SQZ072"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 41,
+        "identifier": "SQZ106"
+      },
+      {
+        "id": 48,
+        "identifier": "WDH21001"
+      },
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 21,
+        "identifier": "NIV060"
+      },
+      {
+        "id": 23,
+        "identifier": "NIV084"
+      },
+      {
+        "id": 24,
+        "identifier": "NIV085"
+      },
+      {
+        "id": 29,
+        "identifier": "PM"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527756,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.1971
+      },
+      {
+        "id": 11527755,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.1724
+      },
+      {
+        "id": 11527754,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.2029
+      },
+      {
+        "id": 11527753,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.2078
+      },
+      {
+        "id": 11527752,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.2577
+      },
+      {
+        "id": 11527751,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.2187
+      },
+      {
+        "id": 11527750,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.099
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332064,
+    "alt": "G",
+    "ref": "A",
+    "identifier": "rs4971521",
+    "pos": 20881926,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 20,
+        "identifier": "NIV042"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 21,
+        "identifier": "NIV060"
+      },
+      {
+        "id": 38,
+        "identifier": "SQZ072"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 23,
+        "identifier": "NIV084"
+      },
+      {
+        "id": 29,
+        "identifier": "PM"
+      }
+    ],
+    "heterozygous": [],
+    "frequencies": [
+      {
+        "id": 11527759,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.5637
+      },
+      {
+        "id": 11527758,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.5047
+      },
+      {
+        "id": 11527757,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.3101
+      },
+      {
+        "id": 11527763,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.4595
+      },
+      {
+        "id": 11527762,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.331
+      },
+      {
+        "id": 11527761,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.5153
+      },
+      {
+        "id": 11527760,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.4545
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332065,
+    "alt": "A",
+    "ref": "C",
+    "identifier": "rs78960801",
+    "pos": 20882276,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [],
+    "wildtype": [
+      {
+        "id": 1,
+        "identifier": "BRQ"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 2,
+        "identifier": "DAM"
+      },
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 36,
+        "identifier": "SQZ025"
+      },
+      {
+        "id": 37,
+        "identifier": "SQZ030"
+      },
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      },
+      {
+        "id": 6,
+        "identifier": "DTM007"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 9,
+        "identifier": "DTM032"
+      },
+      {
+        "id": 42,
+        "identifier": "SQZ108"
+      },
+      {
+        "id": 13,
+        "identifier": "HCF001"
+      },
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 20,
+        "identifier": "NIV042"
+      },
+      {
+        "id": 23,
+        "identifier": "NIV084"
+      },
+      {
+        "id": 29,
+        "identifier": "PM"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527770,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.0691
+      },
+      {
+        "id": 11527769,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.0276
+      },
+      {
+        "id": 11527768,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.0746
+      },
+      {
+        "id": 11527767,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.0704
+      },
+      {
+        "id": 11527766,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0
+      },
+      {
+        "id": 11527765,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.0177
+      },
+      {
+        "id": 11527764,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.0076
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332066,
+    "alt": "C",
+    "ref": "T",
+    "identifier": "rs6531255",
+    "pos": 20882729,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 38,
+        "identifier": "SQZ072"
+      },
+      {
+        "id": 6,
+        "identifier": "DTM007"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      },
+      {
+        "id": 29,
+        "identifier": "PM"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 33,
+        "identifier": "SQZ002"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 35,
+        "identifier": "SQZ020"
+      },
+      {
+        "id": 5,
+        "identifier": "DTM001"
+      },
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      }
+    ],
+    "heterozygous": [],
+    "frequencies": [
+      {
+        "id": 11527775,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.5858
+      },
+      {
+        "id": 11527774,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.5263
+      },
+      {
+        "id": 11527773,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.5626
+      },
+      {
+        "id": 11527772,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.5755
+      },
+      {
+        "id": 11527771,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.6844
+      },
+      {
+        "id": 11527777,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.5479
+      },
+      {
+        "id": 11527776,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.4
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  },
+  {
+    "id": 332067,
+    "alt": "T",
+    "ref": "C",
+    "identifier": "rs1437403",
+    "pos": 20884156,
+    "chrom": "2",
+    "sift": null,
+    "polyphen": null,
+    "amino": null,
+    "gene": {
+      "id": 6262339,
+      "identifier": "ENSG00000084674",
+      "name": "APOB",
+      "biotype": "protein_coding",
+      "description": "apolipoprotein B [Source:HGNC Symbol;Acc:HGNC:603]"
+    },
+    "chromosome": {
+      "id": 56339343,
+      "name": "2",
+      "index": 1
+    },
+    "homozygous": [
+      {
+        "id": 48,
+        "identifier": "WDH21001"
+      },
+      {
+        "id": 50,
+        "identifier": "WDH21003"
+      },
+      {
+        "id": 34,
+        "identifier": "SQZ003"
+      },
+      {
+        "id": 18,
+        "identifier": "NIV025"
+      },
+      {
+        "id": 19,
+        "identifier": "NIV032"
+      },
+      {
+        "id": 20,
+        "identifier": "NIV042"
+      },
+      {
+        "id": 38,
+        "identifier": "SQZ072"
+      },
+      {
+        "id": 39,
+        "identifier": "SQZ077"
+      },
+      {
+        "id": 43,
+        "identifier": "SQZ201"
+      },
+      {
+        "id": 13,
+        "identifier": "HCF001"
+      }
+    ],
+    "wildtype": [
+      {
+        "id": 49,
+        "identifier": "WDH21002"
+      },
+      {
+        "id": 21,
+        "identifier": "NIV060"
+      },
+      {
+        "id": 23,
+        "identifier": "NIV084"
+      },
+      {
+        "id": 24,
+        "identifier": "NIV085"
+      },
+      {
+        "id": 28,
+        "identifier": "PLA"
+      },
+      {
+        "id": 29,
+        "identifier": "PM"
+      }
+    ],
+    "heterozygous": [
+      {
+        "id": 17,
+        "identifier": "NIV019"
+      },
+      {
+        "id": 22,
+        "identifier": "NIV062"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": 11527784,
+        "population": "OTH",
+        "source": "gnomAD_genomes",
+        "value": 0.4622
+      },
+      {
+        "id": 11527783,
+        "population": "ASJ",
+        "source": "gnomAD_genomes",
+        "value": 0.3345
+      },
+      {
+        "id": 11527782,
+        "population": "FIN",
+        "source": "gnomAD_genomes",
+        "value": 0.4997
+      },
+      {
+        "id": 11527781,
+        "population": "NFE",
+        "source": "gnomAD_genomes",
+        "value": 0.4529
+      },
+      {
+        "id": 11527780,
+        "population": "EAS",
+        "source": "gnomAD_genomes",
+        "value": 0.5521
+      },
+      {
+        "id": 11527779,
+        "population": "AMR",
+        "source": "gnomAD_genomes",
+        "value": 0.5118
+      },
+      {
+        "id": 11527778,
+        "population": "AFR",
+        "source": "gnomAD_genomes",
+        "value": 0.3639
+      }
+    ],
+    "effect": {
+      "id": 56198351,
+      "description": "A sequence variant located in the intergenic region, between genes.",
+      "term": "intergenic_variant",
+      "accession": "SO:0001628",
+      "displayName": "intergenic variant",
+      "impact": "Modifier"
+    }
+  }
+]
+}
