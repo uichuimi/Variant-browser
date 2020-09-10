@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as data from '../sample-variants.json';
 
 @Component({
   selector: 'app-root',
