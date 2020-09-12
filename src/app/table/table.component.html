@@ -1,3 +1,20 @@
 <div class="table-content">
-    <p> Espacio de la tabla </p>
+    <table>
+        <tr>
+            <th>Chromosome</th>
+            <th>Position</th>
+            <th>Variant</th>
+            <th>Gene</th>
+            <th>AA change</th>
+            <th>GMAF</th>
+        </tr>
+        <tr *ngFor="let each of data">
+            <td>{{each.chrom}}</td>
+            <td>{{each.pos}}</td>
+            <td>{{each.alt}}{{each.ref}}</td>
+            <td>{{each.gene.name}}</td>
+            <td>{{each.sift}}</td>
+            <td>{{each.poliphen}}</td>
+        </tr>
+  </table>
 </div>
