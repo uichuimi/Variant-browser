@@ -1,20 +1,25 @@
 <div class="table-content">
-    <table>
-        <tr>
-            <th>Chromosome</th>
-            <th>Position</th>
-            <th>Variant</th>
-            <th>Gene</th>
-            <th>AA change</th>
-            <th>GMAF</th>
-        </tr>
-        <tr *ngFor="let each of data">
-            <td>{{each.chrom}}</td>
-            <td>{{each.pos}}</td>
-            <td>{{each.alt}}{{each.ref}}</td>
-            <td>{{each.gene.name}}</td>
-            <td>{{each.sift}}</td>
-            <td>{{each.poliphen}}</td>
-        </tr>
-  </table>
+    <button onClick="view()">Holii</button>
+    <p-table [value]="data">
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Chromosome</th>
+              <th>Position</th>
+              <th>Variant</th>
+              <th>Gene</th>
+              <th>AA change</th>
+              <th>GMAF</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+          <tr>
+            <td>{{data.chrom}}</td>
+            <td>{{data.pos}}</td>
+            <td>{{data.alt}}{{data.ref}}</td>
+            <td>{{data.gene.name}}</td>
+            <td>{{data.sift}}</td>
+            <td>{{data.poliphen}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
 </div>

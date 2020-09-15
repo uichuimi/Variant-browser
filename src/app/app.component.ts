@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { VariantApiService } from './variant-api.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,5 +18,6 @@ export class AppComponent {
   async getData (){
     this.data = await this.VariantService.getApiData();
   }
+
 
 }
