@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {TableModule} from 'primeng/table';
-
+import {ButtonModule} from 'primeng/button';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +24,8 @@ import { TableComponent } from './table/table.component';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    TableModule
+    TableModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

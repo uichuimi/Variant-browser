@@ -1,25 +1,29 @@
 <div class="table-content">
-    <button onClick="view()">Holii</button>
-    <p-table [value]="data">
+<p-table [value]="data" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10]"
+    selectionMode="single" [(selection)]="selectedData" dataKey="code">
         <ng-template pTemplate="header">
             <tr>
-              <th>Chromosome</th>
-              <th>Position</th>
-              <th>Variant</th>
-              <th>Gene</th>
-              <th>AA change</th>
-              <th>GMAF</th>
+              <th class="table-label">Chromosome</th>
+              <th class="table-label">Position</th>
+              <th class="table-label">Variant</th>
+              <th class="table-label">Gene</th>
+              <th class="table-label">AA change</th>
+              <th class="table-label">GMAF</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-data>
-          <tr>
-            <td>{{data.chrom}}</td>
-            <td>{{data.pos}}</td>
-            <td>{{data.alt}}{{data.ref}}</td>
-            <td>{{data.gene.name}}</td>
-            <td>{{data.sift}}</td>
-            <td>{{data.poliphen}}</td>
+        <ng-template pTemplate="body" let-eachData>
+          <tr [pSelectableRow]="eachData">
+            <td class="table-property">{{eachData.chrom}}</td>
+            <td class="table-property">{{eachData.pos}}</td>
+            <td class="table-property"><p>{{eachData.alt}}</p><p>{{eachData.ref}}</p></td>
+            <td class="table-property">{{eachData.gene.name}}</td>
+            <td class="table-property">{{eachData.sift}}</td>
+            <td class="table-property">{{eachData.poliphen}}</td>
           </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+          <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
         </ng-template>
       </p-table>
 </div>

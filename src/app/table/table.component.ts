@@ -1,21 +1,36 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { VariantApiService } from '../variant-api.service';
 
- 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  @Input() data: any;
-  constructor() { }
+  data: any = [];
+  first: number = 0;
+  rows: number = 5;
+  selectedData: any;
+  
 
+  constructor ( private VariantService: VariantApiService){
+    this.getData();
+  }
   ngOnInit(): void {
   }
 
-  view(){
-    console.log(this.data);
+  async getData (){
+    this.data = await this.VariantService.getApiData();
+    
   }
+
+  reset() {
+      this.first = 0;
+      console.log(this.data);
+      console.log(this.rows);
+      console.log(this.first);
+  }
+
 
 
 }

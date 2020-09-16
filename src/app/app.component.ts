@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { VariantApiService } from './variant-api.service';
-
 
 @Component({
   selector: 'app-root',
@@ -9,15 +7,11 @@ import { VariantApiService } from './variant-api.service';
 })
 export class AppComponent {
   title = 'variant-browser';
-  data: any = [];
 
-  constructor ( private VariantService: VariantApiService){
-    this.getData();
-  }
+  constructor() { }
+
   
-  async getData (){
-    this.data = await this.VariantService.getApiData();
-  }
+  
 
 
 }

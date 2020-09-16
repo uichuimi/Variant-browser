@@ -1,7 +1,15 @@
 .table-content{
-    height: 300px;
+    height: 100%;
     background-color: powderblue;
     width: 70%;
     float: left;
 }
 
+.table-property{
+    padding: 0rem 1rem !important;
+    text-align: center !important;
+}
+
+.table-label{
+    text-align: center !important;
+}
