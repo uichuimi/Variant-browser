@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { VariantApiService } from '../variant-api.service';
 
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -12,7 +13,6 @@ export class TableComponent implements OnInit {
   rows: number = 5;
   selectedData: any;
   
-
   constructor ( private VariantService: VariantApiService){
     this.getData();
   }
@@ -21,7 +21,8 @@ export class TableComponent implements OnInit {
 
   async getData (){
     this.data = await this.VariantService.getApiData();
-    
+    console.log (this.data);
+
   }
 
   reset() {
@@ -31,6 +32,17 @@ export class TableComponent implements OnInit {
       console.log(this.first);
   }
 
+  selectData (eachData: any){
+    console.log({eachData});
+    this.selectedData = eachData;
+    this.data.forEach ( element => {
+        if (element.id == eachData.id){
+          element.isSelected = 1;
+        }
+    });
+    console.log(this.data);
+  }
 
+  
 
 }

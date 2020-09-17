@@ -1,7 +1,6 @@
 <div class="table-content">
 <p-table [value]="data" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10]"
-    selectionMode="single" [(selection)]="selectedData" dataKey="code">
+    selectionMode="single" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10]">
         <ng-template pTemplate="header">
             <tr>
               <th class="table-label">Chromosome</th>
@@ -13,7 +12,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-eachData>
-          <tr [pSelectableRow]="eachData">
+          <tr (click)="selectData(eachData)">
             <td class="table-property">{{eachData.chrom}}</td>
             <td class="table-property">{{eachData.pos}}</td>
             <td class="table-property"><p>{{eachData.alt}}</p><p>{{eachData.ref}}</p></td>
@@ -21,9 +20,13 @@
             <td class="table-property">{{eachData.sift}}</td>
             <td class="table-property">{{eachData.poliphen}}</td>
           </tr>
+          
         </ng-template>
         <ng-template pTemplate="paginatorleft">
           <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
         </ng-template>
       </p-table>
 </div>
+<app-details [selected]="selectedData"></app-details>
+
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-details',
@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./details.component.css']
 })
 export class DetailsComponent implements OnInit {
-
+  @Input() selected: any;
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  clickea(){
+    console.log(this.selected);
+  }
 }
