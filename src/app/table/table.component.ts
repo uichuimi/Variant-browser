@@ -35,11 +35,6 @@ export class TableComponent implements OnInit {
   selectData (eachData: any){
     console.log({eachData});
     this.selectedData = eachData;
-    this.data.forEach ( element => {
-        if (element.id == eachData.id){
-          element.isSelected = 1;
-        }
-    });
     console.log(this.data);
   }
 

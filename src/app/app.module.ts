@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { FiltersComponent } from './filters/filters.component';
 import { DetailsComponent } from './details/details.component';
 import { TableComponent } from './table/table.component';
-
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
@@ -25,7 +25,8 @@ import { TableComponent } from './table/table.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     TableModule,
-    ButtonModule
+    ButtonModule,
+    CardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

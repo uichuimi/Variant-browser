@@ -12,7 +12,5 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  clickea(){
-    console.log(this.selected);
-  }
+ 
 }

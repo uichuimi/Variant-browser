@@ -1,4 +1,21 @@
 <div class="details-content">
-    <p> Zona de información </p>
-    <button (click)="clickea()">Click</button>
+    <p-card>
+        <p><strong>{{selected.gene.name}}</strong> ( {{selected.gene.identifier}}, 
+            {{selected.gene.biotype}}, {{selected.gene.description}} )</p>
+        <p><strong>{{selected.effect.term}}</strong> {{selected.effect.description}}</p>
+        <p-table [value]="selected.frequencies">
+            <ng-template pTemplate="header">
+            <tr>
+              <th class="table-label">Population</th>
+              <th class="table-label">Allele frequency</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-eachSelection>
+          <tr>
+            <td class="table-property">{{eachSelection.population}} <p class="population-source">({{eachSelection.source}})</p></td>
+            <td class="table-property">{{eachSelection.value}}</td>
+          </tr> 
+        </ng-template>
+      </p-table>
+    </p-card>
 </div>

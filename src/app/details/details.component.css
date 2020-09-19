@@ -1,7 +1,22 @@
 .details-content{
-    background-color: pink;
-    height: 300px;
+    height: 100%;
     width: 27%;
     float: left;
     margin-left: 3%;
 }
+
+.table-property{
+    text-align: center !important;
+    padding: 0.4rem 1rem !important;
+}
+
+.table-label{
+    text-align: center !important;
+    background: white !important;
+}
+
+.population-source{
+    margin: 1px;
+    font-size: 10px;
+}
+

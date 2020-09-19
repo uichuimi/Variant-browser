@@ -6,24 +6,27 @@ import axios from "axios";
   providedIn: 'root'
 })
 export class VariantApiService {
-  isSelected: any = { isSelected : 0};
-  modifiedResponse : any = [];
+
   constructor() { }
 
   getApiData() {
     let url = 'http://localhost:3000/data';
     return axios.get(url)
       .then (response => {
-        this.modifiedResponse = response.data.map(each => {
-          return {
-            ...each,
-            ...this.isSelected
-            }
-        })
-        return this.modifiedResponse;
+        return response.data;
       })
       .catch (error => {
         console.log("Se ha producido el error" ,error);
       })
   }
 }
+
+/* <-- Añadir campos a los datos -->
+ this.modifiedResponse = response.data.map(each => {
+          return {
+            ...each,
+            ...this.isSelected
+            }
+        })
+        return this.modifiedResponse;
+*/ 
