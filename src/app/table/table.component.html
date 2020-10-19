@@ -2,23 +2,53 @@
 <p-table [value]="data" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
     selectionMode="single" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10]">
         <ng-template pTemplate="header">
-            <tr>
+            <tr class="table-header">
               <th class="table-label">Chromosome</th>
               <th class="table-label">Position</th>
+              <th class="table-label">Identifier</th>
               <th class="table-label">Variant</th>
               <th class="table-label">Gene</th>
-              <th class="table-label">AA change</th>
+              <th class="table-label">Sift</th>
+              <th class="table-label">Polyphen</th>
+              <th class="table-label">Change</th>
               <th class="table-label">GMAF</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-eachData>
-          <tr (click)="selectData(eachData)">
-            <td class="table-property">{{eachData.chrom}}</td>
-            <td class="table-property">{{eachData.pos}}</td>
-            <td class="table-property"><p>{{eachData.alt}}</p><p>{{eachData.ref}}</p></td>
-            <td class="table-property">{{eachData.gene.name}}</td>
-            <td class="table-property">{{eachData.sift}}</td>
-            <td class="table-property">{{eachData.poliphen}}</td>
+          <tr (click)="selectData(eachData)" class="table-row" [ngClass]= "{ 'selected': selectedData == eachData }">
+            <td class="table-property">
+              <p>{{eachData.chrom}}</p>
+            </td>
+            <td class="table-property">
+              <p>{{eachData.pos}}</p>
+            </td>
+            <td class="table-property">
+              <p>{{eachData.identifier}}</p>
+            </td>
+            <td class="table-property variant-column">
+              <p [hidden]="eachData.ref.length > 6">{{eachData.alt}}/{{eachData.ref}}</p>
+              <div *ngIf="eachData.ref.length > 6">
+                <p>{{eachData.alt}}</p><p>{{eachData.ref}}</p>
+              </div>
+            </td>
+            <td class="table-property">
+              <p>{{eachData.gene.name}}</p>
+            </td>
+            <td class="table-property">
+              <p [hidden]="eachData.sift == null">{{eachData.sift}}</p>
+              <p *ngIf="eachData.sift == null">-</p>
+            </td>
+            <td class="table-property">
+              <p [hidden]="eachData.polyphen == null">{{eachData.polyphen}}</p>
+              <p *ngIf="eachData.polyphen == null">-</p>
+            </td>
+            <td class="table-property">
+              <p [hidden]="eachData.amino == null">{{eachData.amino}}</p>
+              <p *ngIf="eachData.amino == null">-</p>
+            </td>
+            <td class="table-property">
+              <p>{{eachData.gmaf}}</p>
+            </td>
           </tr>
           
         </ng-template>

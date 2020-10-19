@@ -1,8 +1,11 @@
 <div class="details-content">
     <p-card>
         <p><strong>{{selected.gene.name}}</strong> ( {{selected.gene.identifier}}, 
-            {{selected.gene.biotype}}, {{selected.gene.description}} )</p>
-        <p><strong>{{selected.effect.term}}</strong> {{selected.effect.description}}</p>
+            {{selected.gene.description.substring(0,selected.gene.description.indexOf("["))}},{{selected.gene.biotype}} )</p>
+        
+        <div id="effect-space"><strong class="effect-name">{{selected.effect.term}}</strong><p class="effect-description">{{selected.effect.description}}</p>
+        </div>
+
         <p-table [value]="selected.frequencies">
             <ng-template pTemplate="header">
             <tr>

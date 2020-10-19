@@ -6,14 +6,21 @@ import axios from "axios";
   providedIn: 'root'
 })
 export class VariantApiService {
-
+  gmaf: any = {gmaf: 0};
+  modifiedResponse: any;
   constructor() { }
 
   getApiData() {
     let url = 'http://localhost:3000/data';
     return axios.get(url)
       .then (response => {
-        return response.data;
+        this.modifiedResponse = response.data.map(each => {
+          return {
+            ...each,
+            ...this.gmaf
+            }
+        })
+        return this.modifiedResponse;
       })
       .catch (error => {
         console.log("Se ha producido el error" ,error);
@@ -25,8 +32,11 @@ export class VariantApiService {
  this.modifiedResponse = response.data.map(each => {
           return {
             ...each,
-            ...this.isSelected
+            ...this.gmaf
             }
         })
         return this.modifiedResponse;
+
+<-- Crear la variable -->
+ gmaf: any = {gmaf: 0};
 */ 

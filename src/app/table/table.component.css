@@ -4,11 +4,33 @@
     float: left;
 }
 
+.table-header th{
+    background-color: #F1F4F7;
+}
+
+.selected{
+    background-color: #B9D1E9 !important;
+}
+
+.table-row:hover{
+    background-color: #e9ecef !important;
+}
+
 .table-property{
-    padding: 0rem 1rem !important;
     text-align: center !important;
 }
 
 .table-label{
     text-align: center !important;
+}
+
+.table-content th{
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.table-content td.variant-column{
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+    white-space: pre-wrap;
 }

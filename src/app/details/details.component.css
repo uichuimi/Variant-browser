@@ -20,3 +20,33 @@
     font-size: 10px;
 }
 
+.effect-description{
+    display: none;
+    border: 2px solid #e9ecef; 
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #e9ecef;
+    font-weight: 500;
+    text-align: center;
+    color:#495057;
+    margin-top: 5px;
+}
+
+.effect-name{
+    text-transform: capitalize;
+}
+/* Creacion de triangulos para bocadillos
+.effect-description:before{
+    border: 12px solid #e9ecef;
+    content: '';
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    bottom: 24%;
+}*/
+
+#effect-space:hover .effect-description{
+    display: block;
+}
+

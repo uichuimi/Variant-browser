@@ -9,20 +9,30 @@ import { VariantApiService } from '../variant-api.service';
 })
 export class TableComponent implements OnInit {
   data: any = [];
+  dataCompleted: any = [];
   first: number = 0;
   rows: number = 5;
   selectedData: any;
   
   constructor ( private VariantService: VariantApiService){
     this.getData();
+    
   }
   ngOnInit(): void {
+   
   }
 
   async getData (){
     this.data = await this.VariantService.getApiData();
-    console.log (this.data);
+    this.obteinGmaf();
+  }
 
+
+  obteinGmaf(){
+    this.data.forEach(each => {
+          each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
+        });
+        console.log(this.data);
   }
 
   reset() {
@@ -33,9 +43,7 @@ export class TableComponent implements OnInit {
   }
 
   selectData (eachData: any){
-    console.log({eachData});
     this.selectedData = eachData;
-    console.log(this.data);
   }
 
   
