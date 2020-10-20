@@ -24,15 +24,60 @@ export class TableComponent implements OnInit {
 
   async getData (){
     this.data = await this.VariantService.getApiData();
-    this.obteinGmaf();
+    this.adjustingData();
   }
 
 
-  obteinGmaf(){
+  adjustingData(){
     this.data.forEach(each => {
-          each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
+        each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
+        each.frequencies.forEach(frequencie => {
+          switch (frequencie.population){
+            case 'AFR':
+              frequencie.population = "África";
+            break;
+            case 'AMR':
+              frequencie.population = "América";
+            break;
+            case 'EAS':
+              frequencie.population = "Este Asiático";
+            break;
+            case 'NFE':
+              frequencie.population = "Europa sin Finlandia";
+            break;
+            case 'FIN':
+              frequencie.population = "Finlandia";
+            break;
+            case 'ASJ':
+              frequencie.population = "Judíos Askenazi";
+            break;
+            case 'OTH':
+              frequencie.population = "Otros";
+            break;
+            case 'EUR':
+              frequencie.population = "Europa";
+            break;
+            case 'SAS':
+              frequencie.population = "Sur Asiático";
+            break;
+          }
+          switch(frequencie.source){
+            case 'gnomAD_genomes':
+              frequencie.source = "GG";
+            break;
+            case 'gnomAD_exomes':
+              frequencie.source = "GE";
+            break;
+            case 'ExAC':
+              frequencie.source = "EX";
+            break;
+            case '1000_genomes':
+              frequencie.source = "1KG";
+            break;
+          }
         });
-        console.log(this.data);
+        
+      });     
   }
 
   reset() {
@@ -46,6 +91,6 @@ export class TableComponent implements OnInit {
     this.selectedData = eachData;
   }
 
-  
+  /* -- https://www.primefaces.org/primeng/showcase/#/table/rowgroup --*/  
 
 }

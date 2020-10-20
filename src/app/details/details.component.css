@@ -5,6 +5,11 @@
     margin-left: 3%;
 }
 
+/*.details-card{
+    box-shadow: rgb(185, 209, 233) 0px 2px 1px -1px, rgb(185, 209, 233) 0px 1px 1px 0px, rgb(185, 209, 233) 0px 1px 3px 0px !important;
+    border-radius: 10px !important;
+}
+*/
 .table-property{
     text-align: center !important;
     padding: 0.4rem 1rem !important;
@@ -15,26 +20,38 @@
     background: white !important;
 }
 
+.gene-space{
+    margin-top: 0px;
+    text-align: center;
+}
+
 .population-source{
-    margin: 1px;
-    font-size: 10px;
+    margin: 2px;
+    font-size: 12px;
 }
 
 .effect-description{
     display: none;
-    border: 2px solid #e9ecef; 
+    border: 2px solid #F1F4F7; 
     border-radius: 15px;
     padding: 5px;
     font-size: 14px;
-    background-color: #e9ecef;
+    background-color: #F1F4F7;
     font-weight: 500;
     text-align: center;
     color:#495057;
     margin-top: 5px;
 }
 
+#effect-space{
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .effect-name{
     text-transform: capitalize;
+    cursor: pointer;
+    border-bottom: #495057 dotted 1px;
 }
 /* Creacion de triangulos para bocadillos
 .effect-description:before{
@@ -50,3 +67,42 @@
     display: block;
 }
 
+.details-table th{
+    background-color: #F1F4F7 !important;
+    padding: 14px;
+}
+
+.allele-frequencie{
+    border-radius: 10px;
+}
+
+.red{
+    color: red;
+    border: 2px solid red;
+}
+
+.red-icon{
+    color: red;
+}
+
+.orange{
+    color: orange;
+    border: 2px solid orange;
+}
+
+.orange-icon{
+    color: orange;
+}
+
+.green{
+    color: green;
+    border: 2px solid green;
+}
+
+.green-icon{
+    color: green;
+}
+
+.circle-icon{
+    padding: 10px;
+}

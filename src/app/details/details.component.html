@@ -1,12 +1,13 @@
 <div class="details-content">
-    <p-card>
-        <p><strong>{{selected.gene.name}}</strong> ( {{selected.gene.identifier}}, 
-            {{selected.gene.description.substring(0,selected.gene.description.indexOf("["))}},{{selected.gene.biotype}} )</p>
+    <p-card class="details-card" [style]= "{ 'box-shadow': '0 3px 1px -1px rgb(185, 209, 233), 0 3px 1px 0 rgb(185, 209, 233), 0 1px 3px 0 rgb(185, 209, 233)', 'border-radius': '10px' }">
+        <p class="gene-space"><strong>{{selected.gene.name}}</strong> : {{selected.gene.identifier}}, 
+            {{selected.gene.description.substring(0,selected.gene.description.indexOf("["))}},{{selected.gene.biotype}}.
+        </p>
         
         <div id="effect-space"><strong class="effect-name">{{selected.effect.term}}</strong><p class="effect-description">{{selected.effect.description}}</p>
         </div>
 
-        <p-table [value]="selected.frequencies">
+        <p-table [value]="selected.frequencies" class="details-table">
             <ng-template pTemplate="header">
             <tr>
               <th class="table-label">Population</th>
@@ -16,7 +17,11 @@
         <ng-template pTemplate="body" let-eachSelection>
           <tr>
             <td class="table-property">{{eachSelection.population}} <p class="population-source">({{eachSelection.source}})</p></td>
-            <td class="table-property">{{eachSelection.value}}</td>
+            <td class="table-property">
+              <p class="allele-frequencie">{{eachSelection.value}}<fa-icon [icon]="faCircle" class="circle-icon" [ngClass]= "{ 'red-icon': eachSelection.value <= 0.33, 
+                'orange-icon': eachSelection.value > 0.33 && eachSelection.value <= 0.66, 'green-icon': eachSelection.value > 0.66 }"></fa-icon>
+            </p>
+          </td>
           </tr> 
         </ng-template>
       </p-table>

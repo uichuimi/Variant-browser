@@ -3,7 +3,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +26,8 @@ import { CardModule } from 'primeng/card';
     AppRoutingModule,
     TableModule,
     ButtonModule,
-    CardModule
+    CardModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

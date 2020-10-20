@@ -5,11 +5,16 @@
 }
 
 .table-header th{
-    background-color: #F1F4F7;
+    background-color: #F1F4F7 !important;
+    
 }
 
-.selected{
+.selected, .selected:hover{
     background-color: #B9D1E9 !important;
+}
+
+.table-row{
+    cursor: pointer;
 }
 
 .table-row:hover{
