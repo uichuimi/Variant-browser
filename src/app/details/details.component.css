@@ -12,7 +12,7 @@
 */
 .table-property{
     text-align: center !important;
-    padding: 0.4rem 1rem !important;
+    padding: 0rem 0.2rem !important;
 }
 
 .table-label{
@@ -74,24 +74,26 @@
 
 .allele-frequencie{
     border-radius: 10px;
+    margin: 0 auto;
+    width: 60%;
 }
 
 .red{
-    color: red;
-    border: 2px solid red;
+    color: #c63737;
+    border: 2px solid #c63737;
 }
 
 .red-icon{
-    color: red;
+    color: #c63737;
 }
 
 .orange{
-    color: orange;
-    border: 2px solid orange;
+    color: darkorange;
+    border: 2px solid darkorange;
 }
 
 .orange-icon{
-    color: orange;
+    color: darkorange;
 }
 
 .green{
@@ -104,5 +106,6 @@
 }
 
 .circle-icon{
-    padding: 10px;
+    padding: 0px 10px;
+    float: right;
 }

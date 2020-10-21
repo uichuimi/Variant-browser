@@ -11,7 +11,7 @@ export class TableComponent implements OnInit {
   data: any = [];
   dataCompleted: any = [];
   first: number = 0;
-  rows: number = 5;
+  rows: number = 10;
   selectedData: any;
   
   constructor ( private VariantService: VariantApiService){
@@ -80,17 +80,33 @@ export class TableComponent implements OnInit {
       });     
   }
 
-  reset() {
-      this.first = 0;
-      console.log(this.data);
-      console.log(this.rows);
-      console.log(this.first);
-  }
-
   selectData (eachData: any){
     this.selectedData = eachData;
   }
 
+  /*  <-- Métodos para la paginación más avanzada -->   
+  next() {
+    this.first = this.first + this.rows;
+  }
+
+  prev() {
+      this.first = this.first - this.rows;
+  }
+
+  reset() {
+      this.first = 0;
+  }
+
+
+  isLastPage(): boolean {
+    return this.data ? this.first === (this.data.length - this.rows): true;
+  }
+
+  isFirstPage(): boolean {
+      return this.data ? this.first === 0 : true;
+  }
+
+  */
   /* -- https://www.primefaces.org/primeng/showcase/#/table/rowgroup --*/  
 
 }

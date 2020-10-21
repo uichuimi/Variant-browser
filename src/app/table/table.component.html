@@ -1,6 +1,8 @@
 <div class="table-content">
-<p-table [value]="data" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
-    selectionMode="single" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10]">
+  <div class="p-mb-3">
+</div>
+<p-table [value]="data" selectionMode="single" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
+ [rowsPerPageOptions]="[10,20]">
         <ng-template pTemplate="header">
             <tr class="table-header">
               <th class="table-label">Chromosome</th>
@@ -47,13 +49,13 @@
               <p *ngIf="eachData.amino == null">-</p>
             </td>
             <td class="table-property">
-              <p>{{eachData.gmaf}}</p>
+              <p class="etiqueta" [ngClass]= "{ 'red': eachData.gmaf <= 0.33, 
+              'orange': eachData.gmaf > 0.33 && eachData.gmaf <= 0.66, 'green': eachData.gmaf > 0.66 }">
+              {{eachData.gmaf}}
+            </p>
             </td>
           </tr>
           
-        </ng-template>
-        <ng-template pTemplate="paginatorleft">
-          <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
         </ng-template>
       </p-table>
 </div>

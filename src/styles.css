@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Paleta */
+
+:root {
+    --primary-color: #B9D1E9;
+}
+
+/* Tabla */
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background-color: #B9D1E9;
+    border-color: #B9D1E9;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    background-color: #B9D1E9;
+}
+
+.p-dropdown:not(.p-disabled):hover {
+    border-color: #B9D1E9;
+}
+
+/* Detalles */
+.p-card{
+    box-shadow: 0 3px 1px -1px rgb(185, 209, 233), 0 3px 1px 0 rgb(185, 209, 233), 0 1px 3px 0 rgb(185, 209, 233);
+    border-radius: 10px;
+}
