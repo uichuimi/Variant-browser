@@ -12,9 +12,7 @@
 .selected{
     background-color: #e9ecef !important;
     border: 3px solid  #B9D1E9 !important;
-    /*
-    background-color: #B9D1E9 !important;
-    */
+    font-weight: 600;
 }
 
 .table-row{
@@ -50,6 +48,11 @@
     letter-spacing: .3px;
     margin: 0 auto;
     width: 80%;
+}
+
+.etiqueta.text{
+    width: 90%;
+    font-size: 11px;
 }
 
 .red {

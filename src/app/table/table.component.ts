@@ -5,7 +5,7 @@ import { VariantApiService } from '../variant-api.service';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.css'],
 })
 export class TableComponent implements OnInit {
   data: any = [];
@@ -34,31 +34,31 @@ export class TableComponent implements OnInit {
         each.frequencies.forEach(frequencie => {
           switch (frequencie.population){
             case 'AFR':
-              frequencie.population = "África";
+              frequencie.population = "African";
             break;
             case 'AMR':
-              frequencie.population = "América";
+              frequencie.population = "American";
             break;
             case 'EAS':
-              frequencie.population = "Este Asiático";
+              frequencie.population = "East Asian";
             break;
             case 'NFE':
-              frequencie.population = "Europa sin Finlandia";
+              frequencie.population = "Non-Finnish European";
             break;
             case 'FIN':
-              frequencie.population = "Finlandia";
+              frequencie.population = "Finnish";
             break;
             case 'ASJ':
-              frequencie.population = "Judíos Askenazi";
+              frequencie.population = "Ashkenazi Jewish";
             break;
             case 'OTH':
-              frequencie.population = "Otros";
+              frequencie.population = "Other";
             break;
             case 'EUR':
-              frequencie.population = "Europa";
+              frequencie.population = "European";
             break;
             case 'SAS':
-              frequencie.population = "Sur Asiático";
+              frequencie.population = "South Asian";
             break;
           }
           switch(frequencie.source){

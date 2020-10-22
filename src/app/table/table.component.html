@@ -2,7 +2,7 @@
   <div class="p-mb-3">
 </div>
 <p-table [value]="data" selectionMode="single" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
- [rowsPerPageOptions]="[10,20]">
+ [rowsPerPageOptions]="[10,20,50]">
         <ng-template pTemplate="header">
             <tr class="table-header">
               <th class="table-label">Chromosome</th>
@@ -28,8 +28,8 @@
               <p>{{eachData.identifier}}</p>
             </td>
             <td class="table-property variant-column">
-              <p [hidden]="eachData.ref.length > 6">{{eachData.alt}}/{{eachData.ref}}</p>
-              <div *ngIf="eachData.ref.length > 6">
+              <p [hidden]="eachData.alt.length > 3 || eachData.ref.length > 3">{{eachData.alt}}/{{eachData.ref}}</p>
+              <div *ngIf="eachData.alt.length > 3 || eachData.ref.length > 3">
                 <p>{{eachData.alt}}</p><p>{{eachData.ref}}</p>
               </div>
             </td>
@@ -37,12 +37,15 @@
               <p>{{eachData.gene.name}}</p>
             </td>
             <td class="table-property">
-              <p [hidden]="eachData.sift == null">{{eachData.sift}}</p>
+              <p [hidden]="eachData.sift == null" class="etiqueta text" [ngClass]= "{ 'red': eachData.sift == 'deleterious', 
+                'green': eachData.sift == 'tolerated'}">{{eachData.sift}}</p>
               <p *ngIf="eachData.sift == null">-</p>
             </td>
             <td class="table-property">
-              <p [hidden]="eachData.polyphen == null">{{eachData.polyphen}}</p>
-              <p *ngIf="eachData.polyphen == null">-</p>
+              <p [hidden]="eachData.polyphen == null || eachData.polyphen == 'unknown'" class="etiqueta text" 
+                [ngClass]= "{ 'red': eachData.polyphen == 'possibly_damaging','orange': eachData.polyphen == 'probably_damaging', 
+                'green': eachData.polyphen == 'benign' }">{{eachData.polyphen}}</p>
+              <p *ngIf="eachData.polyphen == null || eachData.polyphen == 'unknown'">-</p>
             </td>
             <td class="table-property">
               <p [hidden]="eachData.amino == null">{{eachData.amino}}</p>
