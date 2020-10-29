@@ -7,22 +7,47 @@
         <div id="effect-space"><strong class="effect-name">{{selected.effect.term}}</strong><p class="effect-description">{{selected.effect.description}}</p>
         </div>
 
-        <p-table [value]="selected.frequencies" class="details-table">
+        <!-- <p-table [value]="selected.frequencies" class="details-table">
             <ng-template pTemplate="header">
             <tr>
               <th class="table-label">Population</th>
               <th class="table-label">Allele frequency</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-eachSelection>
+         <ng-template pTemplate="body" let-eachSelection>
           <tr>
-            <td class="table-property">{{eachSelection.population}} <p class="population-source">({{eachSelection.source}})</p></td>
+            <td class="table-property">{{eachSelection.population}} <p class="population-source" >({{eachSelection.source}})</p></td>
             <td class="table-property">
               <p class="label" [ngClass]= "{ 'red': eachSelection.value <= 0.01, 
                 'orange': eachSelection.value > 0.01 && eachSelection.value <= 0.1, 'green': eachSelection.value > 0.1 }">
                 {{eachSelection.value}}
               </p>
-          </td>
+            </td>
+          </tr> 
+        </ng-template>-->
+
+        <p-table [value]="populations" class="details-table">
+          <ng-template pTemplate="header">
+          <tr>
+            <th class="table-label">Population</th>
+            
+            <th class="table-label">Allele frequency</th>
+          </tr>
+      </ng-template>
+        <ng-template pTemplate="body" let-population>
+          <tr>
+            <td class="table-property">{{population}}</td>
+            <td colspan="2" class="table-property">
+              <div *ngFor = "let eachSelection of selected.frequencies">
+                <div [hidden]="population != eachSelection.population" class="allele-info">
+                  <p class="population-source">{{eachSelection.source}}</p>
+                  <p class="label" [ngClass]= "{ 'red': eachSelection.value <= 0.01, 
+                    'orange': eachSelection.value > 0.01 && eachSelection.value <= 0.1, 'green': eachSelection.value > 0.1 }">
+                    {{eachSelection.value}}
+                  </p>
+                </div>
+              </div>
+            </td>
           </tr> 
         </ng-template>
       </p-table>

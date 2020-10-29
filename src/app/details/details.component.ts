@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -7,7 +7,7 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons';
 })
 export class DetailsComponent implements OnInit {
   @Input() selected: any;
-  faCircle = faCircle;
+  populations: any = ["African", "American", "Ashkenazi Jewish", "East Asian", "European", "Finnish", "Other", "South Asian"];
   constructor() { }
 
   ngOnInit(): void {

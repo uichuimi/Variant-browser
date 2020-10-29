@@ -5,9 +5,8 @@
  [rowsPerPageOptions]="[10,20,50]">
         <ng-template pTemplate="header">
             <tr class="table-header">
-              <th class="table-label">Chromosome</th>
-              <th class="table-label">Position</th>
               <th class="table-label">Identifier</th>
+              <th class="table-label">Coordinate</th>
               <th class="table-label">Variant</th>
               <th class="table-label">Gene</th>
               <th class="table-label">Sift</th>
@@ -19,13 +18,10 @@
         <ng-template pTemplate="body" let-eachData>
           <tr (click)="selectData(eachData)" class="table-row" [ngClass]= "{ 'selected': selectedData == eachData }">
             <td class="table-property">
-              <p>{{eachData.chrom}}</p>
-            </td>
-            <td class="table-property">
-              <p>{{eachData.pos}}</p>
-            </td>
-            <td class="table-property">
               <p>{{eachData.identifier}}</p>
+            </td>
+            <td class="table-property">
+              <p>{{eachData.chrom}}: {{eachData.pos}}</p>
             </td>
             <td class="table-property variant-column">
               <p [hidden]="eachData.alt.length > 3 || eachData.ref.length > 3">{{eachData.alt}}/{{eachData.ref}}</p>
