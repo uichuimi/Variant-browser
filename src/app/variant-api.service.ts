@@ -11,8 +11,8 @@ export class VariantApiService {
   constructor() { }
 
   getApiData() {
-    //let url = 'https://193.145.155.148:8443/variants?Page%20number=1&Results%20per%20page=100';
-    let url = 'http://localhost:3000/data';
+    let url = 'https://193.145.155.148:8443/variants?Page%20number=1&Results%20per%20page=100';
+    //let url = 'http://localhost:3000/data';
     return axios.get(url)
       .then (response => {
         this.modifiedResponse = response.data.map(each => {

@@ -52,8 +52,8 @@
               <p *ngIf="eachData.amino == null">-</p>
             </td>
             <td class="table-property">
-              <p class="etiqueta" [ngClass]= "{ 'red': eachData.gmaf <= 0.33, 
-              'orange': eachData.gmaf > 0.33 && eachData.gmaf <= 0.66, 'green': eachData.gmaf > 0.66 }">
+              <p class="etiqueta" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
+              'orange': eachData.gmaf > 0.01 && eachData.gmaf <= 0.1, 'green': eachData.gmaf > 0.1 }">
               {{eachData.gmaf}}
             </p>
             </td>

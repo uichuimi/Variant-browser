@@ -18,8 +18,8 @@
           <tr>
             <td class="table-property">{{eachSelection.population}} <p class="population-source">({{eachSelection.source}})</p></td>
             <td class="table-property">
-              <p class="label" [ngClass]= "{ 'red': eachSelection.value <= 0.33, 
-                'orange': eachSelection.value > 0.33 && eachSelection.value <= 0.66, 'green': eachSelection.value > 0.66 }">
+              <p class="label" [ngClass]= "{ 'red': eachSelection.value <= 0.01, 
+                'orange': eachSelection.value > 0.01 && eachSelection.value <= 0.1, 'green': eachSelection.value > 0.1 }">
                 {{eachSelection.value}}
               </p>
           </td>
