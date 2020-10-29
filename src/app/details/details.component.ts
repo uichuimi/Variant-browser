@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DetailsComponent implements OnInit {
   @Input() selected: any;
-  populations: any = ["African", "American", "Ashkenazi Jewish", "East Asian", "European", "Finnish", "Other", "South Asian"];
+  populations: any = ["African", "American", "Ashkenazi Jewish", "East Asian", "European", "Finnish", "Non-Finnish European", "Other", "South Asian"];
   constructor() { }
 
   ngOnInit(): void {
