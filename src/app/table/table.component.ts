@@ -33,7 +33,7 @@ export class TableComponent implements OnInit {
         each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
         each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
         each.frequencies.forEach(frequencie => {
-          switch (frequencie.population){
+          /*switch (frequencie.population){
             case 'AFR':
               frequencie.population = "African";
             break;
@@ -61,7 +61,7 @@ export class TableComponent implements OnInit {
             case 'SAS':
               frequencie.population = "South Asian";
             break;
-          }
+          }*/
           switch(frequencie.source){
             case 'gnomAD_genomes':
               frequencie.source = "GG";

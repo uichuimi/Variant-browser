@@ -36,10 +36,10 @@
       </ng-template>
         <ng-template pTemplate="body" let-population>
           <tr>
-            <td class="table-property">{{population}}</td>
+            <td class="table-property">{{population.name}}</td>
             <td colspan="2" class="table-property">
               <div *ngFor = "let eachSelection of selected.frequencies">
-                <div [hidden]="population != eachSelection.population" class="allele-info">
+                <div [hidden]="population.code != eachSelection.population" class="allele-info">
                   <p class="population-source">{{eachSelection.source}}</p>
                   <p class="label" [ngClass]= "{ 'red': eachSelection.value <= 0.01, 
                     'orange': eachSelection.value > 0.01 && eachSelection.value <= 0.1, 'green': eachSelection.value > 0.1 }">

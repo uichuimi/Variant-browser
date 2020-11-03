@@ -16,7 +16,7 @@
     background-color: #B9D1E9;
 }
 
-.p-dropdown:not(.p-disabled):hover {
+.p-dropdown:not(.p-disabled):hover, .p-dropdown:not(.p-disabled).p-focus{
     border-color: #B9D1E9;
 }
 
@@ -24,4 +24,14 @@
 .p-card{
     box-shadow: 0 3px 1px -1px rgb(185, 209, 233), 0 3px 1px 0 rgb(185, 209, 233), 0 1px 3px 0 rgb(185, 209, 233);
     border-radius: 10px;
+}
+
+/* Filtros */
+.p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 0.2rem #e9ecef;
+    border-color: #B9D1E9;
+}
+
+.p-inputtext:enabled:hover{
+    border-color: #B9D1E9;
 }

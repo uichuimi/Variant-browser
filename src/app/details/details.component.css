@@ -13,6 +13,7 @@
 .table-property{
     text-align: center !important;
     padding: 0rem 0.2rem !important;
+    border-bottom: 2px solid #e9ecef !important;
 }
 
 .table-label{
