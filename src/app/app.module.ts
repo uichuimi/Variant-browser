@@ -14,8 +14,8 @@ import { TableComponent } from './table/table.component';
 import { CardModule } from 'primeng/card';
 import {DropdownModule} from 'primeng/dropdown';
 import {InputTextModule} from 'primeng/inputtext';
-import {SliderModule} from 'primeng/slider';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     FontAwesomeModule,
     DropdownModule,
     InputTextModule,
-    SliderModule,
+    Ng5SliderModule,
     InputTextareaModule
   ],
   providers: [],

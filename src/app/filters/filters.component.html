@@ -1,28 +1,35 @@
 <div class="filters-content">
     <!--<p class="filters-text">Espacio para los filtros</p>-->
-   <div class="search-gene">
-    <span class="p-input-icon-right">
-        <i class="pi pi-search"></i>
-        <input type="text" pInputText placeholder="Search by Gene">         
-    </span>
+   <div class="filters-column">
+        <div class="search-gene">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Search by Gene">         
+            </span>
+        </div>
+        <div class="gmaf-space">
+            <input class="enter-gmaf" pInputText [(ngModel)]="valueWrite" (focus)="onFocus()" (keyup.enter)="onEnter()" [ngClass]= "{ 'red': valueWrite <= 0.01, 
+            'orange': valueWrite > 0.01 && valueWrite <= 0.1, 'green': valueWrite > 0.1, 'empty': valueWrite == null }">
+            <ng5-slider class="slider-gmaf" [(value)]="value" [options]="options" ></ng5-slider>
+        </div>
     </div>
-    <div class="slider-gmaf">
-    <input pInputText [(ngModel)]="value" (focus)="onFocus()" >
-    <p-slider [(ngModel)]="value" [min]="0" [max]="1" [step]="0.001" (drag)="onFocus()"></p-slider>
-    </div>
-    <div class="chromosome-dropdown">
-        <p-dropdown [options]="chromosomes" [(ngModel)]="selectedChromosome" [filter]="true"></p-dropdown>
-    </div>
-    <div class="sift-dropdown">
-        <p-dropdown [options]="siftOptions" [(ngModel)]="selectedSift"></p-dropdown>
-    </div>
-    <div class="polyphen-dropdown">
-        <p-dropdown [options]="polyphenOptions" [(ngModel)]="selectedPolyphen"></p-dropdown>
-    </div>
-    <div class="biotype-dropdown">
-        <p-dropdown [options]="biotypes" [(ngModel)]="selectedBiotype"[filter]="true"></p-dropdown>
-    </div>
-    <div class="effects-dropdown">
-        <p-dropdown [options]="effects" [(ngModel)]="selectedEffect" [filter]="true"></p-dropdown>
+
+    <div class="filters-column">
+        <div class="chromosome-dropdown">
+            <p-dropdown [options]="chromosomes" [(ngModel)]="selectedChromosome" [filter]="true"></p-dropdown>
+        </div>
+        <div class="sift-dropdown">
+            <p-dropdown [options]="siftOptions" [(ngModel)]="selectedSift"></p-dropdown>
+        </div>
+        <div class="polyphen-dropdown">
+            <p-dropdown [options]="polyphenOptions" [(ngModel)]="selectedPolyphen">
+            </p-dropdown>
+        </div>
+        <div class="biotype-dropdown">
+            <p-dropdown [options]="biotypes" [(ngModel)]="selectedBiotype"[filter]="true"></p-dropdown>
+        </div>
+        <div class="effects-dropdown">
+            <p-dropdown [options]="effects" [(ngModel)]="selectedEffect" [filter]="true"></p-dropdown>
+        </div>
     </div>
 </div>

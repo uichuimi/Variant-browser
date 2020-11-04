@@ -6,18 +6,35 @@
     --primary-color: #B9D1E9;
 }
 
+.red {
+    background-color: #ffcdd2;
+    color: #c63737;
+}
+
+.orange{
+    background-color: #feedaf;
+    color: darkorange;
+}
+
+.green{
+    background-color: #c8e6c9;
+    color: green;
+}
+
 /* Tabla */
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
     background-color: #B9D1E9;
     border-color: #B9D1E9;
+   
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
     background-color: #B9D1E9;
 }
 
-.p-dropdown:not(.p-disabled):hover, .p-dropdown:not(.p-disabled).p-focus{
+.p-dropdown:not(.p-disabled):hover, .p-dropdown.p-component.p-dropdown-open, .p-dropdown:not(.p-disabled).p-focus{
     border-color: #B9D1E9;
+    box-shadow: 0 0 0 0.1rem #B9D1E9;
 }
 
 /* Detalles */
@@ -32,6 +49,45 @@
     border-color: #B9D1E9;
 }
 
+
 .p-inputtext:enabled:hover{
     border-color: #B9D1E9;
+}
+
+.filters-content .p-dropdown .p-dropdown-panel{
+    min-width: 150px !important;
+    max-width: 220px;
+}
+
+.effects-dropdown .p-dropdown .p-dropdown-panel{
+    min-width: 220px !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+    white-space: pre-wrap;
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.filters-content .ng-trigger.ng-trigger-overlayAnimation.p-dropdown-panel.p-component.ng-star-inserted{
+    top: 40px !important;
+}
+
+.p-dropdown .p-dropdown-label{
+    text-transform: capitalize;
+}
+
+.ng5-slider .ng5-slider-pointer {
+    background-color:  #B9D1E9 !important;
+    
+}
+
+.ng5-slider .ng5-slider-pointer.ng5-slider-active:after {
+    background-color: white !important;
+}
+
+:focus {
+    outline: -webkit-focus-ring-color auto 0px;
 }
