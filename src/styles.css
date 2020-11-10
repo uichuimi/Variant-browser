@@ -8,16 +8,20 @@
 
 .red {
     background-color: #ffcdd2;
+    border-color: #ffcdd2;
     color: #c63737;
 }
 
+
 .orange{
     background-color: #feedaf;
+    border-color: #feedaf;
     color: darkorange;
 }
 
 .green{
     background-color: #c8e6c9;
+    border-color: #c8e6c9;
     color: green;
 }
 
@@ -45,7 +49,7 @@
 
 /* Filtros */
 .p-inputtext:enabled:focus {
-    box-shadow: 0 0 0 0.2rem #e9ecef;
+    box-shadow: 0 0 0 0.1rem #B9D1E9;
     border-color: #B9D1E9;
 }
 
@@ -54,30 +58,66 @@
     border-color: #B9D1E9;
 }
 
-.filters-content .p-dropdown .p-dropdown-panel{
-    min-width: 150px !important;
+.red.p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 0.04rem #c63737;
+    border-color: #ffcdd2;
+}
+
+.red.p-inputtext:enabled:hover{
+    border-color: #ffcdd2;
+}
+
+.orange.p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 0.04rem darkorange;
+    border-color: #feedaf;
+}
+
+.orange.p-inputtext:enabled:hover{
+    border-color: #feedaf;
+}
+
+
+.green.p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 0.04rem green;
+    border-color:  #c8e6c9;
+}
+
+.green.p-inputtext:enabled:hover{
+    border-color:  #c8e6c9;
+}
+
+
+.chromosome-dropdown .p-multiselect .p-multiselect-panel, 
+.sift-dropdown .p-multiselect .p-multiselect-panel{
+    min-width: 180px !important;
     max-width: 220px;
 }
 
-.effects-dropdown .p-dropdown .p-dropdown-panel{
+.effects-dropdown .p-multiselect .p-multiselect-panel,
+.biotype-dropdown .p-multiselect .p-multiselect-panel{
+    min-width: 260px !important;
+}
+
+.polyphen-dropdown .p-multiselect .p-multiselect-panel{
     min-width: 220px !important;
 }
 
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+.p-multiselect-panel .p-multiselect-items-wrapper .p-multiselect-item{
     word-wrap: break-word;      /* IE 5.5-7 */
     white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
     white-space: pre-wrap;
     text-align: left;
     text-transform: capitalize;
+    word-break: break-word;
 }
 
-.filters-content .ng-trigger.ng-trigger-overlayAnimation.p-dropdown-panel.p-component.ng-star-inserted{
+/*.filters-content .ng-trigger.ng-trigger-overlayAnimation.p-dropdown-panel.p-component.ng-star-inserted{
     top: 40px !important;
 }
 
 .p-dropdown .p-dropdown-label{
     text-transform: capitalize;
-}
+}*/
 
 .ng5-slider .ng5-slider-pointer {
     background-color:  #B9D1E9 !important;
@@ -90,4 +130,30 @@
 
 :focus {
     outline: -webkit-focus-ring-color auto 0px;
+}
+
+.polyphen-dropdown .p-multiselect-label-container {
+    min-width: 80px !important;
+}
+
+.chromosome-dropdown .p-multiselect-label-container{
+    width: 100px !important;
+}
+
+.p-multiselect:not(.p-disabled):hover {
+    border-color: #B9D1E9;
+    box-shadow: 0 0 0 0.1rem #B9D1E9;
+}
+
+.p-multiselect:not(.p-disabled):focus {
+    border-color: #B9D1E9;
+    box-shadow: 0 0 0 0.1rem #B9D1E9;
+}
+
+.p-multiselect.p-component.p-multiselect-open{
+    box-shadow: 0 0 0 0.1rem #B9D1E9;
+}
+
+.p-multiselect-label{
+    color: #495057;
 }

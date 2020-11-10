@@ -1,8 +1,5 @@
 <div class="table-content">
-  <div class="p-mb-3">
-</div>
-<p-table [value]="data" selectionMode="single" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
- [rowsPerPageOptions]="[10,20,50]">
+<p-table [value]="data" selectionMode="single">
         <ng-template pTemplate="header">
             <tr class="table-header">
               <th class="table-label">Identifier</th>
@@ -30,7 +27,8 @@
               </div>
             </td>
             <td class="table-property">
-              <p>{{eachData.gene.name}}</p>
+              <p *ngIf="eachData.gene != null">{{eachData.gene.name}}</p>
+              <p *ngIf="eachData.gene == null">-</p>
             </td>
             <td class="table-property">
               <p [hidden]="eachData.sift == null" class="etiqueta text" [ngClass]= "{ 'red': eachData.sift == 'deleterious', 
@@ -39,7 +37,7 @@
             </td>
             <td class="table-property">
               <p [hidden]="eachData.polyphen == null || eachData.polyphen == 'unknown'" class="etiqueta text" 
-                [ngClass]= "{ 'red': eachData.polyphen == 'possibly_damaging','orange': eachData.polyphen == 'probably_damaging', 
+                [ngClass]= "{ 'red': eachData.polyphen == 'possibly damaging','orange': eachData.polyphen == 'probably damaging', 
                 'green': eachData.polyphen == 'benign' }">{{eachData.polyphen}}</p>
               <p *ngIf="eachData.polyphen == null || eachData.polyphen == 'unknown'">-</p>
             </td>

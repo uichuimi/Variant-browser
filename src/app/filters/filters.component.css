@@ -3,19 +3,28 @@
     width: 100%;
     text-align:center;
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
 }
 
 .filters-column{
     display: flex;
-}
-.gmaf-space{
-    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.enter-gmaf{
+.filters-column.second{
+    margin-top: 10px;
+}
+
+.gmaf-space{
+    display: flex;
+    align-items: center;
+}
+
+.enter-gmaf input{
     width: 80px;
     height: 40px;
 }
@@ -24,6 +33,7 @@
     width: 200px;
     margin-left: 20px;
 }
+
 
 .filters-text{
     font-weight: 600;
@@ -40,4 +50,20 @@
 .empty{
     background-color: white !important;
     color: #495057;
+}
+
+label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.position-space input{
+    width: 100px;
+} 
+
+.position-space{
+    display: flex;
+}
+
+.input-posMin{
+    margin-right: 15px;
 }

@@ -9,10 +9,8 @@ import { VariantApiService } from '../variant-api.service';
 })
 export class TableComponent implements OnInit {
   data: any = [];
-  dataCompleted: any = [];
-  first: number = 0;
-  rows: number = 10;
   selectedData: any;
+
   
   constructor ( private VariantService: VariantApiService){
     this.getData();
@@ -77,6 +75,14 @@ export class TableComponent implements OnInit {
             break;
           }
         });
+        switch(each.polyphen){
+          case 'probably_damaging':
+            each.polyphen = "probably damaging";
+          break;
+          case 'possibly_damaging':
+            each.polyphen = "possibly damaging";
+          break;
+        }
         
       });     
   }

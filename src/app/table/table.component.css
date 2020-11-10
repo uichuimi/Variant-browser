@@ -52,6 +52,9 @@
 
 .etiqueta.text{
     width: 90%;
-    font-size: 11px;
+    font-size: 10px;
 }
 
+.table-property.variant-column{
+    padding: 0 10px !important;
+}

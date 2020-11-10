@@ -16,6 +16,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import { Ng5SliderModule } from 'ng5-slider';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { Ng5SliderModule } from 'ng5-slider';
     DropdownModule,
     InputTextModule,
     Ng5SliderModule,
-    InputTextareaModule
+    InputTextareaModule,
+    MultiSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

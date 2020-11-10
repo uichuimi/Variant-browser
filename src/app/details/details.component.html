@@ -1,9 +1,8 @@
-<div class="details-content">
+<div class="details-content" *ngIf="selected != undefined">
     <p-card class="details-card">
-        <p class="gene-space"><strong>{{selected.gene.name}}</strong> : {{selected.gene.identifier}}, 
+        <p class="gene-space" *ngIf="selected.gene != null"><strong>{{selected.gene.name}}</strong> : {{selected.gene.identifier}}, 
             {{selected.gene.description.substring(0,selected.gene.description.indexOf("[")-1)}}, {{selected.gene.biotype}}.
         </p>
-        
         <div id="effect-space"><strong class="effect-name">{{selected.effect.term}}</strong><p class="effect-description">{{selected.effect.description}}</p>
         </div>
 
@@ -30,7 +29,6 @@
           <ng-template pTemplate="header">
           <tr>
             <th class="table-label">Population</th>
-            
             <th class="table-label">Allele frequency</th>
           </tr>
       </ng-template>
