@@ -10,8 +10,9 @@ export class VariantApiService {
   modifiedResponse: any;
   constructor() { }
 
-  getApiData() {
-    let url = 'https://193.145.155.148:8443/variants?page=1&pageSize=100';
+  getApiData(page) {
+    let url = 'https://193.145.155.148:8443/variants?';
+    url += 'page=' + page + '&pageSize=50';
     //let url = 'http://localhost:3000/data';
     return axios.get(url)
       .then (response => {

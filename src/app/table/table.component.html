@@ -1,5 +1,11 @@
 <div class="table-content">
-<p-table [value]="data" selectionMode="single">
+  <div class="p-mb-3 pagination-buttons">
+      <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+      <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+      <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+      <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="loadData()"></p-button>
+  </div>
+<p-table [value]="data" selectionMode="single" [paginator]="true" [rows]="rows" [(first)]="first">
         <ng-template pTemplate="header">
             <tr class="table-header">
               <th class="table-label">Identifier</th>
@@ -53,6 +59,9 @@
             </td>
           </tr>
           
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+          <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="loadData()"></p-button>
         </ng-template>
       </p-table>
 </div>

@@ -26,10 +26,24 @@
 }
 
 /* Tabla */
+
+.table-content .p-button.p-button-text{
+    color: #88B8E8 !important;
+}
+
+.table-content .p-button.p-button-text:hover{
+    box-shadow: 0 0 0 0.2rem #B9D1E9 !important;
+    background: transparent;
+}
+
+.table-content .p-button.p-button-text:focus{
+    box-shadow: 0 0 0 0.2rem transparent;
+}
+
+
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
     background-color: #B9D1E9;
     border-color: #B9D1E9;
-   
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {

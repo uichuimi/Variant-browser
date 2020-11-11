@@ -10,7 +10,9 @@ import { VariantApiService } from '../variant-api.service';
 export class TableComponent implements OnInit {
   data: any = [];
   selectedData: any;
-
+  page: number = 1;
+  first: number = 0;
+  rows: number = 20;
   
   constructor ( private VariantService: VariantApiService){
     this.getData();
@@ -21,7 +23,7 @@ export class TableComponent implements OnInit {
   }
 
   async getData (){
-    this.data = await this.VariantService.getApiData();
+    this.data = await this.VariantService.getApiData(this.page);
     this.adjustingData();
   }
 
@@ -91,7 +93,7 @@ export class TableComponent implements OnInit {
     this.selectedData = eachData;
   }
 
-  /*  <-- Métodos para la paginación más avanzada -->   
+  //<-- Métodos para la paginación más avanzada -->   
   next() {
     this.first = this.first + this.rows;
   }
@@ -102,8 +104,15 @@ export class TableComponent implements OnInit {
 
   reset() {
       this.first = 0;
+      this.page = 1;
   }
 
+  async loadData(){
+    this.page = this.page+1;
+    this.data = await this.VariantService.getApiData(this.page);
+    this.first=0;
+    this.adjustingData();
+  } 
 
   isLastPage(): boolean {
     return this.data ? this.first === (this.data.length - this.rows): true;
@@ -113,7 +122,6 @@ export class TableComponent implements OnInit {
       return this.data ? this.first === 0 : true;
   }
 
-  */
   /* -- https://www.primefaces.org/primeng/showcase/#/table/rowgroup --*/  
 
 }
