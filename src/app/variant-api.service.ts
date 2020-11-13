@@ -7,19 +7,23 @@ import axios from "axios";
 })
 export class VariantApiService {
   gmaf: any = {gmaf: 0};
+  showAltValue: any = {showAlt: false};
+  showRefValue: any = {showRef: false};
   modifiedResponse: any;
   constructor() { }
 
   getApiData(page) {
-    let url = 'https://193.145.155.148:8443/variants?';
-    url += 'page=' + page + '&pageSize=50';
+    let url = 'http://193.145.155.148:9090/variants?';
+    url += 'page=' + page + '&pageSize=60';
     //let url = 'http://localhost:3000/data';
     return axios.get(url)
       .then (response => {
         this.modifiedResponse = response.data.map(each => {
           return {
             ...each,
-            ...this.gmaf
+            ...this.gmaf,
+            ...this.showAltValue,
+            ...this.showRefValue
             }
         })
         return this.modifiedResponse;

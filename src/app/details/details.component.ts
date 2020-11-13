@@ -26,3 +26,5 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 }
+
+/* https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000139618  */ 

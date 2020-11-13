@@ -1,13 +1,20 @@
 <div class="table-content">
-  <div class="p-mb-3 pagination-buttons">
-      <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
-      <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-      <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
-      <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="loadData()"></p-button>
-  </div>
-<p-table [value]="data" selectionMode="single" [paginator]="true" [rows]="rows" [(first)]="first">
-        <ng-template pTemplate="header">
-            <tr class="table-header">
+<p-table #dt [value]="data" [columns]="cols" selectionMode="single" [paginator]="true" [rows]="rows" [(first)]="first">
+  <ng-template pTemplate="caption">
+    <div class="table-header">
+        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+        <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+        <p-button type="button" icon="pi pi-download" (click)="exportExcel()" styleClass="p-button-text" pTooltip="XLS" tooltipPosition="bottom"></p-button>
+    </div>
+</ng-template>      
+  <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+                {{col.header}}
+            </th>
+        </tr>
+            <!--<tr class="table-header">
               <th class="table-label">Identifier</th>
               <th class="table-label">Coordinate</th>
               <th class="table-label">Variant</th>
@@ -16,7 +23,7 @@
               <th class="table-label">Polyphen</th>
               <th class="table-label">Change</th>
               <th class="table-label">GMAF</th>
-            </tr>
+            </tr>-->
         </ng-template>
         <ng-template pTemplate="body" let-eachData>
           <tr (click)="selectData(eachData)" class="table-row" [ngClass]= "{ 'selected': selectedData == eachData }">
@@ -24,12 +31,37 @@
               <p>{{eachData.identifier}}</p>
             </td>
             <td class="table-property">
-              <p>{{eachData.chrom}}: {{eachData.pos}}</p>
+              <p>{{eachData.chrom}}:{{eachData.pos}}</p>
             </td>
             <td class="table-property variant-column">
               <p [hidden]="eachData.alt.length > 3 || eachData.ref.length > 3">{{eachData.alt}}/{{eachData.ref}}</p>
-              <div *ngIf="eachData.alt.length > 3 || eachData.ref.length > 3">
-                <p>{{eachData.alt}}</p><p>{{eachData.ref}}</p>
+              <div *ngIf="(eachData.alt.length > 3 && eachData.alt.length <= 6) || (eachData.ref.length > 3 && eachData.ref.length <= 6)">
+                <p class="variant-altValue">{{eachData.alt}}</p>
+                <p class="variant-refValue">{{eachData.ref}}</p>
+              </div>
+              <div *ngIf="eachData.alt.length > 6 && eachData.ref.length <= 6">
+                <p class="variant-altValue" >{{eachData.alt.substring(0,6)}}</p>
+                <p *ngIf="eachData.showAlt == false" (click)="showAlt(eachData)" class="alt variant-moreIcon">+{{eachData.alt.length-6}}</p>
+                <p [hidden]="eachData.showAlt == false" class="variant-moreDataAlt">{{eachData.alt.substring(6, eachData.alt.length)}}</p>
+                <p [hidden]="eachData.showAlt == false" (click)="hideAlt(eachData)" class="alt variant-lessIcon">-</p>
+                <p class="variant-refValue">{{eachData.ref}}</p>
+               </div>
+              <div *ngIf="eachData.alt.length <= 6 && eachData.ref.length > 6">
+                <p class="variant-altValue">{{eachData.alt}}</p>
+                <p class="variant-refValue" >{{eachData.ref.substring(0,6)}}</p>
+                <p *ngIf="eachData.showRef == false" (click)="showRef(eachData)" class="ref variant-moreIcon">+{{eachData.ref.length-6}}</p>
+                <p [hidden]="eachData.showRef == false" class="variant-moreDataRef">{{eachData.ref.substring(6, eachData.ref.length)}}</p>
+                <p [hidden]="eachData.showRef == false" (click)="hideRef(eachData)" class="ref variant-lessIcon">-</p>
+              </div>
+              <div *ngIf="eachData.alt.length > 6 && eachData.ref.length > 6">
+                <p class="variant-altValue" >{{eachData.alt.substring(0,6)}}</p>
+                <p *ngIf="eachData.showAlt == false" (click)="showAlt(eachData)" class="alt variant-moreIcon">+{{eachData.alt.length-6}}</p>
+                <p [hidden]="eachData.showAlt == false" class="variant-moreDataAlt">{{eachData.alt.substring(6, eachData.alt.length)}}</p>
+                <p [hidden]="eachData.showAlt == false" (click)="hideAlt(eachData)" class="alt variant-lessIcon">-</p>
+                <p class="variant-refValue" >{{eachData.ref.substring(0,6)}}</p>
+                <p *ngIf="eachData.showRef == false" (click)="showRef(eachData)" class="ref variant-moreIcon">+{{eachData.ref.length-6}}</p>
+                <p [hidden]="eachData.showRef == false" class="variant-moreDataRef">{{eachData.ref.substring(6, eachData.ref.length)}}</p>
+                <p [hidden]="eachData.showRef == false" (click)="hideRef(eachData)" class="ref variant-lessIcon">-</p>
               </div>
             </td>
             <td class="table-property">
@@ -43,7 +75,7 @@
             </td>
             <td class="table-property">
               <p [hidden]="eachData.polyphen == null || eachData.polyphen == 'unknown'" class="etiqueta text" 
-                [ngClass]= "{ 'red': eachData.polyphen == 'possibly damaging','orange': eachData.polyphen == 'probably damaging', 
+                [ngClass]= "{ 'red': eachData.polyphen == 'probably damaging','orange': eachData.polyphen == 'possibly damaging', 
                 'green': eachData.polyphen == 'benign' }">{{eachData.polyphen}}</p>
               <p *ngIf="eachData.polyphen == null || eachData.polyphen == 'unknown'">-</p>
             </td>
@@ -52,10 +84,11 @@
               <p *ngIf="eachData.amino == null">-</p>
             </td>
             <td class="table-property">
-              <p class="etiqueta" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
-              'orange': eachData.gmaf > 0.01 && eachData.gmaf <= 0.1, 'green': eachData.gmaf > 0.1 }">
-              {{eachData.gmaf}}
-            </p>
+              <p class="etiqueta" [hidden]="eachData.gmaf == '-Infinity'" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
+                'orange': eachData.gmaf > 0.01 && eachData.gmaf <= 0.1, 'green': eachData.gmaf > 0.1 }">
+                {{eachData.gmaf}}
+              </p>
+              <p *ngIf="eachData.gmaf == '-Infinity'">-</p>
             </td>
           </tr>
           

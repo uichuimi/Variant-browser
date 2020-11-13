@@ -59,11 +59,54 @@
     padding: 0 10px !important;
 }
 
-.pagination-buttons{
+.table-header{
     display: flex;
     justify-content: flex-end;
     margin: 5px 0;
 }
 
+.variant-refValue{
+    margin-top: 5px;
+}
 
+.variant-altValue{
+    margin-bottom: 5px;
+}
+
+.variant-moreDataRef{
+    margin-top: -16px;
+    margin-bottom: 0;
+}
+
+.variant-moreDataAlt{
+    margin-top: -5px;
+    margin-bottom: 0;
+}
+
+.variant-moreIcon, .variant-lessIcon{
+    color: #88B8E8;
+    font-weight: 700;
+}
+
+.ref.variant-moreIcon{
+    margin-top: -15px;
+}
+
+.alt.variant-moreIcon{
+    margin-top: -4px;
+    margin-bottom: 5px;
+}
+
+.alt.variant-lessIcon{
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.ref.variant-lessIcon{
+    margin-top: 0;
+}
+
+.variant-moreIcon:hover, .variant-lessIcon:hover{
+   text-decoration: underline;
+}
 
