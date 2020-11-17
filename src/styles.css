@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Paleta */
+/* General */
 
 :root {
     --primary-color: #B9D1E9;
@@ -25,7 +25,7 @@
     color: green;
 }
 
-/* Tabla */
+/* Table */
 
 .table-content .p-button.p-button-text{
     color: #88B8E8 !important;
@@ -55,11 +55,16 @@
     box-shadow: 0 0 0 0.1rem #B9D1E9;
 }
 
-.p-datatable-header.ng-star-inserted{
+.p-datatable .p-datatable-header {
     background-color: white;
+    padding: 0.2rem 0rem;
 }
 
-/* Detalles */
+.p-link:focus {
+    box-shadow: 0 0 0 0.2rem transparent;
+}
+
+/* Details */
 .p-card{
     box-shadow: 0 3px 1px -1px rgb(185, 209, 233), 0 3px 1px 0 rgb(185, 209, 233), 0 1px 3px 0 rgb(185, 209, 233);
     border-radius: 10px;

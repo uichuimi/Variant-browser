@@ -1,4 +1,4 @@
-<div class="table-content">
+<div class="table-content" [ngClass]="{ 'selection': selectedData == null}">
 <p-table #dt [value]="data" [columns]="cols" selectionMode="single" [paginator]="true" [rows]="rows" [(first)]="first">
   <ng-template pTemplate="caption">
     <div class="table-header">
@@ -69,12 +69,12 @@
               <p *ngIf="eachData.gene == null">-</p>
             </td>
             <td class="table-property">
-              <p [hidden]="eachData.sift == null" class="etiqueta text" [ngClass]= "{ 'red': eachData.sift == 'deleterious', 
+              <p [hidden]="eachData.sift == null" class="label text" [ngClass]= "{ 'red': eachData.sift == 'deleterious', 
                 'green': eachData.sift == 'tolerated'}">{{eachData.sift}}</p>
               <p *ngIf="eachData.sift == null">-</p>
             </td>
             <td class="table-property">
-              <p [hidden]="eachData.polyphen == null || eachData.polyphen == 'unknown'" class="etiqueta text" 
+              <p [hidden]="eachData.polyphen == null || eachData.polyphen == 'unknown'" class="label text" 
                 [ngClass]= "{ 'red': eachData.polyphen == 'probably damaging','orange': eachData.polyphen == 'possibly damaging', 
                 'green': eachData.polyphen == 'benign' }">{{eachData.polyphen}}</p>
               <p *ngIf="eachData.polyphen == null || eachData.polyphen == 'unknown'">-</p>
@@ -84,7 +84,7 @@
               <p *ngIf="eachData.amino == null">-</p>
             </td>
             <td class="table-property">
-              <p class="etiqueta" [hidden]="eachData.gmaf == '-Infinity'" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
+              <p class="label" [hidden]="eachData.gmaf == '-Infinity'" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
                 'orange': eachData.gmaf > 0.01 && eachData.gmaf <= 0.1, 'green': eachData.gmaf > 0.1 }">
                 {{eachData.gmaf}}
               </p>

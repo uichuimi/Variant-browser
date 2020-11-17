@@ -1,6 +1,6 @@
 .details-content{
     height: 100%;
-    width: 27%;
+    width: 30%;
     float: left;
     margin-left: 3%;
 }
@@ -25,6 +25,14 @@
 .gene-space{
     margin-top: 0px;
     text-align: center;
+}
+
+.noGmaf-cell{
+    margin: 0 auto;
+    font-size: 12px;
+    text-align: center;
+    padding: 0.3rem;
+    font-style: italic;
 }
 
 .population-source{
@@ -82,6 +90,10 @@
     padding: 14px;
 }
 
+.details-table.first-choice .label{
+    width: 40%;
+}
+
 .label{
     border-radius: 2px;
     padding: .25em .5rem;
@@ -90,10 +102,31 @@
     font-size: 12px;
     letter-spacing: .3px;
     margin: 0 auto;
-    width: 40%;
+    width: 100%;
 }
 
 .gene-link{
     color: #88B8E8;
     font-weight: 500;
+}
+
+.none{
+    display: none !important;
+}
+
+.table-property.population{
+    padding: 7px 5px !important;
+}
+
+.table-label.population{
+    width: 100px;
+}
+/*
+.default-element{
+    z-index: -1;
+}*/
+
+.hide-elements{
+    display: flex;
+    align-items: center;
 }

@@ -15,11 +15,9 @@ export class TableComponent implements OnInit {
   first: number = 0;
   rows: number = 20;
   cols: any[];
-  exportColumns: any[];
 
   constructor ( private VariantService: VariantApiService){
     this.getData();
-    
   }
 
   ngOnInit(): void {
@@ -33,9 +31,6 @@ export class TableComponent implements OnInit {
       { field: 'change', header: 'Change' },
       { field: 'gmaf', header: 'GMAF' }
   ];
-
-  this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
-
   }
 
   async getData (){

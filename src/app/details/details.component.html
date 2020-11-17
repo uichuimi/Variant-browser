@@ -10,6 +10,71 @@
         <p-table [value]="populations" class="details-table">
           <ng-template pTemplate="header">
           <tr>
+            <th class="table-label population">Population</th>
+            <th class="table-label">GG</th>
+            <th class="table-label">GE</th>
+            <th class="table-label">EX</th>
+            <th class="table-label">1KG</th>
+          </tr>
+      </ng-template>
+        <ng-template pTemplate="body" let-population>
+          
+          <tr>
+            <td class="table-property population" >{{population.name}}</td>
+            <td class="table-property">
+              <div *ngIf="selected.gmaf == '-Infinity'">
+                <p class="noGmaf-cell">-</p>
+              </div>
+                <div *ngFor="let eachSelectionGG of selected.frequencies">
+                <div *ngIf="eachSelectionGG.population == population.code && eachSelectionGG.source == 'GG'">
+                  <p class="label" [ngClass]= "{ 'red': eachSelectionGG.value <= 0.01, 'orange': eachSelectionGG.value > 0.01 && eachSelectionGG.value <= 0.1, 
+                    'green': eachSelectionGG.value > 0.1 }">{{eachSelectionGG.value}}</p>
+                </div>
+              </div>
+            </td>
+            <td class="table-property">
+              <div *ngIf="selected.gmaf == '-Infinity'">
+                <p class="noGmaf-cell">-</p>
+              </div>
+              <div *ngFor="let eachSelectionGE of selected.frequencies">
+                <div *ngIf="eachSelectionGE.population == population.code && eachSelectionGE.source == 'GE'">
+                  <p class="label" [ngClass]= "{ 'red': eachSelectionGE.value <= 0.01, 'orange': eachSelectionGE.value > 0.01 && eachSelectionGE.value <= 0.1, 
+                    'green': eachSelectionGE.value > 0.1 }">{{eachSelectionGE.value}}</p>
+                </div>
+                </div>
+            </td>
+            <td class="table-property">
+              <div *ngIf="selected.gmaf == '-Infinity'">
+                <p class="noGmaf-cell">-</p>
+              </div>
+              <div *ngFor="let eachSelectionEX of selected.frequencies">
+                <div *ngIf="eachSelectionEX.population == population.code && eachSelectionEX.source == 'EX'">
+                  <p class="label" [ngClass]= "{ 'red': eachSelectionEX.value <= 0.01, 'orange': eachSelectionEX.value > 0.01 && eachSelectionEX.value <= 0.1, 
+                    'green': eachSelectionEX.value > 0.1 }">{{eachSelectionEX.value}}
+                  </p>
+                </div>
+                </div>
+            </td>
+            <td class="table-property">
+              <div *ngIf="selected.gmaf == '-Infinity'">
+                <p class="noGmaf-cell">-</p>
+              </div>
+              <div *ngFor="let eachSelection1KG of selected.frequencies">
+                <div *ngIf="eachSelection1KG.population == population.code && eachSelection1KG.source == '1KG'">
+                  <p class="label" [ngClass]= "{ 'red': eachSelection1KG.value <= 0.01, 'orange': eachSelection1KG.value > 0.01 && eachSelection1KG.value <= 0.1, 
+                    'green': eachSelection1KG.value > 0.1 }">{{eachSelection1KG.value}}
+                  </p>
+                </div>
+                </div>
+            </td>
+          </tr>        
+        </ng-template>
+      </p-table>
+    </p-card>
+    <p-card class="details-card">
+      <p-table [value]="populations" class="details-table first-choice">
+          <ng-template pTemplate="header">
+          <tr>
             <th class="table-label">Population</th>
             <th class="table-label">Allele frequency</th>
           </tr>
@@ -18,6 +83,9 @@
           <tr>
             <td class="table-property">{{population.name}}</td>
             <td colspan="2" class="table-property">
+              <div *ngIf="selected.gmaf == '-Infinity'">
+                <p class="noGmaf-cell">-</p>
+              </div>
               <div *ngFor = "let eachSelection of selected.frequencies">
                 <div [hidden]="population.code != eachSelection.population" class="allele-info">
                   <p class="population-source">{{eachSelection.source}}</p>
@@ -30,6 +98,6 @@
             </td>
           </tr> 
         </ng-template>
-      </p-table>
+      </p-table> 
     </p-card>
 </div>
