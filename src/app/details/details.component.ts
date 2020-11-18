@@ -9,7 +9,12 @@ import { Component, OnInit, Input } from '@angular/core';
 export class DetailsComponent implements OnInit {
   @Input() selected: any;
   populations: any[] = []; 
-  
+  /*valuesGG: any[] = [];
+  valuesGE: any[] = [];
+  valuesEX: any[] = [];
+  values1KG: any[] = [];
+  counter: number = -1;*/
+
   constructor() { 
     this.populations = [
       {name: 'African', code: 'AFR'},
@@ -25,11 +30,6 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-
-  showAlgo(algo: any){
-    console.log({algo});
   }
 
 }

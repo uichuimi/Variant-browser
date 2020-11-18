@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import { Options } from 'ng5-slider';
+import { VariantApiService } from '../variant-api.service';
 
 @Component({
   selector: 'app-filters',
@@ -8,11 +9,12 @@ import { Options } from 'ng5-slider';
   styleUrls: ['./filters.component.css']
 })
 export class FiltersComponent implements OnInit {
+  @Output() notifyMyFather = new EventEmitter;
   chromosomes: SelectItem[];
   siftOptions: SelectItem[];
   polyphenOptions: SelectItem[];
   biotypes: SelectItem[];
-  effects: SelectItem[];
+  effects: SelectItem[] =[];
   search: any = "";
   selectedSift: any;
   selectedEffect: any;
@@ -23,8 +25,9 @@ export class FiltersComponent implements OnInit {
   posMin: any="0";
   posMax: any= "250000000";
   options: Options; 
-
-  constructor() {
+  pruebas: any;
+  constructor( private VariantService: VariantApiService ) {
+    this.getData();
 
     this.options = {
       floor: 0, 
@@ -121,7 +124,7 @@ export class FiltersComponent implements OnInit {
       {label: 'vaultRNA', value: '47'},
     ];
 
-    this.effects= [
+    /*this.effects= [
       {label: 'Intron variant', value: '1'},
       {label: 'Intergenic variant', value: '2'},
       {label: 'Upstream gene variant', value: '3'},
@@ -152,7 +155,7 @@ export class FiltersComponent implements OnInit {
       {label: 'Mature miRNA variant', value: '28'},
       {label: 'Transcript ablation', value: '29'},
       {label: 'Protein altering variant', value: '30'}
-    ];
+    ];*/
   }
 
   ngOnInit(): void {
@@ -172,4 +175,18 @@ export class FiltersComponent implements OnInit {
     console.log(this.posMax);
   }
 
+  effectsMethod(){
+    console.log("Entro");
+    console.log(this.selectedEffect);
+    this.notifyMyFather.emit(this.selectedEffect);
+  }
+
+  async getData(){
+      this.pruebas = await this.VariantService.getTermsData();
+      this.pruebas.forEach(element => {
+        this.effects.push({label: element, value: element})
+      })
+    }
 }
+
+

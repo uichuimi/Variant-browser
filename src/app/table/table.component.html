@@ -4,7 +4,7 @@
     <div class="table-header">
         <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
         <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"></p-button>
         <p-button type="button" icon="pi pi-download" (click)="exportExcel()" styleClass="p-button-text" pTooltip="XLS" tooltipPosition="bottom"></p-button>
     </div>
 </ng-template>      
@@ -91,13 +91,12 @@
               <p *ngIf="eachData.gmaf == '-Infinity'">-</p>
             </td>
           </tr>
-          
         </ng-template>
         <ng-template pTemplate="paginatorright">
           <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="loadData()"></p-button>
         </ng-template>
       </p-table>
 </div>
-<app-details [selected]="selectedData"></app-details>
+<app-details *ngIf = "selectedData != null" [selected]="selectedData"></app-details>
 
 

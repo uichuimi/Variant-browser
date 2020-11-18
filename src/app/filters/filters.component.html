@@ -47,7 +47,7 @@
         </div>
         <div class="effects-dropdown">
             <span class="p-float-label"> 
-                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="selectedEffect"></p-multiSelect>
+                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="selectedEffect" (click)="effectsMethod()"></p-multiSelect>
                 <label for="float-input">Effects</label>
             </span>
         </div>

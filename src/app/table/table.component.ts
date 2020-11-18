@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { log } from 'console';
 import { VariantApiService } from '../variant-api.service';
 
 
@@ -98,12 +97,13 @@ export class TableComponent implements OnInit {
         }
         
       });     
+      console.log(this.data);
   }
 
   selectData (eachData: any){
     this.selectedData = eachData;
-    console.log({eachData});
   }
+
 
   showAlt(eachData: any){
     this.data.forEach(element => {
@@ -160,11 +160,12 @@ export class TableComponent implements OnInit {
 
   //<-- Métodos para la paginación -->   
   next() {
+    /*if (this.isLastPage() == true){
+      console.log("Lo pillo");
+      this.first = this.first + this.rows;
+      this.loadData();
+    }*/
     this.first = this.first + this.rows;
-    console.log(this.first);
-    console.log(this.rows);
-    console.log(this.page);
-    console.log(this.data);
   }
 
   prev() {
@@ -183,7 +184,7 @@ export class TableComponent implements OnInit {
   async loadData(){
     console.log("Etro");
     this.page = this.page+1;
-    this.data = await this.VariantService.getApiData(this.page);
+    this.data.push( await this.VariantService.getApiData(this.page));
     this.adjustingData();
   } 
 
