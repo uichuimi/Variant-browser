@@ -1,8 +1,8 @@
 
 <div class="main-container">
-  <app-filters class="filters-space"></app-filters>
+  <app-filters (notifyMyFather)="whatMyChildSay($event)" class="filters-space"></app-filters>
   <div class="results-container">
-    <app-table class="table-space"></app-table> 
+    <app-table [data]="apiData" class="table-space"></app-table> 
    <!---- <app-details class="details-space"></app-details>-->
   </div>
 </div>

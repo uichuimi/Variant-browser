@@ -1,7 +1,7 @@
 <div class="details-content">
     <p-card class="details-card">
         <p class="gene-space" *ngIf="selected.gene != null">
-          <strong>{{selected.gene.name}}</strong> : <a  class="gene-link" href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selected.gene.identifier}}">{{selected.gene.identifier}}</a>, 
+          <strong>{{selected.gene.name}}</strong> : <a target="_blank" class="gene-link" href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selected.gene.identifier}}">{{selected.gene.identifier}}</a>, 
           {{selected.gene.description.substring(0,selected.gene.description.indexOf("[")-1)}}, {{selected.gene.biotype}}.
         </p>
         <div id="effect-space"><strong class="effect-name">{{selected.effect.term}}</strong><p class="effect-description">{{selected.effect.description}}</p>

@@ -176,7 +176,6 @@ export class FiltersComponent implements OnInit {
   }
 
   effectsMethod(){
-    console.log("Entro");
     console.log(this.selectedEffect);
     this.notifyMyFather.emit(this.selectedEffect);
   }
@@ -184,7 +183,7 @@ export class FiltersComponent implements OnInit {
   async getData(){
       this.pruebas = await this.VariantService.getTermsData();
       this.pruebas.forEach(element => {
-        this.effects.push({label: element, value: element})
+        this.effects.push({label: element.displayName, value: element.term})
       })
     }
 }

@@ -13,9 +13,31 @@ export class VariantApiService {
   constructor() { }
 
   getApiData(page) {
-    let url = 'http://193.145.155.148:9090/variants?genes=APOB&';
+    let url = 'http://193.145.155.148:9090/variants?';
     url += 'page=' + page + '&pageSize=60';
     //let url = 'http://localhost:3000/data';
+    return axios.get(url)
+      .then (response => {
+        this.modifiedResponse = response.data.map(each => {
+          return {
+            ...each,
+            ...this.gmaf,
+            ...this.showAltValue,
+            ...this.showRefValue
+            }
+        })
+        return this.modifiedResponse;
+      })
+      .catch (error => {
+        console.log("Se ha producido el error" ,error);
+      })
+  }
+
+  getApiFilteredData(effect){
+    let url = 'http://193.145.155.148:9090/variants?';
+    if (effect != undefined){
+      url += 'terms=' + effect;
+    }
     return axios.get(url)
       .then (response => {
         this.modifiedResponse = response.data.map(each => {
