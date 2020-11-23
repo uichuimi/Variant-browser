@@ -9,7 +9,8 @@ import { VariantApiService } from '../variant-api.service';
   styleUrls: ['./filters.component.css']
 })
 export class FiltersComponent implements OnInit {
-  @Output() notifyMyFather = new EventEmitter;
+  @Output() notifyEffect = new EventEmitter;
+  @Output() notifySearch = new EventEmitter;
   chromosomes: SelectItem[];
   siftOptions: SelectItem[];
   polyphenOptions: SelectItem[];
@@ -25,7 +26,11 @@ export class FiltersComponent implements OnInit {
   posMin: any="0";
   posMax: any= "250000000";
   options: Options; 
-  pruebas: any;
+  terms: any;
+  showSearching: boolean = false;
+  searchResults: any;
+  gene: any;
+
   constructor( private VariantService: VariantApiService ) {
     this.getData();
 
@@ -123,39 +128,6 @@ export class FiltersComponent implements OnInit {
       {label: 'scRNA', value: '46'},
       {label: 'vaultRNA', value: '47'},
     ];
-
-    /*this.effects= [
-      {label: 'Intron variant', value: '1'},
-      {label: 'Intergenic variant', value: '2'},
-      {label: 'Upstream gene variant', value: '3'},
-      {label: 'Downstream gene variant', value: '4'},
-      {label: '3 prime UTR variant', value: '5'},
-      {label: 'Non coding transcript exon variant', value: '6'},
-      {label: 'Missense variant', value: '7'},
-      {label: 'Synonymous variant', value: '8'},
-      {label: '5 prime UTR variant', value: '9'},
-      {label: 'Splice region variant', value: '10'},
-      {label: 'Frameshift variant', value: '11'},
-      {label: '5 prime UTR premature start codon gain variant', value: '12'},
-      {label: 'Stop gained', value: '13'},
-      {label: 'Disruptive inframe deletion', value: '14'},
-      {label: 'Splice donor variant', value: '15'},
-      {label: 'Splice acceptor variant', value: '16'},
-      {label: 'Disruptive inframe insertion', value: '17'},
-      {label: 'Conservative inframe insertion', value: '18'},
-      {label: 'Conservative inframe deletion', value: '19'},
-      {label: 'Start lost', value: '20'},
-      {label: 'Stop lost', value: '21'},
-      {label: 'Stop retained variant', value: '22'},
-      {label: 'Inframe deletion', value: '23'},
-      {label: 'Intragenic variant', value: '24'},
-      {label: 'Bidirectional gene fusion', value: '25'},
-      {label: 'Inframe insertion', value: '26'},
-      {label: 'Gene fusion', value: '27'},
-      {label: 'Mature miRNA variant', value: '28'},
-      {label: 'Transcript ablation', value: '29'},
-      {label: 'Protein altering variant', value: '30'}
-    ];*/
   }
 
   ngOnInit(): void {
@@ -176,16 +148,39 @@ export class FiltersComponent implements OnInit {
   }
 
   effectsMethod(){
-    console.log(this.selectedEffect);
-    this.notifyMyFather.emit(this.selectedEffect);
+    if (this.selectedEffect != undefined){
+      this.notifications();
+    }
+  }
+
+  searchMethod(){
+    if (this.gene != undefined){
+      this.notifications();
+      console.log("Imprime");
+      console.log(this.gene);
+    }
+  }  
+
+  async getSearch(){
+    if (this.search.length >= 3){
+      this.showSearching = true;
+      this.searchResults = await this.VariantService.getSearchData(this.search);
+      //this.notifications();
+    }
   }
 
   async getData(){
-      this.pruebas = await this.VariantService.getTermsData();
-      this.pruebas.forEach(element => {
+      this.terms = await this.VariantService.getTermsData();
+      this.terms.forEach(element => {
         this.effects.push({label: element.displayName, value: element.term})
       })
     }
+
+    notifications(){
+      this.notifyEffect.emit(this.selectedEffect);
+      this.notifySearch.emit(this.gene.name)
+    }
+  
 }
 
 

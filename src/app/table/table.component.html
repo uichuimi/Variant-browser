@@ -92,9 +92,6 @@
             </td>
           </tr>
         </ng-template>
-        <ng-template pTemplate="paginatorright">
-          <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="loadData()"></p-button>
-        </ng-template>
       </p-table>
 </div>
 <app-details *ngIf = "selectedData != null" [selected]="selectedData"></app-details>

@@ -20,9 +20,15 @@
         <div class="search-gene">
             <span class="p-input-icon-right p-float-label">
                 <i class="pi pi-search"></i>
-                <input id="float-input search" type="text" pInputText [(ngModel)]="search">  
+                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getSearch()">  
                 <label for="float-input">Search by Gene</label>       
             </span>
+            <div class="search-options" *ngIf="showSearching==true">
+                <p-listbox class="search-list" [options]="searchResults"  [multiple]="true"  [(ngModel)]="gene" optionLabel="name" optionValue="name" (click)="searchMethod()"></p-listbox>
+            </div> 
+            <!--<ul class="search-options" *ngIf="showSearching==true">
+                <li *ngFor="let option of searchResults" class="search-list">{{option.name}}</li>
+            </ul>  -->
         </div>
         <div class="sift-dropdown">
             <span class="p-float-label"> 

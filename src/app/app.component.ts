@@ -9,25 +9,31 @@ import { VariantApiService } from './variant-api.service';
 export class AppComponent {
   apiData: any = [];
   page: number = 1;
-  whatMyChildSay(event: any){
-    this.getFilteredData(event);
+  effect: any;
+  search: any;
+  
+  receivingEffect (event: any){
+    this.effect = event;
+    this.getData();
   };
+
+  receivingSearch (event: any){
+    this.search = event;
+    this.getData();
+  }
 
   constructor ( private VariantService: VariantApiService){
     this.getData();
   }
 
   async getData (){
-    this.apiData = await this.VariantService.getApiData(this.page);
+    this.apiData = await this.VariantService.getApiData(this.page, this.effect, this.search);
     this.adjustingData();
-  }
-
-  async getFilteredData(selectedEffect){
-    this.apiData = await this.VariantService.getApiFilteredData(selectedEffect);
-    this.adjustingData();
+    this.reset();
   }
   
   adjustingData(){
+    if (this.apiData != undefined){
     this.apiData.forEach(each => {
         each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
         each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
@@ -56,8 +62,12 @@ export class AppComponent {
           break;
         }
         
-      });     
-      console.log(this.apiData);
+      });   
+    }
   }
 
+  reset(){
+    this.search = undefined;
+    this.effect = undefined;
+  }
 }

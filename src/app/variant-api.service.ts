@@ -12,10 +12,18 @@ export class VariantApiService {
   modifiedResponse: any;
   constructor() { }
 
-  getApiData(page) {
+  getApiData(page, effect?, search?) {
     let url = 'http://193.145.155.148:9090/variants?';
     url += 'page=' + page + '&pageSize=60';
-    //let url = 'http://localhost:3000/data';
+    if (effect != undefined){
+      url += 'terms=' + effect;
+      console.log("No se porque entro");
+    }
+    if (search != undefined){
+      url += 'genes=' + search;
+      console.log("Que mal todo");
+    }
+    console.log(url);
     return axios.get(url)
       .then (response => {
         this.modifiedResponse = response.data.map(each => {
@@ -33,7 +41,7 @@ export class VariantApiService {
       })
   }
 
-  getApiFilteredData(effect){
+ /* getApiFilteredData(effect){
     let url = 'http://193.145.155.148:9090/variants?';
     if (effect != undefined){
       url += 'terms=' + effect;
@@ -50,6 +58,18 @@ export class VariantApiService {
         })
         return this.modifiedResponse;
       })
+      .catch (error => {
+        console.log("Se ha producido el error" ,error);
+      })
+  }*/
+
+  getSearchData(search){
+    let url= 'http://193.145.155.148:9090/genes?search=' + search;
+    return axios.get(url)
+      .then (response => {
+          return response.data;
+        })
+
       .catch (error => {
         console.log("Se ha producido el error" ,error);
       })
