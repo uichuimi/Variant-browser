@@ -1,5 +1,5 @@
 <div class="table-content" [ngClass]="{ 'selection': selectedData == null}">
-<p-table #dt [value]="data" [columns]="cols" selectionMode="single" [paginator]="true" [rows]="rows" [(first)]="first">
+<p-table #dt [value]="data" [columns]="cols" selectionMode="single" [rows]="rows" [(first)]="first">
   <ng-template pTemplate="caption">
     <div class="table-header">
         <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
@@ -92,6 +92,13 @@
             </td>
           </tr>
         </ng-template>
+        <ng-template pTemplate="caption">
+          <div class="table-footer">
+              <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+              <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+              <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"></p-button>
+          </div>
+      </ng-template>   
       </p-table>
 </div>
 <app-details *ngIf = "selectedData != null" [selected]="selectedData"></app-details>

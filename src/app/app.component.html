@@ -1,10 +1,9 @@
-
 <div class="main-container">
   <app-filters (notifyEffect)="receivingEffect($event)" (notifySearch)="receivingSearch($event)" class="filters-space"></app-filters>
   <div class="results-container">
     <app-table [data]="apiData" class="table-space"></app-table> 
-   <!---- <app-details class="details-space"></app-details>-->
-  </div>
+    <!--<app-table [data]="apiData" (notifyNext)="receivingNext($event)" (notifyPrev)="receivingPrev($event)" class="table-space"></app-table>-->
+   </div>
 </div>
 
-
+ 

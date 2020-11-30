@@ -64,7 +64,7 @@
     padding: 0 10px !important;
 }
 
-.table-header{
+.table-header, .table-footer{
     display: flex;
     justify-content: flex-end;
 }

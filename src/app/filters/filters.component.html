@@ -24,7 +24,7 @@
                 <label for="float-input">Search by Gene</label>       
             </span>
             <div class="search-options" *ngIf="showSearching==true">
-                <p-listbox class="search-list" [options]="searchResults"  [multiple]="true"  [(ngModel)]="gene" optionLabel="name" optionValue="name" (click)="searchMethod()"></p-listbox>
+                <p-listbox class="search-list" [options]="searchResults"  [multiple]="true"  [(ngModel)]="geneSelection" optionLabel="name" optionValue="id" (click)="searchMethod()"></p-listbox>
             </div> 
             <!--<ul class="search-options" *ngIf="showSearching==true">
                 <li *ngFor="let option of searchResults" class="search-list">{{option.name}}</li>
@@ -53,7 +53,7 @@
         </div>
         <div class="effects-dropdown">
             <span class="p-float-label"> 
-                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="selectedEffect" (click)="effectsMethod()"></p-multiSelect>
+                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="effectSelection" (click)="effectsMethod()"></p-multiSelect>
                 <label for="float-input">Effects</label>
             </span>
         </div>

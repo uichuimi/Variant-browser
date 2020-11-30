@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -8,11 +8,15 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class TableComponent implements OnInit {
   @Input() data: any;
+  @Output() notifyNext = new EventEmitter;
+  @Output() notifyPrev = new EventEmitter;
   selectedData: any;
   page: number = 1;
   first: number = 0;
   rows: number = 20;
   cols: any[];
+  nextPage: boolean = false;
+  prevPage: boolean = false;
 
   constructor ( ){
    
@@ -91,33 +95,25 @@ export class TableComponent implements OnInit {
 
   //<-- Métodos para la paginación -->   
   next() {
-    /*if (this.isLastPage() == true){
-      console.log("Lo pillo");
-      this.first = this.first + this.rows;
-      this.loadData();
-    }*/
-    this.first = this.first + this.rows;
+    this.nextPage = true;
+    this.notifyNext.emit(this.nextPage);
+    this.nextPage = false;
+    //this.first = this.first + this.rows;
+    
   }
 
   prev() {
-    this.first = this.first - this.rows;
-    console.log(this.first);
-    console.log(this.rows);
-    console.log(this.page);
-    console.log(this.data);
+    this.prevPage = true;
+    this.notifyPrev.emit(this.prevPage);
+    this.nextPage = false;
+    //this.first = this.first - this.rows;
+   
   }
 
   reset() {
       this.first = 0;
       this.page = 1;
   }
-
-  /*async loadData(){
-    console.log("Entro");
-    this.page = this.page+1;
-    this.data.push( await this.VariantService.getApiData(this.page));
-    this.adjustingData();
-  } */
 
   isLastPage(): boolean {
     return this.data ? this.first === (this.data.length - this.rows): true;

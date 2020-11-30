@@ -13,15 +13,17 @@ export class VariantApiService {
   constructor() { }
 
   getApiData(page, effect?, search?) {
-    let url = 'http://193.145.155.148:9090/variants?';
-    url += 'page=' + page + '&pageSize=60';
+    let url = 'http://193.145.155.148:9090/variants';
+    
     if (effect != undefined){
-      url += 'terms=' + effect;
-      console.log("No se porque entro");
+      url += '?terms=' + effect;
+      console.log("Entro en los efectos");
     }
     if (search != undefined){
-      url += 'genes=' + search;
-      console.log("Que mal todo");
+      url += '?genes=' + search;
+      console.log("Etro en los genes");
+    } else {
+      url += '?page=' + page + '&pageSize=20';
     }
     console.log(url);
     return axios.get(url)

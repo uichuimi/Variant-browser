@@ -15,10 +15,7 @@ export class FiltersComponent implements OnInit {
   siftOptions: SelectItem[];
   polyphenOptions: SelectItem[];
   biotypes: SelectItem[];
-  effects: SelectItem[] =[];
-  search: any = "";
   selectedSift: any;
-  selectedEffect: any;
   selectedBiotype: any;
   selectedPolyphen: any;
   selectedChromosome: any;
@@ -26,10 +23,18 @@ export class FiltersComponent implements OnInit {
   posMin: any="0";
   posMax: any= "250000000";
   options: Options; 
+  
+  
   terms: any;
+  selectedEffects: any;
+  effects: any =[];
+  effectSelection: any;
+
   showSearching: boolean = false;
+  search: any = "";
   searchResults: any;
-  gene: any;
+  geneSelection: any;
+  selectedGenes: any = "";
 
   constructor( private VariantService: VariantApiService ) {
     this.getData();
@@ -148,16 +153,32 @@ export class FiltersComponent implements OnInit {
   }
 
   effectsMethod(){
-    if (this.selectedEffect != undefined){
-      this.notifications();
+    this.selectedEffects = "";
+    if (this.effectSelection!= undefined){
+      this.effectSelection.forEach(element => {
+        this.selectedEffects += element.name + ","; 
+      });
+      this.selectedEffects = this.selectedEffects.substring(0,this.selectedEffects.length-1);
+      this.notifyEffect.emit(this.selectedEffects);
+      console.log("Imprime");
+      console.log(this.selectedEffects);
+      console.log("el gen");
+      console.log(this.effectSelection);
     }
   }
 
   searchMethod(){
-    if (this.gene != undefined){
-      this.notifications();
+    this.selectedGenes= "";
+    if (this.geneSelection != undefined){
+      this.geneSelection.forEach(element => {
+        this.selectedGenes += element.name + ","; 
+      });
+      this.selectedGenes = this.selectedGenes.substring(0,this.selectedGenes.length-1);
+      this.notifySearch.emit(this.selectedGenes);
       console.log("Imprime");
-      console.log(this.gene);
+      console.log(this.selectedGenes);
+      console.log("el gen");
+      console.log(this.geneSelection);
     }
   }  
 
@@ -173,14 +194,10 @@ export class FiltersComponent implements OnInit {
       this.terms = await this.VariantService.getTermsData();
       this.terms.forEach(element => {
         this.effects.push({label: element.displayName, value: element.term})
-      })
+      });
+      
     }
 
-    notifications(){
-      this.notifyEffect.emit(this.selectedEffect);
-      this.notifySearch.emit(this.gene.name)
-    }
-  
 }
 
 
