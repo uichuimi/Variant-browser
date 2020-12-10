@@ -1,5 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
+/*
+
+.color-primary-0 { color: #B9D1E9 }	
+.color-primary-1 { color: #FFFFFF }
+.color-primary-2 { color: #E2EEF9 }
+.color-primary-3 { color: #8BAED0 }
+.color-primary-4 { color: #5D85AC }
+
+.rgba-primary-0 { color: rgba(185,209,233,1) }
+.rgba-primary-1 { color: rgba(255,255,255,1) }
+.rgba-primary-2 { color: rgba(226,238,249,1) }
+.rgba-primary-3 { color: rgba(139,174,208,1) }
+.rgba-primary-4 { color: rgba( 93,133,172,1) }
+
+
+*/
+
+
 /* General */
 
 :root {
@@ -28,7 +46,7 @@
 /* Table */
 
 .table-content .p-button.p-button-text{
-    color: #88B8E8 !important;
+    color: #8BAED0 !important;
 }
 
 .table-content .p-button.p-button-text:hover{
@@ -39,7 +57,6 @@
 .table-content .p-button.p-button-text:focus{
     box-shadow: 0 0 0 0.2rem transparent;
 }
-
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
     background-color: #B9D1E9;
@@ -62,6 +79,14 @@
 
 .p-link:focus {
     box-shadow: 0 0 0 0.2rem transparent;
+}
+
+.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
+    background: #E2EEF9;
+}
+
+.p-datatable .p-datatable-thead > tr > th{
+    background: #E2EEF9;
 }
 
 /* Details */
@@ -142,8 +167,12 @@
     text-transform: capitalize;
 }*/
 
+.ng5-slider .ng5-slider-bar{
+    background-color:  #8BAED0 !important;
+}
+
 .ng5-slider .ng5-slider-pointer {
-    background-color:  #B9D1E9 !important;
+    background-color:  #8BAED0 !important;
     
 }
 

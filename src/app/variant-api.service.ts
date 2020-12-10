@@ -6,7 +6,6 @@ import axios from "axios";
   providedIn: 'root'
 })
 export class VariantApiService {
-  gmaf: any = {gmaf: 0};
   showAltValue: any = {showAlt: false};
   showRefValue: any = {showRef: false};
   modifiedResponse: any;
@@ -15,23 +14,22 @@ export class VariantApiService {
   getApiData(page, effect?, search?) {
     let url = 'http://193.145.155.148:9090/variants';
     
-    if (effect != undefined){
+    /*if (effect != undefined){
       url += '?terms=' + effect;
       console.log("Entro en los efectos");
     }
     if (search != undefined){
       url += '?genes=' + search;
       console.log("Etro en los genes");
-    } else {
-      url += '?page=' + page + '&pageSize=20';
-    }
+    } */
+    
+    url += '?pageNumber=' + page;
     console.log(url);
     return axios.get(url)
       .then (response => {
         this.modifiedResponse = response.data.map(each => {
           return {
             ...each,
-            ...this.gmaf,
             ...this.showAltValue,
             ...this.showRefValue
             }

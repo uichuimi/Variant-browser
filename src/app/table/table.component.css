@@ -9,12 +9,12 @@
 }
 
 .table-header th{
-    background-color: #F1F4F7 !important;
+    background-color: #E2EEF9  !important;
     
 }
 
 .selected{
-    background-color: #e9ecef !important;
+    background-color: #E2EEF9  !important;
     border: 3px solid  #B9D1E9 !important;
     font-weight: 600;
 }
@@ -88,7 +88,7 @@
 }
 
 .variant-moreIcon, .variant-lessIcon{
-    color: #88B8E8;
+    color: #8BAED0;
     font-weight: 700;
 }
 
@@ -114,4 +114,37 @@
    text-decoration: underline;
 }
 
+.bottom-pannel{
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 100px;
+    border-top: 1px solid #E2EEF9;
+    border-bottom: 1px solid #E2EEF9;
+    padding: 10px;
+}
 
+.pagination-bottom{
+    float: right !important;
+}
+
+.preloader {
+    width: 40px;
+    height: 40px;
+    border: 8px solid #E2EEF9;
+    border-top: 8px solid #8BAED0;
+    border-radius: 50%;
+    animation-name: girar;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    margin: 0 auto;
+    text-align: center;
+  }
+  @keyframes girar {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }

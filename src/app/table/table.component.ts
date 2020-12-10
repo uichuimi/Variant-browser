@@ -8,15 +8,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class TableComponent implements OnInit {
   @Input() data: any;
-  @Output() notifyNext = new EventEmitter;
-  @Output() notifyPrev = new EventEmitter;
+  @Output() notifyPage = new EventEmitter;
   selectedData: any;
-  page: number = 1;
   first: number = 0;
   rows: number = 20;
   cols: any[];
-  nextPage: boolean = false;
-  prevPage: boolean = false;
+  pageChange: any = "";
+  someClick: boolean = false;
 
   constructor ( ){
    
@@ -33,6 +31,8 @@ export class TableComponent implements OnInit {
       { field: 'change', header: 'Change' },
       { field: 'gmaf', header: 'GMAF' }
   ];
+
+
   }
 
   selectData (eachData: any){
@@ -95,34 +95,44 @@ export class TableComponent implements OnInit {
 
   //<-- Métodos para la paginación -->   
   next() {
-    this.nextPage = true;
-    this.notifyNext.emit(this.nextPage);
-    this.nextPage = false;
+    this.pageChange = "next";
+    this.notifyPage.emit(this.pageChange);
+    this.data = [];
+    this.pageChange = "";
+    this.buttonClicked();
     //this.first = this.first + this.rows;
-    
   }
 
   prev() {
-    this.prevPage = true;
-    this.notifyPrev.emit(this.prevPage);
-    this.nextPage = false;
+    this.pageChange = "prev";
+    this.notifyPage.emit(this.pageChange);
+    this.data = [];
+    this.pageChange = "";
+    this.buttonClicked();
     //this.first = this.first - this.rows;
    
   }
 
   reset() {
-      this.first = 0;
-      this.page = 1;
+    this.pageChange = "reset";
+    this.notifyPage.emit(this.pageChange);
+    this.data = [];
+    this.pageChange = "";
+    this.buttonClicked();
   }
 
-  isLastPage(): boolean {
+  buttonClicked(){
+    this.someClick = true;
+    this.selectedData = null;
+  }
+
+  /*isLastPage(): boolean {
     return this.data ? this.first === (this.data.length - this.rows): true;
   }
 
   isFirstPage(): boolean {
       return this.data ? this.first === 0 : true;
-  }
-
+  }*/
 
 
 }

@@ -2,7 +2,7 @@
 <p-table #dt [value]="data" [columns]="cols" selectionMode="single" [rows]="rows" [(first)]="first">
   <ng-template pTemplate="caption">
     <div class="table-header">
-        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false" styleClass="p-button-text"></p-button>
         <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
         <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"></p-button>
         <p-button type="button" icon="pi pi-download" (click)="exportExcel()" styleClass="p-button-text" pTooltip="XLS" tooltipPosition="bottom"></p-button>
@@ -84,22 +84,23 @@
               <p *ngIf="eachData.amino == null">-</p>
             </td>
             <td class="table-property">
-              <p class="label" [hidden]="eachData.gmaf == '-Infinity'" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
+              <p class="label" [hidden]="eachData.gmaf == null" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
                 'orange': eachData.gmaf > 0.01 && eachData.gmaf <= 0.1, 'green': eachData.gmaf > 0.1 }">
                 {{eachData.gmaf}}
               </p>
-              <p *ngIf="eachData.gmaf == '-Infinity'">-</p>
+              <p *ngIf="eachData.gmaf == null">-</p>
             </td>
           </tr>
-        </ng-template>
-        <ng-template pTemplate="caption">
-          <div class="table-footer">
-              <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
-              <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-              <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"></p-button>
-          </div>
-      </ng-template>   
+        </ng-template>   
       </p-table>
+      <div class="bottom-pannel">  
+        <div *ngIf="data.length == 0 || data == undefined" class="preloader"></div>
+        <div class="pagination-bottom">
+            <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false" styleClass="p-button-text"></p-button>
+            <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+            <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"></p-button>
+        </div>
+      </div>
 </div>
 <app-details *ngIf = "selectedData != null" [selected]="selectedData"></app-details>
 

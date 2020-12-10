@@ -9,24 +9,34 @@ import { OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class AppComponent {
   apiData: any = [];
-  effect: any;
-  search: any;
+  effect: any = undefined;
+  search: any = undefined;
   page: number = 1;
   
-
-  /*receivingNext (event: boolean){
-    this.page += 1;
-    this.getData(); 
+  receivingPageChange (event: any){
+    switch (event){
+      case 'next':
+        this.page += 1;
+        this.getData();
+      break;
+      case 'prev':
+        if (this.page != 1){
+          this.page -= 1;
+          this.getData();
+        }
+      break;
+      case 'reset':
+        if (this.page != 1){
+          this.page == 1;
+          this.getData();
+          console.log("Por la cara");
+        }
+        break;
+    }
   }
 
-  receivingPrev (event: boolean){
-    if (this.page != 1){
-      this.page -= 1;
-    }
-    this.getData();
-  }*/
 
-  receivingEffect (event: any){
+ /* receivingEffect (event: any){
     this.effect = event;
     this.getData();
     console.log("Recibo efecto");
@@ -37,7 +47,7 @@ export class AppComponent {
     this.getData();
     console.log("Recibo busqueda");
   }
-
+*/
   constructor ( private VariantService: VariantApiService){
     this.getData();
     console.log("Constructor");
@@ -52,7 +62,7 @@ export class AppComponent {
   adjustingData(){
     
     this.apiData.forEach(each => {
-        each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
+        //each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
         each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
         each.frequencies.forEach(frequencie => {
           switch(frequencie.source){
