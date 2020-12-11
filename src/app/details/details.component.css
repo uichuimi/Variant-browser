@@ -1,3 +1,8 @@
+
+.info-container{
+    padding: 0rem 1rem 1rem 1rem;
+}
+
 .details-content{
     height: 100%;
     width: 30%;
@@ -110,6 +115,14 @@
     font-weight: 500;
 }
 
+.gene-link:hover{
+    color: #5D85AC;
+}
+
+.close-button .p-button-text{
+    width: 1rem;
+}
+
 .none{
     display: none !important;
 }
@@ -129,4 +142,11 @@
 .hide-elements{
     display: flex;
     align-items: center;
+}
+
+.close-button{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -8,12 +8,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DetailsComponent implements OnInit {
   @Input() selected: any;
+  @Output() closeDetails = new EventEmitter;
   populations: any[] = []; 
-  /*valuesGG: any[] = [];
-  valuesGE: any[] = [];
-  valuesEX: any[] = [];
-  values1KG: any[] = [];
-  counter: number = -1;*/
+  noDetails: boolean = false;
 
   constructor() { 
     this.populations = [
@@ -32,4 +29,9 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  closeTag(){
+    this.noDetails = true;
+    this.closeDetails.emit(this.noDetails);
+    this.selected = undefined;
+  }
 }

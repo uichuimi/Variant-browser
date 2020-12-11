@@ -9,11 +9,14 @@ export class VariantApiService {
   showAltValue: any = {showAlt: false};
   showRefValue: any = {showRef: false};
   modifiedResponse: any;
+  incomeInfo: any = {data: [], pages: 0};
+
   constructor() { }
 
   getApiData(page, effect?, search?) {
-    let url = 'http://193.145.155.148:9090/variants';
-    
+    let url = 'http://193.145.155.148:9090/variants?end=100000&pageNumber=1&pageSize=60&start=10000&maxAlleleFrequency=0.1&sift=deleterious';
+    /*url += '&pageNumber=' + page + '&pageSize=60';
+    url += '&genes=APOB&'/*
     /*if (effect != undefined){
       url += '?terms=' + effect;
       console.log("Entro en los efectos");
@@ -23,18 +26,20 @@ export class VariantApiService {
       console.log("Etro en los genes");
     } */
     
-    url += '?pageNumber=' + page;
     console.log(url);
     return axios.get(url)
       .then (response => {
-        this.modifiedResponse = response.data.map(each => {
+        this.modifiedResponse = response.data.content.map(each => {
           return {
             ...each,
             ...this.showAltValue,
             ...this.showRefValue
             }
+            
         })
-        return this.modifiedResponse;
+        this.incomeInfo.data= this.modifiedResponse; 
+        this.incomeInfo.pages = response.data.totalPages;
+        return this.incomeInfo;
       })
       .catch (error => {
         console.log("Se ha producido el error" ,error);

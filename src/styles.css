@@ -50,17 +50,12 @@
 }
 
 .table-content .p-button.p-button-text:hover{
-    box-shadow: 0 0 0 0.2rem #B9D1E9 !important;
+    box-shadow: 0 0 0 0.2rem #8BAED0 !important;
     background: transparent;
 }
 
 .table-content .p-button.p-button-text:focus{
     box-shadow: 0 0 0 0.2rem transparent;
-}
-
-.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background-color: #B9D1E9;
-    border-color: #B9D1E9;
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
@@ -89,11 +84,44 @@
     background: #E2EEF9;
 }
 
+.p-datatable .p-paginator-bottom{
+    display:none;
+}
+
 /* Details */
 .p-card{
     box-shadow: 0 3px 1px -1px rgb(185, 209, 233), 0 3px 1px 0 rgb(185, 209, 233), 0 1px 3px 0 rgb(185, 209, 233);
     border-radius: 10px;
 }
+
+.p-card .p-card-content{
+    padding: 0rem 0rem 1rem 0rem;
+}
+
+.p-card .p-card-body {
+    padding: 0rem;
+}
+
+.close-button .p-button.p-button-text{
+    background-color: transparent;
+    color: #8BAED0;
+    border-color: transparent;
+}
+
+.close-button .p-button.p-button-text:hover{
+    background-color: transparent;
+    color: #5D85AC  ;
+    border-color: transparent;
+}
+
+.close-button .p-button.p-button-text:hover{
+    box-shadow: 0 0 0 0.2rem transparent;
+}
+
+/*.close-button .p-button.p-button-icon-only {
+    
+}*/
+
 
 /* Filtros */
 .p-inputtext:enabled:focus {

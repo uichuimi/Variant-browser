@@ -121,10 +121,19 @@
     border-top: 1px solid #E2EEF9;
     border-bottom: 1px solid #E2EEF9;
     padding: 10px;
+    justify-content: flex-end;
 }
 
 .pagination-bottom{
     float: right !important;
+}
+
+.variant-link{
+    color: #8BAED0;
+}
+
+.variant-link:hover{
+    color: #5D85AC;
 }
 
 .preloader {
@@ -148,3 +157,8 @@
       transform: rotate(360deg);
     }
   }
+
+  /*.spinner-style{
+    color: #8BAED0;
+    font-size: 2em;
+  }*/

@@ -8,30 +8,22 @@ import { OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  page: number = 1;
+  totalPages: number = 0;
+  incomeData: any = [];
   apiData: any = [];
   effect: any = undefined;
   search: any = undefined;
-  page: number = 1;
+ 
   
+
   receivingPageChange (event: any){
-    switch (event){
-      case 'next':
+    if (event == "next"){
         this.page += 1;
         this.getData();
-      break;
-      case 'prev':
-        if (this.page != 1){
-          this.page -= 1;
-          this.getData();
-        }
-      break;
-      case 'reset':
-        if (this.page != 1){
-          this.page == 1;
-          this.getData();
-          console.log("Por la cara");
-        }
-        break;
+    } else if (event == "prev"){
+        this.page -= 1;
+        this.getData();
     }
   }
 
@@ -54,7 +46,10 @@ export class AppComponent {
   }
 
   async getData (){
-    this.apiData = await this.VariantService.getApiData(this.page, this.effect, this.search);
+    console.log("Entro en metodo");
+    this.incomeData = await this.VariantService.getApiData(this.page, this.effect, this.search);
+    this.apiData = this.incomeData.data;
+    this.totalPages = this.incomeData.pages;
     this.adjustingData();
     console.log("Llamo");
   }

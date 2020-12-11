@@ -8,16 +8,19 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class TableComponent implements OnInit {
   @Input() data: any;
+  @Input() totalPages: any;
+  @Input() currentPage: any;
   @Output() notifyPage = new EventEmitter;
   selectedData: any;
-  first: number = 0;
-  rows: number = 20;
   cols: any[];
   pageChange: any = "";
   someClick: boolean = false;
+  first: number =0;
+  rows: number = 5;
+  disabledNext: boolean = false;
+  disabledPrev: boolean = true;
 
   constructor ( ){
-   
   }
 
   ngOnInit(): void {
@@ -37,6 +40,7 @@ export class TableComponent implements OnInit {
 
   selectData (eachData: any){
     this.selectedData = eachData;
+    console.log(this.selectedData);
   }
 
 
@@ -95,30 +99,50 @@ export class TableComponent implements OnInit {
 
   //<-- Métodos para la paginación -->   
   next() {
-    this.pageChange = "next";
-    this.notifyPage.emit(this.pageChange);
-    this.data = [];
-    this.pageChange = "";
+    if (this.data.length != 0 && this.data != undefined && this.currentPage <= this.totalPages){
     this.buttonClicked();
-    //this.first = this.first + this.rows;
+    this.disabledPrev = false;
+    if (this.isRealLastPage() == false && this.isLastPage() == true){
+      this.pageChange = "next";
+      this.notifyPage.emit(this.pageChange);
+      this.data = [];
+      this.pageChange = "";
+      this.first = 0;
+    } else if (this.isRealLastPage() == false){
+      this.first = this.first + this.rows;
+    } else if (this.isRealLastPage() == true){
+      this.disabledNext = true;
+    }    
+  }
+  console.log("Avanzo");
+  console.log(this.first);
+  console.log(this.rows);
+  console.log("Realidad");
+  console.log(this.totalPages);
+  console.log(this.currentPage);
   }
 
   prev() {
+    if (this.data.length != 0 && this.data != undefined){
+    this.buttonClicked();
+    if (this.isRealFirstPage() == false && this.isFirstPage() == true){
     this.pageChange = "prev";
     this.notifyPage.emit(this.pageChange);
     this.data = [];
     this.pageChange = "";
-    this.buttonClicked();
-    //this.first = this.first - this.rows;
-   
+    this.first = 60 - this.rows;
+    } else if (this.isRealFirstPage() == false){
+      this.first = this.first - this.rows;
+    } else if (this.isRealFirstPage() == true){
+      this.disabledPrev = true;
+    }    
   }
-
-  reset() {
-    this.pageChange = "reset";
-    this.notifyPage.emit(this.pageChange);
-    this.data = [];
-    this.pageChange = "";
-    this.buttonClicked();
+    console.log("Retrocedo");
+    console.log(this.first);
+    console.log(this.rows);
+    console.log("Realidad");
+    console.log(this.totalPages);
+    console.log(this.currentPage);
   }
 
   buttonClicked(){
@@ -126,13 +150,24 @@ export class TableComponent implements OnInit {
     this.selectedData = null;
   }
 
-  /*isLastPage(): boolean {
+  isLastPage(): boolean {
     return this.data ? this.first === (this.data.length - this.rows): true;
+  }
+
+  isRealLastPage(): boolean {
+    return this.data ? this.first === (this.data.length - this.rows) && this.currentPage == this.totalPages: true;
   }
 
   isFirstPage(): boolean {
       return this.data ? this.first === 0 : true;
-  }*/
+  }
 
+  isRealFirstPage(): boolean {
+    return this.data ? this.first === 0 && this.currentPage == 0 : true;
+  }
 
+  receivingCloseDetails(event:any){
+    this.selectedData = null;
+  }
 }
+
