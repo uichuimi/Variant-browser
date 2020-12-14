@@ -62,6 +62,7 @@ export class AppComponent {
     this.filtering = false;
     this.apiData = this.incomeData.data;
     this.elements = this.incomeData.elements;
+    console.log("Elements => " +  this.incomeData.elements);
     this.adjustingData();
     console.log("Llamo");
   }

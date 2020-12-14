@@ -2,9 +2,9 @@
 <p-table #dt [value]="data" [columns]="cols" selectionMode="single" [paginator]="true" [first]="first" [rows]="rows"> 
   <ng-template pTemplate="caption">
     <div class="table-header">
-      <div class="page-pannel">
-        <p *ngIf="elements/rows == 0"> Page 0 of {{elements/rows}}</p>
-        <p *ngIf="elements/rows != 0"> Page {{page}} of {{elements/rows}}</p>
+      <div class="page-pannel" [ngClass]="{ 'short': selectedData != null}">
+        <p *ngIf="totalPages == 0"> Page 0 of {{totalPages}}</p>
+        <p *ngIf="totalPages !=0"> Page {{page}} of {{totalPages}}</p>
       </div>
       <div class="buttons-pannel">
         <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false" styleClass="p-button-text" [disabled] = "isRealFirstPage() == true || this.data.length == 0 || this.data == undefined"></p-button>

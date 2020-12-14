@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 
 @Component({
@@ -22,6 +22,20 @@ export class TableComponent implements OnInit {
   page: number = 1;
   totalPages: number = 0;
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("Elemts en changes => " + this.elements);
+    if (this.filtering){
+      if(changes.filtering.currentValue == true){
+        this.isFiltering();
+      }
+    }
+    if(this.elements && changes.elements){
+      if(changes.elements.previousValue == 0 && changes.elements.currentValue != 0){
+        this.totalPages = Math.ceil(this.elements/this.rows);
+      }
+    }
+  }
+
   constructor ( ){
     this.cols = [
       { field: 'identifier', header: 'Identifier' },
@@ -33,9 +47,11 @@ export class TableComponent implements OnInit {
       { field: 'change', header: 'Change' },
       { field: 'gmaf', header: 'GMAF' }
   ];
+  console.log("Elemts en constructor => " + this.elements);
   }
 
   ngOnInit(): void {
+    console.log("Elemts en init => " + this.elements);
   }
 
   selectData (eachData: any){
@@ -169,6 +185,14 @@ export class TableComponent implements OnInit {
   }
 
   // <-------------------------------------------------------------->
+
+  isFiltering(){
+    this.first = 0;
+    this.page = 1;
+    this.data = [];
+    this.totalPages = 0;
+    this.buttonClicked();
+  }
 
   receivingCloseDetails(event:any){
     this.buttonClicked();

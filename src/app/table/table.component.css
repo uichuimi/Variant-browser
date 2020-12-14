@@ -17,6 +17,11 @@
     margin: 0px 5px;
 }
 
+.page-pannel.short {
+    width: 80%;
+    margin: 0px 5px;
+}
+
 .buttons-pannel {
     float: right;
     margin: 0 auto;
@@ -178,3 +183,13 @@
     color: #8BAED0;
     font-size: 2em;
   }*/
+
+  @media (max-width: 1258px){
+    .page-pannel{
+        width: 85%;
+    }
+
+    .page-pannel.short{
+        width: 75%;
+    }
+  }

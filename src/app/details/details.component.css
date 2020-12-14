@@ -32,13 +32,13 @@
     text-align: center;
 }
 
-.noGmaf-cell{
+/*.noGmaf-cell{
     margin: 0 auto;
     font-size: 12px;
     text-align: center;
     padding: 0.3rem;
     font-style: italic;
-}
+}*/
 
 .population-source{
     margin: 0 auto;
@@ -149,4 +149,12 @@
     margin: 0;
     display: flex;
     justify-content: flex-end;
+}
+
+.no-gmafData{
+    margin: 0 auto;
+    text-align: center;
+    color: #495057;
+    font-style: italic;
+    font-weight: 600;
 }

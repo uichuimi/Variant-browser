@@ -10,11 +10,11 @@
         </div>
         <div class="position-space">
             <span class="p-float-label input-posMin">
-                <input id="float-input positionMin" type="text" pInputText [(ngModel)]="posMin" (blur)="onBlurMin()">  
+                <p-inputNumber id="float-input positionMin"  [(ngModel)]="posMin" [min]="0" [max]="250000000" (blur)="onBlurMin()"></p-inputNumber> 
                 <label for="float-input">Position Min</label>       
             </span>
             <span class="p-float-label iput-posMax">
-                <input id="float-input positionMax" type="text" pInputText [(ngModel)]="posMax" (blur)="onBlurMax()">  
+                <p-inputNumber id="float-input positionMax"  [(ngModel)]="posMax" [min]="0" [max]="250000000" (blur)="onBlurMax()"></p-inputNumber>  
                 <label for="float-input">Position Max</label>       
             </span>
         </div>
@@ -22,17 +22,16 @@
             <div class="searching-genes">
             <span class="p-input-icon-right p-float-label">
                 <i class="pi pi-search"></i>
-                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getSearch()" >  
+                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getSearch()">  
                 <label for="float-input">Search by Gene</label>       
             </span>
             <div class="search-options" *ngIf="showSearching==true">
-                <!--<p-multiSelect optionLabel="Gene" [options]="searchResults" [(ngModel)]="selectedGenes"></p-multiSelect>-->
                 <p-listbox class="search-list" [options]="searchResults" [checkbox]="true" [multiple]="true"  
-                [(ngModel)]="selectedGenes" optionLabel="name" optionValue="id" (click)="searchMethod()" (blur)="onBlurSearch()" ></p-listbox>
+                [(ngModel)]="geneSelection" optionLabel="name" optionValue="id" (click)="searchMethod()" (blur)="onBlurSearch()"></p-listbox>
             </div> 
             </div>
-            <div class="viewing-genes" *ngIf="selectedGenes != []">
-                <p-chips [(ngModel)]="selectedGenes" separator=","></p-chips>
+            <div class="viewing-genes" *ngIf="geneSelection != undefined ">
+                <p-chips [(ngModel)]="geneSelection" separator=","></p-chips>
             </div>
             <!--<ul class="search-options" *ngIf="showSearching==true">
                 <li *ngFor="let option of searchResults" class="search-list">{{option.name}}</li>
@@ -59,25 +58,23 @@
         </div>
         <div class="effects-dropdown">
             <span class="p-float-label"> 
-                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="selectedEffects" (click)="effectsMethod()"></p-multiSelect>
+                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="selectedEffects"></p-multiSelect>
                 <label for="float-input">Effects</label>
             </span>
         </div>
         <div class="gmaf-space">
             <div class="enter-gmaf">
-                 <span class="p-float-label"> 
-                     <input id="float-input gmaf" pInputText [(ngModel)]="gmaf" [ngClass]= "{ 'red': gmaf <= 0.01, 
-                     'orange': gmaf > 0.01 && gmaf <= 0.1, 'green': gmaf > 0.1, 'empty': gmaf == null }">
+                 <span class="p-float-label p-input-icon-right"> 
+                     <p-inputNumber id="float-input gmaf" mode="decimal" [min]="0" [max]="1" [maxFractionDigits]="4" [minFractionDigits]="4" [(ngModel)]="gmaf" [ngClass]= "{ 'red': gmaf <= 0.0100, 
+                     'orange': gmaf > 0.0100 && gmaf <= 0.1000, 'green': gmaf > 0.1000, 'empty': gmaf == null }"></p-inputNumber>
+                     <!--<i class="pi pi-times errase-gmaf" (click)="erraseGmaf()"></i>-->
                      <label for="float-input">GMAF</label>
                  </span>
              </div>
-             <!--<div class="slider-gmaf">
-                 <ng5-slider  [(value)]="gmaf" [options]="options" ></ng5-slider>
-             </div>-->
          </div>
      </div>
      <div class="filters-column first">
-        <button pButton type="button" class="clean-button" label="Clean" (click)="cleanFilters()"></button>
+        <button pButton type="button" class="clean-button" label="Reset" (click)="cleanFilters()"></button>
         <button pButton type="button" class="search-button" label="Search" (click)="filterVariants()"></button>
 </div>
 </div>

@@ -18,8 +18,8 @@ export class FiltersComponent implements OnInit {
   selectedPolyphen: any;
   selectedChromosome: any;
   gmaf: number= 0.01;
-  posMin: any="0";
-  posMax: any= "250000000";
+  posMin: number = 0;
+  posMax: number = 250000000;
   options: Options; 
   
   items: SelectItem[];
@@ -36,7 +36,7 @@ export class FiltersComponent implements OnInit {
   search: any = "";
   searchResults: any;
   geneSelection: any;
-  selectedGenes: any = "";
+  selectedGenes: any;
 
   filteringData: any;
 
@@ -93,54 +93,47 @@ export class FiltersComponent implements OnInit {
   }
 
   onBlurMin(){
-    if (this.posMin == ""){
-      this.posMin = "0";
+    if (this.posMin == null){
+      this.posMin = 0;
     }
     console.log(this.posMin);
   }
 
   onBlurMax(){
-    if (this.posMax == ""){
-      this.posMax = "250000000";
+    if (this.posMax == null){
+      this.posMax = 250000000;
     }
     console.log(this.posMax);
   }
 
   onBlurSearch(){
     console.log("EEEEEOOOOOO");
-    this.showSearching = false;
+    /*this.showSearching = false;
+    this.search = "";*/
   }
 
-  effectsMethod(){
-    console.log("Hola");
-    /*this.selectedEffects = "";
-    if (this.effectSelection!= undefined){
-      this.effectSelection.forEach(element => {
-        this.selectedEffects += element.name + ","; 
-      });
-      this.selectedEffects = this.selectedEffects.substring(0,this.selectedEffects.length-1);
-      this.notifyEffect.emit(this.selectedEffects);
-      console.log("Imprime");
-      console.log(this.selectedEffects);
-      console.log("el gen");
-      console.log(this.effectSelection);
-    }*/
+  /*onBlurGmaf(){
+    if (this.gmaf > 1){
+      this.gmaf = 1;
+    } else if (this.gmaf < 0){
+      this.gmaf = 0;
+    }
+  }*/
+
+  erraseGmaf(){
+    this.gmaf = null;
   }
 
   searchMethod(){
-    console.log("Adios");
-    /*this.selectedGenes= "";
+    //this.selectedGenes= "";
+    console.log("Esto =>" + this.geneSelection);
     if (this.geneSelection != undefined){
       this.geneSelection.forEach(element => {
         this.selectedGenes += element.name + ","; 
       });
       this.selectedGenes = this.selectedGenes.substring(0,this.selectedGenes.length-1);
-      this.notifySearch.emit(this.selectedGenes);
-      console.log("Imprime");
-      console.log(this.selectedGenes);
-      console.log("el gen");
-      console.log(this.geneSelection);
-    }*/
+      console.log("Genes => " +  this.selectedGenes);
+    }
   }  
 
   cleanFilters(){
@@ -153,7 +146,7 @@ export class FiltersComponent implements OnInit {
     this.posMax = 250000000;
     this.posMin = 0;
     this.gmaf = 0.01;
-    this.filterVariants();
+    //this.filterVariants();
   }
 
   filterVariants(){
@@ -185,13 +178,13 @@ export class FiltersComponent implements OnInit {
     if (this.search.length >= 3){
       this.showSearching = true;
       this.searchResults = await this.VariantService.getSearchData(this.search);
-      //this.notifications();
     }
   }
 
   async getData(){
       var effect;
       var biotype;
+      console.log("Esto =>" + this.geneSelection);
       effect = await this.VariantService.getTermsData();
       effect.forEach(element => {
         this.effects.push({label: element.displayName, value: element.term})

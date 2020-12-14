@@ -26,20 +26,20 @@
 
 .red {
     background-color: #ffcdd2;
-    border-color: #ffcdd2;
+    border-color: #ffcdd2 !important;
     color: #c63737;
 }
 
 
 .orange{
     background-color: #feedaf;
-    border-color: #feedaf;
+    border-color: #feedaf !important;
     color: darkorange;
 }
 
 .green{
     background-color: #c8e6c9;
-    border-color: #c8e6c9;
+    border-color: #c8e6c9 !important;
     color: green;
 }
 
@@ -134,21 +134,40 @@
     border-color: #B9D1E9;
 }
 
-.red.p-inputtext:enabled:focus {
+.red input.p-inputnumber-input.p-inputtext.p-component.p-filled{
+    background-color: #ffcdd2;
+    border-color: #ffcdd2 !important;
+    color: #c63737;
+}
+
+.orange input.p-inputnumber-input.p-inputtext.p-component.p-filled{
+    background-color: #feedaf;
+    border-color: #feedaf !important;
+    color: darkorange;
+}
+
+.green input.p-inputnumber-input.p-inputtext.p-component.p-filled{
+    background-color: #c8e6c9;
+    border-color: #c8e6c9 !important;
+    color: green;
+}
+
+
+.red .p-inputtext:enabled:focus {
     box-shadow: 0 0 0 0.04rem #c63737;
     border-color: #ffcdd2;
 }
 
-.red.p-inputtext:enabled:hover{
+.red .p-inputtext:enabled:hover{
     border-color: #ffcdd2;
 }
 
-.orange.p-inputtext:enabled:focus {
+.orange .p-inputtext:enabled:focus {
     box-shadow: 0 0 0 0.04rem darkorange;
     border-color: #feedaf;
 }
 
-.orange.p-inputtext:enabled:hover{
+.orange .p-inputtext:enabled:hover{
     border-color: #feedaf;
 }
 
@@ -161,7 +180,6 @@
 .green.p-inputtext:enabled:hover{
     border-color:  #c8e6c9;
 }
-
 
 .chromosome-dropdown .p-multiselect .p-multiselect-panel, 
 .sift-dropdown .p-multiselect .p-multiselect-panel{
@@ -239,7 +257,7 @@
 }
 
 .p-listbox .p-listbox-list .p-listbox-item.p-highlight{
-    background-color: #B9D1E9;
+    background-color: #8BAED0 ;
 }
 
 ul.p-listbox-list{
@@ -248,4 +266,39 @@ ul.p-listbox-list{
 
 .p-listbox .p-listbox-list .p-listbox-item:focus {
     box-shadow: inset 0 0 0 0.15rem transparent;
+}
+
+.p-multiselect {
+    border: 1px solid #B9D1E9;
+}
+
+.p-inputtext {
+    border-color: #B9D1E9;
+}
+
+.search-list .p-listbox.p-component {
+    position: absolute;
+    z-index: 10;
+    width: 16%;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight{
+    background: #5D85AC ;
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+    background: #8BAED0 ;
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
+    box-shadow: inset 0 0 0 0.15rem transparent;
+}
+
+.p-chips .p-chips-multiple-container .p-chips-token{
+    background: #8BAED0;
+
+}
+
+.p-inputnumber-input{
+    width:105px;
 }
