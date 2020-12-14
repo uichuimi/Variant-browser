@@ -9,23 +9,39 @@ export class VariantApiService {
   showAltValue: any = {showAlt: false};
   showRefValue: any = {showRef: false};
   modifiedResponse: any;
-  incomeInfo: any = {data: [], pages: 0};
+  incomeInfo: any = {data: [], elements: 0};
 
   constructor() { }
 
-  getApiData(page, effect?, search?) {
-    let url = 'http://193.145.155.148:9090/variants?end=100000&pageNumber=1&pageSize=60&start=10000&maxAlleleFrequency=0.1&sift=deleterious';
-    /*url += '&pageNumber=' + page + '&pageSize=60';
-    url += '&genes=APOB&'/*
-    /*if (effect != undefined){
-      url += '?terms=' + effect;
-      console.log("Entro en los efectos");
+  getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
+    let url = 'http://193.145.155.148:9090/variants?pageNumber=' + page + '&pageSize=' + size;
+    if(chromosome != undefined){
+      url += '&chrom=' + chromosome;
     }
-    if (search != undefined){
-      url += '?genes=' + search;
-      console.log("Etro en los genes");
-    } */
-    
+    if(posMin != undefined){
+      url += '&start=' + posMin;
+    }
+    if(posMax != undefined){
+      url += '&end=' + posMax;
+    }
+    if(gene != undefined){
+      url += '&genes=' + gene;
+    }
+    if(sift != undefined){
+      url += '&sift=' + sift;
+    }
+    if(polyphen != undefined){
+      url += '&polyphen=' + polyphen;
+    }
+    if(biotype != undefined){
+      url += '&biotypes=' + biotype;
+    }
+    if(term != undefined){
+      url += '&terms=' + term;
+    }
+    if(gmaf != undefined){
+      url += '&maxAlleleFrequency=' + gmaf;
+    }
     console.log(url);
     return axios.get(url)
       .then (response => {
@@ -38,35 +54,13 @@ export class VariantApiService {
             
         })
         this.incomeInfo.data= this.modifiedResponse; 
-        this.incomeInfo.pages = response.data.totalPages;
+        this.incomeInfo.elements = response.data.totalElements;
         return this.incomeInfo;
       })
       .catch (error => {
         console.log("Se ha producido el error" ,error);
       })
   }
-
- /* getApiFilteredData(effect){
-    let url = 'http://193.145.155.148:9090/variants?';
-    if (effect != undefined){
-      url += 'terms=' + effect;
-    }
-    return axios.get(url)
-      .then (response => {
-        this.modifiedResponse = response.data.map(each => {
-          return {
-            ...each,
-            ...this.gmaf,
-            ...this.showAltValue,
-            ...this.showRefValue
-            }
-        })
-        return this.modifiedResponse;
-      })
-      .catch (error => {
-        console.log("Se ha producido el error" ,error);
-      })
-  }*/
 
   getSearchData(search){
     let url= 'http://193.145.155.148:9090/genes?search=' + search;
@@ -82,6 +76,18 @@ export class VariantApiService {
 
   getTermsData(){
     let url= 'http://193.145.155.148:9090/terms';
+    return axios.get(url)
+      .then (response => {
+          return response.data;
+        })
+
+      .catch (error => {
+        console.log("Se ha producido el error" ,error);
+      })
+  }
+
+  getBiotypeData(){
+    let url= 'http://193.145.155.148:9090/biotypes';
     return axios.get(url)
       .then (response => {
           return response.data;

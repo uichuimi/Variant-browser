@@ -10,7 +10,16 @@
 
 .table-header th{
     background-color: #E2EEF9  !important;
-    
+}
+
+.page-pannel {
+    width: 89%;
+    margin: 0px 5px;
+}
+
+.buttons-pannel {
+    float: right;
+    margin: 0 auto;
 }
 
 .selected{
@@ -66,7 +75,6 @@
 
 .table-header, .table-footer{
     display: flex;
-    justify-content: flex-end;
 }
 
 .variant-refValue{
@@ -134,6 +142,14 @@
 
 .variant-link:hover{
     color: #5D85AC;
+}
+
+
+.no-data{
+    margin: 0 auto;
+    text-align: center;
+    color: #8BAED0;
+    font-weight: 700;
 }
 
 .preloader {

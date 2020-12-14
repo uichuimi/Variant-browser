@@ -8,15 +8,23 @@ import { OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  page: number = 1;
-  totalPages: number = 0;
+  page: number = 0;
+  elements: number = 0;
+  size: number = 60;
   incomeData: any = [];
   apiData: any = [];
-  effect: any = undefined;
-  search: any = undefined;
- 
-  
+  filtering: boolean = false;
 
+  chromosome: any;
+  posMin: any;
+  posMax: any;
+  gene: any;
+  sift: any;
+  polyphen: any;
+  biotype: any;
+  term: any;
+  gmaf: any;
+  
   receivingPageChange (event: any){
     if (event == "next"){
         this.page += 1;
@@ -27,29 +35,33 @@ export class AppComponent {
     }
   }
 
-
- /* receivingEffect (event: any){
-    this.effect = event;
+  receivingFilter (event: any){
+    this.filtering = true;
+    console.log("Estamos recibiendo");
+    this.chromosome = event.chromosome;
+    this.posMin = event.posMin;
+    this.posMax = event.posMax;
+    this.gene = event.gene;
+    this.sift = event.sift;
+    this.polyphen = event.polyphen;
+    this.biotype = event.biotype;
+    this.term = event.term;
+    this.gmaf = event.gmaf;
+    console.log(event);
     this.getData();
-    console.log("Recibo efecto");
-  };
-
-  receivingSearch (event: any){
-    this.search = event;
-    this.getData();
-    console.log("Recibo busqueda");
   }
-*/
+
   constructor ( private VariantService: VariantApiService){
     this.getData();
     console.log("Constructor");
   }
 
   async getData (){
-    console.log("Entro en metodo");
-    this.incomeData = await this.VariantService.getApiData(this.page, this.effect, this.search);
+    this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax, 
+      this.gene, this.sift, this.polyphen, this.biotype, this.term, this.gmaf);
+    this.filtering = false;
     this.apiData = this.incomeData.data;
-    this.totalPages = this.incomeData.pages;
+    this.elements = this.incomeData.elements;
     this.adjustingData();
     console.log("Llamo");
   }

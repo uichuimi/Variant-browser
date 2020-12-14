@@ -7,23 +7,22 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent implements OnInit {
-  @Input() data: any;
-  @Input() totalPages: any;
-  @Input() currentPage: any;
+  @Input() data: any[];
+  @Input() currentPage: number;
+  @Input() elements: number;
+  @Input() size: number;
+  @Input() filtering: boolean;
   @Output() notifyPage = new EventEmitter;
+
   selectedData: any;
   cols: any[];
-  pageChange: any = "";
-  someClick: boolean = false;
+  pageChange: string = "";
   first: number =0;
   rows: number = 5;
-  disabledNext: boolean = false;
-  disabledPrev: boolean = true;
+  page: number = 1;
+  totalPages: number = 0;
 
   constructor ( ){
-  }
-
-  ngOnInit(): void {
     this.cols = [
       { field: 'identifier', header: 'Identifier' },
       { field: 'coordinate', header: 'Coordinate' },
@@ -34,8 +33,9 @@ export class TableComponent implements OnInit {
       { field: 'change', header: 'Change' },
       { field: 'gmaf', header: 'GMAF' }
   ];
+  }
 
-
+  ngOnInit(): void {
   }
 
   selectData (eachData: any){
@@ -98,31 +98,27 @@ export class TableComponent implements OnInit {
   }
 
   //<-- Métodos para la paginación -->   
+
   next() {
-    if (this.data.length != 0 && this.data != undefined && this.currentPage <= this.totalPages){
+   
+    if (this.data.length != 0 && this.data != undefined){
     this.buttonClicked();
-    this.disabledPrev = false;
     if (this.isRealLastPage() == false && this.isLastPage() == true){
       this.pageChange = "next";
       this.notifyPage.emit(this.pageChange);
       this.data = [];
       this.pageChange = "";
       this.first = 0;
+      this.page += 1;
     } else if (this.isRealLastPage() == false){
       this.first = this.first + this.rows;
-    } else if (this.isRealLastPage() == true){
-      this.disabledNext = true;
-    }    
+      this.page += 1;
+    }   
   }
-  console.log("Avanzo");
-  console.log(this.first);
-  console.log(this.rows);
-  console.log("Realidad");
-  console.log(this.totalPages);
-  console.log(this.currentPage);
   }
 
   prev() {
+  
     if (this.data.length != 0 && this.data != undefined){
     this.buttonClicked();
     if (this.isRealFirstPage() == false && this.isFirstPage() == true){
@@ -130,44 +126,57 @@ export class TableComponent implements OnInit {
     this.notifyPage.emit(this.pageChange);
     this.data = [];
     this.pageChange = "";
-    this.first = 60 - this.rows;
+    this.page -= 1;
+    this.first = this.size - this.rows;
     } else if (this.isRealFirstPage() == false){
       this.first = this.first - this.rows;
-    } else if (this.isRealFirstPage() == true){
-      this.disabledPrev = true;
-    }    
+      this.page -= 1;
+    }   
   }
-    console.log("Retrocedo");
-    console.log(this.first);
-    console.log(this.rows);
-    console.log("Realidad");
-    console.log(this.totalPages);
-    console.log(this.currentPage);
-  }
-
-  buttonClicked(){
-    this.someClick = true;
-    this.selectedData = null;
   }
 
   isLastPage(): boolean {
-    return this.data ? this.first === (this.data.length - this.rows): true;
+    var result= false;
+    if (this.first === (this.data.length - this.rows)){
+      result = true;
+    }
+    return result;
   }
 
   isRealLastPage(): boolean {
-    return this.data ? this.first === (this.data.length - this.rows) && this.currentPage == this.totalPages: true;
+    var result = false;
+    var math = Math.ceil((this.elements*(this.size / this.rows)) / this.size);
+    if (this.page == math-1){
+      result = true;
+    }
+    return result;
   }
 
   isFirstPage(): boolean {
-      return this.data ? this.first === 0 : true;
+    var result = false;
+    if (this.first === 0){
+      result = true;
+    }
+      return result;
   }
 
   isRealFirstPage(): boolean {
-    return this.data ? this.first === 0 && this.currentPage == 0 : true;
+    var result = false;
+    if (this.first === 0 && this.currentPage == 0){
+      result = true;
+    }
+    return result;
   }
 
+  // <-------------------------------------------------------------->
+
   receivingCloseDetails(event:any){
+    this.buttonClicked();
+  }
+  
+  buttonClicked(){
     this.selectedData = null;
   }
+
 }
 

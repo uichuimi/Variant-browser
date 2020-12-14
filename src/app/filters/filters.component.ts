@@ -9,26 +9,28 @@ import { VariantApiService } from '../variant-api.service';
   styleUrls: ['./filters.component.css']
 })
 export class FiltersComponent implements OnInit {
-  @Output() notifyEffect = new EventEmitter;
-  @Output() notifySearch = new EventEmitter;
+
+  @Output() notifyFilter = new EventEmitter;
   chromosomes: SelectItem[];
   siftOptions: SelectItem[];
   polyphenOptions: SelectItem[];
-  biotypes: SelectItem[];
   selectedSift: any;
-  selectedBiotype: any;
   selectedPolyphen: any;
   selectedChromosome: any;
-  value: number=0.5;
+  gmaf: number= 0.01;
   posMin: any="0";
   posMax: any= "250000000";
   options: Options; 
   
-  
-  terms: any;
+  items: SelectItem[];
+  item: string;
+
   selectedEffects: any;
   effects: any =[];
   effectSelection: any;
+
+  biotypes: any = [];
+  selectedBiotype: any;
 
   showSearching: boolean = false;
   search: any = "";
@@ -36,9 +38,11 @@ export class FiltersComponent implements OnInit {
   geneSelection: any;
   selectedGenes: any = "";
 
-  constructor( private VariantService: VariantApiService ) {
-    this.getData();
+  filteringData: any;
 
+  constructor( private VariantService: VariantApiService) {
+    this.getData();
+    
     this.options = {
       floor: 0, 
       ceil: 1, 
@@ -83,59 +87,9 @@ export class FiltersComponent implements OnInit {
       {label: 'Unknown', value: 'unknown'},
       {label: 'Possibly_damaging', value: 'possibly_damaging'}
     ];
-
-    this.biotypes= [
-      {label: 'protein_coding', value: '1'},
-      {label: 'processed_pseudogene', value: '2'},
-      {label: 'lincRNA', value: '3'},
-      {label: 'antisense', value: '4'},
-      {label: 'unprocessed_pseudogene', value: '5'},
-      {label: 'misc_RNA', value: '6'},
-      {label: 'snRNA', value: '7'},
-      {label: 'miRNA', value: '8'},
-      {label: 'TEC', value: '9'},
-      {label: 'snoRNA', value: '10'},
-      {label: 'sense_intronic', value: '11'},
-      {label: 'transcribed_unprocessed_pseudogene', value: '12'},
-      {label: 'processed_transcript', value: '13'},
-      {label: 'rRNA_pseudogene', value: '14'},
-      {label: 'transcribed_processed_pseudogene', value: '15'},
-      {label: 'IG_V_pseudogene', value: '16'},
-      {label: 'sense_overlapping', value: '17'},
-      {label: 'IG_V_gene', value: '18'},
-      {label: 'transcribed_unitary_pseudogene', value: '19'},
-      {label: 'TR_V_gene', value: '20'},
-      {label: 'unitary_pseudogene', value: '21'},
-      {label: 'TR_J_gene', value: '22'},
-      {label: 'bidirectional_promoter_lncRNA', value: '23'},
-      {label: 'rRNA', value: '24'},
-      {label: 'scaRNA', value: '25'},
-      {label: 'polymorphic_pseudogene', value: '26'},
-      {label: 'IG_D_gene', value: '27'},
-      {label: 'TR_V_pseudogene', value: '28'},
-      {label: '3prime_overlapping_ncRNA', value: '29'},
-      {label: 'pseudogene', value: '30'},
-      {label: 'Mt_tRNA', value: '31'},
-      {label: 'IG_J_gene', value: '32'},
-      {label: 'IG_C_gene', value: '33'},
-      {label: 'IG_C_pseudogene', value: '34'},
-      {label: 'ribozyme', value: '35'},
-      {label: 'TR_C_gene', value: '36'},
-      {label: 'sRNA', value: '37'},
-      {label: 'TR_D_gene', value: '38'},
-      {label: 'TR_J_pseudogene', value: '39'},
-      {label: 'IG_J_pseudogene', value: '40'},
-      {label: 'non_coding', value: '41'},
-      {label: 'Mt_rRNA', value: '42'},
-      {label: 'translated_processed_pseudogene', value: '43'},
-      {label: 'macro_lncRNA', value: '44'},
-      {label: 'IG_pseudogene', value: '45'},
-      {label: 'scRNA', value: '46'},
-      {label: 'vaultRNA', value: '47'},
-    ];
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
   onBlurMin(){
@@ -152,8 +106,14 @@ export class FiltersComponent implements OnInit {
     console.log(this.posMax);
   }
 
+  onBlurSearch(){
+    console.log("EEEEEOOOOOO");
+    this.showSearching = false;
+  }
+
   effectsMethod(){
-    this.selectedEffects = "";
+    console.log("Hola");
+    /*this.selectedEffects = "";
     if (this.effectSelection!= undefined){
       this.effectSelection.forEach(element => {
         this.selectedEffects += element.name + ","; 
@@ -164,11 +124,12 @@ export class FiltersComponent implements OnInit {
       console.log(this.selectedEffects);
       console.log("el gen");
       console.log(this.effectSelection);
-    }
+    }*/
   }
 
   searchMethod(){
-    this.selectedGenes= "";
+    console.log("Adios");
+    /*this.selectedGenes= "";
     if (this.geneSelection != undefined){
       this.geneSelection.forEach(element => {
         this.selectedGenes += element.name + ","; 
@@ -179,9 +140,47 @@ export class FiltersComponent implements OnInit {
       console.log(this.selectedGenes);
       console.log("el gen");
       console.log(this.geneSelection);
-    }
+    }*/
   }  
 
+  cleanFilters(){
+    this.selectedSift = null;
+    this.selectedPolyphen = null;
+    this.selectedChromosome = null;
+    this.selectedBiotype = null;
+    this.selectedEffects = null;
+    this.selectedGenes = null;
+    this.posMax = 250000000;
+    this.posMin = 0;
+    this.gmaf = 0.01;
+    this.filterVariants();
+  }
+
+  filterVariants(){
+    this.filteringData = {
+      chromosome: this.selectedChromosome,
+      posMin: this.posMin,
+      posMax: this.posMax,
+      gene: this.selectedGenes,
+      sift: this.selectedSift,
+      polyphen: this.selectedPolyphen,
+      biotype: this.selectedBiotype,
+      term: this.selectedEffects,
+      gmaf: this.gmaf
+    }
+    this.notifyFilter.emit(this.filteringData);
+    console.log("Sift => " + this.selectedSift);
+    console.log("Polyphen => " + this.selectedPolyphen);
+    console.log("Chromosome => " + this.selectedChromosome);
+    console.log("Biotype => " + this.selectedBiotype);
+    console.log("Effects => " + this.selectedEffects);
+    console.log("Genes => " +  this.selectedGenes);
+    console.log("Max => " + this.posMax);
+    console.log("Min => "+ this.posMin);
+    console.log("Gmaf => " + this.gmaf);
+  }
+
+  // < ------ Llamadas a la API --------->
   async getSearch(){
     if (this.search.length >= 3){
       this.showSearching = true;
@@ -191,10 +190,17 @@ export class FiltersComponent implements OnInit {
   }
 
   async getData(){
-      this.terms = await this.VariantService.getTermsData();
-      this.terms.forEach(element => {
+      var effect;
+      var biotype;
+      effect = await this.VariantService.getTermsData();
+      effect.forEach(element => {
         this.effects.push({label: element.displayName, value: element.term})
       });
+      biotype = await this.VariantService.getBiotypeData();
+      biotype.sort().forEach(element => {
+        this.biotypes.push({label: element, value: element});
+      });
+ 
       
     }
 

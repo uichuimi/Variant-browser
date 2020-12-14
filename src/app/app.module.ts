@@ -12,6 +12,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import { Ng5SliderModule } from 'ng5-slider';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {ListboxModule} from 'primeng/listbox';
+import {ChipsModule} from 'primeng/chips';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,7 +41,8 @@ import { TableComponent } from './table/table.component';
     Ng5SliderModule,
     InputTextareaModule,
     MultiSelectModule,
-    ListboxModule
+    ListboxModule,
+    ChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
