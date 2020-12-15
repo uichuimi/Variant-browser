@@ -8,8 +8,9 @@ import axios from "axios";
 export class VariantApiService {
   showAltValue: any = {showAlt: false};
   showRefValue: any = {showRef: false};
-  modifiedResponse: any;
-  incomeInfo: any = {data: [], elements: 0};
+  modifiedResponse: any = [];
+  genes: any = [];
+  incomeInfo: any = {data: [], elements: 0, empty: true};
 
   constructor() { }
 
@@ -24,7 +25,7 @@ export class VariantApiService {
     if(posMax != undefined){
       url += '&end=' + posMax;
     }
-    if(gene != undefined){
+    if(gene != undefined && gene != ""){
       url += '&genes=' + gene;
     }
     if(sift != undefined){
@@ -39,7 +40,7 @@ export class VariantApiService {
     if(term != undefined){
       url += '&terms=' + term;
     }
-    if(gmaf != undefined){
+    if(gmaf != undefined && gmaf != null){
       url += '&maxAlleleFrequency=' + gmaf;
     }
     console.log(url);
@@ -55,6 +56,7 @@ export class VariantApiService {
         })
         this.incomeInfo.data= this.modifiedResponse; 
         this.incomeInfo.elements = response.data.totalElements;
+        this.incomeInfo.empty = response.data.empty;
         return this.incomeInfo;
       })
       .catch (error => {
@@ -99,15 +101,3 @@ export class VariantApiService {
   }
 }
 
-/* <-- Añadir campos a los datos -->
- this.modifiedResponse = response.data.map(each => {
-          return {
-            ...each,
-            ...this.gmaf
-            }
-        })
-        return this.modifiedResponse;
-
-<-- Crear la variable -->
- gmaf: any = {gmaf: 0};
-*/ 

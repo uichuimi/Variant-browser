@@ -153,9 +153,14 @@
 .no-data{
     margin: 0 auto;
     text-align: center;
-    color: #8BAED0;
-    font-weight: 700;
+    color: #495057;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    word-spacing: 3px;
 }
+
 
 .preloader {
     width: 40px;

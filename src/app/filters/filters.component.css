@@ -100,12 +100,14 @@ label {
     border: #5D85AC ;
 }
 
-.viewing-genes{
-    width: min-content;
-}
-
 .errase-gmaf{
     cursor: pointer;
+}
+
+.close-button{
+    padding: 0;
+    margin: 0;
+    float: right;
 }
 
 

@@ -3,7 +3,7 @@
   <ng-template pTemplate="caption">
     <div class="table-header">
       <div class="page-pannel" [ngClass]="{ 'short': selectedData != null}">
-        <p *ngIf="totalPages == 0"> Page 0 of {{totalPages}}</p>
+        <p *ngIf="totalPages == 0 || empty == true"> Page 0 of {{totalPages}}</p>
         <p *ngIf="totalPages !=0"> Page {{page}} of {{totalPages}}</p>
       </div>
       <div class="buttons-pannel">
@@ -99,11 +99,10 @@
         </ng-template>   
       </p-table>
       <div class="bottom-pannel">  
-        <div *ngIf="data.length == 0 || data == undefined" class="preloader">
+        <div *ngIf="(data.length == 0 || data == undefined) && empty == false" class="preloader"></div>
+        <div *ngIf="empty == true" class="no-data">
+          <p>No data available</p>
         </div>
-        <!--<div *ngIf="data.length == 0" class="no-data">
-          <p></p>
-        </div>-->
         <div class="pagination-bottom">
             <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false" styleClass="p-button-text" [disabled] = "isRealFirstPage() == true || this.data.length == 0 || this.data == undefined"></p-button>
             <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text" [disabled] = "isRealLastPage() == true || this.data.length == 0 || this.data == undefined"></p-button>

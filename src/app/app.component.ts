@@ -14,6 +14,7 @@ export class AppComponent {
   incomeData: any = [];
   apiData: any = [];
   filtering: boolean = false;
+  empty: boolean = false;
 
   chromosome: any;
   posMin: any;
@@ -53,7 +54,6 @@ export class AppComponent {
 
   constructor ( private VariantService: VariantApiService){
     this.getData();
-    console.log("Constructor");
   }
 
   async getData (){
@@ -62,7 +62,7 @@ export class AppComponent {
     this.filtering = false;
     this.apiData = this.incomeData.data;
     this.elements = this.incomeData.elements;
-    console.log("Elements => " +  this.incomeData.elements);
+    this.empty = this.incomeData.empty;
     this.adjustingData();
     console.log("Llamo");
   }

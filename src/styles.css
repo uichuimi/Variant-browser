@@ -118,9 +118,6 @@
     box-shadow: 0 0 0 0.2rem transparent;
 }
 
-/*.close-button .p-button.p-button-icon-only {
-    
-}*/
 
 
 /* Filtros */
@@ -301,4 +298,37 @@ ul.p-listbox-list{
 
 .p-inputnumber-input{
     width:105px;
+}
+
+.search-gene .viewing-genes .p-chips .p-chips-multiple-container .p-chips-input-token input {
+    display:none;
+}
+
+ul.p-inputtext.p-chips-multiple-container{
+    cursor: auto;
+}
+
+.p-chips .p-chips-multiple-container:not(.p-disabled):hover{
+    border-color: #B9D1E9;
+}
+
+.p-listbox-header .p-checkbox .p-checkbox-box.p-highlight,
+.p-multiselect-header .p-checkbox .p-checkbox-box.p-highlight{
+    border-color:  #8BAED0 !important;
+}
+
+.p-checkbox .p-checkbox-box:not(.p-disabled):hover {
+    border-color: #8BAED0;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled):hover {
+    background: #5D85AC;
+}
+
+.p-listbox-header.ng-star-inserted{
+    display:none;
+}
+
+.p-multiselect-header .p-checkbox{
+    display:none;
 }

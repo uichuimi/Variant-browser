@@ -12,6 +12,7 @@ export class TableComponent implements OnInit {
   @Input() elements: number;
   @Input() size: number;
   @Input() filtering: boolean;
+  @Input() empty: boolean;
   @Output() notifyPage = new EventEmitter;
 
   selectedData: any;
@@ -30,7 +31,7 @@ export class TableComponent implements OnInit {
       }
     }
     if(this.elements && changes.elements){
-      if(changes.elements.previousValue == 0 && changes.elements.currentValue != 0){
+      if(changes.elements.currentValue != 0){
         this.totalPages = Math.ceil(this.elements/this.rows);
       }
     }
@@ -191,6 +192,7 @@ export class TableComponent implements OnInit {
     this.page = 1;
     this.data = [];
     this.totalPages = 0;
+    this.empty = false;
     this.buttonClicked();
   }
 

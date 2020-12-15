@@ -1,7 +1,30 @@
 <div class="filters-content">
-    <!--<p class="filters-text">Espacio para los filtros</p>-->
-
     <div class="filters-column second">
+        <div class="search-gene">
+            <div class="searching-genes" >
+            <span class="p-input-icon-right p-float-label" >
+                <i class="pi pi-search"></i>
+                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getSearch()">  
+                <label for="float-input">Search by Gene</label>       
+            </span>
+               <div class="search-options" *ngIf="showSearching==true">
+            <p-listbox class="search-list" [options]="searchResults" optionLabel="name" optionValue="name" optionValue="id" [checkbox]="true" [multiple]="true"  
+                [(ngModel)]="geneSelection">
+                <ng-template pTemplate="footer">
+                    <p-button class="close-button" styleClass="p-button-text" icon="pi pi-times-circle" (click)="closeTag()"></p-button>
+                </ng-template>
+            </p-listbox>
+            </div>
+            </div>
+            <div class="viewing-genes" *ngIf="geneSelection != undefined && geneSelection.length != 0">
+                <p-chips [(ngModel)]="geneSelection">
+                    <ng-template let-item pTemplate="item">
+                        {{item.name}}
+                    </ng-template>
+                </p-chips>
+            </div>
+            
+        </div>
         <div class="chromosome-dropdown">
             <span class="p-float-label"> 
                 <p-multiSelect id="float-input chromosome" [options]="chromosomes" [(ngModel)]="selectedChromosome" display="chip"></p-multiSelect>
@@ -17,25 +40,6 @@
                 <p-inputNumber id="float-input positionMax"  [(ngModel)]="posMax" [min]="0" [max]="250000000" (blur)="onBlurMax()"></p-inputNumber>  
                 <label for="float-input">Position Max</label>       
             </span>
-        </div>
-        <div class="search-gene">
-            <div class="searching-genes">
-            <span class="p-input-icon-right p-float-label">
-                <i class="pi pi-search"></i>
-                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getSearch()">  
-                <label for="float-input">Search by Gene</label>       
-            </span>
-            <div class="search-options" *ngIf="showSearching==true">
-                <p-listbox class="search-list" [options]="searchResults" [checkbox]="true" [multiple]="true"  
-                [(ngModel)]="geneSelection" optionLabel="name" optionValue="id" (click)="searchMethod()" (blur)="onBlurSearch()"></p-listbox>
-            </div> 
-            </div>
-            <div class="viewing-genes" *ngIf="geneSelection != undefined ">
-                <p-chips [(ngModel)]="geneSelection" separator=","></p-chips>
-            </div>
-            <!--<ul class="search-options" *ngIf="showSearching==true">
-                <li *ngFor="let option of searchResults" class="search-list">{{option.name}}</li>
-            </ul>  -->
         </div>
         <div class="sift-dropdown">
             <span class="p-float-label"> 
@@ -67,7 +71,6 @@
                  <span class="p-float-label p-input-icon-right"> 
                      <p-inputNumber id="float-input gmaf" mode="decimal" [min]="0" [max]="1" [maxFractionDigits]="4" [minFractionDigits]="4" [(ngModel)]="gmaf" [ngClass]= "{ 'red': gmaf <= 0.0100, 
                      'orange': gmaf > 0.0100 && gmaf <= 0.1000, 'green': gmaf > 0.1000, 'empty': gmaf == null }"></p-inputNumber>
-                     <!--<i class="pi pi-times errase-gmaf" (click)="erraseGmaf()"></i>-->
                      <label for="float-input">GMAF</label>
                  </span>
              </div>

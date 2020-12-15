@@ -44,7 +44,7 @@ import { TableComponent } from './table/table.component';
     MultiSelectModule,
     ListboxModule,
     ChipsModule,
-    InputNumberModule
+    InputNumberModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

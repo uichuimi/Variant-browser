@@ -1,7 +1,7 @@
 <div class="main-container">
   <app-filters class="filters-space" (notifyFilter)="receivingFilter($event)"></app-filters>
   <div class="results-container">
-    <app-table  [filtering]= "filtering" [size]="size" [elements]="elements" [currentPage]="page" [data]="apiData" class="table-space" (notifyPage)="receivingPageChange($event)"></app-table> 
+    <app-table [empty]="empty" [filtering]= "filtering" [size]="size" [elements]="elements" [currentPage]="page" [data]="apiData" class="table-space" (notifyPage)="receivingPageChange($event)"></app-table> 
   </div>  
 </div>
 
