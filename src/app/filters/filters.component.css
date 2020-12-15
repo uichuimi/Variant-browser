@@ -9,20 +9,26 @@
 }
 
 
-.filters-column.first{
+.filters-column.second{
     width: 20%;
     display: flex;
     flex-direction: column;
 }
 
-.filters-column.second{
+.filters-column.first{
+    align-items: center;
     width: 80%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.filters-firstcolumn-row, .filters-secondcolumn-row{
+    display: flex;
     flex-wrap: wrap;
     align-items: center;
 }
-
 
 .gmaf-space{
     display: flex;
@@ -44,7 +50,7 @@
     font-weight: 600;
 }
 
-.search-gene, .gmaf-space, .chromosome-dropdown, .sift-dropdown, .polyphen-dropdown, .biotype-dropdown, .effects-dropdown{
+.search-gene, .posMin-space, .posMax-space, .gmaf-space, .chromosome-dropdown, .sift-dropdown, .polyphen-dropdown, .biotype-dropdown, .effects-dropdown{
     padding: 15px 10px;
 }
 
@@ -75,19 +81,15 @@ label {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-.position-space input{
+/*.position-space input{
     width: 100px;
 } 
-
+*/
 .position-space{
     display: flex;
 }
 
-.input-posMin{
-    margin-right: 15px;
-}
-
-.search-button, .clean-button{
+.search-button, .reset-button{
     background-color: #8BAED0;
     border: #8BAED0;
     box-shadow: 0 3px 1px -2px rgba(1, 1, 1, 0.2), 0 2px 2px 0 rgba(1, 1, 1, 0.14), 0 1px 5px 0 rgba(1, 1, 1, 0.12);
@@ -95,7 +97,7 @@ label {
     width: 200px;
 }
 
-.search-button:hover, .clean-button:hover{
+.search-button:hover, .reset-button:hover{
     background-color: #5D85AC;
     border: #5D85AC ;
 }
@@ -110,4 +112,20 @@ label {
     float: right;
 }
 
+.clean-button{
+    padding: 0;
+    margin: 0;
+    float: right;
+}
 
+.input-posMin:hover, .input-posMin:focus,
+.input-posMax:hover, .input-posMax:focus,
+.searching-genes .p-inputtext:enabled:hover{
+    border-color: #B9D1E9;
+    box-shadow: 0 0 0 0.1rem #B9D1E9;
+    border-radius: 3px;
+}
+
+.clean-number-boxes{
+    cursor: pointer;
+}

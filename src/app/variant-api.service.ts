@@ -19,10 +19,10 @@ export class VariantApiService {
     if(chromosome != undefined){
       url += '&chrom=' + chromosome;
     }
-    if(posMin != undefined){
+    if(posMin != undefined && posMin != null){
       url += '&start=' + posMin;
     }
-    if(posMax != undefined){
+    if(posMax != undefined && posMax != null){
       url += '&end=' + posMax;
     }
     if(gene != undefined && gene != ""){
@@ -64,7 +64,7 @@ export class VariantApiService {
       })
   }
 
-  getSearchData(search){
+  getGenesData(search){
     let url= 'http://193.145.155.148:9090/genes?search=' + search;
     return axios.get(url)
       .then (response => {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { VariantApiService } from './variant-api.service';
-import { OnInit, Input, Output, EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: 'app-root',
@@ -15,6 +15,7 @@ export class AppComponent {
   apiData: any = [];
   filtering: boolean = false;
   empty: boolean = false;
+  downloadLink: any = "";
 
   chromosome: any;
   posMin: any;
@@ -26,6 +27,10 @@ export class AppComponent {
   term: any;
   gmaf: any;
   
+  receivingDownload (event: any){
+    this.exportLink();
+  }
+
   receivingPageChange (event: any){
     if (event == "next"){
         this.page += 1;
@@ -38,6 +43,7 @@ export class AppComponent {
 
   receivingFilter (event: any){
     this.filtering = true;
+    this.page = 0;
     console.log("Estamos recibiendo");
     this.chromosome = event.chromosome;
     this.posMin = event.posMin;
@@ -57,16 +63,52 @@ export class AppComponent {
   }
 
   async getData (){
+    this.empty = false;
     this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax, 
       this.gene, this.sift, this.polyphen, this.biotype, this.term, this.gmaf);
     this.filtering = false;
     this.apiData = this.incomeData.data;
     this.elements = this.incomeData.elements;
     this.empty = this.incomeData.empty;
+    console.log("El empty que me llega => " + this.empty);
     this.adjustingData();
     console.log("Llamo");
   }
-  
+
+  async exportLink() {
+    this.downloadLink = "";
+    let url = 'http://193.145.155.148:9090/download/variants?';
+    if(this.chromosome != undefined){
+      url += 'chrom=' + this.chromosome + '&';
+    }
+    if(this.posMin != undefined && this.posMin != null){
+      url += 'start=' + this.posMin + '&';
+    }
+    if(this.posMax != undefined && this.posMax != null){
+      url += 'end=' + this.posMax + '&';
+    }
+    if(this.gene != undefined && this.gene != ""){
+      url += 'genes=' + this.gene + '&';
+    }
+    if(this.sift != undefined){
+      url += 'sift=' + this.sift + '&';
+    }
+    if(this.polyphen != undefined){
+      url += 'polyphen=' + this.polyphen + '&';
+    }
+    if(this.biotype != undefined){
+      url += 'biotypes=' + this.biotype + '&';
+    }
+    if(this.term != undefined){
+      url += 'terms=' + this.term + '&';
+    }
+    if(this.gmaf != undefined && this.gmaf != null){
+      url += 'maxAlleleFrequency=' + this.gmaf + '&';
+    }
+    this.downloadLink = url.substring(0, url.length-1);
+    console.log(this.downloadLink);
+  }
+
   adjustingData(){
     
     this.apiData.forEach(each => {

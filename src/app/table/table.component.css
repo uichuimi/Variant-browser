@@ -12,17 +12,17 @@
     background-color: #E2EEF9  !important;
 }
 
-.page-pannel {
-    width: 89%;
+.buttons-pannel {
+    width: 86%;
     margin: 0px 5px;
 }
 
-.page-pannel.short {
+.buttons-pannel.short {
     width: 80%;
     margin: 0px 5px;
 }
 
-.buttons-pannel {
+.page-pannel {
     float: right;
     margin: 0 auto;
 }
@@ -138,7 +138,20 @@
 }
 
 .pagination-bottom{
-    float: right !important;
+    width: 100%;
+    display:flex;
+}
+
+.paginator-left{
+    float: left;
+}
+
+.paginator-left.paginating{
+    width: 97%;
+}
+
+.paginator-right{
+    float: right;
 }
 
 .variant-link{
@@ -161,6 +174,9 @@
     word-spacing: 3px;
 }
 
+.identifier-space.spacing{
+    margin-left: 5px;
+}
 
 .preloader {
     width: 40px;
@@ -184,17 +200,12 @@
     }
   }
 
-  /*.spinner-style{
-    color: #8BAED0;
-    font-size: 2em;
-  }*/
-
-  @media (max-width: 1258px){
+/*@media (max-width: 1258px){
     .page-pannel{
         width: 85%;
     }
 
     .page-pannel.short{
-        width: 75%;
+        width: 75%;  
     }
-  }
+  }*/

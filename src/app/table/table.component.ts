@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { VariantApiService } from '../variant-api.service';
 
 
 @Component({
@@ -12,8 +13,10 @@ export class TableComponent implements OnInit {
   @Input() elements: number;
   @Input() size: number;
   @Input() filtering: boolean;
-  @Input() empty: boolean;
+  @Input() realEmpty: boolean;
+  @Input() downloadLink: any;
   @Output() notifyPage = new EventEmitter;
+  @Output() notifyDownload = new EventEmitter;
 
   selectedData: any;
   cols: any[];
@@ -22,9 +25,9 @@ export class TableComponent implements OnInit {
   rows: number = 5;
   page: number = 1;
   totalPages: number = 0;
+  
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("Elemts en changes => " + this.elements);
     if (this.filtering){
       if(changes.filtering.currentValue == true){
         this.isFiltering();
@@ -35,9 +38,18 @@ export class TableComponent implements OnInit {
         this.totalPages = Math.ceil(this.elements/this.rows);
       }
     }
+    if (this.downloadLink){
+      if (changes.downloadLink){
+        window.open(this.downloadLink,"_self");
+      }
+    }
+
+    /*if (changes.realEmpty){
+      this.empty = this.realEmpty;
+    }*/
   }
 
-  constructor ( ){
+  constructor (private VariantService: VariantApiService ){
     this.cols = [
       { field: 'identifier', header: 'Identifier' },
       { field: 'coordinate', header: 'Coordinate' },
@@ -48,11 +60,9 @@ export class TableComponent implements OnInit {
       { field: 'change', header: 'Change' },
       { field: 'gmaf', header: 'GMAF' }
   ];
-  console.log("Elemts en constructor => " + this.elements);
   }
 
   ngOnInit(): void {
-    console.log("Elemts en init => " + this.elements);
   }
 
   selectData (eachData: any){
@@ -93,25 +103,8 @@ export class TableComponent implements OnInit {
   });
   }
 
-  //<-- Métodos para descargar la tabla -->
-  exportExcel() {
-      import("xlsx").then(xlsx => {
-          const worksheet = xlsx.utils.json_to_sheet(this.data);
-          const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-          const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-          this.saveAsExcelFile(excelBuffer, "data");
-      });
-  }
-
-  saveAsExcelFile(buffer: any, fileName: string): void {
-      import("file-saver").then(FileSaver => {
-          let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-          let EXCEL_EXTENSION = '.xlsx';
-          const data: Blob = new Blob([buffer], {
-              type: EXCEL_TYPE
-          });
-          FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-      });
+  downloadExcel(){
+    this.notifyDownload.emit (true);
   }
 
   //<-- Métodos para la paginación -->   
@@ -192,8 +185,9 @@ export class TableComponent implements OnInit {
     this.page = 1;
     this.data = [];
     this.totalPages = 0;
-    this.empty = false;
+   // this.empty = false;
     this.buttonClicked();
+    console.log("Pongo empty a false");
   }
 
   receivingCloseDetails(event:any){

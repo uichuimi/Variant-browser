@@ -1,21 +1,47 @@
 <div class="filters-content">
-    <div class="filters-column second">
+    <div class="filters-column first">
+        <div class="filters-firstcolumn-row">
+        <div class="chromosome-dropdown">
+            <span class="p-float-label"> 
+                <p-multiSelect id="float-input chromosome" [options]="chromosomes" [(ngModel)]="selectedChromosome" (click)="closeGeneList()">
+                    <ng-template pTemplate="footer">
+                        <p-button class="clean-button" styleClass="p-button-text" (click)="cleanChromosomeDropdown()">Clean <i class="pi pi-refresh"></i></p-button>
+                    </ng-template>
+                </p-multiSelect>
+                <label for="float-input">Chromosome</label>
+            </span>
+        </div>
+        <div class="posMin-space">
+            <span class="p-float-label p-input-icon-right input-posMin">
+                <i class="pi pi-times clean-number-boxes" (click)="cleanPositionMin()"></i>
+                <p-inputNumber id="float-input positionMin"  [(ngModel)]="posMin" [min]="0" [max]="250000000" (click)="closeGeneList()"></p-inputNumber> 
+                <label for="float-input">Start</label>       
+            </span>
+        </div>
+        <div class="posMax-space">
+            <span class="p-float-label p-input-icon-right input-posMax">
+                <i class="pi pi-times clean-number-boxes" (click)="cleanPositionMax()"></i>
+                <p-inputNumber id="float-input positionMax"  [(ngModel)]="posMax" [min]="0" [max]="250000000" (click)="closeGeneList()"></p-inputNumber>  
+                <label for="float-input">End</label>       
+            </span>
+        </div>
         <div class="search-gene">
             <div class="searching-genes" >
             <span class="p-input-icon-right p-float-label" >
                 <i class="pi pi-search"></i>
-                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getSearch()">  
+                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getGenes()">  
                 <label for="float-input">Search by Gene</label>       
             </span>
                <div class="search-options" *ngIf="showSearching==true">
-            <p-listbox class="search-list" [options]="searchResults" optionLabel="name" optionValue="name" optionValue="id" [checkbox]="true" [multiple]="true"  
-                [(ngModel)]="geneSelection">
+            <p-listbox class="search-list" [options]="searchResults" [checkbox]="true" [multiple]="true" optionLabel="name" optionValue="name" [(ngModel)]="geneSelection">
                 <ng-template pTemplate="footer">
-                    <p-button class="close-button" styleClass="p-button-text" icon="pi pi-times-circle" (click)="closeTag()"></p-button>
+                    <p-button class="close-button" styleClass="p-button-text" icon="pi pi-times-circle" (click)="closeGeneList()"></p-button>
                 </ng-template>
             </p-listbox>
             </div>
             </div>
+        </div>
+        <div class="printing-genes">
             <div class="viewing-genes" *ngIf="geneSelection != undefined && geneSelection.length != 0">
                 <p-chips [(ngModel)]="geneSelection">
                     <ng-template let-item pTemplate="item">
@@ -23,61 +49,64 @@
                     </ng-template>
                 </p-chips>
             </div>
-            
         </div>
-        <div class="chromosome-dropdown">
-            <span class="p-float-label"> 
-                <p-multiSelect id="float-input chromosome" [options]="chromosomes" [(ngModel)]="selectedChromosome" display="chip"></p-multiSelect>
-                <label for="float-input">Chromosome</label>
-            </span>
         </div>
-        <div class="position-space">
-            <span class="p-float-label input-posMin">
-                <p-inputNumber id="float-input positionMin"  [(ngModel)]="posMin" [min]="0" [max]="250000000" (blur)="onBlurMin()"></p-inputNumber> 
-                <label for="float-input">Position Min</label>       
-            </span>
-            <span class="p-float-label iput-posMax">
-                <p-inputNumber id="float-input positionMax"  [(ngModel)]="posMax" [min]="0" [max]="250000000" (blur)="onBlurMax()"></p-inputNumber>  
-                <label for="float-input">Position Max</label>       
-            </span>
-        </div>
+    <div class="filters-secondcolumn-row">
         <div class="sift-dropdown">
             <span class="p-float-label"> 
-                <p-multiSelect id="float-input sift" [options]="siftOptions" [(ngModel)]="selectedSift"></p-multiSelect>
+                <p-multiSelect id="float-input sift" [options]="siftOptions" [(ngModel)]="selectedSift" (click)="closeGeneList()">
+                    <ng-template pTemplate="footer">
+                        <p-button class="clean-button" styleClass="p-button-text" (click)="cleanSiftDropdown()">Clean <i class="pi pi-refresh"></i></p-button>
+                    </ng-template>
+                </p-multiSelect>
                 <label for="float-input">Sift</label>
             </span>
         </div>
 
         <div class="polyphen-dropdown">
             <span class="p-float-label"> 
-                <p-multiSelect id="float-input polyphen" [options]="polyphenOptions" [(ngModel)]="selectedPolyphen"></p-multiSelect>
+                <p-multiSelect id="float-input polyphen" [options]="polyphenOptions" [(ngModel)]="selectedPolyphen" (click)="closeGeneList()">
+                    <ng-template pTemplate="footer">
+                        <p-button class="clean-button" styleClass="p-button-text" (click)="cleanPolyphenDropdown()">Clean <i class="pi pi-refresh"></i></p-button>
+                    </ng-template>
+                </p-multiSelect>
                 <label for="float-input">Polyphen</label>
             </span>
         </div>
         <div class="biotype-dropdown">
             <span class="p-float-label"> 
-                <p-multiSelect id="float-input biotype" [options]="biotypes" [(ngModel)]="selectedBiotype" ></p-multiSelect>
+                <p-multiSelect id="float-input biotype" [options]="biotypes" [(ngModel)]="selectedBiotype"(click)="closeGeneList()">
+                    <ng-template pTemplate="footer">
+                        <p-button class="clean-button" styleClass="p-button-text" (click)="cleanBiotypeDropdown()">Clean <i class="pi pi-refresh"></i></p-button>
+                    </ng-template>
+                </p-multiSelect>
                 <label for="float-input">Biotype</label>
             </span>
         </div>
         <div class="effects-dropdown">
             <span class="p-float-label"> 
-                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="selectedEffects"></p-multiSelect>
+                <p-multiSelect id="float-input effects" [options]="effects" [(ngModel)]="selectedEffects" (click)="closeGeneList()">
+                <ng-template pTemplate="footer">
+                    <p-button class="clean-button" styleClass="p-button-text" (click)="cleanEffectsDropdown()">Clean <i class="pi pi-refresh"></i></p-button>
+                </ng-template>
+                </p-multiSelect>
                 <label for="float-input">Effects</label>
             </span>
         </div>
         <div class="gmaf-space">
             <div class="enter-gmaf">
                  <span class="p-float-label p-input-icon-right"> 
-                     <p-inputNumber id="float-input gmaf" mode="decimal" [min]="0" [max]="1" [maxFractionDigits]="4" [minFractionDigits]="4" [(ngModel)]="gmaf" [ngClass]= "{ 'red': gmaf <= 0.0100, 
-                     'orange': gmaf > 0.0100 && gmaf <= 0.1000, 'green': gmaf > 0.1000, 'empty': gmaf == null }"></p-inputNumber>
+                    <i class="pi pi-times clean-number-boxes" (click)="cleanGmaf()"></i>
+                     <p-inputNumber id="float-input gmaf" mode="decimal" [min]="0" [max]="1" [maxFractionDigits]="4" [minFractionDigits]="4" [(ngModel)]="gmaf" [ngClass]= "{ 'red': gmaf <= 0.0100 && gmaf!= null, 
+                     'orange': gmaf > 0.0100 && gmaf <= 0.1000, 'green': gmaf > 0.1000, 'empty': gmaf == null }" (click)="closeGeneList()"></p-inputNumber>
                      <label for="float-input">GMAF</label>
                  </span>
              </div>
          </div>
      </div>
-     <div class="filters-column first">
-        <button pButton type="button" class="clean-button" label="Reset" (click)="cleanFilters()"></button>
+    </div>
+     <div class="filters-column second">
+        <button pButton type="button" class="reset-button" label="Reset" (click)="cleanFilters()"></button>
         <button pButton type="button" class="search-button" label="Search" (click)="filterVariants()"></button>
 </div>
 </div>

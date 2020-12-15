@@ -81,11 +81,19 @@
 }
 
 .p-datatable .p-datatable-thead > tr > th{
-    background: #E2EEF9;
+    background: #B9D1E9;
 }
 
 .p-datatable .p-paginator-bottom{
     display:none;
+}
+
+tbody.p-datatable-tbody {
+    border: 1px solid #E2EEF9;
+}
+
+thead.p-datatable-thead {
+    border: 1px solid #B9D1E9;
 }
 
 /* Details */
@@ -114,11 +122,30 @@
     border-color: transparent;
 }
 
-.close-button .p-button.p-button-text:hover{
+.clean-button .p-button.p-button-text:hover{
     box-shadow: 0 0 0 0.2rem transparent;
 }
 
+.clean-button .p-button.p-button-text{
+    background-color: transparent;
+    color: #8BAED0;
+    border-color: transparent;
+}
 
+.clean-button .p-button.p-button-text:hover{
+    background-color: transparent;
+    color: #5D85AC  ;
+    border-color: transparent;
+}
+
+.clean-button .p-button.p-button-text:hover{
+    box-shadow: 0 0 0 0.2rem transparent;
+}
+
+ul.p-inputtext.p-chips-multiple-container{
+    background: transparent;
+    border: 1px solid transparent;
+}
 
 /* Filtros */
 .p-inputtext:enabled:focus {
@@ -133,49 +160,49 @@
 
 .red input.p-inputnumber-input.p-inputtext.p-component.p-filled{
     background-color: #ffcdd2;
-    border-color: #ffcdd2 !important;
+    border-color: #ffcdd2;
     color: #c63737;
 }
 
 .orange input.p-inputnumber-input.p-inputtext.p-component.p-filled{
     background-color: #feedaf;
-    border-color: #feedaf !important;
+    border-color: #feedaf;
     color: darkorange;
 }
 
 .green input.p-inputnumber-input.p-inputtext.p-component.p-filled{
     background-color: #c8e6c9;
-    border-color: #c8e6c9 !important;
+    border-color: #c8e6c9;
     color: green;
 }
 
+.empty .p-inputtext:enabled:hover{
+    border-color: #B9D1E9;
+    box-shadow: 0 0 0 0.1rem #B9D1E9;
+    border-radius: 3px;
+}
 
-.red .p-inputtext:enabled:focus {
+.red .p-inputtext:enabled:hover{
     box-shadow: 0 0 0 0.04rem #c63737;
     border-color: #ffcdd2;
 }
 
-.red .p-inputtext:enabled:hover{
-    border-color: #ffcdd2;
-}
-
-.orange .p-inputtext:enabled:focus {
+.orange .p-inputtext:enabled:hover{
     box-shadow: 0 0 0 0.04rem darkorange;
     border-color: #feedaf;
 }
 
-.orange .p-inputtext:enabled:hover{
-    border-color: #feedaf;
-}
 
-
-.green.p-inputtext:enabled:focus {
+.green .p-inputtext:enabled:hover{
     box-shadow: 0 0 0 0.04rem green;
     border-color:  #c8e6c9;
 }
 
-.green.p-inputtext:enabled:hover{
-    border-color:  #c8e6c9;
+.green .p-inputtext:enabled:focus, .red .p-inputtext:enabled:focus, .orange .p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 0.04rem #B9D1E9;
+    border-color:  #B9D1E9 !important;
+    background: white !important;
+    color: #495057 !important;
 }
 
 .chromosome-dropdown .p-multiselect .p-multiselect-panel, 
@@ -202,26 +229,6 @@
     word-break: break-word;
 }
 
-/*.filters-content .ng-trigger.ng-trigger-overlayAnimation.p-dropdown-panel.p-component.ng-star-inserted{
-    top: 40px !important;
-}
-
-.p-dropdown .p-dropdown-label{
-    text-transform: capitalize;
-}*/
-
-.ng5-slider .ng5-slider-bar{
-    background-color:  #8BAED0 !important;
-}
-
-.ng5-slider .ng5-slider-pointer {
-    background-color:  #8BAED0 !important;
-    
-}
-
-.ng5-slider .ng5-slider-pointer.ng5-slider-active:after {
-    background-color: white !important;
-}
 
 :focus {
     outline: -webkit-focus-ring-color auto 0px;
@@ -300,16 +307,19 @@ ul.p-listbox-list{
     width:105px;
 }
 
-.search-gene .viewing-genes .p-chips .p-chips-multiple-container .p-chips-input-token input {
+.viewing-genes .p-chips .p-chips-multiple-container .p-chips-input-token input {
     display:none;
 }
 
 ul.p-inputtext.p-chips-multiple-container{
     cursor: auto;
+    max-width: 800px;
+    overflow: auto;
+    
 }
 
 .p-chips .p-chips-multiple-container:not(.p-disabled):hover{
-    border-color: #B9D1E9;
+    border-color: transparent;
 }
 
 .p-listbox-header .p-checkbox .p-checkbox-box.p-highlight,
@@ -332,3 +342,9 @@ ul.p-inputtext.p-chips-multiple-container{
 .p-multiselect-header .p-checkbox{
     display:none;
 }
+
+.filters-space clean-button .p-button:focus {
+    box-shadow: 0 0 0 0.2rem transparent;
+}
+
+

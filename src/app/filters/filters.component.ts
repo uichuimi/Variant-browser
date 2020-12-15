@@ -17,9 +17,9 @@ export class FiltersComponent implements OnInit {
   selectedSift: any;
   selectedPolyphen: any;
   selectedChromosome: any;
-  gmaf: number= 0.01;
-  posMin: number = 0;
-  posMax: number = 250000000;
+  gmaf: number= null;
+  posMin: number = null;
+  posMax: number = null;
   chipList: any = [];
 
   selectedEffects: any;
@@ -39,7 +39,7 @@ export class FiltersComponent implements OnInit {
   filteringData: any;
 
   constructor( private VariantService: VariantApiService) {
-    this.getData();
+    this.getEffectAndBiotype();
 
     this.chromosomes= [
       {label: '1', value: '1'},
@@ -84,56 +84,52 @@ export class FiltersComponent implements OnInit {
   ngOnInit() {
   }
 
-  onBlurMin(){
-    if (this.posMin == null){
-      this.posMin = 0;
-    }
-    console.log(this.posMin);
-  }
-
-  onBlurMax(){
-    if (this.posMax == null){
-      this.posMax = 250000000;
-    }
-    console.log(this.posMax);
-  }
-
- /* onBlurSearch(){
-    console.log("EEEEEOOOOOO");
-    this.showSearching = false;
-    /*this.showSearching = false;
-    this.search = "";
-  }
-*/
-  closeTag(){
+  closeGeneList(){
     this.showSearching=false;
     this.search = "";
   }
 
-  cleanTag(){
-    this.geneSelection = [];
+  cleanChromosomeDropdown(){
+    this.selectedChromosome = null;
   }
-  
-  erraseGmaf(){
+
+  cleanPositionMin(){
+    this.posMin = null;
+  }
+
+  cleanPositionMax(){
+    this.posMax = null;
+  }
+
+  cleanSiftDropdown(){
+    this.selectedSift = null;
+  }
+
+  cleanPolyphenDropdown(){
+    this.selectedPolyphen = null;
+  }
+
+  cleanBiotypeDropdown(){
+    this.selectedBiotype = null;
+  }
+
+  cleanEffectsDropdown(){
+    this.selectedEffects = null;
+  }
+
+  cleanGmaf(){
     this.gmaf = null;
   }
 
-  dudilla(){
-    console.log(this.geneSelection);
-  }
-
-  creatingChips(){
-    this.searchMethod();
-    this.chipList.push(this.selectedGenes);
-  }
+ 
 
   searchMethod(){
     this.selectedGenes= "";
-    if (this.geneSelection != undefined){
+    if (this.geneSelection != undefined && this.geneSelection != []){
       this.geneSelection.forEach(element => {
-        this.selectedGenes += element.name + ","; 
+        this.searchResults += element.name + ","; 
       });
-      this.selectedGenes = this.selectedGenes.substring( 0, this.selectedGenes.length-1);
+      this.searchResults = this.selectedGenes.substring( 0, this.selectedGenes.length-1);
     }
   }  
 
@@ -145,10 +141,11 @@ export class FiltersComponent implements OnInit {
     this.selectedBiotype = null;
     this.selectedEffects = null;
     this.selectedGenes = "";
-    this.posMax = 250000000;
-    this.posMin = 0;
-    this.gmaf = 0.01;
-    //this.filterVariants();
+    this.geneSelection = [];
+    this.posMax = null;
+    this.posMin = null;
+    this.gmaf = null;
+    this.search = "";
   }
 
   filterVariants(){
@@ -170,18 +167,37 @@ export class FiltersComponent implements OnInit {
 
   // < ------ Llamadas a la API --------->
 
-  async getSearch(){
+  async getGenes(){
+    /*var results = [];
+    this.searchResults = [];
+    if (this.search.length >= 3){
+      this.showSearching = true;
+      this.searchResults= await this.VariantService.getGenesData(this.search);
+    } else {
+      this.showSearching = false;
+    }*/
+
     var results = [];
     this.searchResults = [];
     if (this.search.length >= 3){
       this.showSearching = true;
-      this.searchResults= await this.VariantService.getSearchData(this.search);
-    } else {
-      this.showSearching = false;
+      this.searchResults= await this.VariantService.getGenesData(this.search);
+      /*results.forEach( element => {
+        if (element.name.toLowerCase().includes(this.search.toLowerCase()) == true){
+          searchers.push
+        }
+      });*/
+      this.searchResults = this.searchResults.sort();
+      console.log(this.searchResults);
+      console.log(this.searchResults.sort());
+      } else {
+        this.showSearching = false;
+      }
     }
-  } 
 
-  async getData(){
+  
+
+  async getEffectAndBiotype(){
       var effect;
       var biotype;
       console.log("Esto =>" + this.geneSelection);

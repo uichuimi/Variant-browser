@@ -10,11 +10,6 @@
     margin-left: 3%;
 }
 
-/*.details-card{
-    box-shadow: rgb(185, 209, 233) 0px 2px 1px -1px, rgb(185, 209, 233) 0px 1px 1px 0px, rgb(185, 209, 233) 0px 1px 3px 0px !important;
-    border-radius: 10px !important;
-}
-*/
 .table-property{
     text-align: center !important;
     padding: 0rem 0.2rem !important;
@@ -91,8 +86,9 @@
 }
 
 .details-table th{
-    background-color: #E2EEF9 !important;
+    background: #E2EEF9 !important;
     padding: 14px;
+    border: 1px solid #E2EEF9 !important;
 }
 
 .details-table.first-choice .label{
@@ -151,10 +147,16 @@
     justify-content: flex-end;
 }
 
-.no-gmafData{
+.no-data{
     margin: 0 auto;
     text-align: center;
     color: #495057;
     font-style: italic;
     font-weight: 600;
+}
+
+.no-data p{
+    margin: 0 auto;
+    border: 1px solid #E2EEF9;
+    padding: 12px;
 }
