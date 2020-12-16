@@ -127,9 +127,9 @@ export class FiltersComponent implements OnInit {
     this.selectedGenes= "";
     if (this.geneSelection != undefined && this.geneSelection != []){
       this.geneSelection.forEach(element => {
-        this.searchResults += element.name + ","; 
+        this.selectedGenes += element.name + ","; 
       });
-      this.searchResults = this.selectedGenes.substring( 0, this.selectedGenes.length-1);
+      this.selectedGenes = this.selectedGenes.substring( 0, this.selectedGenes.length-1);
     }
   }  
 
@@ -168,34 +168,15 @@ export class FiltersComponent implements OnInit {
   // < ------ Llamadas a la API --------->
 
   async getGenes(){
-    /*var results = [];
+    var results = [];
     this.searchResults = [];
     if (this.search.length >= 3){
       this.showSearching = true;
       this.searchResults= await this.VariantService.getGenesData(this.search);
     } else {
       this.showSearching = false;
-    }*/
-
-    var results = [];
-    this.searchResults = [];
-    if (this.search.length >= 3){
-      this.showSearching = true;
-      this.searchResults= await this.VariantService.getGenesData(this.search);
-      /*results.forEach( element => {
-        if (element.name.toLowerCase().includes(this.search.toLowerCase()) == true){
-          searchers.push
-        }
-      });*/
-      this.searchResults = this.searchResults.sort();
-      console.log(this.searchResults);
-      console.log(this.searchResults.sort());
-      } else {
-        this.showSearching = false;
-      }
     }
-
-  
+  }
 
   async getEffectAndBiotype(){
       var effect;

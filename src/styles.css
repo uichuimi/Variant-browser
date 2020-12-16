@@ -315,7 +315,7 @@ ul.p-inputtext.p-chips-multiple-container{
     cursor: auto;
     max-width: 800px;
     overflow: auto;
-    
+    margin-bottom: 10px;
 }
 
 .p-chips .p-chips-multiple-container:not(.p-disabled):hover{
