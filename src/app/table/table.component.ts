@@ -38,6 +38,13 @@ export class TableComponent implements OnInit {
         this.totalPages = Math.ceil(this.elements/this.rows);
       }
     }
+
+    if (this.filtering && this.elements){
+      if (changes.filtering.currentValue == true && !changes.elements){
+        this.totalPages = Math.ceil(this.elements/this.rows);
+      }
+    }
+
     if (this.downloadLink){
       if (changes.downloadLink){
         window.open(this.downloadLink,"_self");
