@@ -6,7 +6,7 @@
           <strong>{{selected.gene.name}}</strong> : <a target="_blank" class="gene-link" href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selected.gene.identifier}}">{{selected.gene.identifier}}</a>, 
           {{selected.gene.description.substring(0,selected.gene.description.indexOf("[")-1)}}, {{selected.gene.biotype}}.
         </p>
-        <div id="effect-space"><strong class="effect-name">{{selected.effect.term}}</strong><p class="effect-description">{{selected.effect.description}}</p>
+        <div id="effect-space" *ngIf="selected.effect != null"><strong class="effect-name">{{selected.effect.term}}</strong><p class="effect-description">{{selected.effect.description}}</p>
         </div>
         
         <p-table [value]="populations" class="details-table">

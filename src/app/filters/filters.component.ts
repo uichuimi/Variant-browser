@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {SelectItem} from 'primeng/api';
-import { Options } from 'ng5-slider';
 import { VariantApiService } from '../variant-api.service';
 
 @Component({
@@ -20,8 +19,8 @@ export class FiltersComponent implements OnInit {
   gmaf: number= null;
   posMin: number = null;
   posMax: number = null;
-  chipList: any = [];
-
+  filteringData: any;
+  
   selectedEffects: any;
   effects: any =[];
   effectSelection: any;
@@ -32,11 +31,8 @@ export class FiltersComponent implements OnInit {
   showSearching: boolean = false;
   search: any = "";
   searchResults: any = [];
-
   geneSelection: any;
   selectedGenes: any = "";
-
-  filteringData: any;
 
   constructor( private VariantService: VariantApiService) {
     this.getEffectAndBiotype();
@@ -121,8 +117,6 @@ export class FiltersComponent implements OnInit {
     this.gmaf = null;
   }
 
- 
-
   searchMethod(){
     this.selectedGenes= "";
     if (this.geneSelection != undefined && this.geneSelection != []){
@@ -181,7 +175,6 @@ export class FiltersComponent implements OnInit {
   async getEffectAndBiotype(){
       var effect;
       var biotype;
-      console.log("Esto =>" + this.geneSelection);
       effect = await this.VariantService.getTermsData();
       effect.forEach(element => {
         this.effects.push({label: element.displayName, value: element.term})

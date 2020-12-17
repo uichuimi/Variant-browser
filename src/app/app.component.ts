@@ -10,7 +10,7 @@ import { VariantApiService } from './variant-api.service';
 export class AppComponent {
   page: number = 0;
   elements: number = 0;
-  size: number = 60;
+  size: number = 100;
   incomeData: any = [];
   apiData: any = [];
   filtering: boolean = false;
@@ -44,7 +44,6 @@ export class AppComponent {
   receivingFilter (event: any){
     this.filtering = true;
     this.page = 0;
-    console.log("Estamos recibiendo");
     this.chromosome = event.chromosome;
     this.posMin = event.posMin;
     this.posMax = event.posMax;
@@ -54,7 +53,6 @@ export class AppComponent {
     this.biotype = event.biotype;
     this.term = event.term;
     this.gmaf = event.gmaf;
-    console.log(event);
     this.getData();
   }
 
@@ -70,9 +68,7 @@ export class AppComponent {
     this.apiData = this.incomeData.data;
     this.elements = this.incomeData.elements;
     this.empty = this.incomeData.empty;
-    console.log("El empty que me llega => " + this.empty);
     this.adjustingData();
-    console.log("Llamo");
   }
 
   async exportLink() {
@@ -112,7 +108,6 @@ export class AppComponent {
   adjustingData(){
     
     this.apiData.forEach(each => {
-        //each.gmaf = Math.max.apply (null, each.frequencies.map(frequencie => {return frequencie.value}));
         each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
         each.frequencies.forEach(frequencie => {
           switch(frequencie.source){
@@ -138,9 +133,7 @@ export class AppComponent {
             each.polyphen = "possibly damaging";
           break;
         }
-        
       });   
-    
   }
 }
   

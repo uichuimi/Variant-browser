@@ -5,11 +5,9 @@ import { FormsModule } from '@angular/forms';
 
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
-import { CardModule } from 'primeng/card';
+import {CardModule} from 'primeng/card';
 import {DropdownModule} from 'primeng/dropdown';
 import {InputTextModule} from 'primeng/inputtext';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import { Ng5SliderModule } from 'ng5-slider';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {ListboxModule} from 'primeng/listbox';
 import {ChipsModule} from 'primeng/chips';
@@ -39,8 +37,6 @@ import { TableComponent } from './table/table.component';
     CardModule,
     DropdownModule,
     InputTextModule,
-    Ng5SliderModule,
-    InputTextareaModule,
     MultiSelectModule,
     ListboxModule,
     ChipsModule,

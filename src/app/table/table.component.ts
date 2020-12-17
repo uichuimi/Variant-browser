@@ -22,7 +22,7 @@ export class TableComponent implements OnInit {
   cols: any[];
   pageChange: string = "";
   first: number =0;
-  rows: number = 5;
+  rows: number = 10;
   page: number = 1;
   totalPages: number = 0;
   
@@ -50,10 +50,6 @@ export class TableComponent implements OnInit {
         window.open(this.downloadLink,"_self");
       }
     }
-
-    /*if (changes.realEmpty){
-      this.empty = this.realEmpty;
-    }*/
   }
 
   constructor (private VariantService: VariantApiService ){
@@ -74,7 +70,6 @@ export class TableComponent implements OnInit {
 
   selectData (eachData: any){
     this.selectedData = eachData;
-    console.log(this.selectedData);
   }
 
 
@@ -113,6 +108,24 @@ export class TableComponent implements OnInit {
   downloadExcel(){
     this.notifyDownload.emit (true);
   }
+
+  
+  isFiltering(){
+    this.first = 0;
+    this.page = 1;
+    this.data = [];
+    this.totalPages = 0;
+    this.buttonClicked();
+  }
+
+  receivingCloseDetails(event:any){
+    this.buttonClicked();
+  }
+  
+  buttonClicked(){
+    this.selectedData = null;
+  }
+
 
   //<-- Métodos para la paginación -->   
 
@@ -163,7 +176,7 @@ export class TableComponent implements OnInit {
   isRealLastPage(): boolean {
     var result = false;
     var math = Math.ceil((this.elements*(this.size / this.rows)) / this.size);
-    if (this.page == math-1){
+    if (this.page == math){
       result = true;
     }
     return result;
@@ -183,26 +196,6 @@ export class TableComponent implements OnInit {
       result = true;
     }
     return result;
-  }
-
-  // <-------------------------------------------------------------->
-
-  isFiltering(){
-    this.first = 0;
-    this.page = 1;
-    this.data = [];
-    this.totalPages = 0;
-   // this.empty = false;
-    this.buttonClicked();
-    console.log("Pongo empty a false");
-  }
-
-  receivingCloseDetails(event:any){
-    this.buttonClicked();
-  }
-  
-  buttonClicked(){
-    this.selectedData = null;
   }
 
 }
