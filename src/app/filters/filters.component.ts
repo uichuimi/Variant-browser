@@ -1,7 +1,24 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SelectItem} from 'primeng/api';
-import { Options } from 'ng5-slider';
-import { VariantApiService } from '../variant-api.service';
+import {VariantApiService} from '../variant-api.service';
+
+function genes_comparator(term: string) {
+  return (a, b) => {
+    if (a.name.toLowerCase().includes(term)) {
+      if (b.name.toLowerCase().includes(term)) {
+        return a.name.localeCompare(b.name);
+      } else {
+        return -1;
+      }
+    } else {
+      if (b.name.toLowerCase().includes(term)) {
+        return 1;
+      } else {
+        return a.name.localeCompare(b.name);
+      }
+    }
+  };
+}
 
 @Component({
   selector: 'app-filters',
@@ -113,39 +130,38 @@ export class FiltersComponent implements OnInit {
     this.selectedBiotype = null;
   }
 
-  cleanEffectsDropdown(){
+  cleanEffectsDropdown() {
     this.selectedEffects = null;
   }
 
-  cleanGmaf(){
+  cleanGmaf() {
     this.gmaf = null;
   }
 
- 
 
   searchMethod(){
     this.selectedGenes= "";
     if (this.geneSelection != undefined && this.geneSelection != []){
       this.geneSelection.forEach(element => {
-        this.selectedGenes += element.name + ","; 
+        this.selectedGenes += element.name + ",";
       });
       this.selectedGenes = this.selectedGenes.substring( 0, this.selectedGenes.length-1);
     }
-  }  
+  }
 
-  cleanFilters(){
+  cleanFilters() {
     this.showSearching = false;
     this.selectedSift = null;
     this.selectedPolyphen = null;
     this.selectedChromosome = null;
     this.selectedBiotype = null;
     this.selectedEffects = null;
-    this.selectedGenes = "";
+    this.selectedGenes = '';
     this.geneSelection = [];
     this.posMax = null;
     this.posMin = null;
     this.gmaf = null;
-    this.search = "";
+    this.search = '';
   }
 
   filterVariants(){
@@ -167,12 +183,12 @@ export class FiltersComponent implements OnInit {
 
   // < ------ Llamadas a la API --------->
 
-  async getGenes(){
-    var results = [];
+  async getGenes() {
     this.searchResults = [];
-    if (this.search.length >= 3){
+    if (this.search.length >= 3) {
       this.showSearching = true;
-      this.searchResults= await this.VariantService.getGenesData(this.search);
+      this.searchResults = await this.VariantService.getGenesData(this.search);
+      this.searchResults.sort(genes_comparator(this.search.toLowerCase()));
     } else {
       this.showSearching = false;
     }
