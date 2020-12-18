@@ -8,8 +8,8 @@
         <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text" [disabled] = "isRealLastPage() == true || this.data.length == 0 || this.data == undefined"></p-button> 
       </div>
       <div class="page-pannel">
-        <p *ngIf="totalPages == 0 || realEmpty == true"> Page 0 of {{totalPages}}</p>
-        <p *ngIf="totalPages !=0"> Page {{page}} of {{totalPages}}</p>
+        <p *ngIf="totalPages == 0 || realEmpty == true"> Page 0 of 0</p>
+        <p *ngIf="totalPages !=0 && realEmpty == false"> Page {{page}} of {{totalPages}}</p>
        </div>
       </div>
 </ng-template>      
