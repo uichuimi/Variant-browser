@@ -9,7 +9,6 @@ export class VariantApiService {
   showAltValue: any = {showAlt: false};
   showRefValue: any = {showRef: false};
   modifiedResponse: any = [];
-  genes: any = [];
   incomeInfo: any = {data: [], elements: 0, empty: true};
 
   constructor() { }

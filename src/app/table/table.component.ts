@@ -114,6 +114,7 @@ export class TableComponent implements OnInit {
     this.first = 0;
     this.page = 1;
     this.data = [];
+    this.elements = 0;
     this.totalPages = 0;
     this.buttonClicked();
   }
