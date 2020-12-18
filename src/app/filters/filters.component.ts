@@ -30,9 +30,10 @@ export class FiltersComponent implements OnInit {
 
   showSearching: boolean = false;
   search: any = "";
-  searchResults: any = [];
+  searchResults: any;
   geneSelection: any;
-  selectedGenes: any = "";
+  selectedGenes: any;
+  listOfGenes: any;
 
   constructor( private VariantService: VariantApiService) {
     this.getEffectAndBiotype();
@@ -118,13 +119,14 @@ export class FiltersComponent implements OnInit {
   }
 
   searchMethod(){
-    this.selectedGenes= "";
+    console.log(this.geneSelection);
+    /*this.selectedGenes= "";
     if (this.geneSelection != undefined && this.geneSelection != []){
       this.geneSelection.forEach(element => {
-        this.selectedGenes += element.name + ","; 
+        this.selectedGenes += element + ","; 
       });
       this.selectedGenes = this.selectedGenes.substring( 0, this.selectedGenes.length-1);
-    }
+    }*/
   }  
 
   cleanFilters(){
@@ -163,10 +165,29 @@ export class FiltersComponent implements OnInit {
 
   async getGenes(){
     var results = [];
+    var genesName: any =[];
+    var genesDescription: any =[];
+    var searching = [];
+    this.listOfGenes = [];
     this.searchResults = [];
     if (this.search.length >= 3){
       this.showSearching = true;
-      this.searchResults= await this.VariantService.getGenesData(this.search);
+      results= await this.VariantService.getGenesData(this.search);
+      results.forEach(element => {
+        genesName.push(element.name);
+        genesDescription.push(element.name);
+        genesName = genesName.filter( element => element.toLowerCase().includes(this.search.toLowerCase()) == true);
+        genesDescription = genesDescription.filter(element => element.toLowerCase().includes(this.search.toLowerCase()) == false);
+        this.searchResults = genesName.sort().concat(genesDescription.sort());
+        
+        //this.searching=(this.searchResults.split(","));
+      });
+     /* this.searchResults.forEach(element => {
+          this.searching.push({name: element});
+      });*/
+      console.log("Search => " + this.searchResults);
+      console.log("Los buenos => " + genesName);
+      console.log("Los malos => " + genesDescription);
     } else {
       this.showSearching = false;
     }
@@ -177,7 +198,7 @@ export class FiltersComponent implements OnInit {
       var biotype;
       effect = await this.VariantService.getTermsData();
       effect.forEach(element => {
-        this.effects.push({label: element.displayName, value: element.term})
+        this.effects.push({label: element.displayName, value: element.term});
       });
       biotype = await this.VariantService.getBiotypeData();
       biotype.sort().forEach(element => {
