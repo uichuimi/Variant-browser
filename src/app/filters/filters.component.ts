@@ -2,6 +2,24 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import { VariantApiService } from '../variant-api.service';
 
+function genes_comparator(term: string) {
+  return (a, b) => {
+    if (a.name.toLowerCase().includes(term)) {
+      if (b.name.toLowerCase().includes(term)) {
+        return a.name.localeCompare(b.name);
+      } else {
+        return -1;
+      }
+    } else {
+      if (b.name.toLowerCase().includes(term)) {
+        return 1;
+      } else {
+        return a.name.localeCompare(b.name);
+      }
+    }
+  };
+}
+
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
@@ -20,7 +38,7 @@ export class FiltersComponent implements OnInit {
   posMin: number = null;
   posMax: number = null;
   filteringData: any;
-  
+
   selectedEffects: any;
   effects: any =[];
   effectSelection: any;
@@ -119,15 +137,14 @@ export class FiltersComponent implements OnInit {
   }
 
   searchMethod(){
-    console.log(this.geneSelection);
-    /*this.selectedGenes= "";
+    this.selectedGenes= "";
     if (this.geneSelection != undefined && this.geneSelection != []){
       this.geneSelection.forEach(element => {
-        this.selectedGenes += element + ","; 
+        this.selectedGenes += element.name + ",";
       });
       this.selectedGenes = this.selectedGenes.substring( 0, this.selectedGenes.length-1);
-    }*/
-  }  
+    }
+  }
 
   cleanFilters(){
     this.showSearching = false;
@@ -163,31 +180,12 @@ export class FiltersComponent implements OnInit {
 
   // < ------ Llamadas a la API --------->
 
-  async getGenes(){
-    var results = [];
-    var genesName: any =[];
-    var genesDescription: any =[];
-    var searching = [];
-    this.listOfGenes = [];
+  async getGenes() {
     this.searchResults = [];
-    if (this.search.length >= 3){
+    if (this.search.length >= 3) {
       this.showSearching = true;
-      results= await this.VariantService.getGenesData(this.search);
-      results.forEach(element => {
-        genesName.push(element.name);
-        genesDescription.push(element.name);
-        genesName = genesName.filter( element => element.toLowerCase().includes(this.search.toLowerCase()) == true);
-        genesDescription = genesDescription.filter(element => element.toLowerCase().includes(this.search.toLowerCase()) == false);
-        this.searchResults = genesName.sort().concat(genesDescription.sort());
-        
-        //this.searching=(this.searchResults.split(","));
-      });
-     /* this.searchResults.forEach(element => {
-          this.searching.push({name: element});
-      });*/
-      console.log("Search => " + this.searchResults);
-      console.log("Los buenos => " + genesName);
-      console.log("Los malos => " + genesDescription);
+      this.searchResults = await this.VariantService.getGenesData(this.search);
+      this.searchResults.sort(genes_comparator(this.search.toLowerCase()));
     } else {
       this.showSearching = false;
     }
