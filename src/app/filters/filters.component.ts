@@ -162,7 +162,6 @@ export class FiltersComponent implements OnInit {
   // < ------ Llamadas a la API --------->
 
   async getGenes(){
-    var results = [];
     this.searchResults = [];
     if (this.search.length >= 3){
       this.showSearching = true;
