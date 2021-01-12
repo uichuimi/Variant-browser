@@ -8,7 +8,7 @@ import { VariantApiService } from '../variant-api.service';
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent implements OnInit {
-  @Input() data: any[];
+  @Input() variants: any[];
   @Input() currentPage: number;
   @Input() elements: number;
   @Input() size: number;
@@ -18,7 +18,7 @@ export class TableComponent implements OnInit {
   @Output() notifyPage = new EventEmitter;
   @Output() notifyDownload = new EventEmitter;
 
-  selectedData: any;
+  selectedVariants: any;
   cols: any[];
   pageChange: string = "";
   first: number =0;
@@ -29,7 +29,7 @@ export class TableComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.filtering){
-      if(changes.filtering.currentValue == true){
+      if(changes.filtering.currentValue){
         this.isFiltering();
       }
     }
@@ -40,7 +40,7 @@ export class TableComponent implements OnInit {
     }
 
     if (this.filtering && this.elements){
-      if (changes.filtering.currentValue == true && !changes.elements){
+      if (changes.filtering.currentValue && !changes.elements){
         this.totalPages = Math.ceil(this.elements/this.rows);
       }
     }
@@ -68,39 +68,39 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selectData (eachData: any){
-    this.selectedData = eachData;
+  selectVariant (eachVariant: any){
+    this.selectedVariants = eachVariant;
   }
 
 
-  showAlt(eachData: any){
-    this.data.forEach(element => {
-        if (element == eachData){
-          eachData.showAlt = true;
+  showAlt(eachVariant: any){
+    this.variants.forEach(element => {
+        if (element == eachVariant){
+          eachVariant.showAlt = true;
         }
     });
   }
 
-  hideAlt(eachData: any){
-    this.data.forEach(element => {
-      if (element == eachData){
-        eachData.showAlt = false;
+  hideAlt(eachVariant: any){
+    this.variants.forEach(element => {
+      if (element == eachVariant){
+        eachVariant.showAlt = false;
       }
   });
   }
 
-  showRef(eachData: any){
-    this.data.forEach(element => {
-        if (element == eachData){
-          eachData.showRef = true;
+  showRef(eachVariant: any){
+    this.variants.forEach(element => {
+        if (element == eachVariant){
+          eachVariant.showRef = true;
         }
     });
   }
 
-  hideRef(eachData: any){
-    this.data.forEach(element => {
-      if (element == eachData){
-        eachData.showRef = false;
+  hideRef(eachVariant: any){
+    this.variants.forEach(element => {
+      if (element == eachVariant){
+        eachVariant.showRef = false;
       }
   });
   }
@@ -113,7 +113,7 @@ export class TableComponent implements OnInit {
   isFiltering(){
     this.first = 0;
     this.page = 1;
-    this.data = [];
+    this.variants = [];
     this.elements = 0;
     this.totalPages = 0;
     this.buttonClicked();
@@ -124,7 +124,7 @@ export class TableComponent implements OnInit {
   }
   
   buttonClicked(){
-    this.selectedData = null;
+    this.selectedVariants = null;
   }
 
 
@@ -132,16 +132,16 @@ export class TableComponent implements OnInit {
 
   next() {
    
-    if (this.data.length != 0 && this.data != undefined){
+    if (this.variants.length != 0 && this.variants != undefined){
     this.buttonClicked();
-    if (this.isRealLastPage() == false && this.isLastPage() == true){
+    if (!this.isRealLastPage() && this.isLastPage()){
       this.pageChange = "next";
       this.notifyPage.emit(this.pageChange);
-      this.data = [];
+      this.variants = [];
       this.pageChange = "";
       this.first = 0;
       this.page += 1;
-    } else if (this.isRealLastPage() == false){
+    } else if (!this.isRealLastPage()){
       this.first = this.first + this.rows;
       this.page += 1;
     }   
@@ -150,16 +150,16 @@ export class TableComponent implements OnInit {
 
   prev() {
   
-    if (this.data.length != 0 && this.data != undefined){
+    if (this.variants.length != 0 && this.variants != undefined){
     this.buttonClicked();
-    if (this.isRealFirstPage() == false && this.isFirstPage() == true){
+    if (!this.isRealFirstPage() && this.isFirstPage()){
     this.pageChange = "prev";
     this.notifyPage.emit(this.pageChange);
-    this.data = [];
+    this.variants = [];
     this.pageChange = "";
     this.page -= 1;
     this.first = this.size - this.rows;
-    } else if (this.isRealFirstPage() == false){
+    } else if (!this.isRealFirstPage()){
       this.first = this.first - this.rows;
       this.page -= 1;
     }   
@@ -168,7 +168,7 @@ export class TableComponent implements OnInit {
 
   isLastPage(): boolean {
     var result= false;
-    if (this.first === (this.data.length - this.rows)){
+    if (this.first === (this.variants.length - this.rows)){
       result = true;
     }
     return result;

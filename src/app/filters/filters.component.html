@@ -32,7 +32,7 @@
                 <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="getGenes()">
                 <label for="float-input">Search by Gene</label>
             </span>
-               <div class="search-options" *ngIf="showSearching==true">
+               <div class="search-options" *ngIf="showSearching">
             <p-listbox class="search-list" [options]="searchResults" [checkbox]="true" [multiple]="true" optionLabel="name" optionValue="name" [(ngModel)]="geneSelection">
                 <ng-template pTemplate="footer">
                     <p-button class="close-button" styleClass="p-button-text" icon="pi pi-times-circle" (click)="closeGeneList()"></p-button>
