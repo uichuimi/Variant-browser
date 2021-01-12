@@ -21,7 +21,7 @@
         </tr>
         </ng-template>
         <ng-template pTemplate="body" let-eachVariant>
-          <tr (click)="selectVariants(eachVariant)" class="table-row" [ngClass]= "{ 'selected': selectedVariants == eachVariant }">
+          <tr (click)="selectVariant(eachVariant)" class="table-row" [ngClass]= "{ 'selected': selectedVariants == eachVariant }">
             <td class="table-property">
               <div class="identifier-space" [ngClass]="{ 'spacing': selectedVariants != null}" >
                 <a *ngIf="eachVariant.identifier != null && eachVariant.identifier.substring(0,2) == 'rs'" target="_blank" 
@@ -108,6 +108,6 @@
         </div>
       </div>
 </div>
-<app-details *ngIf = "selectedvariants != null" [selected]="selectedvariants" (closeDetails)="receivingCloseDetails($event)"></app-details>
+<app-details *ngIf = "selectedVariants != null" [selected]="selectedVariants" (closeDetails)="receivingCloseDetails($event)"></app-details>
 
 
