@@ -1,12 +1,9 @@
 <div class="main-container">
   <app-filters class="filters-space" (notifyFilter)="receivingFilter($event)"></app-filters>
   <div class="results-container">
-    <app-table class="table-space" [realEmpty]="empty" [filtering]= "filtering" [size]="size" 
-      [elements]="elements" [currentPage]="page" [variants]="apiData" [downloadLink]="downloadLink"  
-      (notifyPage)="receivingPageChange($event)" (notifyDownload)="receivingDownload($event)">
-  </app-table> 
-  </div>  
+    <app-table class="table-space" [realEmpty]="empty" [filtering]="filtering" [size]="size" [elements]="elements"
+      [currentPage]="page" [variants]="apiData" [downloadLink]="downloadLink" (notifyPage)="receivingPageChange($event)"
+      (notifyDownload)="receivingDownload($event)">
+    </app-table>
+  </div>
 </div>
-
-
- 

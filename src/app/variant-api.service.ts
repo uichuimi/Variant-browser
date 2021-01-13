@@ -6,96 +6,96 @@ import axios from "axios";
   providedIn: 'root'
 })
 export class VariantApiService {
-  showAltValue: any = {showAlt: false};
-  showRefValue: any = {showRef: false};
+  showAltValue: any = { showAlt: false };
+  showRefValue: any = { showRef: false };
   modifiedResponse: any = [];
-  incomeInfo: any = {data: [], elements: 0, empty: true};
+  incomeInfo: any = { data: [], elements: 0, empty: true };
 
   constructor() { }
 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
     let url = 'http://193.145.155.148:9090/variants?pageNumber=' + page + '&pageSize=' + size;
-    if(chromosome != undefined){
+    if (chromosome != undefined) {
       url += '&chrom=' + chromosome;
     }
-    if(posMin != undefined && posMin != null){
+    if (posMin != undefined && posMin != null) {
       url += '&start=' + posMin;
     }
-    if(posMax != undefined && posMax != null){
+    if (posMax != undefined && posMax != null) {
       url += '&end=' + posMax;
     }
-    if(gene != undefined && gene != ""){
+    if (gene != undefined && gene != "") {
       url += '&genes=' + gene;
     }
-    if(sift != undefined){
+    if (sift != undefined) {
       url += '&sift=' + sift;
     }
-    if(polyphen != undefined){
+    if (polyphen != undefined) {
       url += '&polyphen=' + polyphen;
     }
-    if(biotype != undefined){
+    if (biotype != undefined) {
       url += '&biotypes=' + biotype;
     }
-    if(term != undefined){
+    if (term != undefined) {
       url += '&terms=' + term;
     }
-    if(gmaf != undefined && gmaf != null){
+    if (gmaf != undefined && gmaf != null) {
       url += '&maxAlleleFrequency=' + gmaf;
     }
     console.log(url);
     return axios.get(url)
-      .then (response => {
+      .then(response => {
         this.modifiedResponse = response.data.content.map(each => {
           return {
             ...each,
             ...this.showAltValue,
             ...this.showRefValue
-            }
-            
+          }
+
         })
-        this.incomeInfo.data= this.modifiedResponse; 
+        this.incomeInfo.data = this.modifiedResponse;
         this.incomeInfo.elements = response.data.totalElements;
         this.incomeInfo.empty = response.data.empty;
         return this.incomeInfo;
       })
-      .catch (error => {
-        console.log("Se ha producido el error" ,error);
+      .catch(error => {
+        console.log("Se ha producido el error", error);
       })
   }
 
-  getGenesData(search){
-    let url= 'http://193.145.155.148:9090/genes?search=' + search;
+  getGenesData(search) {
+    let url = 'http://193.145.155.148:9090/genes?search=' + search;
     return axios.get(url)
-      .then (response => {
-          return response.data;
-        })
+      .then(response => {
+        return response.data;
+      })
 
-      .catch (error => {
-        console.log("Se ha producido el error" ,error);
+      .catch(error => {
+        console.log("Se ha producido el error", error);
       })
   }
 
-  getTermsData(){
-    let url= 'http://193.145.155.148:9090/terms';
+  getTermsData() {
+    let url = 'http://193.145.155.148:9090/terms';
     return axios.get(url)
-      .then (response => {
-          return response.data;
-        })
+      .then(response => {
+        return response.data;
+      })
 
-      .catch (error => {
-        console.log("Se ha producido el error" ,error);
+      .catch(error => {
+        console.log("Se ha producido el error", error);
       })
   }
 
-  getBiotypeData(){
-    let url= 'http://193.145.155.148:9090/biotypes';
+  getBiotypeData() {
+    let url = 'http://193.145.155.148:9090/biotypes';
     return axios.get(url)
-      .then (response => {
-          return response.data;
-        })
+      .then(response => {
+        return response.data;
+      })
 
-      .catch (error => {
-        console.log("Se ha producido el error" ,error);
+      .catch(error => {
+        console.log("Se ha producido el error", error);
       })
   }
 }
