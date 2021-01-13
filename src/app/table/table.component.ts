@@ -8,7 +8,7 @@ import { VariantApiService } from '../variant-api.service';
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent implements OnInit {
-  @Input() data: any[];
+  @Input() variants: any[];
   @Input() currentPage: number;
   @Input() elements: number;
   @Input() size: number;
@@ -18,41 +18,41 @@ export class TableComponent implements OnInit {
   @Output() notifyPage = new EventEmitter;
   @Output() notifyDownload = new EventEmitter;
 
-  selectedData: any;
+  selectedVariants: any;
   cols: any[];
   pageChange: string = "";
-  first: number =0;
+  first: number = 0;
   rows: number = 10;
   page: number = 1;
   totalPages: number = 0;
-  
+
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.filtering){
-      if(changes.filtering.currentValue == true){
+    if (this.filtering) {
+      if (changes.filtering.currentValue) {
         this.isFiltering();
       }
     }
-    if(this.elements && changes.elements){
-      if(changes.elements.currentValue != 0){
-        this.totalPages = Math.ceil(this.elements/this.rows);
+    if (this.elements && changes.elements) {
+      if (changes.elements.currentValue != 0) {
+        this.totalPages = Math.ceil(this.elements / this.rows);
       }
     }
 
-    if (this.filtering && this.elements){
-      if (changes.filtering.currentValue == true && !changes.elements){
-        this.totalPages = Math.ceil(this.elements/this.rows);
+    if (this.filtering && this.elements) {
+      if (changes.filtering.currentValue && !changes.elements) {
+        this.totalPages = Math.ceil(this.elements / this.rows);
       }
     }
 
-    if (this.downloadLink){
-      if (changes.downloadLink){
-        window.open(this.downloadLink,"_self");
+    if (this.downloadLink) {
+      if (changes.downloadLink) {
+        window.open(this.downloadLink, "_self");
       }
     }
   }
 
-  constructor (private VariantService: VariantApiService ){
+  constructor(private VariantService: VariantApiService) {
     this.cols = [
       { field: 'identifier', header: 'Identifier' },
       { field: 'coordinate', header: 'Coordinate' },
@@ -62,112 +62,113 @@ export class TableComponent implements OnInit {
       { field: 'polyphen', header: 'Polyphen' },
       { field: 'change', header: 'Change' },
       { field: 'gmaf', header: 'GMAF' }
-  ];
+    ];
   }
 
   ngOnInit(): void {
   }
 
-  selectData (eachData: any){
-    this.selectedData = eachData;
+  selectVariant(eachVariant: any) {
+    this.selectedVariants = eachVariant;
   }
 
 
-  showAlt(eachData: any){
-    this.data.forEach(element => {
-        if (element == eachData){
-          eachData.showAlt = true;
-        }
+  showAlt(eachVariant: any) {
+    this.variants.forEach(element => {
+      if (element == eachVariant) {
+        eachVariant.showAlt = true;
+      }
     });
   }
 
-  hideAlt(eachData: any){
-    this.data.forEach(element => {
-      if (element == eachData){
-        eachData.showAlt = false;
+  hideAlt(eachVariant: any) {
+    this.variants.forEach(element => {
+      if (element == eachVariant) {
+        eachVariant.showAlt = false;
       }
-  });
-  }
-
-  showRef(eachData: any){
-    this.data.forEach(element => {
-        if (element == eachData){
-          eachData.showRef = true;
-        }
     });
   }
 
-  hideRef(eachData: any){
-    this.data.forEach(element => {
-      if (element == eachData){
-        eachData.showRef = false;
+  showRef(eachVariant: any) {
+    this.variants.forEach(element => {
+      if (element == eachVariant) {
+        eachVariant.showRef = true;
       }
-  });
+    });
   }
 
-  downloadExcel(){
-    this.notifyDownload.emit (true);
+  hideRef(eachVariant: any) {
+    this.variants.forEach(element => {
+      if (element == eachVariant) {
+        eachVariant.showRef = false;
+      }
+    });
   }
 
-  
-  isFiltering(){
+  downloadExcel() {
+    this.notifyDownload.emit(true);
+  }
+
+
+  isFiltering() {
     this.first = 0;
     this.page = 1;
-    this.data = [];
+    this.variants = [];
+    this.elements = 0;
     this.totalPages = 0;
-    this.buttonClicked();
+    this.clearSelection();
   }
 
-  receivingCloseDetails(event:any){
-    this.buttonClicked();
+  receivingCloseDetails(event: any) {
+    this.clearSelection();
   }
-  
-  buttonClicked(){
-    this.selectedData = null;
+
+  clearSelection() {
+    this.selectedVariants = null;
   }
 
 
   //<-- Métodos para la paginación -->   
 
   next() {
-   
-    if (this.data.length != 0 && this.data != undefined){
-    this.buttonClicked();
-    if (this.isRealLastPage() == false && this.isLastPage() == true){
-      this.pageChange = "next";
-      this.notifyPage.emit(this.pageChange);
-      this.data = [];
-      this.pageChange = "";
-      this.first = 0;
-      this.page += 1;
-    } else if (this.isRealLastPage() == false){
-      this.first = this.first + this.rows;
-      this.page += 1;
-    }   
-  }
+
+    if (this.variants.length != 0 && this.variants != undefined) {
+      this.clearSelection();
+      if (!this.isRealLastPage() && this.isLastPage()) {
+        this.pageChange = "next";
+        this.notifyPage.emit(this.pageChange);
+        this.variants = [];
+        this.pageChange = "";
+        this.first = 0;
+        this.page += 1;
+      } else if (!this.isRealLastPage()) {
+        this.first = this.first + this.rows;
+        this.page += 1;
+      }
+    }
   }
 
   prev() {
-  
-    if (this.data.length != 0 && this.data != undefined){
-    this.buttonClicked();
-    if (this.isRealFirstPage() == false && this.isFirstPage() == true){
-    this.pageChange = "prev";
-    this.notifyPage.emit(this.pageChange);
-    this.data = [];
-    this.pageChange = "";
-    this.page -= 1;
-    this.first = this.size - this.rows;
-    } else if (this.isRealFirstPage() == false){
-      this.first = this.first - this.rows;
-      this.page -= 1;
-    }   
-  }
+
+    if (this.variants.length != 0 && this.variants != undefined) {
+      this.clearSelection();
+      if (!this.isRealFirstPage() && this.isFirstPage()) {
+        this.pageChange = "prev";
+        this.notifyPage.emit(this.pageChange);
+        this.variants = [];
+        this.pageChange = "";
+        this.page -= 1;
+        this.first = this.size - this.rows;
+      } else if (!this.isRealFirstPage()) {
+        this.first = this.first - this.rows;
+        this.page -= 1;
+      }
+    }
   }
 
   isLastPage(): boolean {
-    var result= false;
-    if (this.first === (this.data.length - this.rows)){
+    var result = false;
+    if (this.first === (this.variants.length - this.rows)) {
       result = true;
     }
     return result;
@@ -175,8 +176,8 @@ export class TableComponent implements OnInit {
 
   isRealLastPage(): boolean {
     var result = false;
-    var math = Math.ceil((this.elements*(this.size / this.rows)) / this.size);
-    if (this.page == math){
+    var math = Math.ceil((this.elements * (this.size / this.rows)) / this.size);
+    if (this.page == math) {
       result = true;
     }
     return result;
@@ -184,15 +185,15 @@ export class TableComponent implements OnInit {
 
   isFirstPage(): boolean {
     var result = false;
-    if (this.first === 0){
+    if (this.first === 0) {
       result = true;
     }
-      return result;
+    return result;
   }
 
   isRealFirstPage(): boolean {
     var result = false;
-    if (this.first === 0 && this.currentPage == 0){
+    if (this.first === 0 && this.currentPage == 0) {
       result = true;
     }
     return result;

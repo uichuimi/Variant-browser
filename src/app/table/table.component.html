@@ -1,113 +1,131 @@
-<div class="table-content" [ngClass]="{ 'selection': selectedData == null}">
-<p-table #dt [value]="data" [columns]="cols" selectionMode="single" [paginator]="true" [first]="first" [rows]="rows"> 
-  <ng-template pTemplate="caption">
-    <div class="table-header">
-      <div class="buttons-pannel" [ngClass]="{ 'short': selectedData != null}">
-        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false" styleClass="p-button-text" [disabled] = "isRealFirstPage() == true || this.data.length == 0 || this.data == undefined"></p-button>
-        <p-button type="button" icon="pi pi-download" (click)="downloadExcel()" styleClass="p-button-text" pTooltip="XLS" tooltipPosition="bottom"></p-button>
-        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text" [disabled] = "isRealLastPage() == true || this.data.length == 0 || this.data == undefined"></p-button> 
-      </div>
-      <div class="page-pannel">
-        <p *ngIf="totalPages == 0 || realEmpty == true"> Page 0 of 0</p>
-        <p *ngIf="totalPages !=0 && realEmpty == false"> Page {{page}} of {{totalPages}}</p>
-       </div>
-      </div>
-</ng-template>      
-  <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th *ngFor="let col of columns">
-                {{col.header}}
-            </th>
-        </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-eachData>
-          <tr (click)="selectData(eachData)" class="table-row" [ngClass]= "{ 'selected': selectedData == eachData }">
-            <td class="table-property">
-              <div class="identifier-space" [ngClass]="{ 'spacing': selectedData != null}" >
-                <a *ngIf="eachData.identifier != null && eachData.identifier.substring(0,2) == 'rs'" target="_blank" 
-                class="variant-link" href="https://www.ncbi.nlm.nih.gov/snp/{{eachData.identifier}}">{{eachData.identifier}}</a>
-                <p *ngIf="eachData.identifier != null && eachData.identifier.substring(0,2) != 'rs'">{{eachData.identifier}}</p>
-                <p *ngIf="eachData.identifier == null">-</p>
-              </div>
-            </td>
-            <td class="table-property">
-              <p>{{eachData.chrom}}:{{eachData.pos}}</p>
-            </td>
-            <td class="table-property variant-column">
-              <p [hidden]="eachData.alt.length > 3 || eachData.ref.length > 3">{{eachData.alt}}/{{eachData.ref}}</p>
-              <div *ngIf="(eachData.alt.length > 3 && eachData.alt.length <= 6) || (eachData.ref.length > 3 && eachData.ref.length <= 6)">
-                <p class="variant-altValue">{{eachData.alt}}</p>
-                <p class="variant-refValue">{{eachData.ref}}</p>
-              </div>
-              <div *ngIf="eachData.alt.length > 6 && eachData.ref.length <= 6">
-                <p class="variant-altValue" >{{eachData.alt.substring(0,6)}}</p>
-                <p *ngIf="eachData.showAlt == false" (click)="showAlt(eachData)" class="alt variant-moreIcon">+{{eachData.alt.length-6}}</p>
-                <p [hidden]="eachData.showAlt == false" class="variant-moreDataAlt">{{eachData.alt.substring(6, eachData.alt.length)}}</p>
-                <p [hidden]="eachData.showAlt == false" (click)="hideAlt(eachData)" class="alt variant-lessIcon">-</p>
-                <p class="variant-refValue">{{eachData.ref}}</p>
-               </div>
-              <div *ngIf="eachData.alt.length <= 6 && eachData.ref.length > 6">
-                <p class="variant-altValue">{{eachData.alt}}</p>
-                <p class="variant-refValue" >{{eachData.ref.substring(0,6)}}</p>
-                <p *ngIf="eachData.showRef == false" (click)="showRef(eachData)" class="ref variant-moreIcon">+{{eachData.ref.length-6}}</p>
-                <p [hidden]="eachData.showRef == false" class="variant-moreDataRef">{{eachData.ref.substring(6, eachData.ref.length)}}</p>
-                <p [hidden]="eachData.showRef == false" (click)="hideRef(eachData)" class="ref variant-lessIcon">-</p>
-              </div>
-              <div *ngIf="eachData.alt.length > 6 && eachData.ref.length > 6">
-                <p class="variant-altValue" >{{eachData.alt.substring(0,6)}}</p>
-                <p *ngIf="eachData.showAlt == false" (click)="showAlt(eachData)" class="alt variant-moreIcon">+{{eachData.alt.length-6}}</p>
-                <p [hidden]="eachData.showAlt == false" class="variant-moreDataAlt">{{eachData.alt.substring(6, eachData.alt.length)}}</p>
-                <p [hidden]="eachData.showAlt == false" (click)="hideAlt(eachData)" class="alt variant-lessIcon">-</p>
-                <p class="variant-refValue" >{{eachData.ref.substring(0,6)}}</p>
-                <p *ngIf="eachData.showRef == false" (click)="showRef(eachData)" class="ref variant-moreIcon">+{{eachData.ref.length-6}}</p>
-                <p [hidden]="eachData.showRef == false" class="variant-moreDataRef">{{eachData.ref.substring(6, eachData.ref.length)}}</p>
-                <p [hidden]="eachData.showRef == false" (click)="hideRef(eachData)" class="ref variant-lessIcon">-</p>
-              </div>
-            </td>
-            <td class="table-property">
-              <p *ngIf="eachData.gene != null">{{eachData.gene.name}}</p>
-              <p *ngIf="eachData.gene == null">-</p>
-            </td>
-            <td class="table-property">
-              <p [hidden]="eachData.sift == null" class="label text" [ngClass]= "{ 'red': eachData.sift == 'deleterious', 
-                'green': eachData.sift == 'tolerated'}">{{eachData.sift}}</p>
-              <p *ngIf="eachData.sift == null">-</p>
-            </td>
-            <td class="table-property">
-              <p [hidden]="eachData.polyphen == null || eachData.polyphen == 'unknown'" class="label text" 
-                [ngClass]= "{ 'red': eachData.polyphen == 'probably damaging','orange': eachData.polyphen == 'possibly damaging', 
-                'green': eachData.polyphen == 'benign' }">{{eachData.polyphen}}</p>
-              <p *ngIf="eachData.polyphen == null || eachData.polyphen == 'unknown'">-</p>
-            </td>
-            <td class="table-property">
-              <p [hidden]="eachData.amino == null">{{eachData.amino}}</p>
-              <p *ngIf="eachData.amino == null">-</p>
-            </td>
-            <td class="table-property">
-              <p class="label" [hidden]="eachData.gmaf == null" [ngClass]= "{ 'red': eachData.gmaf <= 0.01, 
-                'orange': eachData.gmaf > 0.01 && eachData.gmaf <= 0.1, 'green': eachData.gmaf > 0.1 }">
-                {{eachData.gmaf}}
-              </p>
-              <p *ngIf="eachData.gmaf == null">-</p>
-            </td>
-          </tr>
-        </ng-template>   
-      </p-table>
-      <div class="bottom-pannel">  
-        <div class="pagination-bottom">
-          <div class="paginator-left" [ngClass]= "{ 'paginating': data.length != 0 && data != undefined && realEmpty != true }">
-            <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false" styleClass="p-button-text" [disabled] = "isRealFirstPage() == true || this.data.length == 0 || this.data == undefined"></p-button>
-          </div> 
-        <div *ngIf="(data.length == 0 || data == undefined) && realEmpty== false" class="preloader"></div>
-        <div *ngIf="realEmpty == true" class="no-data">
-          <p>No data available</p>
+<div class="table-content" [ngClass]="{ 'selection': selectedVariants == null}">
+  <p-table #dt [value]="variants" [columns]="cols" selectionMode="single" [paginator]="true" [first]="first"
+    [rows]="rows">
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+        <div class="buttons-pannel" [ngClass]="{ 'short': selectedVariants != null}">
+          <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false"
+            styleClass="p-button-text"
+            [disabled]="isRealFirstPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
+          <p-button type="button" icon="pi pi-download" (click)="downloadExcel()" styleClass="p-button-text"
+            pTooltip="XLS" tooltipPosition="bottom"></p-button>
+          <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"
+            [disabled]="isRealLastPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
         </div>
-          <div class="paginator-right">
-            <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text" [disabled] = "isRealLastPage() == true || this.data.length == 0 || this.data == undefined"></p-button>
+        <div class="page-pannel">
+          <p *ngIf="totalPages == 0 || realEmpty"> Page 0 of {{totalPages}}</p>
+          <p *ngIf="totalPages !=0"> Page {{page}} of {{totalPages}}</p>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-variant>
+      <tr (click)="selectVariant(variant)" class="table-row" [ngClass]="{ 'selected': selectedVariants == variant }">
+        <td class="table-property">
+          <div class="identifier-space" [ngClass]="{ 'spacing': selectedVariants != null}">
+            <a *ngIf="variant.identifier != null && variant.identifier.substring(0,2) == 'rs'" target="_blank"
+              class="variant-link"
+              href="https://www.ncbi.nlm.nih.gov/snp/{{variant.identifier}}">{{variant.identifier}}</a>
+            <p *ngIf="variant.identifier != null && variant.identifier.substring(0,2) != 'rs'">{{variant.identifier}}
+            </p>
+            <p *ngIf="variant.identifier == null">-</p>
           </div>
-        </div>
+        </td>
+        <td class="table-property">
+          <p>{{variant.chrom}}:{{variant.pos}}</p>
+        </td>
+        <td class="table-property variant-column">
+          <p [hidden]="variant.alt.length > 3 || variant.ref.length > 3">{{variant.alt}}/{{variant.ref}}</p>
+          <div
+            *ngIf="(variant.alt.length > 3 && variant.alt.length <= 6) || (variant.ref.length > 3 && variant.ref.length <= 6)">
+            <p class="variant-altValue">{{variant.alt}}</p>
+            <p class="variant-refValue">{{variant.ref}}</p>
+          </div>
+          <div *ngIf="variant.alt.length > 6 && variant.ref.length <= 6">
+            <p class="variant-altValue">{{variant.alt.substring(0,6)}}</p>
+            <p *ngIf="!variant.showAlt" (click)="showAlt(variant)" class="alt variant-moreIcon">
+              +{{variant.alt.length-6}}</p>
+            <p [hidden]="!variant.showAlt" class="variant-moreDataAlt">{{variant.alt.substring(6, variant.alt.length)}}
+            </p>
+            <p [hidden]="!variant.showAlt" (click)="hideAlt(variant)" class="alt variant-lessIcon">-</p>
+            <p class="variant-refValue">{{variant.ref}}</p>
+          </div>
+          <div *ngIf="variant.alt.length <= 6 && variant.ref.length > 6">
+            <p class="variant-altValue">{{variant.alt}}</p>
+            <p class="variant-refValue">{{variant.ref.substring(0,6)}}</p>
+            <p *ngIf="!variant.showRef" (click)="showRef(variant)" class="ref variant-moreIcon">
+              +{{variant.ref.length-6}}</p>
+            <p [hidden]="!variant.showRef" class="variant-moreDataRef">{{variant.ref.substring(6, variant.ref.length)}}
+            </p>
+            <p [hidden]="!variant.showRef" (click)="hideRef(variant)" class="ref variant-lessIcon">-</p>
+          </div>
+          <div *ngIf="variant.alt.length > 6 && variant.ref.length > 6">
+            <p class="variant-altValue">{{variant.alt.substring(0,6)}}</p>
+            <p *ngIf="!variant.showAlt" (click)="showAlt(variant)" class="alt variant-moreIcon">
+              +{{variant.alt.length-6}}</p>
+            <p [hidden]="!variant.showAlt" class="variant-moreDataAlt">{{variant.alt.substring(6, variant.alt.length)}}
+            </p>
+            <p [hidden]="!variant.showAlt" (click)="hideAlt(variant)" class="alt variant-lessIcon">-</p>
+            <p class="variant-refValue">{{variant.ref.substring(0,6)}}</p>
+            <p *ngIf="!variant.showRef" (click)="showRef(variant)" class="ref variant-moreIcon">
+              +{{variant.ref.length-6}}</p>
+            <p [hidden]="!variant.showRef" class="variant-moreDataRef">{{variant.ref.substring(6, variant.ref.length)}}
+            </p>
+            <p [hidden]="!variant.showRef" (click)="hideRef(variant)" class="ref variant-lessIcon">-</p>
+          </div>
+        </td>
+        <td class="table-property">
+          <p *ngIf="variant.gene != null">{{variant.gene.name}}</p>
+          <p *ngIf="variant.gene == null">-</p>
+        </td>
+        <td class="table-property">
+          <p [hidden]="variant.sift == null" class="label text" [ngClass]="{ 'red': variant.sift == 'deleterious', 
+                'green': variant.sift == 'tolerated'}">{{variant.sift}}</p>
+          <p *ngIf="variant.sift == null">-</p>
+        </td>
+        <td class="table-property">
+          <p [hidden]="variant.polyphen == null || variant.polyphen == 'unknown'" class="label text" [ngClass]="{ 'red': variant.polyphen == 'probably damaging','orange': variant.polyphen == 'possibly damaging', 
+                'green': variant.polyphen == 'benign' }">{{variant.polyphen}}</p>
+          <p *ngIf="variant.polyphen == null || variant.polyphen == 'unknown'">-</p>
+        </td>
+        <td class="table-property">
+          <p [hidden]="variant.amino == null">{{variant.amino}}</p>
+          <p *ngIf="variant.amino == null">-</p>
+        </td>
+        <td class="table-property">
+          <p class="label" [hidden]="variant.gmaf == null" [ngClass]="{ 'red': variant.gmaf <= 0.01, 
+                'orange': variant.gmaf > 0.01 && variant.gmaf <= 0.1, 'green': variant.gmaf > 0.1 }">
+            {{variant.gmaf}}
+          </p>
+          <p *ngIf="variant.gmaf == null">-</p>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <div class="bottom-pannel">
+    <div class="pagination-bottom">
+      <div class="paginator-left"
+        [ngClass]="{ 'paginating': variants.length != 0 && variants != undefined && !realEmpty }">
+        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false"
+          styleClass="p-button-text"
+          [disabled]="isRealFirstPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
       </div>
+      <div *ngIf="(variants.length == 0 || variants == undefined) && !realEmpty" class="preloader"></div>
+      <div *ngIf="realEmpty" class="no-variants">
+        <p>No variants available</p>
+      </div>
+      <div class="paginator-right">
+        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"
+          [disabled]="isRealLastPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
+      </div>
+    </div>
+  </div>
 </div>
-<app-details *ngIf = "selectedData != null" [selected]="selectedData" (closeDetails)="receivingCloseDetails($event)"></app-details>
-
-
+<app-details *ngIf="selectedVariants != null" [selected]="selectedVariants"
+  (closeDetails)="receivingCloseDetails($event)"></app-details>

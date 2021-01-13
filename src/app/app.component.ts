@@ -26,22 +26,22 @@ export class AppComponent {
   biotype: any;
   term: any;
   gmaf: any;
-  
-  receivingDownload (event: any){
+
+  receivingDownload(event: any) {
     this.exportLink();
   }
 
-  receivingPageChange (event: any){
-    if (event == "next"){
-        this.page += 1;
-        this.getData();
-    } else if (event == "prev"){
-        this.page -= 1;
-        this.getData();
+  receivingPageChange(event: any) {
+    if (event == "next") {
+      this.page += 1;
+      this.getData();
+    } else if (event == "prev") {
+      this.page -= 1;
+      this.getData();
     }
   }
 
-  receivingFilter (event: any){
+  receivingFilter(event: any) {
     this.filtering = true;
     this.page = 0;
     this.chromosome = event.chromosome;
@@ -56,13 +56,13 @@ export class AppComponent {
     this.getData();
   }
 
-  constructor ( private VariantService: VariantApiService){
+  constructor(private VariantService: VariantApiService) {
     this.getData();
   }
 
-  async getData (){
+  async getData() {
     this.empty = false;
-    this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax, 
+    this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax,
       this.gene, this.sift, this.polyphen, this.biotype, this.term, this.gmaf);
     this.filtering = false;
     this.apiData = this.incomeData.data;
@@ -74,66 +74,65 @@ export class AppComponent {
   async exportLink() {
     this.downloadLink = "";
     let url = 'http://193.145.155.148:9090/download/variants?';
-    if(this.chromosome != undefined){
+    if (this.chromosome != undefined) {
       url += 'chrom=' + this.chromosome + '&';
     }
-    if(this.posMin != undefined && this.posMin != null){
+    if (this.posMin != undefined && this.posMin != null) {
       url += 'start=' + this.posMin + '&';
     }
-    if(this.posMax != undefined && this.posMax != null){
+    if (this.posMax != undefined && this.posMax != null) {
       url += 'end=' + this.posMax + '&';
     }
-    if(this.gene != undefined && this.gene != ""){
+    if (this.gene != undefined && this.gene != "") {
       url += 'genes=' + this.gene + '&';
     }
-    if(this.sift != undefined){
+    if (this.sift != undefined) {
       url += 'sift=' + this.sift + '&';
     }
-    if(this.polyphen != undefined){
+    if (this.polyphen != undefined) {
       url += 'polyphen=' + this.polyphen + '&';
     }
-    if(this.biotype != undefined){
+    if (this.biotype != undefined) {
       url += 'biotypes=' + this.biotype + '&';
     }
-    if(this.term != undefined){
+    if (this.term != undefined) {
       url += 'terms=' + this.term + '&';
     }
-    if(this.gmaf != undefined && this.gmaf != null){
+    if (this.gmaf != undefined && this.gmaf != null) {
       url += 'maxAlleleFrequency=' + this.gmaf + '&';
     }
-    this.downloadLink = url.substring(0, url.length-1);
+    this.downloadLink = url.substring(0, url.length - 1);
     console.log(this.downloadLink);
   }
 
-  adjustingData(){
-    
+  adjustingData() {
+
     this.apiData.forEach(each => {
-        each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
-        each.frequencies.forEach(frequencie => {
-          switch(frequencie.source){
-            case 'gnomAD_genomes':
-              frequencie.source = "GG";
+      each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
+      each.frequencies.forEach(frequencie => {
+        switch (frequencie.source) {
+          case 'gnomAD_genomes':
+            frequencie.source = "GG";
             break;
-            case 'gnomAD_exomes':
-              frequencie.source = "GE";
+          case 'gnomAD_exomes':
+            frequencie.source = "GE";
             break;
-            case 'ExAC':
-              frequencie.source = "EX";
+          case 'ExAC':
+            frequencie.source = "EX";
             break;
-            case '1000_genomes':
-              frequencie.source = "1KG";
+          case '1000_genomes':
+            frequencie.source = "1KG";
             break;
-          }
-        });
-        switch(each.polyphen){
-          case 'probably_damaging':
-            each.polyphen = "probably damaging";
-          break;
-          case 'possibly_damaging':
-            each.polyphen = "possibly damaging";
-          break;
         }
-      });   
+      });
+      switch (each.polyphen) {
+        case 'probably_damaging':
+          each.polyphen = "probably damaging";
+          break;
+        case 'possibly_damaging':
+          each.polyphen = "possibly damaging";
+          break;
+      }
+    });
   }
 }
-  
