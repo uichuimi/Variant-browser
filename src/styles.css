@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-/*
-
+/* <---------------- Paleta de colores -------------------->
 .color-primary-0 { color: #B9D1E9 }	
 .color-primary-1 { color: #FFFFFF }
 .color-primary-2 { color: #E2EEF9 }
@@ -14,11 +13,10 @@
 .rgba-primary-3 { color: rgba(139,174,208,1) }
 .rgba-primary-4 { color: rgba( 93,133,172,1) }
 
-
 */
 
 
-/* General */
+/* General (app.component) */
 
 :root {
     --primary-color: #B9D1E9;
@@ -43,7 +41,7 @@
     color: green;
 }
 
-/* Table */
+/* Table (table.component) */
 
 .table-content .p-button.p-button-text{
     color: #8BAED0 !important;
@@ -96,10 +94,11 @@ thead.p-datatable-thead {
     border: 1px solid #B9D1E9;
 }
 
-/* Details */
+/* Details (details.component) */
 .p-card{
     box-shadow: 0 3px 1px -1px rgb(185, 209, 233), 0 3px 1px 0 rgb(185, 209, 233), 0 1px 3px 0 rgb(185, 209, 233);
     border-radius: 10px;
+    margin-bottom: 100px;
 }
 
 .p-card .p-card-content{
@@ -132,6 +131,10 @@ thead.p-datatable-thead {
     border-color: transparent;
 }
 
+.clean-button .p-button.p-button-text:focus{
+    box-shadow: 0 0 0 0.2rem transparent;
+}
+
 .clean-button .p-button.p-button-text:hover{
     background-color: transparent;
     color: #5D85AC  ;
@@ -147,7 +150,7 @@ ul.p-inputtext.p-chips-multiple-container{
     border: 1px solid transparent;
 }
 
-/* Filtros */
+/* Filtros (filters.component) */
 .p-inputtext:enabled:focus {
     box-shadow: 0 0 0 0.1rem #B9D1E9;
     border-color: #B9D1E9;
@@ -343,8 +346,5 @@ ul.p-inputtext.p-chips-multiple-container{
     display:none;
 }
 
-.filters-space clean-button .p-button:focus {
-    box-shadow: 0 0 0 0.2rem transparent;
-}
 
 

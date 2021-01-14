@@ -27,14 +27,6 @@
     text-align: center;
 }
 
-/*.noGmaf-cell{
-    margin: 0 auto;
-    font-size: 12px;
-    text-align: center;
-    padding: 0.3rem;
-    font-style: italic;
-}*/
-
 .population-source{
     margin: 0 auto;
     font-size: 12px;
@@ -71,15 +63,6 @@
     cursor: pointer;
     border-bottom: #495057 dotted 1px;
 }
-/* Creacion de triangulos para bocadillos
-.effect-description:before{
-    border: 12px solid #e9ecef;
-    content: '';
-    border-left-color: transparent;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    bottom: 24%;
-}*/
 
 #effect-space:hover .effect-description{
     display: block;
@@ -130,10 +113,6 @@
 .table-label.population{
     width: 100px;
 }
-/*
-.default-element{
-    z-index: -1;
-}*/
 
 .hide-elements{
     display: flex;
