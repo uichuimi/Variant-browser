@@ -153,12 +153,12 @@ export class FiltersComponent implements OnInit {
     this.selectedChromosome = null;
     this.selectedBiotype = null;
     this.selectedEffects = null;
-    this.selectedGenes = "";
+    this.selectedGenes = '';
     this.geneSelection = [];
     this.posMax = null;
     this.posMin = null;
     this.gmaf = null;
-    this.search = "";
+    this.search = '';
   }
 
   filterVariants() {
