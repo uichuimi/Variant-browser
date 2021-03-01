@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { VariantApiService } from './variant-api.service';
+import { VariantApiService } from './services/variant-api.service';
 
 
 @Component({

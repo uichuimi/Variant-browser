@@ -49,7 +49,7 @@ export class VariantApiService {
       url += '&maxAlleleFrequency=' + gmaf;
     }
     console.log(url);
-    axios.get(serviceURL + '/variants', {
+    /*axios.get(serviceURL + '/variants', {
       params:{
         pageNumber: page,
         pageSize: size,
@@ -69,7 +69,7 @@ export class VariantApiService {
       console.log(response);
       this.variantsTrial = response.data.content;
       console.log(this.variantsTrial);
-    });
+    });*/
     return axios.get(url)
       .then(response => {
         console.log("OLD");

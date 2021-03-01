@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { VariantApiService } from '../variant-api.service';
+import { VariantApiService } from '../../services/variant-api.service';
 
 function genes_comparator(term: string) {
   return (a, b) => {

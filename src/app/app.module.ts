@@ -15,9 +15,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FiltersComponent } from './filters/filters.component';
-import { DetailsComponent } from './details/details.component';
-import { TableComponent } from './table/table.component';
+import { FiltersComponent } from './components/filters/filters.component';
+import { DetailsComponent } from './components/details/details.component';
+import { TableComponent } from './components/table/table.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { TableComponent } from './table/table.component';
     ListboxModule,
     ChipsModule,
     InputNumberModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
