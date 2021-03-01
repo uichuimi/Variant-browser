@@ -18,7 +18,7 @@ export class DetailsComponent implements OnInit {
       { name: 'American', code: 'AMR' },
       { name: 'Ashkenazi Jewish', code: 'ASJ' },
       { name: 'East Asian', code: 'EAS' },
-      { name: 'European', code: 'EUR' },
+      { name: 'European', code: 'EUR' }, //QUITAR AL FINAL?
       { name: 'Finnish', code: 'FIN' },
       { name: 'Non-Finnish European', code: 'NFE' },
       { name: 'Other', code: 'OTH' },

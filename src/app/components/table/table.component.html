@@ -41,6 +41,7 @@
           <p>{{variant.chrom}}:{{variant.pos}}</p>
         </td>
         <td class="table-property variant-column">
+          <!-- OLD MODEL -->
           <p [hidden]="variant.alt.length > 3 || variant.ref.length > 3">{{variant.alt}}/{{variant.ref}}</p>
           <div
             *ngIf="(variant.alt.length > 3 && variant.alt.length <= 6) || (variant.ref.length > 3 && variant.ref.length <= 6)">
@@ -79,6 +80,36 @@
             </p>
             <p [hidden]="!variant.showRef" (click)="hideRef(variant)" class="ref variant-lessIcon">-</p>
           </div>
+          <!-- END OF OLD MODEL -->
+          <!-- NEW MODEL -->
+          <div *ngIf="variant.alt.length > 3 && variant.ref.length <= 3">
+            <p [hidden]="variant.showAlt" class="variant-refValue">{{variant.alt.substring(0,2)}}
+              <span (click)="showAlt(variant)" class="alt variant-moreIcon">
+              +{{variant.alt.length-2}}</span>
+              /{{variant.ref}}
+            </p>
+            <p [hidden]="!variant.showAlt" class="variant-moreDataRef">
+              {{variant.alt}} <span (click)="hideAlt(variant)" class="ref variant-lessIcon">-</span>
+            </p>
+            <hr [hidden]="!variant.showAlt">
+            <p [hidden]="!variant.showAlt" class="variant-refValue">
+              {{variant.ref}}
+            </p>
+          </div>
+          <div *ngIf="variant.alt.length <= 3 && variant.ref.length > 3">
+            <p [hidden]="variant.showRef" class="variant-refValue">{{variant.alt}}
+              /{{variant.ref.substring(0,2)}}<span (click)="showRef(variant)" class="alt variant-moreIcon">
+              +{{variant.ref.length-2}}</span>
+            </p>
+            <p [hidden]="!variant.showRef" class="variant-refValue">
+              {{variant.alt}}
+            </p>
+            <hr [hidden]="!variant.showRef">
+            <p [hidden]="!variant.showRef" class="variant-moreDataRef">
+              {{variant.ref}} <span (click)="hideRef(variant)" class="ref variant-lessIcon">-</span>
+            </p>
+          </div>
+          <!-- END OF NEW MODEL -->
         </td>
         <td class="table-property">
           <p *ngIf="variant.gene != null">{{variant.gene.name}}</p>

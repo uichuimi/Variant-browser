@@ -8,6 +8,7 @@ describe('VariantApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(VariantApiService);
+    //TRIAL
   });
 
   it('should be created', () => {

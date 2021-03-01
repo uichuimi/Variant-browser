@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { VariantApiService } from '../variant-api.service';
+import { VariantApiService } from '../../services/variant-api.service';
 
 
 @Component({
@@ -54,14 +54,14 @@ export class TableComponent implements OnInit {
 
   constructor(private VariantService: VariantApiService) {
     this.cols = [
-      { field: 'identifier', header: 'Identifier' },
-      { field: 'coordinate', header: 'Coordinate' },
-      { field: 'variant', header: 'Variant' },
-      { field: 'gene', header: 'Gene' },
-      { field: 'sift', header: 'Sift' },
-      { field: 'polyphen', header: 'Polyphen' },
-      { field: 'change', header: 'Change' },
-      { field: 'gmaf', header: 'GMAF' }
+    { field: 'identifier', header: 'Identifier' },
+    { field: 'coordinate', header: 'Coordinate' },
+    { field: 'variant', header: 'Variant' },
+    { field: 'gene', header: 'Gene' },
+    { field: 'sift', header: 'Sift' },
+    { field: 'polyphen', header: 'Polyphen' },
+    { field: 'change', header: 'Change' },
+    { field: 'gmaf', header: 'GMAF' }
     ];
   }
 
@@ -167,36 +167,22 @@ export class TableComponent implements OnInit {
   }
 
   isLastPage(): boolean {
-    var result = false;
-    if (this.first === (this.variants.length - this.rows)) {
-      result = true;
-    }
-    return result;
+    //Cache
+    return this.first === (this.variants.length - this.rows);
   }
 
   isRealLastPage(): boolean {
-    var result = false;
+    //Las page from the results
     var math = Math.ceil((this.elements * (this.size / this.rows)) / this.size);
-    if (this.page == math) {
-      result = true;
-    }
-    return result;
+    return (this.page == math);
   }
 
   isFirstPage(): boolean {
-    var result = false;
-    if (this.first === 0) {
-      result = true;
-    }
-    return result;
+    return (this.first === 0);
   }
 
   isRealFirstPage(): boolean {
-    var result = false;
-    if (this.first === 0 && this.currentPage == 0) {
-      result = true;
-    }
-    return result;
+    return (this.first === 0 && this.currentPage == 0);
   }
 
 }

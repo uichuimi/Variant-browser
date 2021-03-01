@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import axios from "axios";
 
+import { environment } from '../../environments/environment';
+
+import { Variant } from '../interfaces/interfaces';
+
+const serviceURL = environment.mainURL;
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +16,11 @@ export class VariantApiService {
   modifiedResponse: any = [];
   incomeInfo: any = { data: [], elements: 0, empty: true };
 
+  variantsTrial: Variant[] = [];
   constructor() { }
 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
-    let url = 'http://193.145.155.148:9090/variants?pageNumber=' + page + '&pageSize=' + size;
+    let url = serviceURL + '/variants?pageNumber=' + page + '&pageSize=' + size;
     if (chromosome != undefined) {
       url += '&chrom=' + chromosome;
     }
@@ -43,8 +49,32 @@ export class VariantApiService {
       url += '&maxAlleleFrequency=' + gmaf;
     }
     console.log(url);
+    axios.get(serviceURL + '/variants', {
+      params:{
+        pageNumber: page,
+        pageSize: size,
+        chrom: chromosome,
+        start: posMin,
+        end: posMax,
+        genes: gene,
+        sift: sift,
+        polyphen: polyphen,
+        biotype: biotype,
+        terms: term,
+        maxAlleleFrequency: gmaf
+      }
+    })
+    .then(response =>{
+      console.log("NEW");
+      console.log(response);
+      this.variantsTrial = response.data.content;
+      console.log(this.variantsTrial);
+    });
     return axios.get(url)
       .then(response => {
+        console.log("OLD");
+        console.log(response);
+        console.log(response.data.content);
         this.modifiedResponse = response.data.content.map(each => {
           return {
             ...each,
@@ -64,7 +94,7 @@ export class VariantApiService {
   }
 
   getGenesData(search) {
-    let url = 'http://193.145.155.148:9090/genes?search=' + search;
+    let url = serviceURL + '/genes?search=' + search;
     return axios.get(url)
       .then(response => {
         return response.data;
@@ -76,7 +106,7 @@ export class VariantApiService {
   }
 
   getTermsData() {
-    let url = 'http://193.145.155.148:9090/terms';
+    let url = serviceURL + '/terms';
     return axios.get(url)
       .then(response => {
         return response.data;
@@ -88,7 +118,7 @@ export class VariantApiService {
   }
 
   getBiotypeData() {
-    let url = 'http://193.145.155.148:9090/biotypes';
+    let url = serviceURL + '/biotypes';
     return axios.get(url)
       .then(response => {
         return response.data;
