@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { VariantApiService } from '../../services/variant-api.service';
+import { Observable, Subscription } from "rxjs/Rx";
 
 
 @Component({
@@ -18,6 +19,12 @@ export class TableComponent implements OnInit {
   @Output() notifyPage = new EventEmitter;
   @Output() notifyDownload = new EventEmitter;
 
+  @Input() updated: boolean;
+  @Input() exSize: number;
+
+  private eventSubscription: Subscription;
+  @Input() event: Observable<void>;
+
   selectedVariants: any;
   cols: any[];
   pageChange: string = "";
@@ -25,7 +32,6 @@ export class TableComponent implements OnInit {
   rows: number = 10;
   page: number = 1;
   totalPages: number = 0;
-
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.filtering) {
@@ -66,6 +72,13 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.eventSubscription = this.event.subscribe(() =>{
+      if (this.first > Math.round((this.exSize/2))) {
+        this.first = this.first - 99;
+      }else{
+        this.first = this.first + 99;
+      }
+    });
   }
 
   selectVariant(eachVariant: any) {
@@ -131,7 +144,7 @@ export class TableComponent implements OnInit {
   //<-- Métodos para la paginación -->   
 
   next() {
-
+    console.log(this.first + " Y " + Math.round((this.exSize/5)*3));
     if (this.variants.length != 0 && this.variants != undefined) {
       this.clearSelection();
       if (!this.isRealLastPage() && this.isLastPage()) {
@@ -140,10 +153,15 @@ export class TableComponent implements OnInit {
         this.variants = [];
         this.pageChange = "";
         this.first = 0;
-        this.page += 1;
+        this.page += 1;        
       } else if (!this.isRealLastPage()) {
         this.first = this.first + this.rows;
         this.page += 1;
+        if (this.first >= Math.round((this.exSize/5)*3) && this.updated) {
+          console.log("entro");
+          this.pageChange = "next";
+          this.notifyPage.emit(this.pageChange);
+        }
       }
     }
   }
@@ -166,8 +184,24 @@ export class TableComponent implements OnInit {
     }
   }
 
+  firstPage(){
+    this.notifyPage.emit("first");
+    this.variants = [];
+    this.pageChange = "";
+    this.first = 0;
+    this.page = 0; 
+  }
+
+  lastPage(){
+    this.notifyPage.emit("last");
+    this.variants = [];
+    this.pageChange = "";
+    this.first = 0;
+    this.page = this.totalPages; 
+  }
+
   isLastPage(): boolean {
-    //Cache
+    //Cache LOGICA AQUI
     return this.first === (this.variants.length - this.rows);
   }
 

@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { VariantApiService } from './services/variant-api.service';
 
+import { Variant } from './interfaces/interfaces';
+
+import { Subject } from "rxjs/Rx";
 
 @Component({
   selector: 'app-root',
@@ -17,6 +20,8 @@ export class AppComponent {
   empty: boolean = false;
   downloadLink: any = "";
 
+  updated: any = false;
+
   chromosome: any;
   posMin: any;
   posMax: any;
@@ -27,20 +32,46 @@ export class AppComponent {
   term: any;
   gmaf: any;
 
+  eventSubscriber: Subject<void> = new Subject<void>();
+
+  notifyChild(){
+    this.eventSubscriber.next();
+  }
+
   receivingDownload(event: any) {
     this.exportLink();
   }
 
-  receivingPageChange(event: any) {
+  async receivingPageChange(event: any) {
     if (event == "next") {
-      this.page += 1;
-      this.getData();
+      
     } else if (event == "prev") {
-      this.page -= 1;
-      this.getData();
+      
+    }
+    switch (event) {
+      case "next":
+        this.page += 1;
+        this.getData();
+        break;
+      case "prev":
+        this.page -= 1;
+        this.getData();
+        break;
+      case "first":
+        this.page = 0;
+        this.getData();
+        break;
+      case "last":
+        this.page = 89585;
+        this.getData();
+        break;
     }
   }
 
+  /*
+    Method that receives all the filters assigned before a search 
+    and then creates a new query for the RestAPI
+  */
   receivingFilter(event: any) {
     this.filtering = true;
     this.page = 0;
@@ -60,7 +91,11 @@ export class AppComponent {
     this.getData();
   }
 
+  /*
+    Method that retrieves the information from an standard query from the RestAPI
+  */
   async getData() {
+    this.updated = false;
     this.empty = false;
     this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax,
       this.gene, this.sift, this.polyphen, this.biotype, this.term, this.gmaf);
@@ -68,7 +103,10 @@ export class AppComponent {
     this.apiData = this.incomeData.data;
     this.elements = this.incomeData.elements;
     this.empty = this.incomeData.empty;
-    this.adjustingData();
+    if (this.incomeData.edited) {
+      this.notifyChild();
+    }
+    this.updated = true;
   }
 
   async exportLink() {
@@ -105,34 +143,5 @@ export class AppComponent {
     console.log(this.downloadLink);
   }
 
-  adjustingData() {
-
-    this.apiData.forEach(each => {
-      each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
-      each.frequencies.forEach(frequencie => {
-        switch (frequencie.source) {
-          case 'gnomAD_genomes':
-            frequencie.source = "GG";
-            break;
-          case 'gnomAD_exomes':
-            frequencie.source = "GE";
-            break;
-          case 'ExAC':
-            frequencie.source = "EX";
-            break;
-          case '1000_genomes':
-            frequencie.source = "1KG";
-            break;
-        }
-      });
-      switch (each.polyphen) {
-        case 'probably_damaging':
-          each.polyphen = "probably damaging";
-          break;
-        case 'possibly_damaging':
-          each.polyphen = "possibly damaging";
-          break;
-      }
-    });
-  }
+  
 }

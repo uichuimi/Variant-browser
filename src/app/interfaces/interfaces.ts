@@ -19,6 +19,11 @@ export interface Frequency {​​​​
   value: number;
 }​​​​
 
+export interface Disease{
+	name: string;
+	identifier: string;
+}
+
 export interface Variant {
 	gene : Gene;
 	effect: Effect;
@@ -26,8 +31,9 @@ export interface Variant {
 	frequencies: Frequency[];
 
 	alt: string;
+	ref: string;
 	identifier: string;
-	pos: number;
+	pos: any;
 	chrom: number;
 	sift: string | null;
 	polyphen: string | null;
@@ -35,9 +41,9 @@ export interface Variant {
 
 	chromosome: Chromosome;
 
-	homozygous: Person[];
-	wildtype: Person[];
-	heterozygoes: Person[];
+	homozygous: Sample[];
+	wildtype: Sample[];
+	heterozygoes: Sample[];
 }
 
 export interface Chromosome{
@@ -45,7 +51,7 @@ export interface Chromosome{
 	index: number;
 }
 
-export interface Person{
+export interface Sample{
 	id: number;
 	identifier: string;
 }
