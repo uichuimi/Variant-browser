@@ -19,6 +19,8 @@ export class VariantApiService {
   incomeInfo: any = { data: [], elements: 0, empty: true, edited: false };
 
   variantsTrial: Variant[] = [];
+  cachePage = 0;
+
   constructor() { }
 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
@@ -40,13 +42,17 @@ export class VariantApiService {
     .then(response =>{
       console.log(response);
       console.log(response.data.content);
-      this.variantsTrial = this.variantsTrial.concat(this.adjustingData(response.data.content));
+      if (this.cachePage < page) {
+        this.variantsTrial = this.variantsTrial.concat(this.adjustingData(response.data.content));
+      }else{
+        this.variantsTrial = this.adjustingData(response.data.content).concat(this.variantsTrial);
+      }
       console.log(this.variantsTrial);
-      this.incomeInfo.edited = this.variantSizeCalculator();
-      console.log(this.variantsTrial.length);
+      this.incomeInfo.edited = this.variantSizeCalculator(page);
       this.incomeInfo.data = this.variantsTrial;
       this.incomeInfo.elements = response.data.totalElements;
       this.incomeInfo.empty = response.data.empty;
+      this.cachePage = page;
       return this.incomeInfo;
     })
     .catch(error => {
@@ -97,35 +103,40 @@ export class VariantApiService {
       each.frequencies.forEach(frequencie => {
         switch (frequencie.source) {
           case 'gnomAD_genomes':
-            frequencie.source = "GG";
-            break;
+          frequencie.source = "GG";
+          break;
           case 'gnomAD_exomes':
-            frequencie.source = "GE";
-            break;
+          frequencie.source = "GE";
+          break;
           case 'ExAC':
-            frequencie.source = "EX";
-            break;
+          frequencie.source = "EX";
+          break;
           case '1000_genomes':
-            frequencie.source = "1KG";
-            break;
+          frequencie.source = "1KG";
+          break;
         }
       });
       switch (each.polyphen) {
         case 'probably_damaging':
-          each.polyphen = "probably damaging";
-          break;
+        each.polyphen = "probably damaging";
+        break;
         case 'possibly_damaging':
-          each.polyphen = "possibly damaging";
-          break;
+        each.polyphen = "possibly damaging";
+        break;
       }
     });
     return value;
   }
 
-  variantSizeCalculator(){
+  variantSizeCalculator(page){
     if (this.variantsTrial.length >= 400) {
-      this.variantsTrial = this.variantsTrial.slice(99, 399);
-      return true;
+      if (this.cachePage < page) {
+        this.variantsTrial = this.variantsTrial.slice(100, 400);
+        return true;
+      }else{
+        this.variantsTrial = this.variantsTrial.slice(0, 300);
+        return true;
+      }
     }else{
       return false;
     }

@@ -74,9 +74,11 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
     this.eventSubscription = this.event.subscribe(() =>{
       if (this.first > Math.round((this.exSize/2))) {
-        this.first = this.first - 99;
+        console.log("ENTRO");
+        this.first = this.first - 100;
       }else{
-        this.first = this.first + 99;
+        console.log("maybe?");
+        this.first = this.first + 100;
       }
     });
   }
@@ -180,6 +182,11 @@ export class TableComponent implements OnInit {
       } else if (!this.isRealFirstPage()) {
         this.first = this.first - this.rows;
         this.page -= 1;
+        if (this.first <= Math.round((this.exSize/5)*2) && this.updated) {
+          console.log("entro");
+          this.pageChange = "prev";
+          this.notifyPage.emit(this.pageChange);
+        }
       }
     }
   }

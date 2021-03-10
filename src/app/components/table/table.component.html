@@ -56,32 +56,27 @@
           </div>
           <div *ngIf="variant.alt.length > 3 && variant.ref.length <= 3">
             <p class="variant-refValue">{{variant.alt.substring(0,2)}}
-              <span [ngbPopover]="popContent" class="alt variant-moreIcon">
+              <span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
               +{{variant.alt.length-2}}</span>
               /{{variant.ref}}
             </p>
-            <ng-template #popContent>{{ variant.alt }}</ng-template>
           </div>
           <div *ngIf="variant.alt.length <= 3 && variant.ref.length > 3">
             <p class="variant-refValue">{{variant.alt}}
-              /{{variant.ref.substring(0,2)}}<span [ngbPopover]="popContent" class="alt variant-moreIcon">
+              /{{variant.ref.substring(0,2)}}<span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
               +{{variant.ref.length-2}}</span>
             </p>
-            <ng-template #popContent>{{ variant.ref }}</ng-template>
           </div>
           <div *ngIf="variant.alt.length > 3 && variant.ref.length > 3">
             <p class="variant-refValue">{{variant.alt.substring(0,2)}}
-              <span [ngbPopover]="popContent" class="alt variant-moreIcon">
+              <span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
               +{{variant.alt.length-2}}</span>
-              /{{variant.ref.substring(0,2)}}<span [ngbPopover]="popContent" class="alt variant-moreIcon">
+              /{{variant.ref.substring(0,2)}}<span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
               +{{variant.ref.length-2}}</span>
             </p>
-            <ng-template #popContent>
-              {{ variant.alt }}
-              <hr>
-              {{ variant.ref }}
-            </ng-template>
           </div>
+          <ng-template #popTitle>Full Variant Change</ng-template>
+          <ng-template #popContent>{{ variant.alt }} /{{ variant.ref }}</ng-template>
           <!-- END OF NEW MODEL -->
         </td>
         <td class="table-property">
