@@ -74,10 +74,8 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
     this.eventSubscription = this.event.subscribe(() =>{
       if (this.first > Math.round((this.exSize/2))) {
-        console.log("ENTRO");
         this.first = this.first - 100;
       }else{
-        console.log("maybe?");
         this.first = this.first + 100;
       }
     });
@@ -155,12 +153,11 @@ export class TableComponent implements OnInit {
         this.variants = [];
         this.pageChange = "";
         this.first = 0;
-        this.page += 1;        
+        this.page += 1;
       } else if (!this.isRealLastPage()) {
         this.first = this.first + this.rows;
         this.page += 1;
         if (this.first >= Math.round((this.exSize/5)*3) && this.updated) {
-          console.log("entro");
           this.pageChange = "next";
           this.notifyPage.emit(this.pageChange);
         }
@@ -182,7 +179,7 @@ export class TableComponent implements OnInit {
       } else if (!this.isRealFirstPage()) {
         this.first = this.first - this.rows;
         this.page -= 1;
-        if (this.first <= Math.round((this.exSize/5)*2) && this.updated) {
+        if (this.first <= Math.round((this.exSize/5)*2) && this.updated && this.page > 10) {
           console.log("entro");
           this.pageChange = "prev";
           this.notifyPage.emit(this.pageChange);
@@ -203,7 +200,7 @@ export class TableComponent implements OnInit {
     this.notifyPage.emit("last");
     this.variants = [];
     this.pageChange = "";
-    this.first = 0;
+    this.first = 10;
     this.page = this.totalPages; 
   }
 
@@ -223,7 +220,7 @@ export class TableComponent implements OnInit {
   }
 
   isRealFirstPage(): boolean {
-    return (this.first === 0 && this.currentPage == 0);
+    return (this.page === 1);
   }
 
 }

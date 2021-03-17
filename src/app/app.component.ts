@@ -20,6 +20,8 @@ export class AppComponent {
   empty: boolean = false;
   downloadLink: any = "";
 
+  lastPage: number;
+
   updated: any = false;
 
   chromosome: any;
@@ -34,6 +36,7 @@ export class AppComponent {
 
   eventSubscriber: Subject<void> = new Subject<void>();
 
+  //Notification for the table component when the Variant[] size has changed
   notifyChild(){
     this.eventSubscriber.next();
   }
@@ -42,106 +45,107 @@ export class AppComponent {
     this.exportLink();
   }
 
+  //Event handler from the table component, when recieves chooses which pagination
+  //option was launched
   async receivingPageChange(event: any) {
-    if (event == "next") {
-      
-    } else if (event == "prev") {
-      
-    }
     switch (event) {
       case "next":
-        this.page += 1;
-        this.getData();
-        break;
+      this.page += 1;
+      this.getData();
+      break;
       case "prev":
-        this.page -= 1;
-        this.getData();
-        break;
+      this.page -= 1;
+      this.getData();
+      break;
       case "first":
-        this.page = 0;
-        this.getData();
-        break;
+      this.page = 0;
+      this.VariantService.variantCleaner();
+      this.getData();
+      break;
       case "last":
-        this.page = 89585;
-        this.getData();
-        break;
+      this.page = 89584;
+      this.VariantService.variantCleaner();
+      this.getData();
+      break;
     }
   }
 
   /*
     Method that receives all the filters assigned before a search 
     and then creates a new query for the RestAPI
-  */
-  receivingFilter(event: any) {
-    this.filtering = true;
-    this.page = 0;
-    this.chromosome = event.chromosome;
-    this.posMin = event.posMin;
-    this.posMax = event.posMax;
-    this.gene = event.gene;
-    this.sift = event.sift;
-    this.polyphen = event.polyphen;
-    this.biotype = event.biotype;
-    this.term = event.term;
-    this.gmaf = event.gmaf;
-    this.getData();
-  }
+    */
+    receivingFilter(event: any) {
+      this.filtering = true;
+      this.page = 0;
+      this.chromosome = event.chromosome;
+      this.posMin = event.posMin;
+      this.posMax = event.posMax;
+      this.gene = event.gene;
+      this.sift = event.sift;
+      this.polyphen = event.polyphen;
+      this.biotype = event.biotype;
+      this.term = event.term;
+      this.gmaf = event.gmaf;
+      this.VariantService.variantCleaner();
+      this.getData();
+    }
 
-  constructor(private VariantService: VariantApiService) {
-    this.getData();
-  }
+    constructor(private VariantService: VariantApiService) {
+      this.getData();
+    }
 
   /*
     Method that retrieves the information from an standard query from the RestAPI
-  */
-  async getData() {
-    this.updated = false;
-    this.empty = false;
-    this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax,
-      this.gene, this.sift, this.polyphen, this.biotype, this.term, this.gmaf);
-    this.filtering = false;
-    this.apiData = this.incomeData.data;
-    this.elements = this.incomeData.elements;
-    this.empty = this.incomeData.empty;
-    if (this.incomeData.edited) {
-      this.notifyChild();
+    */
+    async getData() {
+      this.updated = false;
+      this.empty = false;
+      this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax,
+        this.gene, this.sift, this.polyphen, this.biotype, this.term, this.gmaf);
+      this.filtering = false;
+      this.apiData = this.incomeData.data;
+      this.elements = this.incomeData.elements;
+      this.empty = this.incomeData.empty;
+      this.lastPage = this.incomeData.totalPages - 1;
+      if (this.incomeData.edited) {
+        this.notifyChild();
+      }
+      this.updated = true;
     }
-    this.updated = true;
-  }
 
-  async exportLink() {
-    this.downloadLink = "";
-    let url = 'http://193.145.155.148:9090/download/variants?';
-    if (this.chromosome != undefined) {
-      url += 'chrom=' + this.chromosome + '&';
+    async exportLink() {
+      this.downloadLink = "";
+      let url = 'http://193.145.155.148:9090/download/variants?';
+      if (this.chromosome != undefined) {
+        url += 'chrom=' + this.chromosome + '&';
+      }
+      if (this.posMin != undefined && this.posMin != null) {
+        url += 'start=' + this.posMin + '&';
+      }
+      if (this.posMax != undefined && this.posMax != null) {
+        url += 'end=' + this.posMax + '&';
+      }
+      if (this.gene != undefined && this.gene != "") {
+        url += 'genes=' + this.gene + '&';
+      }
+      if (this.sift != undefined) {
+        url += 'sift=' + this.sift + '&';
+      }
+      if (this.polyphen != undefined) {
+        url += 'polyphen=' + this.polyphen + '&';
+      }
+      if (this.biotype != undefined) {
+        url += 'biotypes=' + this.biotype + '&';
+      }
+      if (this.term != undefined) {
+        url += 'terms=' + this.term + '&';
+      }
+      if (this.gmaf != undefined && this.gmaf != null) {
+        url += 'maxAlleleFrequency=' + this.gmaf + '&';
+      }
+      this.downloadLink = url.substring(0, url.length - 1);
+      console.log(this.downloadLink);
     }
-    if (this.posMin != undefined && this.posMin != null) {
-      url += 'start=' + this.posMin + '&';
-    }
-    if (this.posMax != undefined && this.posMax != null) {
-      url += 'end=' + this.posMax + '&';
-    }
-    if (this.gene != undefined && this.gene != "") {
-      url += 'genes=' + this.gene + '&';
-    }
-    if (this.sift != undefined) {
-      url += 'sift=' + this.sift + '&';
-    }
-    if (this.polyphen != undefined) {
-      url += 'polyphen=' + this.polyphen + '&';
-    }
-    if (this.biotype != undefined) {
-      url += 'biotypes=' + this.biotype + '&';
-    }
-    if (this.term != undefined) {
-      url += 'terms=' + this.term + '&';
-    }
-    if (this.gmaf != undefined && this.gmaf != null) {
-      url += 'maxAlleleFrequency=' + this.gmaf + '&';
-    }
-    this.downloadLink = url.substring(0, url.length - 1);
-    console.log(this.downloadLink);
-  }
 
-  
-}
+
+  }

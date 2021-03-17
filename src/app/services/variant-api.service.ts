@@ -24,6 +24,7 @@ export class VariantApiService {
   constructor() { }
 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
+    var Qs = require('qs');
     return axios.get(serviceURL + '/variants', {
       params:{
         pageNumber: page,
@@ -34,9 +35,11 @@ export class VariantApiService {
         genes: gene,
         sift: sift,
         polyphen: polyphen,
-        biotype: biotype,
+        biotypes: biotype,
         terms: term,
         maxAlleleFrequency: gmaf
+      }, paramsSerializer: function (params) {
+        return Qs.stringify(params, {arrayFormat: 'repeat'})
       }
     })
     .then(response =>{
@@ -51,6 +54,7 @@ export class VariantApiService {
       this.incomeInfo.edited = this.variantSizeCalculator(page);
       this.incomeInfo.data = this.variantsTrial;
       this.incomeInfo.elements = response.data.totalElements;
+      this.incomeInfo.totalPages = response.data.totalPages;
       this.incomeInfo.empty = response.data.empty;
       this.cachePage = page;
       return this.incomeInfo;
@@ -128,18 +132,22 @@ export class VariantApiService {
     return value;
   }
 
+  //The variants are edited in order to keep the amount of local data managable
   variantSizeCalculator(page){
     if (this.variantsTrial.length >= 400) {
       if (this.cachePage < page) {
         this.variantsTrial = this.variantsTrial.slice(100, 400);
-        return true;
       }else{
         this.variantsTrial = this.variantsTrial.slice(0, 300);
-        return true;
       }
+      return true;
     }else{
       return false;
     }
+  }
+
+  variantCleaner(){
+    this.variantsTrial.length = 0;
   }
 }
 
