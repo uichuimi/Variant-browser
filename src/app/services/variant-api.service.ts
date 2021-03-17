@@ -39,7 +39,7 @@ export class VariantApiService {
         terms: term,
         maxAlleleFrequency: gmaf
       }, paramsSerializer: function (params) {
-        return Qs.stringify(params, {arrayFormat: 'repeat'})
+        return Qs.stringify(params, {arrayFormat: 'repeat'}) //Format for the query
       }
     })
     .then(response =>{

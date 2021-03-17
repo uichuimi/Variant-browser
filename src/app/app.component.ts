@@ -63,7 +63,7 @@ export class AppComponent {
       this.getData();
       break;
       case "last":
-      this.page = 89584;
+      this.page = this.lastPage;
       this.VariantService.variantCleaner();
       this.getData();
       break;

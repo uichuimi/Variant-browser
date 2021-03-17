@@ -35,6 +35,7 @@ export class TableComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.filtering) {
+      console.log(changes);
       if (changes.filtering.currentValue) {
         this.isFiltering();
       }
@@ -157,7 +158,7 @@ export class TableComponent implements OnInit {
       } else if (!this.isRealLastPage()) {
         this.first = this.first + this.rows;
         this.page += 1;
-        if (this.first >= Math.round((this.exSize/5)*3) && this.updated) {
+        if (this.first >= Math.round((this.exSize/5)*3) && this.updated && this.page < this.totalPages - 10) {
           this.pageChange = "next";
           this.notifyPage.emit(this.pageChange);
         }
@@ -197,10 +198,15 @@ export class TableComponent implements OnInit {
   }
 
   lastPage(){
+    this.first = this.elements - ((Math.ceil(this.elements / 100) - 1)*100);
+    if (this.first > 10) {
+      this.first = Math.floor(this.first/10)*10;
+    }else{
+      this.first = 0
+    }
     this.notifyPage.emit("last");
-    this.variants = [];
     this.pageChange = "";
-    this.first = 10;
+    this.variants = [];
     this.page = this.totalPages; 
   }
 
@@ -211,8 +217,7 @@ export class TableComponent implements OnInit {
 
   isRealLastPage(): boolean {
     //Las page from the results
-    var math = Math.ceil((this.elements * (this.size / this.rows)) / this.size);
-    return (this.page == math);
+    return (this.page == this.totalPages);
   }
 
   isFirstPage(): boolean {
