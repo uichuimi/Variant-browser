@@ -116,19 +116,11 @@
 
 <div class="bottom-pannel">
     <div class="pagination-bottom">
-      <div class="paginator-left"
-        [ngClass]="{ 'paginating': variants.length != 0 && variants != undefined && !realEmpty }">
-        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false"
-          styleClass="p-button-text"
-          [disabled]="isRealFirstPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
-      </div>
+      
       <div *ngIf="(variants.length == 0 || variants == undefined) && !realEmpty" class="preloader"></div>
       <div *ngIf="realEmpty" class="no-variants">
         <p>No variants available</p>
       </div>
-      <div class="paginator-right">
-        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"
-          [disabled]="isRealLastPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
-      </div>
+      
     </div>
   </div>

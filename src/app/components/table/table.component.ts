@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, HostListener } from '@angular/core';
 import { VariantApiService } from '../../services/variant-api.service';
 import { Observable, Subscription } from "rxjs/Rx";
 
@@ -56,6 +56,15 @@ export class TableComponent implements OnInit {
       if (changes.downloadLink) {
         window.open(this.downloadLink, "_self");
       }
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key == "ArrowLeft" && !(this.isRealFirstPage() || this.variants.length == 0 || this.variants == undefined)) {
+      this.prev();
+    }else if(event.key == "ArrowRight" && !(this.isRealLastPage() || this.variants.length == 0 || this.variants == undefined)){
+      this.next();
     }
   }
 
@@ -158,7 +167,9 @@ export class TableComponent implements OnInit {
       } else if (!this.isRealLastPage()) {
         this.first = this.first + this.rows;
         this.page += 1;
-        if (this.first >= Math.round((this.exSize/5)*3) && this.updated && this.page < this.totalPages - 10) {
+        if (this.first >= Math.round((this.exSize/5)*3) 
+          && this.updated 
+          && this.page < this.totalPages - 10) {
           this.pageChange = "next";
           this.notifyPage.emit(this.pageChange);
         }
