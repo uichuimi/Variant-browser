@@ -33,6 +33,13 @@ export class TableComponent implements OnInit {
   page: number = 1;
   totalPages: number = 0;
 
+  pageModifier = {
+    name: '',
+    page: 0,
+  };
+
+  cachePage = 0;
+
   ngOnChanges(changes: SimpleChanges) {
     if (this.filtering) {
       console.log(changes);
@@ -86,6 +93,7 @@ export class TableComponent implements OnInit {
       if (this.first > Math.round((this.exSize/2))) {
         this.first = this.first - 100;
       }else{
+        console.log("the other");
         this.first = this.first + 100;
       }
     });
@@ -154,7 +162,7 @@ export class TableComponent implements OnInit {
   //<-- Métodos para la paginación -->   
 
   next() {
-    console.log(this.first + " Y " + Math.round((this.exSize/5)*3));
+    console.log(this.first + " Y " + Math.floor((this.exSize)*0.8));
     if (this.variants.length != 0 && this.variants != undefined) {
       this.clearSelection();
       if (!this.isRealLastPage() && this.isLastPage()) {
@@ -167,17 +175,19 @@ export class TableComponent implements OnInit {
       } else if (!this.isRealLastPage()) {
         this.first = this.first + this.rows;
         this.page += 1;
-        if (this.first >= Math.round((this.exSize/5)*3) 
+        if (this.first >= Math.round((this.exSize)*0.8) 
           && this.updated 
           && this.page < this.totalPages - 10) {
-          this.pageChange = "next";
-          this.notifyPage.emit(this.pageChange);
+          this.pageModifier.name = "change";
+          this.pageModifier.page = Math.floor((this.page * 10)/100) + 1;
+          this.notifyPage.emit(this.pageModifier);
         }
       }
-    }
+    }    
   }
 
   prev() {
+    console.log(this.first + " Y " + Math.floor((this.exSize)*0.2));
 
     if (this.variants.length != 0 && this.variants != undefined) {
       this.clearSelection();
@@ -191,21 +201,24 @@ export class TableComponent implements OnInit {
       } else if (!this.isRealFirstPage()) {
         this.first = this.first - this.rows;
         this.page -= 1;
-        if (this.first <= Math.round((this.exSize/5)*2) && this.updated && this.page > 10) {
-          console.log("entro");
-          this.pageChange = "prev";
-          this.notifyPage.emit(this.pageChange);
+        if (this.first <= Math.round((this.exSize)*0.2) 
+          && this.updated 
+          && this.page > 10) {
+          this.pageModifier.name = "change";
+          this.pageModifier.page = Math.floor((this.page * 10)/100) - 1;
+          this.notifyPage.emit(this.pageModifier);
         }
       }
     }
   }
 
   firstPage(){
-    this.notifyPage.emit("first");
+    this.pageModifier.name = "first";
+    this.notifyPage.emit(this.pageModifier);
     this.variants = [];
     this.pageChange = "";
     this.first = 0;
-    this.page = 0; 
+    this.page = 1; 
   }
 
   lastPage(){
@@ -215,10 +228,30 @@ export class TableComponent implements OnInit {
     }else{
       this.first = 0
     }
-    this.notifyPage.emit("last");
-    this.pageChange = "";
+    this.pageModifier.name = "last";
+    this.notifyPage.emit(this.pageModifier);
     this.variants = [];
     this.page = this.totalPages; 
+  }
+
+  searchPage(){
+    this.pageModifier.name = "jump";
+    this.pageModifier.page = Math.floor((this.cachePage * 10)/100);
+    this.first = 0;
+    this.first = (this.cachePage%10)-1;
+    if (this.first == -1) {
+      this.first = 9;
+    }
+    this.first = this.first * 10;
+    console.log("FIRST = " + this.first);
+    this.notifyPage.emit(this.pageModifier);
+    this.variants = [];
+    this.page = this.cachePage;
+  }
+
+  updatePage(event: any){
+    console.log(event.value);
+    this.cachePage = event.value;
   }
 
   isLastPage(): boolean {

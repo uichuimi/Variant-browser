@@ -19,10 +19,12 @@
         </div>
         <div class="page-pannel">
           <p *ngIf="totalPages == 0 || realEmpty"> Page 0 of {{totalPages}}</p>
-          <p *ngIf="totalPages !=0"> Page {{page}} of {{totalPages}}</p>
+          <p *ngIf="totalPages !=0"> Page <p-inputNumber [(ngModel)]="page" (onInput)="updatePage($event)" [min]="1" [max]="totalPages"></p-inputNumber> of {{totalPages}}</p>
+          <button pButton class="jumpButton" label="Jump" (click)="searchPage()"></button>
         </div>
       </div>
     </ng-template>
+
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th *ngFor="let col of columns">
@@ -80,7 +82,7 @@
           <!-- END OF NEW MODEL -->
         </td>
         <td class="table-property">
-          <p *ngIf="variant.gene != null">{{variant.gene.name}}</p>
+          <p *ngIf="variant.gene != null">{{variant.gene.type}}</p>
           <p *ngIf="variant.gene == null">-</p>
         </td>
         <td class="table-property">

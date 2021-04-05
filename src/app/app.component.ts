@@ -48,13 +48,9 @@ export class AppComponent {
   //Event handler from the table component, when recieves chooses which pagination
   //option was launched
   async receivingPageChange(event: any) {
-    switch (event) {
-      case "next":
-      this.page += 1;
-      this.getData();
-      break;
-      case "prev":
-      this.page -= 1;
+    switch (event.name) {
+      case "change":
+      this.page = event.page;
       this.getData();
       break;
       case "first":
@@ -64,6 +60,11 @@ export class AppComponent {
       break;
       case "last":
       this.page = this.lastPage;
+      this.VariantService.variantCleaner();
+      this.getData();
+      break;
+      case "jump":
+      this.page = event.page;
       this.VariantService.variantCleaner();
       this.getData();
       break;

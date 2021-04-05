@@ -1,57 +1,91 @@
 export interface Gene {​​​​
-  description: string;
-  name: string;
-  identifier: string;
-  biotype: string;
-}​​​​
- 
- export interface Effect {​​​​
-  term: string;
-  description: string;
-  accession: string;
-  displayName: string;
-  impact: string;
-}​​​​
- 
-export interface Frequency {​​​​
-  population: string;
-  source: string;
-  value: number;
+	ensg:	string;
+	hgnc:	string;
+	name:	string;
+	ncbi:	string;
+	symbol:	string;
+	type:	string;
+	drugs: GeneDrug[];
 }​​​​
 
-export interface Disease{
+export interface GeneDrug{
+	association: string;
+	pharmacodynamic: boolean;
+	pharmacokinetic: boolean;
+	drug: Drug;
+	gene: Gene;
+}
+
+export interface Drug{
+	identifier:	string;
+	name:	string;
+}
+
+export interface Effect {​​​​
+	term: string;
+	description: string;
+	accession: string;
+	displayName: string;
+	impact: string;
+}​​​​
+
+export interface Frequency {​​​​
+	ac:	number;
+	af:	number;
+	an:	number;
+	population: Population;
+}​​​​
+
+export interface Population{
 	name: string;
-	identifier: string;
+}
+
+export interface Disease{
+	identifier:	string;
+	name:	string;
+	xrefs:	string;
 }
 
 export interface Variant {
 	gene : Gene;
 	effect: Effect;
-	gmaf: number;
 	frequencies: Frequency[];
 
 	alt: string;
 	ref: string;
 	identifier: string;
-	pos: any;
-	chrom: number;
-	sift: string | null;
-	polyphen: string | null;
-	amino: string | null;
+	pos: number;
+	chrom: string;
+	sift: number | null;
+	polyphen: number | null;
 
-	chromosome: Chromosome;
+	homozygous: Genotype[];
+	wildtype: Genotype[];
+	heterozygoes: Genotype[];
 
-	homozygous: Sample[];
-	wildtype: Sample[];
-	heterozygoes: Sample[];
+	ac:	number;
+	af:	number;
+	an:	number;
+	vid: number;
+	hgvsp: string;
+
+	diseases: VariantDisease[];
 }
 
-export interface Chromosome{
-	name: string;
-	index: number;
+export interface VariantDisease{
+	significance:	string;
+	status:	string;
+	conflicts:	string;
+	disease: Disease;
 }
 
 export interface Sample{
-	id: number;
 	identifier: string;
+}
+
+export interface Genotype{
+	alternateCount:	number;
+	gt:	string;
+	referenceCount:	number;
+	sample: Sample;
 }

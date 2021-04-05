@@ -45,13 +45,15 @@ export class VariantApiService {
     .then(response =>{
       console.log(response);
       console.log(response.data.content);
-      if (this.cachePage < page) {
+      if (this.cachePage <= page) {
         this.variantsTrial = this.variantsTrial.concat(this.adjustingData(response.data.content));
+        this.incomeInfo.edited = this.variantSizeCalculator(page);
       }else{
         this.variantsTrial = this.adjustingData(response.data.content).concat(this.variantsTrial);
+        this.incomeInfo.edited = true;
+        this.variantSizeCalculator(page);
       }
       console.log(this.variantsTrial);
-      this.incomeInfo.edited = this.variantSizeCalculator(page);
       this.incomeInfo.data = this.variantsTrial;
       this.incomeInfo.elements = response.data.totalElements;
       this.incomeInfo.totalPages = response.data.totalPages;
@@ -104,28 +106,12 @@ export class VariantApiService {
 
     value.forEach(each => {
       each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
-      each.frequencies.forEach(frequencie => {
-        switch (frequencie.source) {
-          case 'gnomAD_genomes':
-          frequencie.source = "GG";
-          break;
-          case 'gnomAD_exomes':
-          frequencie.source = "GE";
-          break;
-          case 'ExAC':
-          frequencie.source = "EX";
-          break;
-          case '1000_genomes':
-          frequencie.source = "1KG";
-          break;
-        }
-      });
       switch (each.polyphen) {
-        case 'probably_damaging':
-        each.polyphen = "probably damaging";
-        break;
-        case 'possibly_damaging':
+        case (each.polyphen <= 0.7):
         each.polyphen = "possibly damaging";
+        break;
+        default:
+        each.polyphen = "probably damaging";
         break;
       }
     });
