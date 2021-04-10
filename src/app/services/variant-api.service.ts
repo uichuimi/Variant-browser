@@ -36,7 +36,7 @@ export class VariantApiService {
         sift: sift,
         polyphen: polyphen,
         biotypes: biotype,
-        terms: term,
+        impacts: term,
         maxAlleleFrequency: gmaf
       }, paramsSerializer: function (params) {
         return Qs.stringify(params, {arrayFormat: 'repeat'}) //Format for the query
@@ -106,13 +106,19 @@ export class VariantApiService {
 
     value.forEach(each => {
       each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
-      switch (each.polyphen) {
-        case (each.polyphen <= 0.7):
-        each.polyphen = "possibly damaging";
-        break;
-        default:
+      if (each.polyphen >= 0.85) {
         each.polyphen = "probably damaging";
-        break;
+      }else if (each.polyphen >= 0.15) {
+        each.polyphen = "possibly damaging";
+      }else{
+        each.polyphen = null;
+      }
+      if (each.sift != null) {
+        if (each.sift <= 0.1) {
+          each.sift = "deleterious"
+        }else{
+          each.sift = "tolerated"
+        }
       }
     });
     return value;

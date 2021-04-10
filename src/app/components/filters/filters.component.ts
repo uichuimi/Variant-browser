@@ -31,20 +31,20 @@ export class FiltersComponent implements OnInit {
   chromosomes: SelectItem[];
   siftOptions: SelectItem[];
   polyphenOptions: SelectItem[];
-  selectedSift: any;
-  selectedPolyphen: any;
-  selectedChromosome: any;
+  selectedSift: any = null;
+  selectedPolyphen: any = null;
+  selectedChromosome: any = null;
   gmaf: number = null;
   posMin: number = null;
   posMax: number = null;
   filteringData: any;
 
-  selectedEffects: any;
+  selectedEffects: any = null;
   effects: any = [];
   effectSelection: any;
 
   biotypes: any = [];
-  selectedBiotype: any;
+  selectedBiotype: any = null;
 
   showSearching: boolean = false;
   search: any = "";
@@ -55,6 +55,14 @@ export class FiltersComponent implements OnInit {
 
   constructor(private VariantService: VariantApiService) {
     this.getEffectAndBiotype();
+
+    this.effects = [
+      { label: 'MODIFIER', value: 'MODIFIER' },
+      { label: 'LOW', value: 'LOW'},
+      { label: 'MODERATE', value: 'MODERATE'},
+      { label: 'HIGH', value: 'HIGH'},
+
+    ]
 
     this.chromosomes = [
       { label: '1', value: '1' },
@@ -197,11 +205,11 @@ export class FiltersComponent implements OnInit {
     /*effect = await this.VariantService.getTermsData();
     effect.forEach(element => {
       this.effects.push({ label: element.displayName, value: element.term });
-    });
+    });*/
     biotype = await this.VariantService.getBiotypeData();
     biotype.sort().forEach(element => {
       this.biotypes.push({ label: element, value: element });
-    });*/
+    });
   }
 }
 

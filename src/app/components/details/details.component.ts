@@ -15,14 +15,6 @@ export class DetailsComponent implements OnInit {
   constructor() {
     this.populations = [
       { name: 'African', code: 'AFR' },
-      { name: 'American', code: 'AMR' },
-      { name: 'Ashkenazi Jewish', code: 'ASJ' },
-      { name: 'East Asian', code: 'EAS' },
-      { name: 'European', code: 'EUR' }, //QUITAR AL FINAL?
-      { name: 'Finnish', code: 'FIN' },
-      { name: 'Non-Finnish European', code: 'NFE' },
-      { name: 'Other', code: 'OTH' },
-      { name: 'South Asian', code: 'SAS' },
     ];
   }
 

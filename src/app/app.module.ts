@@ -19,6 +19,8 @@ import { FiltersComponent } from './components/filters/filters.component';
 import { DetailsComponent } from './components/details/details.component';
 import { TableComponent } from './components/table/table.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FrequencyPipe } from './pipes/frequency.pipe';
+import { GenotypesComponent } from './components/genotypes/genotypes.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppComponent,
     FiltersComponent,
     DetailsComponent,
-    TableComponent
+    TableComponent,
+    FrequencyPipe,
+    GenotypesComponent
   ],
   imports: [
     FormsModule,
