@@ -15,17 +15,17 @@
       <p-table [value]="populations" class="details-table">
         <ng-template pTemplate="header">
           <tr>
-            <th class="table-label population" colspan="4">Population</th>
+            <th class="table-label population" colspan="4">Frequencies</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body">
           <tr [hidden]="selected.af == null" *ngFor="let frequency of selected.frequencies" >
-            <td class="table-property population" colspan="2">{{frequency.population.name | uppercase | frequency}}</td>
+            <td class="table-property population" colspan="2">{{ frequency.population.description }}</td>
             <td class="table-property" colspan="2">
               <div>
                 <div>
                   <p class="label" [ngClass]="{ 'red': frequency.af <= 0.01, 'orange': frequency.af > 0.01 && frequency.af <= 0.1, 
-                    'green': frequency.af > 0.1 }">{{frequency.af}}</p>
+                    'green': frequency.af > 0.1 }">{{frequency.af}} ({{frequency.an}}/{{frequency.ac}})</p>
                 </div>
               </div>
             </td>  

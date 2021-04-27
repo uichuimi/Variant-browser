@@ -31,7 +31,7 @@ export class AppComponent {
   sift: any;
   polyphen: any;
   biotype: any;
-  term: any;
+  impact: any;
   gmaf: any;
 
   eventSubscriber: Subject<void> = new Subject<void>();
@@ -85,7 +85,7 @@ export class AppComponent {
       this.sift = event.sift;
       this.polyphen = event.polyphen;
       this.biotype = event.biotype;
-      this.term = event.term;
+      this.impact = event.impact;
       this.gmaf = event.gmaf;
       this.VariantService.variantCleaner();
       this.getData();
@@ -102,7 +102,7 @@ export class AppComponent {
       this.updated = false;
       this.empty = false;
       this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax,
-        this.gene, this.sift, this.polyphen, this.biotype, this.term, this.gmaf);
+        this.gene, this.sift, this.polyphen, this.biotype, this.impact, this.gmaf, null);
       this.filtering = false;
       this.apiData = this.incomeData.data;
       this.elements = this.incomeData.elements;
@@ -138,8 +138,8 @@ export class AppComponent {
       if (this.biotype != undefined) {
         url += 'biotypes=' + this.biotype + '&';
       }
-      if (this.term != undefined) {
-        url += 'terms=' + this.term + '&';
+      if (this.impact != undefined) {
+        url += 'impact=' + this.impact + '&';
       }
       if (this.gmaf != undefined && this.gmaf != null) {
         url += 'maxAlleleFrequency=' + this.gmaf + '&';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import axios from "axios";
+import axios from 'axios';
 
 import { environment } from '../../environments/environment';
 
@@ -7,7 +7,7 @@ import { Variant } from '../interfaces/interfaces';
 
 const serviceURL = environment.mainURL;
 
-//Service which creates all the query request to the restAPI
+// Service which creates all the query request to the restAPI
 
 @Injectable({
   providedIn: 'root'
@@ -23,21 +23,22 @@ export class VariantApiService {
 
   constructor() { }
 
-  getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
+  getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, impact, gmaf, effect) {
     var Qs = require('qs');
-    return axios.get(serviceURL + '/variants', {
+    return axios.get(serviceURL + 'variants', {
       params:{
-        pageNumber: page,
-        pageSize: size,
+        page: page,
+        size: size,
         chrom: chromosome,
         start: posMin,
         end: posMax,
-        genes: gene,
+        gene: gene,
         sift: sift,
         polyphen: polyphen,
-        biotypes: biotype,
-        impacts: term,
-        maxAlleleFrequency: gmaf
+        biotype: biotype,
+        impact: impact,
+        //effect: effect,
+        max_af: gmaf
       }, paramsSerializer: function (params) {
         return Qs.stringify(params, {arrayFormat: 'repeat'}) //Format for the query
       }
@@ -66,25 +67,91 @@ export class VariantApiService {
     })
   }
 
-  getGenesData(search) {
-    let url = serviceURL + '/genes?search=' + search;
+  getFilterData(query: string){
+    let url = serviceURL + query;
     return axios.get(url)
     .then(response => {
       return response.data;
     })
-
     .catch(error => {
       console.log("Se ha producido el error", error);
     })
   }
 
-  getTermsData() {
-    let url = serviceURL + '/terms';
+  getChromsData() {
+    let url = serviceURL + '/chroms';
     return axios.get(url)
     .then(response => {
       return response.data;
     })
+    .catch(error => {
+      console.log("Se ha producido el error", error);
+    })
+  }
 
+  getEffectsData(search) {
+    let url = serviceURL + '/effects?search=' + search;
+    return axios.get(url)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log("Se ha producido el error", error);
+    })
+  }
+
+  getImpactsData() {
+    let url = serviceURL + '/impacts';
+    return axios.get(url)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log("Se ha producido el error", error);
+    })
+  }
+
+  getPolyphenData() {
+    let url = serviceURL + '/polyphen';
+    return axios.get(url)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log("Se ha producido el error", error);
+    })
+  }
+
+  getSiftData() {
+    let url = serviceURL + '/sift';
+    return axios.get(url)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log("Se ha producido el error", error);
+    })
+  }
+
+  getSamplesData() {
+    let url = serviceURL + '/samples';
+    return axios.get(url)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log("Se ha producido el error", error);
+    })
+  }
+
+  ///////////////////////////////////////////////////// BASICOS ^
+
+  getGenesData(search) {
+    let url = serviceURL + '/v2/genes?search=' + search;
+    return axios.get(url)
+    .then(response => {
+      return response.data.content;
+    })
     .catch(error => {
       console.log("Se ha producido el error", error);
     })

@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { VariantApiService } from '../../services/variant-api.service';
 
+import { Gene } from '../../interfaces/interfaces';
+
 function genes_comparator(term: string) {
   return (a, b) => {
     if (a.name.toLowerCase().includes(term)) {
@@ -28,80 +30,68 @@ function genes_comparator(term: string) {
 export class FiltersComponent implements OnInit {
 
   @Output() notifyFilter = new EventEmitter;
-  chromosomes: SelectItem[];
-  siftOptions: SelectItem[];
-  polyphenOptions: SelectItem[];
-  selectedSift: any = null;
-  selectedPolyphen: any = null;
-  selectedChromosome: any = null;
-  gmaf: number = null;
-  posMin: number = null;
-  posMax: number = null;
+
+  selectedSift: any;
+  selectedPolyphen: any;
+  selectedChromosome: any;
+  gmaf: number = undefined;
+  posMin: number;
+  posMax: number;
   filteringData: any;
 
-  selectedEffects: any = null;
-  effects: any = [];
+  selectedImpact: any;
   effectSelection: any;
 
-  biotypes: any = [];
-  selectedBiotype: any = null;
+  selectedBiotype: any;
+
+  genesList: any = []
 
   showSearching: boolean = false;
   search: any = "";
-  genesList: any;
   geneSelection: any;
   selectedGenes: any;
-  listOfGenes: any;
+
+  //NEW SPACE
+
+  selectedSamplesCase: any = undefined;
+  selectedSamplesControl: any = undefined;
+
+  selectedMode: any = undefined;
+
+  extrFilter = [
+  {value: "dominant", label:"Dominant"},
+  {value: "recessive", label:"Recessive"}
+  ]
+
+  //NEW SPACE
+
+  filterList: {
+    chromsList: {value: string, label: string}[],
+    impactsList: {value: string, label: string}[],
+    polyphenList: {value: string, label: string}[],
+    siftList: {value: string, label: string}[],
+    samplesList: {value: string, label: string}[],
+    biotypesList: {value: string, label: string}[],
+  } = {
+    chromsList: [],
+    impactsList: [],
+    polyphenList: [],
+    siftList: [],
+    samplesList: [],
+    biotypesList: [],
+  };
+
+  dataHeaders = [
+  "chroms",
+  "impacts",
+  "polyphen",
+  "sift",
+  "samples",
+  "biotypes"
+  ]
 
   constructor(private VariantService: VariantApiService) {
     this.getEffectAndBiotype();
-
-    this.effects = [
-      { label: 'MODIFIER', value: 'MODIFIER' },
-      { label: 'LOW', value: 'LOW'},
-      { label: 'MODERATE', value: 'MODERATE'},
-      { label: 'HIGH', value: 'HIGH'},
-
-    ]
-
-    this.chromosomes = [
-      { label: '1', value: '1' },
-      { label: '2', value: '2' },
-      { label: '3', value: '3' },
-      { label: '4', value: '4' },
-      { label: '5', value: '5' },
-      { label: '6', value: '6' },
-      { label: '7', value: '7' },
-      { label: '8', value: '8' },
-      { label: '9', value: '9' },
-      { label: '10', value: '10' },
-      { label: '11', value: '11' },
-      { label: '12', value: '12' },
-      { label: '13', value: '13' },
-      { label: '14', value: '14' },
-      { label: '15', value: '15' },
-      { label: '16', value: '16' },
-      { label: '17', value: '17' },
-      { label: '18', value: '18' },
-      { label: '19', value: '19' },
-      { label: '20', value: '20' },
-      { label: '21', value: '21' },
-      { label: '22', value: '22' },
-      { label: '23', value: '23' },
-      { label: 'X', value: 'X' },
-      { label: 'Y', value: 'Y' },
-    ];
-    this.siftOptions = [
-      { label: 'Tolerated', value: 'tolerated' },
-      { label: 'Deleterious', value: 'deleterious' }
-    ];
-
-    this.polyphenOptions = [
-      { label: 'Benign', value: 'benign' },
-      { label: 'Probably_damaging', value: 'probably_damaging' },
-      { label: 'Unknown', value: 'unknown' },
-      { label: 'Possibly_damaging', value: 'possibly_damaging' }
-    ];
   }
 
   ngOnInit() {
@@ -113,60 +103,80 @@ export class FiltersComponent implements OnInit {
   }
 
   cleanChromosomeDropdown() {
-    this.selectedChromosome = null;
+    this.selectedChromosome = undefined;
   }
 
   cleanPositionMin() {
-    this.posMin = null;
+    this.posMin = undefined;
   }
 
   cleanPositionMax() {
-    this.posMax = null;
+    this.posMax = undefined;
   }
 
   cleanSiftDropdown() {
-    this.selectedSift = null;
+    this.selectedSift = undefined;
   }
 
   cleanPolyphenDropdown() {
-    this.selectedPolyphen = null;
+    this.selectedPolyphen = undefined;
   }
 
   cleanBiotypeDropdown() {
-    this.selectedBiotype = null;
+    this.selectedBiotype = undefined;
   }
 
   cleanEffectsDropdown() {
-    this.selectedEffects = null;
+    this.selectedImpact = undefined;
   }
 
   cleanGmaf() {
-    this.gmaf = null;
+    this.gmaf = undefined;
+  }
+
+  cleanSamplesControlDropdown(){
+    this.selectedSamplesCase = undefined;
+  }
+
+  cleanSamplesCaseDropdown(){
+    this.selectedSamplesControl = undefined;
+  }
+
+  cleanModeDropdown(){
+    this.extrFilter = undefined;
   }
 
   searchMethod() {
-    this.selectedGenes = "";
-    if (this.geneSelection != undefined && this.geneSelection != []) {
+    this.selectedGenes = undefined;
+    if (this.geneSelection != undefined && this.geneSelection.length != 0) {
+      this.selectedGenes = [];
       this.geneSelection.forEach(element => {
-        this.selectedGenes += element.name + ",";
+        this.selectedGenes.push(element.symbol);
+
+        //this.selectedGenes += element.symbol + ",";
       });
-      this.selectedGenes = this.selectedGenes.substring(0, this.selectedGenes.length - 1);
+      //this.selectedGenes = this.selectedGenes.substring(0, this.selectedGenes.length - 1);
     }
   }
 
   cleanFilters() {
     this.showSearching = false;
-    this.selectedSift = null;
-    this.selectedPolyphen = null;
-    this.selectedChromosome = null;
-    this.selectedBiotype = null;
-    this.selectedEffects = null;
-    this.selectedGenes = '';
+    this.selectedSift = undefined;
+    this.selectedPolyphen = undefined;
+    this.selectedChromosome = undefined;
+    this.selectedBiotype = undefined;
+    this.selectedImpact = undefined;
+    this.selectedGenes = undefined;
     this.geneSelection = [];
-    this.posMax = null;
-    this.posMin = null;
-    this.gmaf = null;
+    this.posMax = undefined;
+    this.posMin = undefined;
+    this.gmaf = undefined;
+    this.selectedSamplesControl = undefined;
+    this.selectedSamplesCase = undefined;
+    this.selectedMode = undefined;
     this.search = '';
+    console.log(this.filterList);
+
   }
 
   filterVariants() {
@@ -180,7 +190,7 @@ export class FiltersComponent implements OnInit {
       sift: this.selectedSift,
       polyphen: this.selectedPolyphen,
       biotype: this.selectedBiotype,
-      term: this.selectedEffects,
+      impact: this.selectedImpact,
       gmaf: this.gmaf
     }
     this.notifyFilter.emit(this.filteringData);
@@ -194,23 +204,32 @@ export class FiltersComponent implements OnInit {
       this.showSearching = true;
       this.genesList = await this.VariantService.getGenesData(this.search);
       this.genesList.sort(genes_comparator(this.search.toLowerCase()));
+      console.log(this.genesList);
+
     } else {
       this.showSearching = false;
     }
   }
 
+  //CAMBIAR NOMBRE
   async getEffectAndBiotype() {
-    var effect;
-    var biotype;
-    /*effect = await this.VariantService.getTermsData();
-    effect.forEach(element => {
-      this.effects.push({ label: element.displayName, value: element.term });
-    });*/
-    biotype = await this.VariantService.getBiotypeData();
-    biotype.sort().forEach(element => {
-      this.biotypes.push({ label: element, value: element });
-    });
+    let index = 0;
+    for (var [key, value] of Object.entries(this.filterList)) {
+      await this.VariantService.getFilterData(this.dataHeaders[index]).then(response => {
+        response.sort().forEach(element => {
+          if (element.identifier) {
+            this.filterList[key].push({label: element.identifier, value: element.identifier});
+          }else{
+            this.filterList[key].push({label: element, value: element});            
+          }
+        });
+      });
+      index+=1;
+    }
+    this.filterList.chromsList.sort();
+  }
+
+  showMe(event: any){
+    console.log(event);
   }
 }
-
-

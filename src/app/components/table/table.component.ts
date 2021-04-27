@@ -38,6 +38,8 @@ export class TableComponent implements OnInit {
     page: 0,
   };
 
+  selectedDetail: number = 0;
+
   cachePage = 0;
 
   ngOnChanges(changes: SimpleChanges) {
@@ -93,16 +95,19 @@ export class TableComponent implements OnInit {
       if (this.first > Math.round((this.exSize/2))) {
         this.first = this.first - 100;
       }else{
-        console.log("the other");
         this.first = this.first + 100;
       }
     });
   }
 
   selectVariant(eachVariant: any) {
+    this.selectedVariants = null;
     this.selectedVariants = eachVariant;
   }
 
+  switchDetails(event: any){
+    this.selectedDetail = event;
+  }
 
   showAlt(eachVariant: any) {
     this.variants.forEach(element => {
@@ -213,6 +218,7 @@ export class TableComponent implements OnInit {
   }
 
   firstPage(){
+    this.clearSelection();
     this.pageModifier.name = "first";
     this.notifyPage.emit(this.pageModifier);
     this.variants = [];
@@ -222,6 +228,7 @@ export class TableComponent implements OnInit {
   }
 
   lastPage(){
+    this.clearSelection();
     this.first = this.elements - ((Math.ceil(this.elements / 100) - 1)*100);
     if (this.first > 10) {
       this.first = Math.floor(this.first/10)*10;
@@ -235,6 +242,7 @@ export class TableComponent implements OnInit {
   }
 
   searchPage(){
+    this.clearSelection();
     this.pageModifier.name = "jump";
     this.pageModifier.page = Math.floor((this.cachePage * 10)/100);
     this.first = 0;

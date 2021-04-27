@@ -1,1 +1,41 @@
-<p>genotypes works!</p>
+<div class="genotype-container" *ngIf="noDetails != false">
+  <p-card>
+    <p-button class="close-button" styleClass="p-button-text" icon="pi pi-times-circle" (click)="closeTag()"></p-button>
+    <table class="table table-striped">
+      <thead>
+        <tr class="types-row">
+          <th scope="col" *ngFor="let gene of genotypes" (click)="geneSelected(gene.title)"
+          [ngClass]="{'selected': active.includes(gene.title), 'types': !active.includes(gene.title)}" >
+          {{ gene.title }}
+        </th>
+      </tr>
+      <tr class="tags">
+        <th colspan="2">
+          Sample
+        </th>
+        <th colspan="2">
+          Reference | Alternate
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let element of actual" class="data">
+        <th *ngIf="element != null" scope="row" colspan="2">
+          {{ element.sample.identifier }}
+        </th>
+        <td *ngIf="element != null" colspan="2">
+          {{ element.referenceCount }} | {{ element.alternateCount }}
+        </td>
+      </tr>
+      <!--<tr *ngIf="selected.length == 0" class="no-data">
+        <th scope="row" colspan="4">Select a Genotype</th>
+      </tr>--> 
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-between p-2" *ngIf="selected != null">
+    <ngb-pagination [collectionSize]="selected.length" [(page)]="page" [pageSize]="pageSize" (pageChange)="refresh()">
+    </ngb-pagination>
+  </div>
+</p-card>
+</div>

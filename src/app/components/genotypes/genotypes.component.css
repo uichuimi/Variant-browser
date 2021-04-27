@@ -1,0 +1,141 @@
+/*.genotype-container{
+    height: 100%;
+    float: left;
+    margin-left: 3%;
+    margin-bottom: 10%;
+    padding: 0rem 1rem 1rem 1rem;
+}*/
+
+.close-button .p-button-text{
+    width: 1rem;
+}
+
+.close-button{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.types{
+    background-color: #8BAED0;
+    border: #8BAED0;
+    box-shadow: 0 3px 1px -2px rgba(1, 1, 1, 0.2), 0 2px 2px 0 rgba(1, 1, 1, 0.14), 0 1px 5px 0 rgba(1, 1, 1, 0.12);
+    width: 25%;
+}
+
+.types:hover{
+    cursor: pointer;
+    background-color: #5D85AC;
+    border: #5D85AC ;
+}
+
+.types-row{
+    text-align: center !important;
+}
+
+.tags{
+    text-align: center !important;
+    background: #E2EEF9 !important;
+    border: #8BAED0;
+}
+
+.data{
+    text-align: center !important;
+}
+
+.active{
+    background-color: #5D85AC !important;
+    border: #5D85AC !important;
+    width: 15%;
+}
+
+.table{
+    border: 1px solid #e9ecef !important;
+}
+
+
+
+.gene-container{
+    padding: 0rem 1rem 1rem 1rem;
+}
+
+.genotype-content{
+    height: 100%;
+    float: left;
+    margin-left: 3%;
+}
+
+.details-table th{
+    background: #E2EEF9 !important;
+    padding: 14px;
+    border: 1px solid #E2EEF9 !important;
+}
+
+.details-table.first-choice .label{
+    width: 40%;
+}
+
+.table-property.population{
+    padding: 7px 5px !important;
+}
+
+.table-property{
+    text-align: center !important;
+    padding: 0rem 0.2rem !important;
+    border-bottom: 2px solid #e9ecef !important;
+}
+
+.label{
+    border-radius: 2px;
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.no-data{
+    margin: 0 auto;
+    text-align: center;
+    color: #495057;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.no-data p{
+    margin: 0 auto;
+    border: 1px solid #E2EEF9;
+    padding: 12px;
+}
+
+.table-label{
+    text-align: center !important;
+    background: white !important;
+    width: 50%;
+}
+
+.geneButton{
+    background-color: #8BAED0;
+    border: #8BAED0;
+    box-shadow: 0 3px 1px -2px rgba(1, 1, 1, 0.2), 0 2px 2px 0 rgba(1, 1, 1, 0.14), 0 1px 5px 0 rgba(1, 1, 1, 0.12);
+}
+
+.geneButton:hover{
+    background-color: #5D85AC;
+    border: #5D85AC ;
+}
+
+.table-header:{
+    text-align: center !important;
+    width: 50%;
+    background-color: #E2EEF9  !important;
+    box-shadow: 0 3px 1px -2px rgba(1, 1, 1, 0.2), 0 2px 2px 0 rgba(1, 1, 1, 0.14), 0 1px 5px 0 rgba(1, 1, 1, 0.12);
+}
+
+.table-header:hover{
+    background-color: #5D85AC;
+    border: #5D85AC ;
+}
