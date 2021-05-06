@@ -63,8 +63,9 @@ export class FiltersComponent implements OnInit {
   {value: "recessive", label:"Recessive"}
   ]
 
-  //NEW SPACE
-
+  
+  //The list of all the filters available with their label and value on each filter of the HTML
+  //In order to add a new one, added to the filter list and initialize it as an empty array
   filterList: {
     chromsList: {value: string, label: string}[],
     impactsList: {value: string, label: string}[],
@@ -81,6 +82,8 @@ export class FiltersComponent implements OnInit {
     biotypesList: [],
   };
 
+  //Headers for the filterList var in order to access the API and get their values
+  //Each header must correspond with one of the filters in the filterList
   dataHeaders = [
   "chroms",
   "impacts",
@@ -91,7 +94,7 @@ export class FiltersComponent implements OnInit {
   ]
 
   constructor(private VariantService: VariantApiService) {
-    this.getEffectAndBiotype();
+    this.getFilters();
   }
 
   ngOnInit() {
@@ -198,6 +201,8 @@ export class FiltersComponent implements OnInit {
 
   // < ------ Llamadas a la API --------->
 
+  //Function called each time a key is pressed in the "Search genes" input
+  //Calls the API with the genes endpoint in order to search for the desired Gene
   async getGenes() {
     this.genesList = [];
     if (this.search.length >= 3) {
@@ -211,8 +216,9 @@ export class FiltersComponent implements OnInit {
     }
   }
 
-  //CAMBIAR NOMBRE
-  async getEffectAndBiotype() {
+  //Function that retrieves all the values for the filterList based on the values of dataHeaders
+  //Assigns the response of each endpoint given by dataHeaders to its corresponding filterList value
+  async getFilters() {
     let index = 0;
     for (var [key, value] of Object.entries(this.filterList)) {
       await this.VariantService.getFilterData(this.dataHeaders[index]).then(response => {
@@ -226,10 +232,5 @@ export class FiltersComponent implements OnInit {
       });
       index+=1;
     }
-    this.filterList.chromsList.sort();
-  }
-
-  showMe(event: any){
-    console.log(event);
   }
 }

@@ -33,6 +33,7 @@ export class TableComponent implements OnInit {
   page: number = 1;
   totalPages: number = 0;
 
+  //Variable for the app.component pagination event
   pageModifier = {
     name: '',
     page: 0,
@@ -68,6 +69,7 @@ export class TableComponent implements OnInit {
     }
   }
 
+  //Function for the keyboard shortcutes
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     if (event.key == "ArrowLeft" && !(this.isRealFirstPage() || this.variants.length == 0 || this.variants == undefined)) {
@@ -91,6 +93,7 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Event subscription when detecting that the table size changed in order to stay in the same page
     this.eventSubscription = this.event.subscribe(() =>{
       if (this.first > Math.round((this.exSize/2))) {
         this.first = this.first - 100;
@@ -107,38 +110,6 @@ export class TableComponent implements OnInit {
 
   switchDetails(event: any){
     this.selectedDetail = event;
-  }
-
-  showAlt(eachVariant: any) {
-    this.variants.forEach(element => {
-      if (element == eachVariant) {
-        eachVariant.showAlt = true;
-      }
-    });
-  }
-
-  hideAlt(eachVariant: any) {
-    this.variants.forEach(element => {
-      if (element == eachVariant) {
-        eachVariant.showAlt = false;
-      }
-    });
-  }
-
-  showRef(eachVariant: any) {
-    this.variants.forEach(element => {
-      if (element == eachVariant) {
-        eachVariant.showRef = true;
-      }
-    });
-  }
-
-  hideRef(eachVariant: any) {
-    this.variants.forEach(element => {
-      if (element == eachVariant) {
-        eachVariant.showRef = false;
-      }
-    });
   }
 
   downloadExcel() {

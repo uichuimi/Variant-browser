@@ -6,6 +6,7 @@
       <p class="gene-space" *ngIf="selected.gene != null">
         {{selected.gene.name}}, {{selected.gene.type}}.
       </p>
+      <!-- LINKS IN THE DETAILS TABLE -->
       <div class="effect-description-links">
         <a target="_blank" class="gene-link"
         href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selected.gene.ensg}}">{{selected.gene.ensg}}</a> -
@@ -14,6 +15,8 @@
         <a target="_blank" class="gene-link"
         href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{selected.gene.hgnc}}">{{selected.gene.hgnc}}</a>
       </div>
+
+      <!-- MOUSE-OVER SECTION ON THE DETAILS TABLE -->
       <div id="effect-space" *ngIf="selected.effect != null"><strong
         class="effect-name">{{selected.effect[0].term}}</strong>
         <p class="effect-description">{{selected.effect[0].description}}</p>
@@ -31,6 +34,7 @@
             <td class="table-property" colspan="2">
               <div>
                 <div>
+                  <!-- GIVEN THE VALUE OF THE FREQUENCY WE SWITCH THE CLASS ON THE <P> FOR STYLE -->
                   <p class="label" [ngClass]="{ 'red': frequency.af <= 0.01, 'orange': frequency.af > 0.01 && frequency.af <= 0.1, 
                     'green': frequency.af > 0.1 }">{{frequency.af}} ({{frequency.ac}}/{{frequency.an}})</p>
                   </div>

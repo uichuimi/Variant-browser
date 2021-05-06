@@ -12,6 +12,7 @@ export class DetailsComponent implements OnInit {
   populations: any[] = [];
   noDetails: boolean = false;
 
+  //Array needed for the table in the Details table
   constructor() {
     this.populations = [
       { name: 'African', code: 'AFR' },

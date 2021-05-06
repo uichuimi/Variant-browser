@@ -23,6 +23,7 @@ export class VariantApiService {
 
   constructor() { }
 
+  //Function to access the VariantController in the API
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, impact, gmaf, effect) {
     var Qs = require('qs');
     return axios.get(serviceURL + 'variants', {
@@ -47,6 +48,7 @@ export class VariantApiService {
       console.log(response);
       console.log(response.data.content);
       if (this.cachePage <= page) {
+        //In order to keep a sliding window we concat the existing data with the new one
         this.variantsTrial = this.variantsTrial.concat(this.adjustingData(response.data.content));
         this.incomeInfo.edited = this.variantSizeCalculator(page);
       }else{
@@ -67,6 +69,8 @@ export class VariantApiService {
     })
   }
 
+  //Retrieves all the values for the filters by apending to the base URL the filter endpoint
+  //before the query
   getFilterData(query: string){
     let url = serviceURL + query;
     return axios.get(url)
@@ -78,16 +82,6 @@ export class VariantApiService {
     })
   }
 
-  getChromsData() {
-    let url = serviceURL + '/chroms';
-    return axios.get(url)
-    .then(response => {
-      return response.data;
-    })
-    .catch(error => {
-      console.log("Se ha producido el error", error);
-    })
-  }
 
   getEffectsData(search) {
     let url = serviceURL + '/effects?search=' + search;
@@ -100,52 +94,6 @@ export class VariantApiService {
     })
   }
 
-  getImpactsData() {
-    let url = serviceURL + '/impacts';
-    return axios.get(url)
-    .then(response => {
-      return response.data;
-    })
-    .catch(error => {
-      console.log("Se ha producido el error", error);
-    })
-  }
-
-  getPolyphenData() {
-    let url = serviceURL + '/polyphen';
-    return axios.get(url)
-    .then(response => {
-      return response.data;
-    })
-    .catch(error => {
-      console.log("Se ha producido el error", error);
-    })
-  }
-
-  getSiftData() {
-    let url = serviceURL + '/sift';
-    return axios.get(url)
-    .then(response => {
-      return response.data;
-    })
-    .catch(error => {
-      console.log("Se ha producido el error", error);
-    })
-  }
-
-  getSamplesData() {
-    let url = serviceURL + '/samples';
-    return axios.get(url)
-    .then(response => {
-      return response.data;
-    })
-    .catch(error => {
-      console.log("Se ha producido el error", error);
-    })
-  }
-
-  ///////////////////////////////////////////////////// BASICOS ^
-
   getGenesData(search) {
     let url = serviceURL + '/v2/genes?search=' + search;
     return axios.get(url)
@@ -157,18 +105,8 @@ export class VariantApiService {
     })
   }
 
-  getBiotypeData() {
-    let url = serviceURL + '/biotypes';
-    return axios.get(url)
-    .then(response => {
-      return response.data;
-    })
 
-    .catch(error => {
-      console.log("Se ha producido el error", error);
-    })
-  }
-
+  //Adjust the values of the obtained data from the API to be more user friendly
   adjustingData(value) {
 
     value.forEach(each => {

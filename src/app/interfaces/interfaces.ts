@@ -1,3 +1,5 @@
+//Interfaces for the JSON response given by the VariantController in the API
+
 export interface Gene {​​​​
     ensg:   string;
     hgnc:   string;
