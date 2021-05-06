@@ -4,33 +4,40 @@
     <table class="table table-striped">
       <thead>
         <tr class="types-row">
-          <th scope="col" *ngFor="let gene of genotypes" (click)="geneSelected(gene.title)"
-          [ngClass]="{'selected': active.includes(gene.title), 'types': !active.includes(gene.title)}" >
-          {{ gene.title }}
-        </th>
-      </tr>
-      <tr class="tags">
-        <th colspan="2">
-          Sample
-        </th>
-        <th colspan="2">
-          Reference | Alternate
-        </th>
-      </tr>
-    </thead>
+          <th scope="col" *ngFor="let gene of genotypes" class="types">
+            <button pButton type="button" label="{{ gene.title }}" (click)="geneSelected(gene.title)"
+            [ngClass]="{'p-button-raised p-button-rounded p-button-outlined disButton': active.includes(gene.title), 'p-button-raised p-button-rounded actButton': !active.includes(gene.title)}">
+            </button>
+          </th>
+        </tr>
+        <tr>
+          <th scope="col" colspan="4">
+            <span class="p-input-icon-right p-float-label">
+            <i *ngIf="search.length != 0" class="pi pi-times clear-search" (click)="clearSearch()"></i>
+            <i *ngIf="search.length == 0" class="pi pi-search"></i>
+                <input id="float-input search" type="text" pInputText [(ngModel)]="search" (keyup)="filterSamples()" placeholder="Filter samples...">
+            </span>
+          </th>
+        </tr>
+        <tr class="tags">
+          <th colspan="2">
+            Sample
+          </th>
+          <th colspan="2">
+            Reference | Alternate
+          </th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let element of actual" class="data">
-        <th *ngIf="element != null" scope="row" colspan="2">
-          {{ element.sample.identifier }}
-        </th>
-        <td *ngIf="element != null" colspan="2">
-          {{ element.referenceCount }} | {{ element.alternateCount }}
-        </td>
-      </tr>
-      <!--<tr *ngIf="selected.length == 0" class="no-data">
-        <th scope="row" colspan="4">Select a Genotype</th>
-      </tr>--> 
+      <tbody>
+        <tr *ngFor="let element of actual" class="data">
+          <th *ngIf="element != null" scope="row" colspan="2">
+            {{ element.sample.identifier }}
+          </th>
+          <td *ngIf="element != null" colspan="2">
+            {{ element.referenceCount }} | {{ element.alternateCount }}
+          </td>
+        </tr>
     </tbody>
   </table>
   <div class="d-flex justify-content-between p-2" *ngIf="selected != null">

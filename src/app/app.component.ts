@@ -147,6 +147,4 @@ export class AppComponent {
       this.downloadLink = url.substring(0, url.length - 1);
       console.log(this.downloadLink);
     }
-
-
   }

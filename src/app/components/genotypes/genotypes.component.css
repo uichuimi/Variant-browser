@@ -24,11 +24,11 @@
     width: 25%;
 }
 
-.types:hover{
+/*.types:hover{
     cursor: pointer;
     background-color: #5D85AC;
     border: #5D85AC ;
-}
+}*/
 
 .types-row{
     text-align: center !important;
@@ -138,4 +138,16 @@
 .table-header:hover{
     background-color: #5D85AC;
     border: #5D85AC ;
+}
+
+.actButton{
+    background-color: #5D85AC;
+}
+
+.disButton{
+    background-color: #E2EEF9;
+}
+
+.clear-search{
+    cursor: pointer;
 }

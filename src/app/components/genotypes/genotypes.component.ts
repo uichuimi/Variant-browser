@@ -13,6 +13,8 @@ export class GenotypesComponent implements OnInit {
   @Output() closeDetails = new EventEmitter;
   noDetails: boolean = false;
 
+  search: string = "";
+
   selected: Genotype[] = [];
   genotypes: {
     title: string;
@@ -60,8 +62,8 @@ export class GenotypesComponent implements OnInit {
     }
     ];
     this.noDetails = true;
-    if (this.selected.length != 0) {
-      this.getGenes();
+    if (this.selected.length != 0 || this.search.length != 0) {
+      this.filterSamples();
     }    
   }
 
@@ -111,11 +113,31 @@ export class GenotypesComponent implements OnInit {
     this.genotypes.forEach(element => {
       if (this.active.includes(element.title)) {
         this.selected = [].concat(this.selected, element.data);
-        console.log(this.selected);
         return;
       }
     });
     this.refresh();
+  }
+
+  filterSamples(){
+    this.getGenes();
+    if (this.search.length > 2) {
+      this.selected = this.selected.filter(this.compareIdentifier(this.search));
+      this.refresh();
+    }
+  }
+
+  compareIdentifier(word: string){
+    return function(element) {
+      if (element != null) {
+        return element.sample.identifier.includes(word.toUpperCase());
+      }
+    }
+  }
+
+  clearSearch(){
+    this.search="";
+    this.filterSamples();
   }
 
 }

@@ -31,6 +31,7 @@
     background-color: #E2EEF9  !important;
     border: 3px solid  #B9D1E9 !important;
     font-weight: 600;
+    text-align: center;
 }
 
 .table-row{
@@ -225,6 +226,7 @@ hr {
 
 .types{
     background-color: #8BAED0;
+    text-align: center;
     border: #8BAED0;
     box-shadow: 0 3px 1px -2px rgba(1, 1, 1, 0.2), 0 2px 2px 0 rgba(1, 1, 1, 0.14), 0 1px 5px 0 rgba(1, 1, 1, 0.12);
 }
