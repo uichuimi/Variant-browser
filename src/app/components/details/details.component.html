@@ -17,12 +17,14 @@
       </div>
 
       <!-- MOUSE-OVER SECTION ON THE DETAILS TABLE -->
-      <div id="effect-space" *ngIf="selected.effect != null"><strong
-        class="effect-name">{{selected.effect[0].term}}</strong>
-        <p class="effect-description">{{selected.effect[0].description}}</p>
+      <div *ngFor="let effect of selected.effect">
+        <div id="effect-space" *ngIf="effect != null"><strong
+          class="effect-name">{{effect.term}}</strong>
+          <p class="effect-description">{{effect.description}}</p>
+        </div>
       </div>
 
-      <p-table [value]="populations" class="details-table" (click)="showMe()">
+      <p-table [value]="populations" class="details-table">
         <ng-template pTemplate="header">
           <tr>
             <th class="table-label population" colspan="4">Frequencies</th>
@@ -35,17 +37,17 @@
               <div>
                 <div>
                   <!-- GIVEN THE VALUE OF THE FREQUENCY WE SWITCH THE CLASS ON THE <P> FOR STYLE -->
-                  <p class="label" [ngClass]="{ 'red': frequency.af <= 0.01, 'orange': frequency.af > 0.01 && frequency.af <= 0.1, 
-                    'green': frequency.af > 0.1 }">{{frequency.af}} ({{frequency.ac}}/{{frequency.an}})</p>
+                    <p class="label" [ngClass]="{ 'red': frequency.af <= 0.01, 'orange': frequency.af > 0.01 && frequency.af <= 0.1, 
+                      'green': frequency.af > 0.1 }">{{frequency.af}} ({{frequency.ac}}/{{frequency.an}})</p>
+                    </div>
                   </div>
-                </div>
-              </td>  
-            </tr>
-          </ng-template>
-        </p-table>
-        <div class="no-data" *ngIf="selected.af == null">
-          <p>No data available</p>
+                </td>  
+              </tr>
+            </ng-template>
+          </p-table>
+          <div class="no-data" *ngIf="selected.af == null">
+            <p>No data available</p>
+          </div>
         </div>
-      </div>
-    </p-card>
-  </div>
+      </p-card>
+    </div>
