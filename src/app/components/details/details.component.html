@@ -6,6 +6,7 @@
       <p class="gene-space" *ngIf="selected.gene != null">
         {{selected.gene.name}}, {{selected.gene.type}}.
       </p>
+      <p class="gene-title-type"><strong>{{selected.gene.type | titlecase}}</strong></p>
       <!-- LINKS IN THE DETAILS TABLE -->
       <div class="effect-description-links">
         <a target="_blank" class="gene-link"

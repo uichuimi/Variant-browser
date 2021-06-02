@@ -18,9 +18,6 @@
 }
 
 .types{
-    background-color: #8BAED0;
-    border: #8BAED0;
-    box-shadow: 0 3px 1px -2px rgba(1, 1, 1, 0.2), 0 2px 2px 0 rgba(1, 1, 1, 0.14), 0 1px 5px 0 rgba(1, 1, 1, 0.12);
     width: 25%;
 }
 
@@ -53,7 +50,6 @@
 .table{
     border: 1px solid #e9ecef !important;
 }
-
 
 
 .gene-container{
@@ -150,4 +146,10 @@
 
 .clear-search{
     cursor: pointer;
+}
+
+@media(min-width: 768){
+    .table td, .table th{
+        padding: 0rem !important
+    }
 }

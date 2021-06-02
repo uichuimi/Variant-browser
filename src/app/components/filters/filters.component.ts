@@ -51,16 +51,14 @@ export class FiltersComponent implements OnInit {
   geneSelection: any;
   selectedGenes: any;
 
-  //NEW SPACE
-
   selectedSamplesCase: any = undefined;
   selectedSamplesControl: any = undefined;
 
   selectedMode: any = undefined;
 
-  extrFilter = [
-  {value: "dominant", label:"Dominant"},
-  {value: "recessive", label:"Recessive"}
+  genotypeFilter = [
+  {value: "DOMINANT", label:"Dominant"},
+  {value: "RECESSIVE", label:"Recessive"}
   ]
 
   
@@ -146,7 +144,7 @@ export class FiltersComponent implements OnInit {
   }
 
   cleanModeDropdown(){
-    this.extrFilter = undefined;
+    this.genotypeFilter = undefined;
   }
 
   searchMethod() {
@@ -178,6 +176,9 @@ export class FiltersComponent implements OnInit {
     this.selectedSamplesCase = undefined;
     this.selectedMode = undefined;
     this.search = '';
+    this.selectedMode = undefined;
+    this.selectedSamplesCase = undefined;
+    this.selectedSamplesControl = undefined;
     console.log(this.filterList);
 
   }
@@ -194,7 +195,10 @@ export class FiltersComponent implements OnInit {
       polyphen: this.selectedPolyphen,
       biotype: this.selectedBiotype,
       impact: this.selectedImpact,
-      gmaf: this.gmaf
+      gmaf: this.gmaf,
+      mode: this.selectedMode,
+      cases: this.selectedSamplesCase,
+      controls: this.selectedSamplesControl
     }
     this.notifyFilter.emit(this.filteringData);
   }
@@ -223,8 +227,10 @@ export class FiltersComponent implements OnInit {
     for (var [key, value] of Object.entries(this.filterList)) {
       await this.VariantService.getFilterData(this.dataHeaders[index]).then(response => {
         response.sort().forEach(element => {
-          if (element.identifier) {
+          if (this.dataHeaders[index] == "samples") {
             this.filterList[key].push({label: element.identifier, value: element.identifier});
+          }else if(this.dataHeaders[index] == "biotypes"){
+            this.filterList[key].push({label: element.name, value: element.identifier});            
           }else{
             this.filterList[key].push({label: element, value: element});            
           }
@@ -232,5 +238,19 @@ export class FiltersComponent implements OnInit {
       });
       index+=1;
     }
+    this.filterList.chromsList.sort(
+      (a,b) =>{
+        var first: number = +a.label.substring(3);
+        var second: number = +b.label.substring(3);
+        if (first > second) {
+          return 1;
+        }
+
+        if (first < second) {
+          return -1;
+        }
+
+        return 0;
+      });
   }
 }

@@ -71,6 +71,20 @@ export class GenotypesComponent implements OnInit {
   Pagination for the small table
   */
   refresh(){
+    this.selected.sort(
+      (a,b) => {
+        if (a == null || b == null) {
+          return 0;
+        }
+        if (a.sample.identifier > b.sample.identifier) {
+          return 1;
+        }
+        if (a.sample.identifier < b.sample.identifier) {
+          return -1;
+        }
+        return 0;
+      });
+    
     this.actual = this.selected
     .map((element) => (element))
     .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);

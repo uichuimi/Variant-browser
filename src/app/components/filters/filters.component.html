@@ -4,7 +4,7 @@
             <div class="chromosome-dropdown">
                 <span class="p-float-label">
                     <p-multiSelect id="float-input chromosome" [options]="filterList.chromsList" [(ngModel)]="selectedChromosome"
-                    (click)="closeGeneList()">
+                    (click)="closeGeneList()" autoZIndex="false">
                     <ng-template pTemplate="footer">
                         <p-button class="clean-button" styleClass="p-button-text"
                         (click)="cleanChromosomeDropdown()">Clear <i class="pi pi-minus-circle clear-icon"></i>
@@ -130,7 +130,7 @@
     <div class="genotype-space">
         <div class="effects-dropdown">
             <span class="p-float-label">
-                <p-multiSelect id="float-input effects" [options]="extrFilter"
+                <p-multiSelect id="float-input effects" [options]="genotypeFilter"
                 [(ngModel)]="selectedMode"
                 (click)="closeGeneList()" display="chip"
                 [selectionLimit]="1">

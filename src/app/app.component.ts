@@ -33,6 +33,9 @@ export class AppComponent {
   biotype: any;
   impact: any;
   gmaf: any;
+  mode: any;
+  cases: any;
+  controls: any;
 
   eventSubscriber: Subject<void> = new Subject<void>();
 
@@ -45,8 +48,7 @@ export class AppComponent {
     this.exportLink();
   }
 
-  //Event handler from the table component, when recieves chooses which pagination
-  //option was launched
+  //Event handler from the table component, when recieves chooses which pagination option was launched
   async receivingPageChange(event: any) {
     switch (event.name) {
       case "change":
@@ -87,6 +89,9 @@ export class AppComponent {
       this.biotype = event.biotype;
       this.impact = event.impact;
       this.gmaf = event.gmaf;
+      this.mode = event.mode,
+      this.cases = event.cases,
+      this.controls = event.controls
       this.VariantService.variantCleaner();
       this.getData();
     }
@@ -102,7 +107,7 @@ export class AppComponent {
       this.updated = false;
       this.empty = false;
       this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax,
-        this.gene, this.sift, this.polyphen, this.biotype, this.impact, this.gmaf, null);
+        this.gene, this.sift, this.polyphen, this.biotype, this.impact, this.gmaf, null, this.mode, this.cases, this.controls);
       this.filtering = false;
       this.apiData = this.incomeData.data;
       this.elements = this.incomeData.elements;

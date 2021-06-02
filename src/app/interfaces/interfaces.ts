@@ -6,10 +6,16 @@ export interface Gene {​​​​
     name:   string;
     ncbi:   string;
     symbol: string;
-    type:   string;
     drugs: GeneDrug[];
     diseases: GeneDisease[]
+    biotype: Biotype;
 }​​​​
+
+export interface Biotype {
+    description: string;
+    identifier: string;
+    name: string;
+}
 
 export interface GeneDisease{
     disease: Disease;

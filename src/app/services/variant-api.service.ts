@@ -24,7 +24,7 @@ export class VariantApiService {
   constructor() { }
 
   //Function to access the VariantController in the API
-  getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, impact, gmaf, effect) {
+  getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, impact, gmaf, effect, mode, cases, controls) {
     var Qs = require('qs');
     return axios.get(serviceURL + 'variants', {
       params:{
@@ -38,7 +38,10 @@ export class VariantApiService {
         polyphen: polyphen,
         biotype: biotype,
         impact: impact,
-        //effect: effect,
+        effect: undefined,
+        mode: mode,
+        cases: cases,
+        controls: controls,
         max_af: gmaf
       }, paramsSerializer: function (params) {
         return Qs.stringify(params, {arrayFormat: 'repeat'}) //Format for the query
@@ -95,7 +98,7 @@ export class VariantApiService {
   }
 
   getGenesData(search) {
-    let url = serviceURL + '/v2/genes?search=' + search;
+    let url = serviceURL + '/genes?search=' + search;
     return axios.get(url)
     .then(response => {
       return response.data.content;

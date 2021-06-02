@@ -29,6 +29,12 @@
 .gene-title{
     margin-top: 0px;
     text-align: center;
+    font-size: 1.5em;
+}
+
+.gene-title-type{
+    text-align: center;
+    font-size: 1.2em;
 }
 
 .population-source{
