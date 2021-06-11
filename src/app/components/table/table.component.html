@@ -10,7 +10,7 @@
         <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false"
         styleClass="p-button-text"
         [disabled]="isRealFirstPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
-        <p-button type="button" icon="pi pi-download" (click)="downloadExcel()" styleClass="p-button-text"
+        <p-button type="button" icon="pi pi-download" (click)="downloadExcel(content)" styleClass="p-button-text"
         pTooltip="XLS" tooltipPosition="bottom"></p-button>
         <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"
         [disabled]="isRealLastPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
@@ -104,7 +104,7 @@
         <ng-template ngFor let-item [ngForOf]="variant.frequencies">
           <p *ngIf='item.population.identifier =="all"' class="label" [hidden]="item.af == null" [ngClass]="{ 'red': item.af <= 0.01, 
           'orange': item.af > 0.01 && item.af <= 0.1, 'green': item.af > 0.1 }">
-          {{item.af}}
+          {{item.af.toPrecision(4)}}
         </p>
         <p *ngIf="item.af == null">-</p>
       </ng-template>
@@ -132,7 +132,7 @@
 </table>
 <app-details *ngIf="selectedVariants != null && selectedDetail == 1" [selected]="selectedVariants"
 (closeDetails)="receivingCloseDetails($event)"></app-details>
-<app-genotypes *ngIf="selectedVariants != null && selectedDetail == 0" [homozygous]="selectedVariants.homozygous" [wildtype]="selectedVariants.wildtype" [heterozygous]="selectedVariants.heterozygous" (closeDetails)="receivingCloseDetails($event)"></app-genotypes>  
+<app-genotypes *ngIf="selectedVariants != null && selectedDetail == 0" [homozygous]="selectedVariants.homozygous" [wildtype]="selectedVariants.wildtype" [heterozygous]="selectedVariants.heterozygous" [selectedV]="selectedVariants" (closeDetails)="receivingCloseDetails($event)"></app-genotypes>  
 </div>
 
 
@@ -146,3 +146,17 @@
 
   </div>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Downloading</h4>
+  </div>
+  <div class="modal-body">
+    <p>Only the first 10.000 variants will be downloaded</p>
+    <p>Please wait while we finish your request...</p>
+    <div **ngIf="(downloading)" class="preloader"></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="(downloading)" class="btn btn-outline-dark" (click)="c('Save click')">Done</button>
+  </div>
+</ng-template>

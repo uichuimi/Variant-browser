@@ -37,6 +37,8 @@ export class AppComponent {
   cases: any;
   controls: any;
 
+  downloading: boolean = false;
+
   eventSubscriber: Subject<void> = new Subject<void>();
 
   //Notification for the table component when the Variant[] size has changed
@@ -120,36 +122,10 @@ export class AppComponent {
     }
 
     async exportLink() {
-      this.downloadLink = "";
-      let url = 'http://193.145.155.148:9090/download/variants?';
-      if (this.chromosome != undefined) {
-        url += 'chrom=' + this.chromosome + '&';
-      }
-      if (this.posMin != undefined && this.posMin != null) {
-        url += 'start=' + this.posMin + '&';
-      }
-      if (this.posMax != undefined && this.posMax != null) {
-        url += 'end=' + this.posMax + '&';
-      }
-      if (this.gene != undefined && this.gene != "") {
-        url += 'genes=' + this.gene + '&';
-      }
-      if (this.sift != undefined) {
-        url += 'sift=' + this.sift + '&';
-      }
-      if (this.polyphen != undefined) {
-        url += 'polyphen=' + this.polyphen + '&';
-      }
-      if (this.biotype != undefined) {
-        url += 'biotypes=' + this.biotype + '&';
-      }
-      if (this.impact != undefined) {
-        url += 'impact=' + this.impact + '&';
-      }
-      if (this.gmaf != undefined && this.gmaf != null) {
-        url += 'maxAlleleFrequency=' + this.gmaf + '&';
-      }
-      this.downloadLink = url.substring(0, url.length - 1);
-      console.log(this.downloadLink);
+      this.downloading = true;
+      let x = await this.VariantService.variantDownload(this.page, this.size, this.chromosome, this.posMin, this.posMax,
+        this.gene, this.sift, this.polyphen, this.biotype, this.impact, this.gmaf, null, this.mode, this.cases, this.controls);
+      console.log(x);
+      this.downloading = false;
     }
   }

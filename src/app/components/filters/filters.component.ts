@@ -144,7 +144,11 @@ export class FiltersComponent implements OnInit {
   }
 
   cleanModeDropdown(){
-    this.genotypeFilter = undefined;
+    this.selectedMode = undefined;
+  }
+
+  selectedModeAndCases(){
+    return (this.selectedMode && !this.selectedSamplesCase);
   }
 
   searchMethod() {

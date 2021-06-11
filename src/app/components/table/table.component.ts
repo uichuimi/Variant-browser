@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, HostList
 import { VariantApiService } from '../../services/variant-api.service';
 import { Observable, Subscription } from "rxjs/Rx";
 
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-table',
@@ -18,6 +19,7 @@ export class TableComponent implements OnInit {
   @Input() downloadLink: any;
   @Output() notifyPage = new EventEmitter;
   @Output() notifyDownload = new EventEmitter;
+  @Input() downloading: boolean;
 
   @Input() updated: boolean;
   @Input() exSize: number;
@@ -43,6 +45,8 @@ export class TableComponent implements OnInit {
 
   cachePage = 0;
 
+  pointer;
+
   ngOnChanges(changes: SimpleChanges) {
     if (this.filtering) {
       console.log(changes);
@@ -61,12 +65,6 @@ export class TableComponent implements OnInit {
         this.totalPages = Math.ceil(this.elements / this.rows);
       }
     }
-
-    if (this.downloadLink) {
-      if (changes.downloadLink) {
-        window.open(this.downloadLink, "_self");
-      }
-    }
   }
 
   //Function for the keyboard shortcutes
@@ -76,10 +74,30 @@ export class TableComponent implements OnInit {
       this.prev();
     }else if(event.key == "ArrowRight" && !(this.isRealLastPage() || this.variants.length == 0 || this.variants == undefined)){
       this.next();
+    }else if (event.key == "ArrowUp") {
+      if (!this.selectedVariants) {
+        this.pointer = this.first+9;
+        this.selectedVariants = this.variants[this.pointer];
+      }else if(this.pointer > this.first){
+        this.pointer = this.variants.indexOf(this.selectedVariants)-1;
+        this.selectedVariants = this.variants[this.pointer]
+      }
+    }else if (event.key == "ArrowDown") {
+      if (!this.selectedVariants) {
+        this.pointer = this.first;
+        this.selectedVariants = this.variants[this.pointer];
+      }else if(this.pointer < this.first + 9){
+        this.pointer = this.variants.indexOf(this.selectedVariants)+1;
+        this.selectedVariants = this.variants[this.pointer]
+      }
     }
   }
 
-  constructor(private VariantService: VariantApiService) {
+  constructor(private VariantService: VariantApiService,
+    config: NgbModalConfig,
+    private modalService: NgbModal) {
+    config.backdrop = 'static';
+    config.keyboard = false;
     this.cols = [
     { field: 'identifier', header: 'Identifier' },
     { field: 'coordinate', header: 'Coordinate' },
@@ -112,7 +130,8 @@ export class TableComponent implements OnInit {
     this.selectedDetail = event;
   }
 
-  downloadExcel() {
+  downloadExcel(content) {
+    this.modalService.open(content);
     this.notifyDownload.emit(true);
   }
 
@@ -155,101 +174,101 @@ export class TableComponent implements OnInit {
           && this.updated 
           && this.page < this.totalPages - 10) {
           this.pageModifier.name = "change";
-          this.pageModifier.page = Math.floor((this.page * 10)/100) + 1;
-          this.notifyPage.emit(this.pageModifier);
-        }
-      }
-    }    
-  }
-
-  prev() {
-    console.log(this.first + " Y " + Math.floor((this.exSize)*0.2));
-
-    if (this.variants.length != 0 && this.variants != undefined) {
-      this.clearSelection();
-      if (!this.isRealFirstPage() && this.isFirstPage()) {
-        this.pageChange = "prev";
-        this.notifyPage.emit(this.pageChange);
-        this.variants = [];
-        this.pageChange = "";
-        this.page -= 1;
-        this.first = this.size - this.rows;
-      } else if (!this.isRealFirstPage()) {
-        this.first = this.first - this.rows;
-        this.page -= 1;
-        if (this.first <= Math.round((this.exSize)*0.2) 
-          && this.updated 
-          && this.page > 10) {
-          this.pageModifier.name = "change";
-          this.pageModifier.page = Math.floor((this.page * 10)/100) - 1;
-          this.notifyPage.emit(this.pageModifier);
-        }
+        this.pageModifier.page = Math.floor((this.page * 10)/100) + 1;
+        this.notifyPage.emit(this.pageModifier);
       }
     }
-  }
+  }    
+}
 
-  firstPage(){
-    this.clearSelection();
-    this.pageModifier.name = "first";
-    this.notifyPage.emit(this.pageModifier);
-    this.variants = [];
-    this.pageChange = "";
-    this.first = 0;
-    this.page = 1; 
-  }
+prev() {
+  console.log(this.first + " Y " + Math.floor((this.exSize)*0.2));
 
-  lastPage(){
+  if (this.variants.length != 0 && this.variants != undefined) {
     this.clearSelection();
-    this.first = this.elements - ((Math.ceil(this.elements / 100) - 1)*100);
-    if (this.first > 10) {
-      this.first = Math.floor(this.first/10)*10;
-    }else{
-      this.first = 0
+    if (!this.isRealFirstPage() && this.isFirstPage()) {
+      this.pageChange = "prev";
+      this.notifyPage.emit(this.pageChange);
+      this.variants = [];
+      this.pageChange = "";
+      this.page -= 1;
+      this.first = this.size - this.rows;
+    } else if (!this.isRealFirstPage()) {
+      this.first = this.first - this.rows;
+      this.page -= 1;
+      if (this.first <= Math.round((this.exSize)*0.2) 
+        && this.updated 
+        && this.page > 10) {
+        this.pageModifier.name = "change";
+      this.pageModifier.page = Math.floor((this.page * 10)/100) - 1;
+      this.notifyPage.emit(this.pageModifier);
     }
-    this.pageModifier.name = "last";
-    this.notifyPage.emit(this.pageModifier);
-    this.variants = [];
-    this.page = this.totalPages; 
   }
+}
+}
 
-  searchPage(){
-    this.clearSelection();
-    this.pageModifier.name = "jump";
-    this.pageModifier.page = Math.floor((this.cachePage * 10)/100);
-    this.first = 0;
-    this.first = (this.cachePage%10)-1;
-    if (this.first == -1) {
-      this.first = 9;
-    }
-    this.first = this.first * 10;
-    console.log("FIRST = " + this.first);
-    this.notifyPage.emit(this.pageModifier);
-    this.variants = [];
-    this.page = this.cachePage;
-  }
+firstPage(){
+  this.clearSelection();
+  this.pageModifier.name = "first";
+  this.notifyPage.emit(this.pageModifier);
+  this.variants = [];
+  this.pageChange = "";
+  this.first = 0;
+  this.page = 1; 
+}
 
-  updatePage(event: any){
-    console.log(event.value);
-    this.cachePage = event.value;
+lastPage(){
+  this.clearSelection();
+  this.first = this.elements - ((Math.ceil(this.elements / 100) - 1)*100);
+  if (this.first > 10) {
+    this.first = Math.floor(this.first/10)*10;
+  }else{
+    this.first = 0
   }
+  this.pageModifier.name = "last";
+  this.notifyPage.emit(this.pageModifier);
+  this.variants = [];
+  this.page = this.totalPages; 
+}
 
-  isLastPage(): boolean {
-    //Cache LOGICA AQUI
-    return this.first === (this.variants.length - this.rows);
+searchPage(){
+  this.clearSelection();
+  this.pageModifier.name = "jump";
+  this.pageModifier.page = Math.floor((this.cachePage * 10)/100);
+  this.first = 0;
+  this.first = (this.cachePage%10)-1;
+  if (this.first == -1) {
+    this.first = 9;
   }
+  this.first = this.first * 10;
+  console.log("FIRST = " + this.first);
+  this.notifyPage.emit(this.pageModifier);
+  this.variants = [];
+  this.page = this.cachePage;
+}
 
-  isRealLastPage(): boolean {
-    //Las page from the results
-    return (this.page == this.totalPages);
-  }
+updatePage(event: any){
+  console.log(event.value);
+  this.cachePage = event.value;
+}
 
-  isFirstPage(): boolean {
-    return (this.first === 0);
-  }
+isLastPage(): boolean {
+  //Cache LOGICA AQUI
+  return this.first === (this.variants.length - this.rows);
+}
 
-  isRealFirstPage(): boolean {
-    return (this.page === 1);
-  }
+isRealLastPage(): boolean {
+  //Las page from the results
+  return (this.page == this.totalPages);
+}
+
+isFirstPage(): boolean {
+  return (this.first === 0);
+}
+
+isRealFirstPage(): boolean {
+  return (this.page === 1);
+}
 
 }
 

@@ -28,6 +28,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.4.0",
     "file-saver": "^2.0.2",
+    "js-file-download": "^0.4.12",
     "jspdf": "^2.1.1",
     "jspdf-autotable": "^3.5.13",
     "ng5-slider": "^1.2.6",

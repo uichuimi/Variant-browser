@@ -148,8 +148,72 @@
     cursor: pointer;
 }
 
-@media(min-width: 768){
-    .table td, .table th{
-        padding: 0rem !important
-    }
+.buttonContainer{
+    display: inline-block;
+    padding: 0.5rem
+}
+
+.gene-space{
+    text-align: center;
+}
+
+.gene-title{
+    margin-top: 0px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.gene-title-type{
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.effect-description-links{
+    display: block;
+    border: 2px solid #E2EEF9; 
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #E2EEF9;
+    font-weight: 500;
+    text-align: center;
+    color:#495057;
+    margin-top: 5px;
+}
+
+.effect-description{
+    display: none;
+    border: 2px solid #E2EEF9; 
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #E2EEF9;
+    font-weight: 500;
+    text-align: center;
+    color:#495057;
+    margin-top: 5px;
+}
+
+#effect-space{
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.effect-name{
+    text-transform: capitalize;
+    cursor: pointer;
+    border-bottom: #495057 dotted 1px;
+}
+
+#effect-space:hover .effect-description{
+    display: block;
+}
+
+.gene-link{
+    color: #8BAED0;
+    font-weight: 500;
+}
+
+.gene-link:hover{
+    color: #5D85AC;
 }

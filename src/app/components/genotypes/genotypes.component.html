@@ -1,17 +1,41 @@
 <div class="genotype-container" *ngIf="noDetails != false">
   <p-card>
     <p-button class="close-button" styleClass="p-button-text" icon="pi pi-times-circle" (click)="closeTag()"></p-button>
+    <p class="gene-title"><strong>{{selectedV.consequence.gene.symbol}}</strong></p>
+      <p class="gene-space" *ngIf="selectedV.gene != null">
+        {{selectedV.consequence.gene.name}}, {{selectedV.consequence.gene.type}}.
+      </p>
+      <p class="gene-title-type"><strong>{{selectedV.consequence.gene.type | titlecase}}</strong></p>
+      <!-- LINKS IN THE DETAILS TABLE -->
+      <div class="effect-description-links">
+        <a target="_blank" class="gene-link"
+        href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selectedV.consequence.gene.ensg}}">{{selectedV.consequence.gene.ensg}}</a> -
+        <a target="_blank" class="gene-link"
+        href="https://www.ncbi.nlm.nih.gov/gene/?term={{selectedV.consequence.gene.ncbi}}">NCBI: {{selectedV.consequence.gene.ncbi}}</a> -
+        <a target="_blank" class="gene-link"
+        href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{selectedV.consequence.gene.hgnc}}">{{selectedV.consequence.gene.hgnc}}</a>
+      </div>
+
+      <!-- MOUSE-OVER SECTION ON THE DETAILS TABLE -->
+      <div>
+        <div id="effect-space" *ngIf="selectedV.consequence.effect != null"><strong
+          class="effect-name">{{selectedV.consequence.effect.name}}</strong>
+          <p class="effect-description">{{selectedV.consequence.effect.description}}</p>
+        </div>
+      </div>
     <table class="table table-striped">
       <thead>
         <tr class="types-row">
-          <th scope="col" *ngFor="let gene of genotypes" class="types">
-            <button pButton type="button" label="{{ gene.title }}" (click)="geneSelected(gene.title)"
-            [ngClass]="{'p-button-raised p-button-rounded p-button-outlined disButton': active.includes(gene.title), 'p-button-raised p-button-rounded actButton': !active.includes(gene.title)}">
-            </button>
+          <th scope="col" class="types" colspan="3">
+            <div class="buttonContainer" *ngFor="let gene of genotypes">
+                <button pButton type="button" label="{{ gene.title }}" (click)="geneSelected(gene.title)"
+              [ngClass]="{'p-button-raised p-button-outlined disButton': !active.includes(gene.title), 'p-button-raised  actButton': active.includes(gene.title)}">
+              </button>
+            </div>
           </th>
         </tr>
         <tr>
-          <th scope="col" colspan="4">
+          <th scope="col" colspan="3">
             <span class="p-input-icon-right p-float-label">
             <i *ngIf="search.length != 0" class="pi pi-times clear-search" (click)="clearSearch()"></i>
             <i *ngIf="search.length == 0" class="pi pi-search"></i>
@@ -20,22 +44,28 @@
           </th>
         </tr>
         <tr class="tags">
-          <th colspan="2">
+          <th>
             Sample
           </th>
-          <th colspan="2">
+          <th>
             Reference | Alternate
+          </th>
+          <th>
+            Type
           </th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let element of actual" class="data">
-          <th *ngIf="element != null" scope="row" colspan="2">
+          <th *ngIf="element != null" scope="row">
             {{ element.sample.identifier }}
           </th>
-          <td *ngIf="element != null" colspan="2">
-            {{ element.referenceCount }} | {{ element.alternateCount }}
+          <td *ngIf="element != null">
+            {{ element.altCount }} | {{ element.refCount }}
+          </td>
+          <td *ngIf="element != null">
+            {{ element.type }}
           </td>
         </tr>
     </tbody>

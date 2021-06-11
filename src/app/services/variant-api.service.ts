@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
+import fileDownload from 'js-file-download';
 
 import { environment } from '../../environments/environment';
 
@@ -148,6 +149,35 @@ export class VariantApiService {
 
   variantCleaner(){
     this.variantsTrial.length = 0;
+  }
+
+  variantDownload(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, impact, gmaf, effect, mode, cases, controls){
+    var Qs = require('qs');
+    return axios.get(serviceURL + 'download/variants', {
+      params:{
+        page: page,
+        size: size,
+        chrom: chromosome,
+        start: posMin,
+        end: posMax,
+        gene: gene,
+        sift: sift,
+        polyphen: polyphen,
+        biotype: biotype,
+        impact: impact,
+        effect: undefined,
+        mode: mode,
+        cases: cases,
+        controls: controls,
+        max_af: gmaf
+      }, paramsSerializer: function (params) {
+        return Qs.stringify(params, {arrayFormat: 'repeat'}) //Format for the query
+      }
+    }).then(response => {
+      fileDownload(response.data, "variants.csv");
+      console.log("hola");
+      return true;
+    });
   }
 }
 

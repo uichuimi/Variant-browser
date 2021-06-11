@@ -10,6 +10,7 @@ export class GenotypesComponent implements OnInit {
   @Input() homozygous: Genotype[];
   @Input() wildtype: Genotype[];
   @Input() heterozygous: Genotype[];
+  @Input() selectedV: any;
   @Output() closeDetails = new EventEmitter;
   noDetails: boolean = false;
 
@@ -18,7 +19,7 @@ export class GenotypesComponent implements OnInit {
   selected: Genotype[] = [];
   genotypes: {
     title: string;
-    data: Genotype[];
+    data: any[];
   }[];
 
   active: string[] = [];
@@ -43,6 +44,7 @@ export class GenotypesComponent implements OnInit {
   Method that updates what's inside the table each time a change in view occurs
   */
   updateVar(){
+    var all = [];
     this.genotypes = [
     { 
       title: "Wildtype", 
@@ -54,13 +56,17 @@ export class GenotypesComponent implements OnInit {
     },
     {
       title: "Heterozygous", 
-      data: this.heterozygous,
-    },
-    {
-      title: "All",
-      data: [].concat(this.homozygous, this.wildtype, this.heterozygous),
+      data: this.heterozygous
     }
     ];
+    this.genotypes.forEach(element => {
+      element.data.forEach(data => {
+        data.type = element.title;
+        all.push(data);
+      })
+    });
+    this.genotypes.push({title: "All", data: all});
+    console.log(this.genotypes);
     this.noDetails = true;
     if (this.selected.length != 0 || this.search.length != 0) {
       this.filterSamples();
@@ -84,7 +90,6 @@ export class GenotypesComponent implements OnInit {
         }
         return 0;
       });
-    
     this.actual = this.selected
     .map((element) => (element))
     .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);

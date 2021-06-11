@@ -1,105 +1,86 @@
 //Interfaces for the JSON response given by the VariantController in the API
 
-export interface Gene {​​​​
-    ensg:   string;
-    hgnc:   string;
-    name:   string;
-    ncbi:   string;
-    symbol: string;
-    drugs: GeneDrug[];
-    diseases: GeneDisease[]
+export class Biotype{
+    description: string;
+    identifier: string;
+    name: string;
+}
+
+export class Gene {
     biotype: Biotype;
-}​​​​
+    ensg: string;
+    hgnc: string;
+    name: string;
+    ncbi: string;
+    symbol: string;
+}
 
-export interface Biotype {
-    description: string;
+export class Effect {
+  description: string;
+  identifier: string;
+  impact: string;
+  name: string;
+}
+
+export class Consequence{
+    effect: Effect;
+    gene: Gene;
+    hgvsc: string;
+    hgvsp: string;
+    polyphe: number;
+    sift: number;
+    transcript: string;
+}
+
+export class Disease{
     identifier: string;
     name: string;
+    xref: string[];
 }
 
-export interface GeneDisease{
-    disease: Disease;
-    evidence: string;
-}
-
-export interface GeneDrug{
-    association: string;
-    pharmacodynamic: boolean;
-    pharmacokinetic: boolean;
-    drug: Drug;
-}
-
-export interface Drug{
-    identifier: string;
-    name: string;
-}
-
-export interface Effect {​​​​
-    term: string;
-    description: string;
-    accession: string;
-    displayName: string;
-    impact: string;
-}​​​​
-
-export interface Frequency {​​​​
+export class Frequency{
     ac: number;
     af: number;
     an: number;
     population: Population;
-}​​​​
+}
 
-export interface Population{
-    identifier: string;
+export class Population{
     description: string;
-}
-
-export interface Disease{
     identifier: string;
-    name:   string;
-    xrefs:  string;
 }
 
-export interface Variant {
-    gene : Gene;
-    effect: Effect[];
-    frequencies: Frequency[];
+export class Genotype{
+    altCount: number;
+    gt: number;
+    refCount: number;
+    sample: Sample;
+    type: string;
+}
 
-    alt: string;
-    ref: string;
+export class Sample{
+    identifier: string;
+}
+
+export class Variant{
     identifier: string;
     pos: number;
+    ref: string;
+    vid: number;
+    alt: string;
     chrom: string;
-    sift: number | null;
-    polyphen: number | null;
-
+    
+    consequence: Consequence;
+    disease: VariantDisease[];
+    frequencies: Frequency[];
+    heterozygous: Genotype[];
     homozygous: Genotype[];
     wildtype: Genotype[];
-    heterozygoes: Genotype[];
-
-    ac: number;
-    af: number;
-    an: number;
-    vid: number;
-    hgvsp: string; //CHANGE -> AMINO
-
-    diseases: VariantDisease[];
 }
 
-export interface VariantDisease{
+export class VariantDisease{
+    conflict: string;
+    disease: Disease;
     significance: string;
     status: string;
-    conflicts:  string;
-    disease: Disease;
-}
-
-export interface Sample{
-    identifier: string;
-}
-
-export interface Genotype{
-    alternateCount: number;
-    gt: string;
-    referenceCount: number;
-    sample: Sample;
 }
