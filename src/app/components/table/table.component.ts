@@ -72,23 +72,30 @@ export class TableComponent implements OnInit {
   handleKeyDown(event: KeyboardEvent) {
     if (event.key == "ArrowLeft" && !(this.isRealFirstPage() || this.variants.length == 0 || this.variants == undefined)) {
       this.prev();
+      event.preventDefault();
     }else if(event.key == "ArrowRight" && !(this.isRealLastPage() || this.variants.length == 0 || this.variants == undefined)){
       this.next();
+      event.preventDefault();
     }else if (event.key == "ArrowUp") {
       if (!this.selectedVariants) {
         this.pointer = this.first+9;
         this.selectedVariants = this.variants[this.pointer];
+        event.preventDefault();
       }else if(this.pointer > this.first){
         this.pointer = this.variants.indexOf(this.selectedVariants)-1;
         this.selectedVariants = this.variants[this.pointer]
+        event.preventDefault();
       }
     }else if (event.key == "ArrowDown") {
+      //event.stopPropagation();
       if (!this.selectedVariants) {
         this.pointer = this.first;
         this.selectedVariants = this.variants[this.pointer];
+        event.preventDefault();
       }else if(this.pointer < this.first + 9){
         this.pointer = this.variants.indexOf(this.selectedVariants)+1;
-        this.selectedVariants = this.variants[this.pointer]
+        this.selectedVariants = this.variants[this.pointer];
+        event.preventDefault();
       }
     }
   }
@@ -131,7 +138,9 @@ export class TableComponent implements OnInit {
   }
 
   downloadExcel(content) {
-    this.modalService.open(content);
+    if (this.elements > 10000) {
+      this.modalService.open(content);
+    }
     this.notifyDownload.emit(true);
   }
 

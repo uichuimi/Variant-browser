@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
 
+import { HttpParams } from '@angular/common/http';
+
 import { environment } from '../../environments/environment';
 
 import { Variant } from '../interfaces/interfaces';
@@ -152,32 +154,30 @@ export class VariantApiService {
   }
 
   variantDownload(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, impact, gmaf, effect, mode, cases, controls){
-    var Qs = require('qs');
-    return axios.get(serviceURL + 'download/variants', {
-      params:{
-        page: page,
-        size: size,
-        chrom: chromosome,
-        start: posMin,
-        end: posMax,
-        gene: gene,
-        sift: sift,
-        polyphen: polyphen,
-        biotype: biotype,
-        impact: impact,
-        effect: undefined,
-        mode: mode,
-        cases: cases,
-        controls: controls,
-        max_af: gmaf
-      }, paramsSerializer: function (params) {
-        return Qs.stringify(params, {arrayFormat: 'repeat'}) //Format for the query
+    let params = [
+      {name: "page", value: page},
+      {name: "size", value: size},
+      {name: "chrom", value: chromosome},
+      {name: "start", value: posMin},
+      {name: "end", value: posMax},
+      {name: "gene", value: gene},
+      {name: "sift", value: sift},
+      {name: "polyphen", value: polyphen},
+      {name: "biotype", value: biotype},
+      {name: "impact", value: impact},
+      {name: "effect", value: undefined},
+      {name: "mode", value: mode},
+      {name: "cases", value: cases},
+      {name: "controls", value: controls},
+      {name: "max_af", value: gmaf},
+    ];
+    let httpParams = new HttpParams();
+    params.forEach(obj => {
+      if (obj.value != undefined) {
+        httpParams = httpParams.append(obj.name, obj.value);
       }
-    }).then(response => {
-      fileDownload(response.data, "variants.csv");
-      console.log("hola");
-      return true;
     });
+    window.open(serviceURL + "download/variants?" + httpParams.toString(), "_self")
   }
 }
 

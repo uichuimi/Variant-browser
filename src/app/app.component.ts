@@ -122,10 +122,7 @@ export class AppComponent {
     }
 
     async exportLink() {
-      this.downloading = true;
       let x = await this.VariantService.variantDownload(this.page, this.size, this.chromosome, this.posMin, this.posMax,
         this.gene, this.sift, this.polyphen, this.biotype, this.impact, this.gmaf, null, this.mode, this.cases, this.controls);
-      console.log(x);
-      this.downloading = false;
     }
   }
