@@ -1,10 +1,10 @@
 <div class="main-container">
-	<app-filters class="filters-space" (notifyFilter)="receivingFilter($event)"></app-filters>
-	<div class="results-container">
-		<app-table class="table-space" [realEmpty]="empty" [filtering]="filtering" [size]="size" [elements]="elements" [updated]="updated" [exSize]="apiData.length" [event]="eventSubscriber.asObservable()"
-		[currentPage]="page" [variants]="apiData" [downloadLink]="downloadLink" (notifyPage)="receivingPageChange($event)"
-		[downloading]="downloading"
-		(notifyDownload)="receivingDownload($event)">
-	</app-table>
+    <app-filters class="filters-space" (notifyFilter)="receivingFilter($event)"></app-filters>
+    <div class="results-container">
+        <app-table class="table-space" [realEmpty]="empty" [filtering]="filtering" [size]="size" [elements]="elements" [updated]="updated" [exSize]="apiData.length" [event]="eventSubscriber.asObservable()"
+        [currentPage]="page" [variants]="apiData" [downloadLink]="downloadLink" (notifyPage)="receivingPageChange($event)"
+        [downloading]="downloading"
+        (notifyDownload)="receivingDownload($event)">
+    </app-table>
 </div>
 </div>

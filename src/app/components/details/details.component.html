@@ -6,13 +6,20 @@
       <p class="gene-space" *ngIf="selected.gene != null">
         {{selected.consequence.gene.name}}, {{selected.consequence.gene.type}}.
       </p>
+      <p class="gene-space" *ngIf="selected.consequence.gene.biotype != null">
+        <strong>{{ selected.consequence.gene.biotype.name | titlecase}}</strong>
+      </p>
       <p class="gene-title-type"><strong>{{selected.consequence.gene.type | titlecase}}</strong></p>
       <!-- LINKS IN THE DETAILS TABLE -->
       <div class="effect-description-links">
         <a target="_blank" class="gene-link"
         href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selected.consequence.gene.ensg}}">{{selected.consequence.gene.ensg}}</a> -
         <a target="_blank" class="gene-link"
-        href="https://www.ncbi.nlm.nih.gov/gene/?term={{selected.consequence.gene.ncbi}}">NCBI: {{selected.consequence.gene.ncbi}}</a> -
+        href="https://www.ncbi.nlm.nih.gov/gene/?term={{selected.consequence.gene.ncbi}}">NCBI: {{selected.consequence.gene.ncbi}}</a>
+      </div>
+      <div class="effect-description-links">
+        <a target="_blank" class="gene-link"
+        href="http://www.sequenceontology.org/browser/current_release/term/{{selected.consequence.gene.biotype.identifier}}">{{selected.consequence.gene.biotype.identifier}}</a> -
         <a target="_blank" class="gene-link"
         href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{selected.consequence.gene.hgnc}}">{{selected.consequence.gene.hgnc}}</a>
       </div>

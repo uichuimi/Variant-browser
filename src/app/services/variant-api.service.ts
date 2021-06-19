@@ -39,7 +39,7 @@ export class VariantApiService {
         gene: gene,
         sift: sift,
         polyphen: polyphen,
-        biotype: biotype,
+        biotypes: biotype,
         impact: impact,
         effect: undefined,
         mode: mode,
@@ -131,6 +131,9 @@ export class VariantApiService {
           each.sift = "tolerated"
         }
       }
+      each.frequencies.forEach(freq => {
+        freq.af = Math.round((freq.af + Number.EPSILON) * 10000) / 10000;
+      });
     });
     return value;
   }

@@ -12,6 +12,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ListboxModule } from 'primeng/listbox';
 import { ChipsModule } from 'primeng/chips';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { PasswordModule } from 'primeng/password';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +23,7 @@ import { TableComponent } from './components/table/table.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FrequencyPipe } from './pipes/frequency.pipe';
 import { GenotypesComponent } from './components/genotypes/genotypes.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -30,7 +33,8 @@ import { GenotypesComponent } from './components/genotypes/genotypes.component';
     DetailsComponent,
     TableComponent,
     FrequencyPipe,
-    GenotypesComponent
+    GenotypesComponent,
+    LoginComponent
   ],
   imports: [
     FormsModule,
@@ -46,6 +50,7 @@ import { GenotypesComponent } from './components/genotypes/genotypes.component';
     ListboxModule,
     ChipsModule,
     InputNumberModule,
+    PasswordModule,
     NgbModule,
   ],
   providers: [],

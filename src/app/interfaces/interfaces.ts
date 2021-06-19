@@ -6,7 +6,7 @@ export class Biotype{
     name: string;
 }
 
-export class Gene {
+export class Gene{
     biotype: Biotype;
     ensg: string;
     hgnc: string;
@@ -15,11 +15,11 @@ export class Gene {
     symbol: string;
 }
 
-export class Effect {
-  description: string;
-  identifier: string;
-  impact: string;
-  name: string;
+export class Effect{
+    description: string;
+    identifier: string;
+    impact: string;
+    name: string;
 }
 
 export class Consequence{

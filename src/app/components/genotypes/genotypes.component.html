@@ -5,13 +5,20 @@
       <p class="gene-space" *ngIf="selectedV.gene != null">
         {{selectedV.consequence.gene.name}}, {{selectedV.consequence.gene.type}}.
       </p>
+      <p class="gene-space" *ngIf="selectedV.consequence.gene.biotype != null">
+        <strong>{{ selectedV.consequence.gene.biotype.name | titlecase }}</strong>
+      </p>
       <p class="gene-title-type"><strong>{{selectedV.consequence.gene.type | titlecase}}</strong></p>
       <!-- LINKS IN THE DETAILS TABLE -->
       <div class="effect-description-links">
         <a target="_blank" class="gene-link"
         href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selectedV.consequence.gene.ensg}}">{{selectedV.consequence.gene.ensg}}</a> -
         <a target="_blank" class="gene-link"
-        href="https://www.ncbi.nlm.nih.gov/gene/?term={{selectedV.consequence.gene.ncbi}}">NCBI: {{selectedV.consequence.gene.ncbi}}</a> -
+        href="https://www.ncbi.nlm.nih.gov/gene/?term={{selectedV.consequence.gene.ncbi}}">NCBI: {{selectedV.consequence.gene.ncbi}}</a>
+      </div>
+      <div class="effect-description-links">
+        <a target="_blank" class="gene-link"
+        href="http://www.sequenceontology.org/browser/current_release/term/{{selectedV.consequence.gene.biotype.identifier}}">{{selectedV.consequence.gene.biotype.identifier}}</a> -
         <a target="_blank" class="gene-link"
         href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{selectedV.consequence.gene.hgnc}}">{{selectedV.consequence.gene.hgnc}}</a>
       </div>
@@ -62,7 +69,7 @@
             {{ element.sample.identifier }}
           </th>
           <td *ngIf="element != null">
-            {{ element.altCount }} | {{ element.refCount }}
+            {{ element.refCount }} | {{ element.altCount }}
           </td>
           <td *ngIf="element != null">
             {{ element.type }}

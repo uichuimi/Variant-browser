@@ -20,7 +20,7 @@
       <div class="page-pannel">
         <p *ngIf="totalPages == 0 || realEmpty"> Page 0 of {{totalPages}}</p>
         <p *ngIf="totalPages !=0"> Page <p-inputNumber [(ngModel)]="page" (onInput)="updatePage($event)" [min]="1" [max]="totalPages"></p-inputNumber> of {{totalPages}}</p>
-        <p>({{elements}} Variants)</p>
+        <p>({{elements}} variants)</p>
         <button pButton class="jumpButton" label="Jump" (click)="searchPage()"></button>
       </div>
     </div>
@@ -105,7 +105,7 @@
         <ng-template ngFor let-item [ngForOf]="variant.frequencies">
           <p *ngIf='item.population.identifier =="all"' class="label" [hidden]="item.af == null" [ngClass]="{ 'red': item.af <= 0.01, 
           'orange': item.af > 0.01 && item.af <= 0.1, 'green': item.af > 0.1 }">
-          {{item.af.toPrecision(4)}}
+          {{item.af}}
         </p>
         <p *ngIf="item.af == null">-</p>
       </ng-template>
