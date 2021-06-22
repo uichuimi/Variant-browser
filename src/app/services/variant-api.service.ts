@@ -39,7 +39,7 @@ export class VariantApiService {
         gene: gene,
         sift: sift,
         polyphen: polyphen,
-        biotypes: biotype,
+        biotype: biotype,
         impact: impact,
         effect: undefined,
         mode: mode,
@@ -117,18 +117,18 @@ export class VariantApiService {
 
     value.forEach(each => {
       each.pos = new Intl.NumberFormat("en-GB").format(each.pos);
-      if (each.polyphen >= 0.85) {
-        each.polyphen = "probably damaging";
-      }else if (each.polyphen >= 0.15) {
-        each.polyphen = "possibly damaging";
+      if (each.consequence.polyphen >= 0.85) {
+        each.consequence.polyphen = "probably damaging";
+      }else if (each.consequence.polyphen >= 0.15) {
+        each.consequence.polyphen = "possibly damaging";
       }else{
-        each.polyphen = null;
+        each.consequence.polyphen = null;
       }
-      if (each.sift != null) {
-        if (each.sift <= 0.1) {
-          each.sift = "deleterious"
+      if (each.consequence.sift != null) {
+        if (each.consequence.sift <= 0.1) {
+          each.consequence.sift = "deleterious"
         }else{
-          each.sift = "tolerated"
+          each.consequence.sift = "tolerated"
         }
       }
       each.frequencies.forEach(freq => {

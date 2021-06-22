@@ -39,6 +39,8 @@ export class AppComponent {
 
   downloading: boolean = false;
 
+  totalPages: number = 0;
+
   eventSubscriber: Subject<void> = new Subject<void>();
 
   //Notification for the table component when the Variant[] size has changed
@@ -91,9 +93,9 @@ export class AppComponent {
       this.biotype = event.biotype;
       this.impact = event.impact;
       this.gmaf = event.gmaf;
-      this.mode = event.mode,
-      this.cases = event.cases,
-      this.controls = event.controls
+      this.mode = event.mode;
+      this.cases = event.cases;
+      this.controls = event.controls;
       this.VariantService.variantCleaner();
       this.getData();
     }
@@ -106,6 +108,8 @@ export class AppComponent {
     Method that retrieves the information from an standard query from the RestAPI
     */
     async getData() {
+      this.totalPages = 0;
+      this.elements = 0;
       this.updated = false;
       this.empty = false;
       this.incomeData = await this.VariantService.getApiData(this.page, this.size, this.chromosome, this.posMin, this.posMax,
@@ -115,6 +119,7 @@ export class AppComponent {
       this.elements = this.incomeData.elements;
       this.empty = this.incomeData.empty;
       this.lastPage = this.incomeData.totalPages - 1;
+      this.totalPages = Math.ceil(this.elements / 10);
       if (this.incomeData.edited) {
         this.notifyChild();
       }

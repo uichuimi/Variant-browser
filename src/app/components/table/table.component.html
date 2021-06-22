@@ -83,22 +83,22 @@
         <!-- END OF NEW MODEL -->
       </td>
       <td class="table-property">
-        <p *ngIf="variant.gene != null">{{variant.gene.symbol}}</p>
-        <p *ngIf="variant.gene == null">-</p>
+        <p *ngIf="variant.consequence.gene != null">{{variant.consequence.gene.symbol}}</p>
+        <p *ngIf="variant.consequence.gene == null">-</p>
       </td>
       <td class="table-property">
-        <p [hidden]="variant.sift == null" class="label text" [ngClass]="{ 'red': variant.sift == 'deleterious', 
-        'green': variant.sift == 'tolerated'}">{{variant.sift}}</p>
-        <p *ngIf="variant.sift == null">-</p>
+        <p [hidden]="variant.consequence.sift == null" class="label text" [ngClass]="{ 'red': variant.consequence.sift == 'deleterious', 
+        'green': variant.consequence.sift == 'tolerated'}">{{variant.consequence.sift}}</p>
+        <p *ngIf="variant.consequence.sift == null">-</p>
       </td>
       <td class="table-property">
-        <p [hidden]="variant.polyphen == null || variant.polyphen == 'unknown'" class="label text" [ngClass]="{ 'red': variant.polyphen == 'probably damaging','orange': variant.polyphen == 'possibly damaging', 
-        'green': variant.polyphen == 'benign' }">{{variant.polyphen}}</p>
-        <p *ngIf="variant.polyphen == null || variant.polyphen == 'unknown'">-</p>
+        <p [hidden]="variant.consequence.polyphen == null || variant.consequence.polyphen == 'unknown'" class="label text" [ngClass]="{ 'red': variant.consequence.polyphen == 'probably damaging','orange': variant.consequence.polyphen == 'possibly damaging', 
+        'green': variant.consequence.polyphen == 'benign' }">{{variant.consequence.polyphen}}</p>
+        <p *ngIf="variant.consequence.polyphen == null || variant.consequence.polyphen == 'unknown'">-</p>
       </td>
       <td class="table-property">
-        <p [hidden]="variant.hgvsp == null">{{variant.hgvsp}}</p>
-        <p *ngIf="variant.hgvsp == null">-</p>
+        <p [hidden]="variant.consequence.hgvsp == null">{{variant.consequence.hgvsp}}</p>
+        <p *ngIf="variant.consequence.hgvsp == null">-</p>
       </td>
       <!-- GMAF section of the table with the logic for the colouring of the cell -->
       <td class="table-property">

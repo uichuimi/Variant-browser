@@ -136,11 +136,11 @@ export class FiltersComponent implements OnInit {
   }
 
   cleanSamplesControlDropdown(){
-    this.selectedSamplesCase = undefined;
+    this.selectedSamplesControl = undefined;
   }
 
   cleanSamplesCaseDropdown(){
-    this.selectedSamplesControl = undefined;
+    this.selectedSamplesCase = undefined;
   }
 
   cleanModeDropdown(){
@@ -157,10 +157,7 @@ export class FiltersComponent implements OnInit {
       this.selectedGenes = [];
       this.geneSelection.forEach(element => {
         this.selectedGenes.push(element.symbol);
-
-        //this.selectedGenes += element.symbol + ",";
       });
-      //this.selectedGenes = this.selectedGenes.substring(0, this.selectedGenes.length - 1);
     }
   }
 
@@ -234,9 +231,9 @@ export class FiltersComponent implements OnInit {
           if (this.dataHeaders[index] == "samples") {
             this.filterList[key].push({label: element.identifier, value: element.identifier});
           }else if(this.dataHeaders[index] == "biotypes"){
-            this.filterList[key].push({label: element.name, value: element.identifier});            
+            this.filterList[key].push({label: element.name, value: element.name});            
           }else{
-            this.filterList[key].push({label: element, value: element});            
+            this.filterList[key].push({label: element, value: element});
           }
         });
       });

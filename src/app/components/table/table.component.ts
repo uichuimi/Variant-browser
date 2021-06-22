@@ -24,6 +24,8 @@ export class TableComponent implements OnInit {
   @Input() updated: boolean;
   @Input() exSize: number;
 
+  @Input() totalPages: number;
+
   private eventSubscription: Subscription;
   @Input() event: Observable<void>;
 
@@ -33,7 +35,6 @@ export class TableComponent implements OnInit {
   first: number = 0;
   rows: number = 10;
   page: number = 1;
-  totalPages: number = 0;
 
   //Variable for the app.component pagination event
   pageModifier = {
@@ -48,23 +49,6 @@ export class TableComponent implements OnInit {
   pointer;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.filtering) {
-      console.log(changes);
-      if (changes.filtering.currentValue) {
-        this.isFiltering();
-      }
-    }
-    if (this.elements && changes.elements) {
-      if (changes.elements.currentValue != 0) {
-        this.totalPages = Math.ceil(this.elements / this.rows);
-      }
-    }
-
-    if (this.filtering && this.elements) {
-      if (changes.filtering.currentValue && !changes.elements) {
-        this.totalPages = Math.ceil(this.elements / this.rows);
-      }
-    }
   }
 
   //Function for the keyboard shortcutes
@@ -142,16 +126,6 @@ export class TableComponent implements OnInit {
       this.modalService.open(content);
     }
     this.notifyDownload.emit(true);
-  }
-
-
-  isFiltering() {
-    this.first = 0;
-    this.page = 1;
-    this.variants = [];
-    this.elements = 0;
-    this.totalPages = 0;
-    this.clearSelection();
   }
 
   receivingCloseDetails(event: any) {

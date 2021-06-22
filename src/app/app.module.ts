@@ -24,6 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FrequencyPipe } from './pipes/frequency.pipe';
 import { GenotypesComponent } from './components/genotypes/genotypes.component';
 import { LoginComponent } from './components/login/login.component';
+import { FrameComponent } from './components/frame/frame.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { LoginComponent } from './components/login/login.component';
     TableComponent,
     FrequencyPipe,
     GenotypesComponent,
-    LoginComponent
+    LoginComponent,
+    FrameComponent
   ],
   imports: [
     FormsModule,
