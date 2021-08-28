@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios from "axios";
+import {environment} from '../environments/environment';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class VariantApiService {
   constructor() { }
 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
-    let url = 'http://193.145.155.148:9090/variants?pageNumber=' + page + '&pageSize=' + size;
+    let url = environment.serverUrl + '/variants?pageNumber=' + page + '&pageSize=' + size;
     if (chromosome != undefined) {
       url += '&chrom=' + chromosome;
     }
@@ -64,7 +65,7 @@ export class VariantApiService {
   }
 
   getGenesData(search) {
-    let url = 'http://193.145.155.148:9090/genes?search=' + search;
+    let url = environment.serverUrl + '/genes?search=' + search;
     return axios.get(url)
       .then(response => {
         return response.data;
@@ -76,7 +77,7 @@ export class VariantApiService {
   }
 
   getTermsData() {
-    let url = 'http://193.145.155.148:9090/terms';
+    let url = environment.serverUrl + '/terms';
     return axios.get(url)
       .then(response => {
         return response.data;
@@ -88,7 +89,7 @@ export class VariantApiService {
   }
 
   getBiotypeData() {
-    let url = 'http://193.145.155.148:9090/biotypes';
+    let url = environment.serverUrl + '/biotypes';
     return axios.get(url)
       .then(response => {
         return response.data;

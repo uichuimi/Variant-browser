@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { VariantApiService } from './variant-api.service';
+import {environment} from '../environments/environment';
 
 
 @Component({
@@ -73,7 +74,7 @@ export class AppComponent {
 
   async exportLink() {
     this.downloadLink = "";
-    let url = 'http://193.145.155.148:9090/download/variants?';
+    let url = environment.serverUrl + '/download/variants?';
     if (this.chromosome != undefined) {
       url += 'chrom=' + this.chromosome + '&';
     }
