@@ -194,10 +194,10 @@ export class FiltersComponent implements OnInit {
   async getEffectAndBiotype() {
     var effect;
     var biotype;
-    effect = await this.VariantService.getTermsData();
+    /*effect = await this.VariantService.getTermsData();
     effect.forEach(element => {
       this.effects.push({ label: element.displayName, value: element.term });
-    });
+    });*/
     biotype = await this.VariantService.getBiotypeData();
     biotype.sort().forEach(element => {
       this.biotypes.push({ label: element, value: element });

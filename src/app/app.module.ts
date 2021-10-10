@@ -18,6 +18,11 @@ import { AppComponent } from './app.component';
 import { FiltersComponent } from './filters/filters.component';
 import { DetailsComponent } from './details/details.component';
 import { TableComponent } from './table/table.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { HomeComponent } from './home/home.component';
+import {HttpClientModule} from '@angular/common/http';
+import {authInterceptorProviders} from './helpers/auth.interceptor';
 
 
 @NgModule({
@@ -25,7 +30,10 @@ import { TableComponent } from './table/table.component';
     AppComponent,
     FiltersComponent,
     DetailsComponent,
-    TableComponent
+    TableComponent,
+    LoginComponent,
+    RegisterComponent,
+    HomeComponent
   ],
   imports: [
     FormsModule,
@@ -41,8 +49,10 @@ import { TableComponent } from './table/table.component';
     ListboxModule,
     ChipsModule,
     InputNumberModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

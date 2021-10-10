@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import axios from "axios";
 import {environment} from '../environments/environment';
+import {TokenStorageService} from './services/token-storage.service';
 
+const API_URL = environment.serverUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +14,19 @@ export class VariantApiService {
   modifiedResponse: any = [];
   incomeInfo: any = { data: [], elements: 0, empty: true };
 
-  constructor() { }
+  constructor(private token: TokenStorageService) { }
+
+  private getRequestHeader() {
+    const token = this.token.getToken();
+    return {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  }
 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
-    let url = environment.serverUrl + '/variants?pageNumber=' + page + '&pageSize=' + size;
+    let url = API_URL + '/variants?pageNumber=' + page + '&pageSize=' + size;
     if (chromosome != undefined) {
       url += '&chrom=' + chromosome;
     }
@@ -44,7 +55,7 @@ export class VariantApiService {
       url += '&maxAlleleFrequency=' + gmaf;
     }
     console.log(url);
-    return axios.get(url)
+    return axios.get(url, this.getRequestHeader())
       .then(response => {
         this.modifiedResponse = response.data.content.map(each => {
           return {
@@ -61,12 +72,12 @@ export class VariantApiService {
       })
       .catch(error => {
         console.log("Se ha producido el error", error);
-      })
+      });
   }
 
   getGenesData(search) {
-    let url = environment.serverUrl + '/genes?search=' + search;
-    return axios.get(url)
+    let url = API_URL + '/genes?search=' + search;
+    return axios.get(url, this.getRequestHeader())
       .then(response => {
         return response.data;
       })
@@ -78,7 +89,7 @@ export class VariantApiService {
 
   getTermsData() {
     let url = environment.serverUrl + '/terms';
-    return axios.get(url)
+    return axios.get(url, this.getRequestHeader())
       .then(response => {
         return response.data;
       })
@@ -89,8 +100,8 @@ export class VariantApiService {
   }
 
   getBiotypeData() {
-    let url = environment.serverUrl + '/biotypes';
-    return axios.get(url)
+    let url = API_URL + '/biotypes';
+    return axios.get(url, this.getRequestHeader())
       .then(response => {
         return response.data;
       })
