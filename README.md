@@ -2,12 +2,23 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.8.
 
-## Steps for execute de code
+## Steps for execute de code in a developer environment
 
-1. Download and install nodeJS from https://nodejs.org/es/, in case you don't have it yet.
-2. Clone the repository in the folder you prefer.
-3. Run `npm install`and `npm install -g @angular/cli`.
-4. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+If you do not have npm package manager, Node.js or any previous experience with Angular you will need to do some previous installations:
+
+1. Node.js brings the npm package by default so access: https://nodejs.org/en/ to download it and install it.
+2. Once installed you will need to install the Angular CLI, so with an open window terminal execute the following: npm install -g @angular/cli.
+
+For future reference please visit the Angular "Getting started" site for a more detailed information in how to start working with an Angular project: https://angular.io/guide/setup-local.
+
+Once that you have all the resources mentioned above, you are ready to start up the project:
+
+1. First clone/download the source code from this git repository into any folder of your liking.
+2. With the CMD navigate to the folder where you downloaded the project.
+3. Once you are on "/PROJECT-FOLDER/" (which is recognizable because you will see the "src" folder) execute: npm install. And wait a couple minutes depending on your machine.
+4. Once the npm command finishes you can finally execute the project by using: ng serve. Once it finishes the compilation process just open your favorite browser (we recommend Chrome for this) and navigate to localhost:4000/. Enjoy the app!
+
+
 
 ## Code scaffolding
 

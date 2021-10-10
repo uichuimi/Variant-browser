@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VariantApiService } from './variant-api.service';
+import { LoginService } from './login.service';
 
-describe('VariantApiService', () => {
-  let service: VariantApiService;
+describe('LoginService', () => {
+  let service: LoginService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(VariantApiService);
+    service = TestBed.inject(LoginService);
   });
 
   it('should be created', () => {

@@ -1,0 +1,61 @@
+<div class="details-content" *ngIf="selected != undefined">
+  <p-card class="details-card">
+    <p-button class="close-button" styleClass="p-button-text" icon="pi pi-times-circle" (click)="closeTag()"></p-button>
+    <div class="info-container">
+      <p class="gene-title"><strong>{{selected.consequence.gene.symbol}}</strong></p>
+      <p class="gene-space" *ngIf="selected.gene != null">
+        {{selected.consequence.gene.name}}, {{selected.consequence.gene.type}}.
+      </p>
+      <p class="gene-space" *ngIf="selected.consequence.gene.biotype != null">
+        <strong>{{ selected.consequence.gene.biotype.name | titlecase}}</strong>
+      </p>
+      <p class="gene-title-type"><strong>{{selected.consequence.gene.type | titlecase}}</strong></p>
+      <!-- LINKS IN THE DETAILS TABLE -->
+      <div class="effect-description-links">
+        <a target="_blank" class="gene-link"
+        href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{selected.consequence.gene.ensg}}">{{selected.consequence.gene.ensg}}</a> -
+        <a target="_blank" class="gene-link"
+        href="https://www.ncbi.nlm.nih.gov/gene/?term={{selected.consequence.gene.ncbi}}">NCBI: {{selected.consequence.gene.ncbi}}</a>
+      </div>
+      <div class="effect-description-links">
+        <a target="_blank" class="gene-link"
+        href="http://www.sequenceontology.org/browser/current_release/term/{{selected.consequence.gene.biotype.identifier}}">{{selected.consequence.gene.biotype.identifier}}</a> -
+        <a target="_blank" class="gene-link"
+        href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{selected.consequence.gene.hgnc}}">{{selected.consequence.gene.hgnc}}</a>
+      </div>
+
+      <!-- MOUSE-OVER SECTION ON THE DETAILS TABLE -->
+      <div>
+        <div id="effect-space" *ngIf="selected.consequence.effect != null"><strong
+          class="effect-name">{{selected.consequence.effect.name}}</strong>
+          <p class="effect-description">{{selected.consequence.effect.description}}</p>
+        </div>
+      </div>
+
+      <p-table [value]="populations" class="details-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="table-label population" colspan="4">Frequencies</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body">
+          <tr *ngFor="let frequency of selected.frequencies" >
+            <td class="table-property population" colspan="2">{{ frequency.population.description }}</td>
+            <td class="table-property" colspan="2">
+              <div>
+                <div>
+                  <!-- GIVEN THE VALUE OF THE FREQUENCY WE SWITCH THE CLASS ON THE <P> FOR STYLE -->
+                    <p class="label" [ngClass]="{ 'red': frequency.af <= 0.01, 'orange': frequency.af > 0.01 && frequency.af <= 0.1, 
+                      'green': frequency.af > 0.1 }">{{frequency.af}} ({{frequency.ac}}/{{frequency.an}})</p>
+                    </div>
+                  </div>
+                </td>  
+              </tr>
+            </ng-template>
+          </p-table>
+          <div class="no-data" *ngIf="selected.af == null" [hidden]="selected.af == null">
+            <p>No data available</p>
+          </div>
+        </div>
+      </p-card>
+    </div>

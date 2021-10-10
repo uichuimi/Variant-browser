@@ -1,0 +1,162 @@
+<div class="table-content" [ngClass]="{ 'selection': selectedVariants == null}">
+  <p-table #dt [value]="variants" [columns]="cols" selectionMode="single" [paginator]="true" [first]="first"
+  [rows]="rows">
+  <ng-template pTemplate="caption">
+    <div class="table-header">
+      <div class="buttons-pannel" [ngClass]="{ 'short': selectedVariants != null}">
+        <p-button type="button" icon="pi pi-angle-double-left" (click)="firstPage()" ng-reflect-disabled="false"
+        styleClass="p-button-text"
+        [disabled]="isRealFirstPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
+        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" ng-reflect-disabled="false"
+        styleClass="p-button-text"
+        [disabled]="isRealFirstPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
+        <p-button type="button" icon="pi pi-download" (click)="downloadExcel(content)" styleClass="p-button-text"
+        pTooltip="XLS" tooltipPosition="bottom"></p-button>
+        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" styleClass="p-button-text"
+        [disabled]="isRealLastPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
+        <p-button type="button" icon="pi pi-angle-double-right" (click)="lastPage()" styleClass="p-button-text"
+        [disabled]="isRealLastPage() || this.variants.length == 0 || this.variants == undefined"></p-button>
+      </div>
+      <div class="page-pannel">
+        <p *ngIf="totalPages == 0 || realEmpty"> Page 0 of {{totalPages}}</p>
+        <p *ngIf="totalPages !=0"> Page <p-inputNumber [(ngModel)]="page" (onInput)="updatePage($event)" [min]="1" [max]="totalPages"></p-inputNumber> of {{totalPages}}</p>
+        <p>({{elements}} variants)</p>
+        <button pButton class="jumpButton" label="Jump" (click)="searchPage()"></button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-variant>
+    <tr (click)="selectVariant(variant)" class="table-row" [ngClass]="{ 'selected': selectedVariants == variant }">
+      <!-- INDENTIFIER WITH THEIR EXTERNAL LINKS -->
+      <td class="table-property">
+        <div class="identifier-space" [ngClass]="{ 'spacing': selectedVariants != null}">
+          <a *ngIf="variant.identifier != null && variant.identifier.substring(0,2) == 'rs'" target="_blank"
+          class="variant-link"
+          href="https://www.ncbi.nlm.nih.gov/snp/{{variant.identifier}}">{{variant.identifier}}</a>
+          <p *ngIf="variant.identifier != null && variant.identifier.substring(0,2) != 'rs'">{{variant.identifier}}
+          </p>
+          <p *ngIf="variant.identifier == null">-</p>
+        </div>
+      </td>
+      <!-- COORDINATES ON THE TABLE -->
+      <td class="table-property">
+        <p>{{variant.chrom}}:{{variant.pos}}</p>
+      </td>
+      <td class="table-property variant-column">
+
+        <!-- VARIANT SECTION OF THE TABLE -->
+        <!-- NEW MODEL -->
+        <div *ngIf="variant.alt.length <= 3 && variant.ref.length <= 3">
+          <p>{{variant.alt}}/{{variant.ref}}</p>
+        </div>
+        <div *ngIf="variant.alt.length > 3 && variant.ref.length <= 3">
+          <p class="variant-refValue">{{variant.alt.substring(0,2)}}
+            <span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
+            +{{variant.alt.length-2}}</span>
+            /{{variant.ref}}
+          </p>
+        </div>
+        <div *ngIf="variant.alt.length <= 3 && variant.ref.length > 3">
+          <p class="variant-refValue">{{variant.alt}}
+            /{{variant.ref.substring(0,2)}}<span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
+            +{{variant.ref.length-2}}</span>
+          </p>
+        </div>
+        <div *ngIf="variant.alt.length > 3 && variant.ref.length > 3">
+          <p class="variant-refValue">{{variant.alt.substring(0,2)}}
+            <span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
+            +{{variant.alt.length-2}}</span>
+            /{{variant.ref.substring(0,2)}}<span [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false" #p="ngbPopover" class="alt variant-moreIcon">
+            +{{variant.ref.length-2}}</span>
+          </p>
+        </div>
+        <ng-template #popTitle>Full Variant Change</ng-template>
+        <ng-template #popContent>{{ variant.alt }} /{{ variant.ref }}</ng-template>
+        <!-- END OF NEW MODEL -->
+      </td>
+      <td class="table-property">
+        <p *ngIf="variant.consequence.gene != null">{{variant.consequence.gene.symbol}}</p>
+        <p *ngIf="variant.consequence.gene == null">-</p>
+      </td>
+      <td class="table-property">
+        <p [hidden]="variant.consequence.sift == null" class="label text" [ngClass]="{ 'red': variant.consequence.sift == 'deleterious', 
+        'green': variant.consequence.sift == 'tolerated'}">{{variant.consequence.sift}}</p>
+        <p *ngIf="variant.consequence.sift == null">-</p>
+      </td>
+      <td class="table-property">
+        <p [hidden]="variant.consequence.polyphen == null || variant.consequence.polyphen == 'unknown'" class="label text" [ngClass]="{ 'red': variant.consequence.polyphen == 'probably damaging','orange': variant.consequence.polyphen == 'possibly damaging', 
+        'green': variant.consequence.polyphen == 'benign' }">{{variant.consequence.polyphen}}</p>
+        <p *ngIf="variant.consequence.polyphen == null || variant.consequence.polyphen == 'unknown'">-</p>
+      </td>
+      <td class="table-property">
+        <p [hidden]="variant.consequence.hgvsp == null">{{variant.consequence.hgvsp}}</p>
+        <p *ngIf="variant.consequence.hgvsp == null">-</p>
+      </td>
+      <!-- GMAF section of the table with the logic for the colouring of the cell -->
+      <td class="table-property">
+        <ng-template ngFor let-item [ngForOf]="variant.frequencies">
+          <p *ngIf='item.population.identifier =="all"' class="label" [hidden]="item.af == null" [ngClass]="{ 'red': item.af <= 0.01, 
+          'orange': item.af > 0.01 && item.af <= 0.1, 'green': item.af > 0.1 }">
+          {{item.af}}
+        </p>
+        <p *ngIf="item.af == null">-</p>
+      </ng-template>
+    </td>
+  </tr>
+</ng-template>
+</p-table>
+
+
+</div>
+<div class="detailContainer" *ngIf="selectedVariants != null">
+  <table class="table table-striped">
+    <thead>
+      <tr class="types-row">
+        <th scope="col" (click)="switchDetails(0)"
+        [ngClass]="{'selected': selectedDetail == 0, 'types': selectedDetail != 0}" >
+        Genotype
+      </th>
+      <th scope="col" (click)="switchDetails(1)"
+      [ngClass]="{'selected': selectedDetail != 0, 'types': selectedDetail == 0}" >
+      Frequency
+    </th>
+  </tr>
+</thead>
+</table>
+<app-details *ngIf="selectedVariants != null && selectedDetail == 1" [selected]="selectedVariants"
+(closeDetails)="receivingCloseDetails($event)"></app-details>
+<app-genotypes *ngIf="selectedVariants != null && selectedDetail == 0" [homozygous]="selectedVariants.homozygous" [wildtype]="selectedVariants.wildtype" [heterozygous]="selectedVariants.heterozygous" [selectedV]="selectedVariants" (closeDetails)="receivingCloseDetails($event)"></app-genotypes>  
+</div>
+
+
+<div class="bottom-pannel">
+  <div class="pagination-bottom">
+
+    <div *ngIf="(variants.length == 0 || variants == undefined) && !realEmpty" class="preloader"></div>
+    <div *ngIf="realEmpty" class="no-variants">
+      <p>No variants available</p>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Starting download</h4>
+  </div>
+  <div class="modal-body">
+    <p>Number of variants too high.
+    Downloading only the first 10k variants</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="(downloading)" class="btn btn-outline-dark" (click)="c('Save click')">OK!</button>
+  </div>
+</ng-template>

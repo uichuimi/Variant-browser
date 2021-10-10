@@ -24,7 +24,7 @@
     align-items: flex-start;
 }
 
-.filters-firstcolumn-row, .filters-secondcolumn-row{
+.filters-firstcolumn-row, .filters-secondcolumn-row, .filters-thirdcolumn-row{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
