@@ -9,27 +9,27 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class DetailsComponent implements OnInit {
   @Input() selected: any;
   @Output() closeDetails = new EventEmitter;
-  populations: any[] = []; 
+  populations: any[] = [];
   noDetails: boolean = false;
 
-  constructor() { 
+  constructor() {
     this.populations = [
-      {name: 'African', code: 'AFR'},
-      {name: 'American', code: 'AMR'},
-      {name: 'Ashkenazi Jewish', code: 'ASJ'},
-      {name: 'East Asian', code: 'EAS'},
-      {name: 'European', code: 'EUR'},
-      {name: 'Finnish', code: 'FIN'},
-      {name: 'Non-Finnish European', code: 'NFE'},
-      {name: 'Other', code: 'OTH'},
-      {name: 'South Asian', code: 'SAS'},
+      { name: 'African', code: 'AFR' },
+      { name: 'American', code: 'AMR' },
+      { name: 'Ashkenazi Jewish', code: 'ASJ' },
+      { name: 'East Asian', code: 'EAS' },
+      { name: 'European', code: 'EUR' },
+      { name: 'Finnish', code: 'FIN' },
+      { name: 'Non-Finnish European', code: 'NFE' },
+      { name: 'Other', code: 'OTH' },
+      { name: 'South Asian', code: 'SAS' },
     ];
   }
 
   ngOnInit(): void {
   }
 
-  closeTag(){
+  closeTag() {
     this.noDetails = true;
     this.closeDetails.emit(this.noDetails);
     this.selected = undefined;

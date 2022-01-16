@@ -2,9 +2,12 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.8.
 
-## Development server
+## Steps for execute de code
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Download and install nodeJS from https://nodejs.org/es/, in case you don't have it yet.
+2. Clone the repository in the folder you prefer.
+3. Run `npm install`and `npm install -g @angular/cli`.
+4. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
