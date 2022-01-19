@@ -6,6 +6,11 @@ const USER_KEY = 'auth-user';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase TokenStorageService permite controlar los token
+ * de autenticación.
+ */
 export class TokenStorageService {
 
   constructor() { }
