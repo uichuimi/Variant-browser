@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -c=development",
     "build-prod": "ng build --delete-output-path --prod --aot",
     "build-dev": "ng build --delete-output-path --configuration=development --aot",
     "test": "ng test",
