@@ -19,9 +19,5 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
-  },
-  "typedocOptions": {
-      "entryPoints": ["src/app/services/auth.service.ts"],
-      "out": "docs"
   }
 }
