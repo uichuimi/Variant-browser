@@ -77,20 +77,10 @@
           },
           "configurations": {
             "development": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
-                }
-              ]
+              "browserTarget": "variant-browser:build:development"        
             },
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
+              "browserTarget": "variant-browser:build:production",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
