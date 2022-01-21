@@ -8,14 +8,29 @@ const API_URL = environment.serverUrl;
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase VariantApiService se encarga de hacer las llamadas
+ * a la base de datos 'varcan'
+ */ 
 export class VariantApiService {
   showAltValue: any = { showAlt: false };
   showRefValue: any = { showRef: false };
   modifiedResponse: any = [];
   incomeInfo: any = { data: [], elements: 0, empty: true };
 
+  /**
+   * Crea un objeto de tipo TokenStorageService que se usará para crear
+   * que se usará en el método 'getRequestHeader()'
+   * @param token string que permite obtener datos de la base de datos
+   */ 
   constructor(private token: TokenStorageService) { }
 
+  /**
+   * Crea un objeto que hará de cabecera en las llamadas, en él se 
+   * indica el token que permitirá acceder a los datos de 'varcan'
+   * @returns objeto 'headers'  
+   */ 
   private getRequestHeader() {
     const token = this.token.getToken();
     return {
@@ -25,6 +40,21 @@ export class VariantApiService {
     };
   }
 
+  /**
+   * Obtiene las variantes que se ajusten a los parámetros pasados
+   * @param page 
+   * @param size 
+   * @param chromosome 
+   * @param posMin 
+   * @param posMax 
+   * @param gene 
+   * @param sift 
+   * @param polyphen 
+   * @param biotype 
+   * @param term 
+   * @param gmaf 
+   * @returns si la llamada va bien
+   */ 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
     let url = API_URL + '/variants?pageNumber=' + page + '&pageSize=' + size;
     if (chromosome != undefined) {
@@ -75,6 +105,11 @@ export class VariantApiService {
       });
   }
 
+  /**
+   * Obtiene los genes que se ajusten al parámetro 'search'
+   * @param search 
+   * @returns objeto que contiene los genes
+   */  
   getGenesData(search) {
     let url = API_URL + '/genes?search=' + search;
     return axios.get(url, this.getRequestHeader())
