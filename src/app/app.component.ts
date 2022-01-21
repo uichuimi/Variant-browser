@@ -10,6 +10,10 @@ import {HomeComponent} from './home/home.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
+/**
+ * prueba AppComponent Class
+ */
 export class AppComponent implements OnInit {
   private roles: string[];
   isLoggedIn = false;

@@ -21,7 +21,7 @@
     "strictInjectionParameters": true
   },
   "typedocOptions": {
-      "entryPoints": ["src/app/services/auth.service.ts"],
-      "out": "docs"
-  }
+    "entryPoints": ["src/app"],
+    "out": "docs"
+  }  
 }
