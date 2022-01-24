@@ -42,18 +42,19 @@ export class VariantApiService {
 
   /**
    * Obtiene las variantes que se ajusten a los parámetros pasados
-   * @param page 
-   * @param size 
-   * @param chromosome 
-   * @param posMin 
-   * @param posMax 
-   * @param gene 
+   * @param page número de página
+   * @param size tamaño de la página
+   * @param chromosome cromosoma
+   * @param posMin inicio
+   * @param posMax fin
+   * @param gene gen
    * @param sift 
    * @param polyphen 
    * @param biotype 
    * @param term 
    * @param gmaf 
-   * @returns si la llamada va bien
+   * @returns si la llamada va bien objeto que contiene los datos que se ajustan
+   * a los parámetros que el usuario da, si no lanza un error
    */ 
   getApiData(page, size, chromosome, posMin, posMax, gene, sift, polyphen, biotype, term, gmaf) {
     let url = API_URL + '/variants?pageNumber=' + page + '&pageSize=' + size;
@@ -122,6 +123,11 @@ export class VariantApiService {
       })
   }
 
+  /**
+   * 
+   * @returns objeto que contiene los terms
+   */
+
   getTermsData() {
     let url = environment.serverUrl + '/terms';
     return axios.get(url, this.getRequestHeader())
@@ -133,6 +139,11 @@ export class VariantApiService {
         console.log("Se ha producido el error", error);
       })
   }
+
+  /**
+   * Obtiene los biotipos guardados en 'varcan'
+   * @returns objeto que contiene los biotipos
+   */
 
   getBiotypeData() {
     let url = API_URL + '/biotypes';
