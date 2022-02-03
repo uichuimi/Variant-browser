@@ -45,14 +45,14 @@ export class VariantApiService {
    * @param page número de página
    * @param size tamaño de la página
    * @param chromosome cromosoma
-   * @param posMin inicio
-   * @param posMax fin
-   * @param gene gen
-   * @param sift 
-   * @param polyphen 
-   * @param biotype 
-   * @param term 
-   * @param gmaf 
+   * @param posMin posición inicial
+   * @param posMax posición final
+   * @param gene gene
+   * @param sift predicción SIFT
+   * @param polyphen predicción Polyphen
+   * @param biotype biotipo
+   * @param term efecto aceptado
+   * @param gmaf frecuencia en la población global
    * @returns si la llamada va bien objeto que contiene los datos que se ajustan
    * a los parámetros que el usuario da, si no lanza un error
    */ 
@@ -124,7 +124,7 @@ export class VariantApiService {
   }
 
   /**
-   * 
+   * Obtiene lista de efectos aceptados
    * @returns objeto que contiene los terms
    */
 
