@@ -25,7 +25,7 @@ import * as individualOutputMockup from '../fixtures/varcanService/individual/ou
 import * as effectOutputMockup from '../fixtures/varcanService/effect/output/effectOutputMockup.json';
 
 // POPULATIONS
-import * as populationOutputMockup from '../fixtures/varcanService/population/output/populationOutputMockup.json';
+import * as populationsOutputMockup from '../fixtures/varcanService/population/output/populationsOutputMockup.json';
 
 // GENES
 import * as geneSingleParameterInputMockup from '../fixtures/varcanService/gene/input/geneSingleParameterInputMockup.json';
@@ -120,7 +120,7 @@ describe('VarCanService', () => {
   }); 
   
   it("should return Array<Population> (/populations)", () => {
-    const result: Array<Population> = populationOutputMockup.populations;
+    const result: Array<Population> = populationsOutputMockup.populations;
 
     expect(service.getPopulations())
       .withContext("service return Array<Population>")
