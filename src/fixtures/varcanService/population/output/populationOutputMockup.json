@@ -1,0 +1,64 @@
+{
+    "populations": [
+        {
+            "id": 1,
+            "code": "gca",
+            "name": "Gran Canaria"
+        },
+        {
+            "id": 2,
+            "code": "all",
+            "name": "Global"
+        },
+        {
+            "id": 3,
+            "code": "afr",
+            "name": "African/African-American"
+        },
+        {
+            "id": 4,
+            "code": "ami",
+            "name": "Amish"
+        },
+        {
+            "id": 5,
+            "code": "amr",
+            "name": "Latino/Admixed American"
+        },
+        {
+            "id": 6,
+            "code": "asj",
+            "name": "Ashkenazi Jewish"
+        },
+        {
+            "id": 7,
+            "code": "eas",
+            "name": "East Asian"
+        },
+        {
+            "id": 8,
+            "code": "fin",
+            "name": "Finnish"
+        },
+        {
+            "id": 9,
+            "code": "nfe",
+            "name": "Non-Finnish European"
+        },
+        {
+            "id": 10,
+            "code": "mid",
+            "name": "Middle Eastern"
+        },
+        {
+            "id": 11,
+            "code": "sas",
+            "name": "South Asian"
+        },
+        {
+            "id": 12,
+            "code": "oth",
+            "name": "Other (population not assigned)"
+        }
+    ]    
+}
