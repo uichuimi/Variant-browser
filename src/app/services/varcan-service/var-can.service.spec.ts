@@ -49,7 +49,7 @@ describe('VarCanService', () => {
     expect(service).toBeTruthy();
   });
 
-  it("should return token: <Token> (/login)", () => {
+  it("should return a valid token when correct credentials are being passed to /login endpoint", () => {
     const loginModel: Login = loginCorrectMockup;
     const result: Token = service.login(loginModel);
     
@@ -67,7 +67,7 @@ describe('VarCanService', () => {
       .toBe('bearer');
   });
 
-  it("should return status: failed (/login)", () => {
+  it("should return a failed status when incorrect credentials are being passed to /login endpoint", () => {
     const loginModel: Login = loginIncorrectMockup;
     const status: ResponseStatus = loginIncorrectOutputMockup;
 
@@ -76,7 +76,7 @@ describe('VarCanService', () => {
       .toBe(status);
   });
 
-  it("should return Array<Biotype> (/biotypes)", () => {
+  it("should return a biotypes list when a call is made to /biotypes endpoint", () => {
     const predictedResult: Array<Biotype> = biotypeOutputMockup.biotypes;
 
     expect(service.getBiotypes())
@@ -84,7 +84,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   });
 
-  it("should return Array<Chromosome> (/chromosomes)", () => {
+  it("should return a chromosomes list when a call is made to /chromosomes endpoint", () => {
     const predictedResult: Array<Chromosome> = chromosomeOutputMockup.chromosomes;
 
     expect(service.getChromosomes())
@@ -92,7 +92,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   });
 
-  it("should return Array<Impact> (/impacts)", () => {
+  it("should return an impacts list when a call is made to /impacts endpoint", () => {
     const predictedResult: Array<Impact> = impactOutputMockup.impacts;
 
     expect(service.getImpacts())
@@ -100,7 +100,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   }); 
   
-  it("should return Array<GenotypeType> (/genotype_type)", () => {
+  it("should return a genotype_types list when a call is made to /genotype_type endpoint", () => {
     const predictedResult: Array<GenotypeType> = genotypeTypeOutputMockup.genotypeType;
 
     expect(service.getGenotypeType())
@@ -108,7 +108,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   });    
 
-  it("should return Array<Individual> (/individuals)", () => {
+  it("should return an individuals list when a call is made to /individuals endpoint", () => {
     const predictedResult: Array<Individual> = individualOutputMockup.individuals;
 
     expect(service.getIndividuals())
@@ -116,7 +116,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   });   
 
-  it("should return Array<Effect> (/effects)", () => {
+  it("should return an effects list when a call is made to /effects endpoint", () => {
     const predictedResult: Array<Effect> = effectOutputMockup.effects;
 
     expect(service.getEffects())
@@ -124,7 +124,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   }); 
   
-  it("should return Array<Population> (/populations)", () => {
+  it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
     const predictedResult: Array<Population> = populationsOutputMockup.asc;
     const result: Array<Population> = service.getPopulations();
 
@@ -139,7 +139,7 @@ describe('VarCanService', () => {
       .toBe(12);
   });  
   
-  it("should return Array<Population> (/populations)", () => {
+  it("should return a populations descending sorted list when a call is made to /populations endpoint", () => {
     const predictedResult: Array<Population> = populationsOutputMockup.desc;
     const result: Array<Population> = service.getPopulations();
 
@@ -154,7 +154,7 @@ describe('VarCanService', () => {
       .toBe(1);
   }); 
 
-  it("should return Page<Gene> (/genes)", () => {
+  it("should return a page of genes when no parameters are set in /genes endpoint", () => {
     const predictedResult: Array<Gene> = geneOutputMockup.genes;
 
     const result = service.getGenes();
@@ -170,7 +170,7 @@ describe('VarCanService', () => {
       .toBe(1055);              
   });  
 
-  it("should return Page<Gene> filtered by query (/genes)", () => {
+  it("should return a page of genes filtered by query when a parameter is set in /genes endpoint", () => {
     const geneModel: GeneParams = geneSingleParameterInputMockup;
     const predictedResult: Array<Gene> = geneFilteredOutputMockup.genes;
 
@@ -187,7 +187,7 @@ describe('VarCanService', () => {
       .toBe(1);              
   });  
 
-  it("should return Page<Gene> filtered by query (/genes)", () => {
+  it("should return a page of genes filtered by query when all parameters are set in /genes endpoint", () => {
     const geneModel: GeneParams = geneMultipleParametersInputMockup;
     const predictedResult: Array<Gene> = geneFilteredOutputMockup.genes;
 
@@ -206,7 +206,7 @@ describe('VarCanService', () => {
   
   // ToDo: esperar a que endpoint /variant esté hecho
 
-  it("should return Page<Variant> (/variant)", () => {
+  it("should return a page of variants when no parameters are set in /variants endpoint", () => {
     // const predictedResult: Array<Variant> = ;
 
     const result = service.getVariant(variantModel);
@@ -222,7 +222,7 @@ describe('VarCanService', () => {
       .toBe(1);*/
   });
 
-  it("should return Page<Variant> filtered by query (/variant)", () => {
+  it("should return a page of variants filtered by query when a parameter is set in /variants endpoint", () => {
     const variantModel: VariantParams = variantSingleParamOutputMockup;
     // const predictedResult: Array<Variant> = ;
 
@@ -239,7 +239,7 @@ describe('VarCanService', () => {
       .toBe(1);*/
   });  
   
-  it("should return Page<Variant> filtered by query (/variant)", () => {
+  it("should return a page of variants filtered by query when all parameters are set in /variants endpoint", () => {
     const variantModel: VariantParams = variantMultipleParamsOutputMockup;
     // const predictedResult: Array<Variant> = ;
 
