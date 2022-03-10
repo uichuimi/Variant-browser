@@ -1,0 +1,8 @@
+{
+    "start": 1234,
+    "end": 12345,
+    "chromosomes": [0, 1, 2],
+    "genes": [0, 1, 2],
+    "page": 0,
+    "size": 20
+}
