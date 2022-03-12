@@ -37,6 +37,7 @@ import * as geneFilteredOutputMockup from 'fixtures/varcanService/gene/output/ge
 // VARIANT
 import * as variantSingleParamOutputMockup from 'fixtures/varcanService/variant/input/variantSingleParamInputMockup.json';
 import * as variantMultipleParamsOutputMockup from 'fixtures/varcanService/variant/input/variantMultipleParamsInputMockup.json';
+import { Chromosome } from 'src/app/models/Chromosome';
 
 describe('VarCanService', () => {
   let service: VarCanService;
@@ -49,7 +50,7 @@ describe('VarCanService', () => {
     expect(service).toBeTruthy();
   });
 
-  it("should return a valid token when correct credentials are being passed to /login endpoint", () => {
+  /*it("should return a valid token when correct credentials are being passed to /login endpoint", () => {
     const loginModel: Login = loginCorrectMockup;
     const result: Token = service.login(loginModel);
     
@@ -82,7 +83,7 @@ describe('VarCanService', () => {
     expect(service.getBiotypes())
       .withContext("service return Array<Biotype>")
       .toBe(predictedResult);
-  });
+  });*/
 
   it("should return a chromosomes list when a call is made to /chromosomes endpoint", () => {
     const predictedResult: Array<Chromosome> = chromosomeOutputMockup.chromosomes;
@@ -92,7 +93,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   });
 
-  it("should return an impacts list when a call is made to /impacts endpoint", () => {
+  /*it("should return an impacts list when a call is made to /impacts endpoint", () => {
     const predictedResult: Array<Impact> = impactOutputMockup.impacts;
 
     expect(service.getImpacts())
@@ -202,11 +203,11 @@ describe('VarCanService', () => {
     expect(result.totalPages)
       .withContext("result.content return Array<Gene>")
       .toBe(1);              
-  });  
+  }); */ 
   
   // ToDo: esperar a que endpoint /variant esté hecho
 
-  it("should return a page of variants when no parameters are set in /variants endpoint", () => {
+  /*it("should return a page of variants when no parameters are set in /variants endpoint", () => {
     // const predictedResult: Array<Variant> = ;
 
     const result = service.getVariant(variantModel);
@@ -219,10 +220,10 @@ describe('VarCanService', () => {
       .toBe(1);  
     expect(result.totalPages)
       .withContext("result.content return Array<Gene>")
-      .toBe(1);*/
-  });
+      .toBe(1);
+  });*/
 
-  it("should return a page of variants filtered by query when a parameter is set in /variants endpoint", () => {
+  /*it("should return a page of variants filtered by query when a parameter is set in /variants endpoint", () => {
     const variantModel: VariantParams = variantSingleParamOutputMockup;
     // const predictedResult: Array<Variant> = ;
 
@@ -236,7 +237,7 @@ describe('VarCanService', () => {
       .toBe(1);  
     expect(result.totalPages)
       .withContext("result.content return Array<Gene>")
-      .toBe(1);*/
+      .toBe(1);
   });  
   
   it("should return a page of variants filtered by query when all parameters are set in /variants endpoint", () => {
@@ -253,6 +254,6 @@ describe('VarCanService', () => {
       .toBe(1);  
     expect(result.totalPages)
       .withContext("result.content return Array<Gene>")
-      .toBe(1);   */           
-  });  
+      .toBe(1);              
+  });  */
 });

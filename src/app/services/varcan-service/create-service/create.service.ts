@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AxiosInstance } from 'axios';
-import { ICreatable } from '../interfaces/ICreatable';
+import { ICreatable } from 'src/app/interfaces/ICreatable';
 
 @Injectable({
   providedIn: 'root'

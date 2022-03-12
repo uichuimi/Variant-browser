@@ -5,5 +5,5 @@ import { Injectable } from '@angular/core';
 })
 export class ApiService {
 
-  constructor(protected url: string) { }
+  constructor(private serverUrl: string) { }
 }
