@@ -1,7 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
+})
+@NgModule({
+  providers: [{provide: String, useValue: "dummy"}],
 })
 export class ApiService {
 

@@ -1,6 +1,9 @@
 import { VarCanService } from './var-can.service';
 import { environment } from 'src/environments/environment';
 
+// MODELS
+import { Chromosome } from 'src/app/models/Chromosome';
+
 // Inputs and outputs mockups
 // LOGIN
 import * as loginCorrectMockup from 'fixtures/varcanService/login/input/loginCorrectMockup.json'
@@ -37,7 +40,7 @@ import * as geneFilteredOutputMockup from 'fixtures/varcanService/gene/output/ge
 // VARIANT
 import * as variantSingleParamOutputMockup from 'fixtures/varcanService/variant/input/variantSingleParamInputMockup.json';
 import * as variantMultipleParamsOutputMockup from 'fixtures/varcanService/variant/input/variantMultipleParamsInputMockup.json';
-import { Chromosome } from 'src/app/models/Chromosome';
+import { Biotype } from 'src/app/models/Biotype';
 
 describe('VarCanService', () => {
   let service: VarCanService;
@@ -75,7 +78,7 @@ describe('VarCanService', () => {
     expect(service.login(loginModel))
       .withContext("service return status failed")
       .toBe(status);
-  });
+  });*/
 
   it("should return a biotypes list when a call is made to /biotypes endpoint", () => {
     const predictedResult: Array<Biotype> = biotypeOutputMockup.biotypes;
@@ -83,7 +86,7 @@ describe('VarCanService', () => {
     expect(service.getBiotypes())
       .withContext("service return Array<Biotype>")
       .toBe(predictedResult);
-  });*/
+  });
 
   it("should return a chromosomes list when a call is made to /chromosomes endpoint", () => {
     const predictedResult: Array<Chromosome> = chromosomeOutputMockup.chromosomes;

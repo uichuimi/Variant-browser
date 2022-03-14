@@ -8,8 +8,11 @@ import { Chromosome } from 'src/app/models/Chromosome';
   providedIn: 'root'
 })
 export class ChromosomesService {
+  readonly httpHandler: AxiosInstance;
 
-  constructor(private httpHandler: AxiosInstance) { }
+  constructor(httpHandler: AxiosInstance) {
+    this.httpHandler = httpHandler;
+  }
 
   fetch(): Array<Chromosome> {
     let pruebaArray: Array<Chromosome> = chromosomeOutputMockup.chromosomes;
