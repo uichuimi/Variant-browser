@@ -15,25 +15,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FiltersComponent } from './filters/filters.component';
-import { DetailsComponent } from './details/details.component';
-import { TableComponent } from './table/table.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { HomeComponent } from './home/home.component';
 import {HttpClientModule} from '@angular/common/http';
-import {authInterceptorProviders} from './helpers/auth.interceptor';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    FiltersComponent,
-    DetailsComponent,
-    TableComponent,
-    LoginComponent,
-    RegisterComponent,
-    HomeComponent
   ],
   imports: [
     FormsModule,
@@ -51,7 +38,6 @@ import {authInterceptorProviders} from './helpers/auth.interceptor';
     InputNumberModule,
     HttpClientModule
   ],
-  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 

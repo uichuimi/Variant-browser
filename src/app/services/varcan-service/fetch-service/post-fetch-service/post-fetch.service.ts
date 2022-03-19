@@ -5,14 +5,14 @@ import { FetchService } from '../fetch.service';
 @Injectable({
   providedIn: 'root'
 })
-export class GetFetchService extends FetchService {
+export class PostFetchService extends FetchService {
 
   constructor(httpHandler: AxiosInstance) {
     super(httpHandler);
   }
 
   async fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<U> {
-    const response = await this.httpHandler.get(endpoint, query);
+    const response = await this.httpHandler.post(endpoint, data);
     return response.data;   
-  }
+  }  
 }

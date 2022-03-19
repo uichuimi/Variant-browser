@@ -6,10 +6,14 @@ import { IReadable } from 'src/app/interfaces/IReadable';
   providedIn: 'root'
 })
 export class FetchService implements IReadable {
+  readonly httpHandler: AxiosInstance;
 
-  constructor(protected httpHandler: AxiosInstance) { }
+  constructor(httpHandler: AxiosInstance) { 
+    this.httpHandler = httpHandler;
+  }
 
-  fetch<T, U>(endpoint: string, data?: T, query?: object): U {
+  async fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<U> {
+    console.log("dummy");
     throw new Error('Method not implemented.');
   }
   
