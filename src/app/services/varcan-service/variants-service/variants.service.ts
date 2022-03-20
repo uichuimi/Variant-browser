@@ -18,8 +18,8 @@ export class VariantsService {
 
   fetch(data?: VariantParams): Page<Variant> {
     let variantList: Page<Variant>;
-    const getFetchService = new PostFetchService(this.httpHandler);
-    data !== null ? (getFetchService.fetch<VariantParams, Page<Variant>>('/variants', data)
+    const postFetchService = new PostFetchService(this.httpHandler);
+    data !== null ? (postFetchService.fetch<VariantParams, Page<Variant>>('/variants', data)
       .then(response => {
         if(response) {
           console.log(response.data);
@@ -27,7 +27,7 @@ export class VariantsService {
         }
       })
       .catch(error => console.log("Error variantService: " + error))) :
-      (getFetchService.fetch<VariantParams, Page<Variant>>('/variants')
+      (postFetchService.fetch<VariantParams, Page<Variant>>('/variants')
         .then(response => {
           if(response) {
             console.log(response.data);

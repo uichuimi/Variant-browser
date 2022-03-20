@@ -19,7 +19,7 @@ export class LoginService {
     let token: Token;
     const postFetchService = new PostFetchService(this.httpHandler);
     postFetchService.fetch<Login, Token>('/login', data)
-      .catch(error => console.log("Error chromosomeService: " + error))
+      .catch(error => console.log("Error loginService: " + error))
       .then(response => {
         if(response) {
           token = response.data;
