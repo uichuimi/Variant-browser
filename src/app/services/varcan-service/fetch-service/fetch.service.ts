@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { IReadable } from 'src/app/interfaces/IReadable';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class FetchService implements IReadable {
     this.httpHandler = httpHandler;
   }
 
-  async fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<U> {
+  fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<AxiosResponse<U>> {
     console.log("dummy");
     throw new Error('Method not implemented.');
   }

@@ -18,8 +18,9 @@ export class VarCanService extends ApiService {
   constructor(serverUrl: string) {
     super(serverUrl);
     this.httpHandler = axios.create({
-      baseURL: serverUrl,
-      timeout: 2000
+      baseURL: "http://localhost:8080",
+      timeout: 2000,
+      headers: { Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1aWNodWltaSIsImV4cCI6MTY0NzgzOTMxNywiaWF0IjoxNjQ3ODAzMzE3fQ.ItuOw5o0-TnIx2d_Mw7LKfbJpuVs_td66n65UeLYu2Oy5Zgaa12baiPnCmNaS5Mkc6yVKADcEfeYBPAJbllDgA' }
     })
     this.chromosomeService = new ChromosomesService(this.httpHandler);
     this.biotypeService = new BiotypesService(this.httpHandler);

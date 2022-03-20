@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { FetchService } from '../fetch.service';
 
 @Injectable({
@@ -11,8 +11,7 @@ export class GetFetchService extends FetchService {
     super(httpHandler);
   }
 
-  async fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<U> {
-    const response = await this.httpHandler.get(endpoint, query);
-    return response.data;   
+  fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<AxiosResponse<U>> {
+    return this.httpHandler.get(endpoint, query);
   }
 }

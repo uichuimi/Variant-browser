@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {environment} from '../environments/environment';
+import { VarCanService } from './services/varcan-service/var-can.service';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +15,10 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   username: string;
 
-  constructor() {  }
+  constructor(private varcanService: VarCanService) {  }
 
   ngOnInit(): void {
-
+    this.varcanService.getChromosomes();
   }
 
   logout() {
