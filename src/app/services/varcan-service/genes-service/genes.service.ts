@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
 
 import { Gene } from 'src/app/models/Gene';
+import { Page } from 'src/app/models/Page';
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
 
 @Injectable({
@@ -14,10 +15,10 @@ export class GenesService {
     this.httpHandler = httpHandler;
   }
 
-  fetch(): Array<Gene> {
-    let geneList: Array<Gene>;
+  fetch(): Page<Gene> {
+    let geneList: Page<Gene>;
     const getFetchService = new GetFetchService(this.httpHandler);
-    getFetchService.fetch<null, Array<Gene>>('/genes')
+    getFetchService.fetch<null, Page<Gene>>('/genes')
       .then(response => {
         if(response) {
           console.log(response.data);
