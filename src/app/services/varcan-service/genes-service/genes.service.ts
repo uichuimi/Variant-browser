@@ -20,14 +20,22 @@ export class GenesService {
     let geneList: Page<Gene>;
     const getFetchService = new GetFetchService(this.httpHandler);
 
-    getFetchService.fetch<GeneParams, Page<Gene>>('/genes', query)
+    query !== null ? (getFetchService.fetch<GeneParams, Page<Gene>>('/genes', query)
       .then(response => {
         if(response) {
           console.log(response.data);
           geneList = response.data;
         }
       })
-      .catch(error => console.log("Error geneService: " + error));
+      .catch(error => console.log("Error geneService: " + error))) : 
+      (getFetchService.fetch<GeneParams, Page<Gene>>('/genes')
+      .then(response => {
+        if(response) {
+          console.log(response.data);
+          geneList = response.data;
+        }
+      })
+      .catch(error => console.log("Error geneService: " + error)));
     return geneList;   
   }  
 }

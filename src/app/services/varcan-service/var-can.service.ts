@@ -64,7 +64,7 @@ export class VarCanService extends ApiService {
   }
 
   getGenes(query?: GeneParams): Page<Gene> {
-    return this.geneService.fetch(query);
+    return query !== null ? this.geneService.fetch(query) : this.geneService.fetch();
   }  
 
   getImpacts(): Array<Impact> {
