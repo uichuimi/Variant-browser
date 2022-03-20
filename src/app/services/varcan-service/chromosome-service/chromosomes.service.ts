@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AxiosInstance } from 'axios';
+import { Injectable, Inject } from '@angular/core';
+import axios, { AxiosInstance } from 'axios';
 
 import * as chromosomeOutputMockup from 'fixtures/varcanService/chromosome/output/chromosomeOutputMockup.json';
 import { Chromosome } from 'src/app/models/Chromosome';
@@ -11,7 +11,7 @@ import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.se
 export class ChromosomesService {
   readonly httpHandler: AxiosInstance;
 
-  constructor(httpHandler: AxiosInstance) {
+  constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
   }
 

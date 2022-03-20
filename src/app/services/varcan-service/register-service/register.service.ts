@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AxiosInstance } from 'axios';
+import { Injectable, Inject } from '@angular/core';
+import axios, { AxiosInstance } from 'axios';
 import { CreateService } from '../create-service/create.service';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { CreateService } from '../create-service/create.service';
 })
 export class RegisterService {
 
-  constructor(private httpHandler: AxiosInstance) {
+  constructor(@Inject(axios) private httpHandler: AxiosInstance) {
     let createService: CreateService = new CreateService(this.httpHandler);
   }
 

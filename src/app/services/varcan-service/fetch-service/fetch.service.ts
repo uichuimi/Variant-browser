@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { Injectable, Inject } from '@angular/core';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { IReadable } from 'src/app/interfaces/IReadable';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { IReadable } from 'src/app/interfaces/IReadable';
 export class FetchService implements IReadable {
   readonly httpHandler: AxiosInstance;
 
-  constructor(httpHandler: AxiosInstance) { 
+  constructor(@Inject(axios) httpHandler: AxiosInstance) { 
     this.httpHandler = httpHandler;
   }
 

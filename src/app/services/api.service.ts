@@ -1,12 +1,9 @@
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-@NgModule({
-  providers: [{provide: String, useValue: "dummy"}],
-})
 export class ApiService {
 
-  constructor(private serverUrl: string) { }
+  constructor(@Inject(String) private serverUrl: string) { }
 }

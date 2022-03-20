@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AxiosInstance } from 'axios';
+import { Injectable, Inject } from '@angular/core';
+import axios, { AxiosInstance } from 'axios';
 
 import * as biotypeOutputMockup from 'fixtures/varcanService/biotype/output/biotypeOutputMockup.json';
 import { Biotype } from 'src/app/models/Biotype';
@@ -10,7 +10,7 @@ import { Biotype } from 'src/app/models/Biotype';
 export class BiotypesService {
   readonly httpHandler: AxiosInstance;
 
-  constructor(httpHandler: AxiosInstance) {
+  constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
   }
 

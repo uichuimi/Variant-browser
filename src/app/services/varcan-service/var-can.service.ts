@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
 import { ApiService } from '../api.service';
 import { ChromosomesService } from './chromosome-service/chromosomes.service';
@@ -15,7 +15,7 @@ export class VarCanService extends ApiService {
   private chromosomeService: ChromosomesService;
   private biotypeService: BiotypesService;
 
-  constructor(serverUrl: string) {
+  constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
     this.httpHandler = axios.create({
       baseURL: "http://localhost:8080",

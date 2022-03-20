@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AxiosInstance } from 'axios';
+import { Injectable, Inject } from '@angular/core';
+import axios, { AxiosInstance } from 'axios';
 import { Token } from 'src/app/models/Token';
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
 
@@ -9,7 +9,7 @@ import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch
 export class LoginService {
   readonly httpHandler: AxiosInstance;
 
-  constructor(httpHandler: AxiosInstance) {
+  constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
   }
 

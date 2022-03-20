@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { Injectable, Inject } from '@angular/core';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { FetchService } from '../fetch.service';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { FetchService } from '../fetch.service';
 })
 export class GetFetchService extends FetchService {
 
-  constructor(httpHandler: AxiosInstance) {
+  constructor(@Inject(axios) httpHandler: AxiosInstance) {
     super(httpHandler);
   }
 
