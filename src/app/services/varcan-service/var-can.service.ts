@@ -21,6 +21,8 @@ import { Impact } from 'src/app/models/output/Impact';
 import { Effect } from 'src/app/models/output/Effect';
 import { Population } from 'src/app/models/output/Population';
 import { GenotypeType } from 'src/app/models/output/GenotypeType';
+import { IndividualsService } from './individuals-service/individuals.service';
+import { Individual } from 'src/app/models/output/Individual';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +36,7 @@ export class VarCanService extends ApiService {
   private effectService: EffectsService;
   private populationService: PopulationsService;
   private genotypeTypeService: GenotypeTypesService;
+  private individualService: IndividualsService;
   
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
@@ -74,5 +77,9 @@ export class VarCanService extends ApiService {
   
   getGenotypeTypes(): Array<GenotypeType> {
     return this.genotypeTypeService.fetch();
+  }  
+  
+  getIndividuals(): Array<Individual> {
+    return this.individualService.fetch();
   }   
 }

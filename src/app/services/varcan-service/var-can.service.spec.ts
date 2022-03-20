@@ -10,6 +10,7 @@ import { Impact } from 'src/app/models/output/Impact';
 import { Effect } from 'src/app/models/output/Effect';
 import { Population } from 'src/app/models/output/Population';
 import { GenotypeType } from 'src/app/models/output/GenotypeType';
+import { Individual } from 'src/app/models/output/Individual';
 
 // Inputs and outputs mockups
 // LOGIN
@@ -118,13 +119,13 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   });    
 
-  /*it("should return an individuals list when a call is made to /individuals endpoint", () => {
+  it("should return an individuals list when a call is made to /individuals endpoint", () => {
     const predictedResult: Array<Individual> = individualOutputMockup.individuals;
 
     expect(service.getIndividuals())
       .withContext("service return Array<Individual>")
       .toBe(predictedResult);
-  });  */ 
+  });
 
   it("should return an effects list when a call is made to /effects endpoint", () => {
     const predictedResult: Array<Effect> = effectOutputMockup.effects;
