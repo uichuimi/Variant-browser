@@ -6,6 +6,9 @@ import { Chromosome } from 'src/app/models/output/Chromosome';
 import { Biotype } from 'src/app/models/output/Biotype';
 import { Gene } from 'src/app/models/output/Gene';
 import { GeneParams } from 'src/app/models/input/GeneParams';
+import { Impact } from 'src/app/models/output/Impact';
+import { Effect } from 'src/app/models/output/Effect';
+import { Population } from 'src/app/models/output/Population';
 
 // Inputs and outputs mockups
 // LOGIN
@@ -43,8 +46,6 @@ import * as geneFilteredOutputMockup from 'fixtures/varcanService/gene/output/ge
 // VARIANT
 import * as variantSingleParamOutputMockup from 'fixtures/varcanService/variant/input/variantSingleParamInputMockup.json';
 import * as variantMultipleParamsOutputMockup from 'fixtures/varcanService/variant/input/variantMultipleParamsInputMockup.json';
-import { Impact } from 'src/app/models/output/Impact';
-import { Effect } from 'src/app/models/output/Effect';
 
 describe('VarCanService', () => {
   let service: VarCanService;
@@ -132,7 +133,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   }); 
   
-  /*it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
+  it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
     const predictedResult: Array<Population> = populationsOutputMockup.asc;
     const result: Array<Population> = service.getPopulations();
 
@@ -149,7 +150,7 @@ describe('VarCanService', () => {
   
   it("should return a populations descending sorted list when a call is made to /populations endpoint", () => {
     const predictedResult: Array<Population> = populationsOutputMockup.desc;
-    const result: Array<Population> = service.getPopulations();
+    const result: Array<Population> = service.getPopulations("id,desc");
 
     expect(result)
       .withContext("service return Array<Population>")
@@ -160,7 +161,7 @@ describe('VarCanService', () => {
     expect(result[result.length-1].id)
       .withContext("last Population must have id 12")
       .toBe(1);
-  }); */
+  });
 
   it("should return a page of genes when no parameters are set in /genes endpoint", () => {
     const predictedResult: Array<Gene> = geneOutputMockup.genes;

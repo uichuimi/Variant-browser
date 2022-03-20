@@ -8,6 +8,7 @@ import { BiotypesService } from './biotype-service/biotypes.service';
 import { GenesService } from './genes-service/genes.service';
 import { ImpactsService } from './impacts-service/impacts.service';
 import { EffectsService } from './effects-service/effects.service';
+import { PopulationsService } from './populations-service/populations.service';
 
 // MODELS
 import { Chromosome } from 'src/app/models/output/Chromosome';
@@ -17,6 +18,7 @@ import { Page } from 'src/app/models/output/Page';
 import { GeneParams } from 'src/app/models/input/GeneParams';
 import { Impact } from 'src/app/models/output/Impact';
 import { Effect } from 'src/app/models/output/Effect';
+import { Population } from 'src/app/models/output/Population';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +30,8 @@ export class VarCanService extends ApiService {
   private geneService: GenesService;
   private impactService: ImpactsService;
   private effectService: EffectsService;
-
+  private populationService: PopulationsService;
+  
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
     this.httpHandler = axios.create({
@@ -60,5 +63,9 @@ export class VarCanService extends ApiService {
 
   getEffects(): Array<Effect> {
     return this.effectService.fetch();
+  }   
+
+  getPopulations(sort?: string): Array<Population> {
+    return sort !== null ? this.populationService.fetch(sort) : this.populationService.fetch();
   }    
 }
