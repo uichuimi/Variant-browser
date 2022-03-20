@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import * as biotypeOutputMockup from 'fixtures/varcanService/biotype/output/biotypeOutputMockup.json';
 import { Biotype } from 'src/app/models/Biotype';
+import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,16 @@ export class BiotypesService {
   }
 
   fetch(): Array<Biotype> {
-    let pruebaArray: Array<Biotype> = biotypeOutputMockup.biotypes;
-    return pruebaArray;    
+    let biotypeList: Array<Biotype>;
+    const getFetchService = new GetFetchService(this.httpHandler);
+    getFetchService.fetch<null, Array<Biotype>>('/biotypes')
+      .then(response => {
+        if(response) {
+          console.log(response.data);
+          biotypeList = response.data;
+        }
+      })
+      .catch(error => console.log("Error biotypeService: " + error));
+    return biotypeList;   
   }  
 }
