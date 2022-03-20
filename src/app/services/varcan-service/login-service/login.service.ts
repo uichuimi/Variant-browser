@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
-import { Token } from 'src/app/models/Token';
+import { Token } from 'src/app/models/output/Token';
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
 
 @Injectable({

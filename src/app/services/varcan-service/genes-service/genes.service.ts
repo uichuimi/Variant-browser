@@ -1,8 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
 
-import { Gene } from 'src/app/models/Gene';
-import { Page } from 'src/app/models/Page';
+import { Gene } from 'src/app/models/output/Gene';
+import { Page } from 'src/app/models/output/Page';
+import { GeneParams } from 'src/app/models/input/GeneParams';
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
 
 @Injectable({
@@ -15,10 +16,11 @@ export class GenesService {
     this.httpHandler = httpHandler;
   }
 
-  fetch(): Page<Gene> {
+  fetch(query?: GeneParams): Page<Gene> {
     let geneList: Page<Gene>;
     const getFetchService = new GetFetchService(this.httpHandler);
-    getFetchService.fetch<null, Page<Gene>>('/genes')
+
+    getFetchService.fetch<GeneParams, Page<Gene>>('/genes', query)
       .then(response => {
         if(response) {
           console.log(response.data);

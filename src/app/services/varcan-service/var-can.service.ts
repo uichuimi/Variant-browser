@@ -1,11 +1,18 @@
 import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
+
+// SERVICES
 import { ApiService } from '../api.service';
 import { ChromosomesService } from './chromosome-service/chromosomes.service';
-
-import { Chromosome } from 'src/app/models/Chromosome';
-import { Biotype } from 'src/app/models/Biotype';
 import { BiotypesService } from './biotype-service/biotypes.service';
+import { GenesService } from './genes-service/genes.service';
+
+// MODELS
+import { Chromosome } from 'src/app/models/output/Chromosome';
+import { Biotype } from 'src/app/models/output/Biotype';
+import { Gene } from 'src/app/models/output/Gene';
+import { Page } from 'src/app/models/output/Page';
+import { GeneParams } from 'src/app/models/input/GeneParams';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +21,7 @@ export class VarCanService extends ApiService {
   private httpHandler: AxiosInstance;
   private chromosomeService: ChromosomesService;
   private biotypeService: BiotypesService;
+  private geneService: GenesService;
 
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
@@ -24,6 +32,7 @@ export class VarCanService extends ApiService {
     })
     this.chromosomeService = new ChromosomesService(this.httpHandler);
     this.biotypeService = new BiotypesService(this.httpHandler);
+    this.geneService = new GenesService(this.httpHandler);
   }
 
   getChromosomes(): Array<Chromosome> {
@@ -33,4 +42,8 @@ export class VarCanService extends ApiService {
   getBiotypes(): Array<Biotype> {
     return this.biotypeService.fetch();
   }
+
+  getGenes(query?: GeneParams): Page<Gene> {
+    return this.geneService.fetch(query);
+  }  
 }

@@ -2,7 +2,10 @@ import { VarCanService } from './var-can.service';
 import { environment } from 'src/environments/environment';
 
 // MODELS
-import { Chromosome } from 'src/app/models/Chromosome';
+import { Chromosome } from 'src/app/models/output/Chromosome';
+import { Biotype } from 'src/app/models/output/Biotype';
+import { Gene } from 'src/app/models/output/Gene';
+import { GeneParams } from 'src/app/models/input/GeneParams';
 
 // Inputs and outputs mockups
 // LOGIN
@@ -40,7 +43,6 @@ import * as geneFilteredOutputMockup from 'fixtures/varcanService/gene/output/ge
 // VARIANT
 import * as variantSingleParamOutputMockup from 'fixtures/varcanService/variant/input/variantSingleParamInputMockup.json';
 import * as variantMultipleParamsOutputMockup from 'fixtures/varcanService/variant/input/variantMultipleParamsInputMockup.json';
-import { Biotype } from 'src/app/models/Biotype';
 
 describe('VarCanService', () => {
   let service: VarCanService;
@@ -156,7 +158,7 @@ describe('VarCanService', () => {
     expect(result[result.length-1].id)
       .withContext("last Population must have id 12")
       .toBe(1);
-  }); 
+  }); */
 
   it("should return a page of genes when no parameters are set in /genes endpoint", () => {
     const predictedResult: Array<Gene> = geneOutputMockup.genes;
@@ -206,7 +208,7 @@ describe('VarCanService', () => {
     expect(result.totalPages)
       .withContext("result.content return Array<Gene>")
       .toBe(1);              
-  }); */ 
+  }); 
   
   // ToDo: esperar a que endpoint /variant esté hecho
 

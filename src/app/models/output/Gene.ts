@@ -1,3 +1,5 @@
+import { Biotype } from "./Biotype";
+
 export interface Gene {
     id: number,
     ensg: string,
@@ -5,6 +7,6 @@ export interface Gene {
     name?: string,
     ncbi: string,
     symbol?: string,
-    biotype?: number,
+    biotype?: Biotype,
     transcripts?: Array<number>
 }

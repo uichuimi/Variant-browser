@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
 
 import * as biotypeOutputMockup from 'fixtures/varcanService/biotype/output/biotypeOutputMockup.json';
-import { Biotype } from 'src/app/models/Biotype';
+import { Biotype } from 'src/app/models/output/Biotype';
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
 
 @Injectable({
