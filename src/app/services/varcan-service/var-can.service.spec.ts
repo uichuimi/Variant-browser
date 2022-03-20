@@ -43,6 +43,7 @@ import * as geneFilteredOutputMockup from 'fixtures/varcanService/gene/output/ge
 // VARIANT
 import * as variantSingleParamOutputMockup from 'fixtures/varcanService/variant/input/variantSingleParamInputMockup.json';
 import * as variantMultipleParamsOutputMockup from 'fixtures/varcanService/variant/input/variantMultipleParamsInputMockup.json';
+import { Impact } from 'src/app/models/output/Impact';
 
 describe('VarCanService', () => {
   let service: VarCanService;
@@ -98,7 +99,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   });
 
-  /*it("should return an impacts list when a call is made to /impacts endpoint", () => {
+  it("should return an impacts list when a call is made to /impacts endpoint", () => {
     const predictedResult: Array<Impact> = impactOutputMockup.impacts;
 
     expect(service.getImpacts())
@@ -106,7 +107,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   }); 
   
-  it("should return a genotype_types list when a call is made to /genotype_type endpoint", () => {
+  /*it("should return a genotype_types list when a call is made to /genotype_type endpoint", () => {
     const predictedResult: Array<GenotypeType> = genotypeTypeOutputMockup.genotypeType;
 
     expect(service.getGenotypeType())
