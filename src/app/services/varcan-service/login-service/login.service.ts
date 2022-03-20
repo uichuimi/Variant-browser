@@ -1,7 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
-import { Token } from 'src/app/models/output/Token';
+
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
+import { Login } from 'src/app/models/input/Login';
+import { Token } from 'src/app/models/output/Token';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +15,10 @@ export class LoginService {
     this.httpHandler = httpHandler;
   }
 
- /* fetch(): Token {
+  fetch(data: Login): Token {
     let token: Token;
     const postFetchService = new PostFetchService(this.httpHandler);
-    postFetchService.fetch('/login', {
-      "username": "uichuimi",
-      "password": "uichuimi01" })
+    postFetchService.fetch<Login, Token>('/login', data)
       .catch(error => console.log("Error chromosomeService: " + error))
       .then(response => {
         if(response) {
@@ -26,5 +26,5 @@ export class LoginService {
         }
       });
     return token;
-  }  */
+  } 
 }

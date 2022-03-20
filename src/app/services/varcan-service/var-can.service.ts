@@ -12,6 +12,7 @@ import { PopulationsService } from './populations-service/populations.service';
 import { GenotypeTypesService } from './genotypeTypes-service/genotype-types.service';
 import { VariantsService } from './variants-service/variants.service';
 import { IndividualsService } from './individuals-service/individuals.service';
+import { LoginService } from './login-service/login.service';
 
 // MODELS
 import { Chromosome } from 'src/app/models/output/Chromosome';
@@ -26,6 +27,8 @@ import { GenotypeType } from 'src/app/models/output/GenotypeType';
 import { Individual } from 'src/app/models/output/Individual';
 import { VariantParams } from 'src/app/models/input/VariantParams';
 import { Variant } from 'src/app/models/output/Variant';
+import { Login } from 'src/app/models/input/Login';
+import { Token } from 'src/app/models/output/Token';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +44,7 @@ export class VarCanService extends ApiService {
   private genotypeTypeService: GenotypeTypesService;
   private individualService: IndividualsService;
   private variantService: VariantsService;
+  private loginService: LoginService;
   
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
@@ -53,6 +57,10 @@ export class VarCanService extends ApiService {
     this.biotypeService = new BiotypesService(this.httpHandler);
     this.geneService = new GenesService(this.httpHandler);
     this.impactService = new ImpactsService(this.httpHandler);
+  }
+
+  login(data: Login): Token {
+    return this.loginService.fetch(data);
   }
 
   getChromosomes(): Array<Chromosome> {

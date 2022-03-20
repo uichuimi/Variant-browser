@@ -11,6 +11,9 @@ import { Effect } from 'src/app/models/output/Effect';
 import { Population } from 'src/app/models/output/Population';
 import { GenotypeType } from 'src/app/models/output/GenotypeType';
 import { Individual } from 'src/app/models/output/Individual';
+import { Login } from 'src/app/models/input/Login';
+import { Token } from 'src/app/models/output/Token';
+import { ResponseStatus } from 'src/app/models/output/ResponseStatus';
 
 // Inputs and outputs mockups
 // LOGIN
@@ -60,7 +63,7 @@ describe('VarCanService', () => {
     expect(service).toBeTruthy();
   });
 
-  /*it("should return a valid token when correct credentials are being passed to /login endpoint", () => {
+  it("should return a valid token when correct credentials are being passed to /login endpoint", () => {
     const loginModel: Login = loginCorrectMockup;
     const result: Token = service.login(loginModel);
     
@@ -85,7 +88,7 @@ describe('VarCanService', () => {
     expect(service.login(loginModel))
       .withContext("service return status failed")
       .toBe(status);
-  });*/
+  });
 
   it("should return a biotypes list when a call is made to /biotypes endpoint", () => {
     const predictedResult: Array<Biotype> = biotypeOutputMockup.biotypes;
