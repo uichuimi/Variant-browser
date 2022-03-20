@@ -44,6 +44,7 @@ import * as geneFilteredOutputMockup from 'fixtures/varcanService/gene/output/ge
 import * as variantSingleParamOutputMockup from 'fixtures/varcanService/variant/input/variantSingleParamInputMockup.json';
 import * as variantMultipleParamsOutputMockup from 'fixtures/varcanService/variant/input/variantMultipleParamsInputMockup.json';
 import { Impact } from 'src/app/models/output/Impact';
+import { Effect } from 'src/app/models/output/Effect';
 
 describe('VarCanService', () => {
   let service: VarCanService;
@@ -121,7 +122,7 @@ describe('VarCanService', () => {
     expect(service.getIndividuals())
       .withContext("service return Array<Individual>")
       .toBe(predictedResult);
-  });   
+  });  */ 
 
   it("should return an effects list when a call is made to /effects endpoint", () => {
     const predictedResult: Array<Effect> = effectOutputMockup.effects;
@@ -131,7 +132,7 @@ describe('VarCanService', () => {
       .toBe(predictedResult);
   }); 
   
-  it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
+  /*it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
     const predictedResult: Array<Population> = populationsOutputMockup.asc;
     const result: Array<Population> = service.getPopulations();
 

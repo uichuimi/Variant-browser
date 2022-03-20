@@ -6,6 +6,8 @@ import { ApiService } from '../api.service';
 import { ChromosomesService } from './chromosome-service/chromosomes.service';
 import { BiotypesService } from './biotype-service/biotypes.service';
 import { GenesService } from './genes-service/genes.service';
+import { ImpactsService } from './impacts-service/impacts.service';
+import { EffectsService } from './effects-service/effects.service';
 
 // MODELS
 import { Chromosome } from 'src/app/models/output/Chromosome';
@@ -13,8 +15,8 @@ import { Biotype } from 'src/app/models/output/Biotype';
 import { Gene } from 'src/app/models/output/Gene';
 import { Page } from 'src/app/models/output/Page';
 import { GeneParams } from 'src/app/models/input/GeneParams';
-import { ImpactsService } from './impacts-service/impacts.service';
 import { Impact } from 'src/app/models/output/Impact';
+import { Effect } from 'src/app/models/output/Effect';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,7 @@ export class VarCanService extends ApiService {
   private biotypeService: BiotypesService;
   private geneService: GenesService;
   private impactService: ImpactsService;
+  private effectService: EffectsService;
 
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
@@ -53,5 +56,9 @@ export class VarCanService extends ApiService {
 
   getImpacts(): Array<Impact> {
     return this.impactService.fetch();
+  } 
+
+  getEffects(): Array<Effect> {
+    return this.effectService.fetch();
   }    
 }
