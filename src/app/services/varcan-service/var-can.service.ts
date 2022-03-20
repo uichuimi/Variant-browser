@@ -10,6 +10,8 @@ import { ImpactsService } from './impacts-service/impacts.service';
 import { EffectsService } from './effects-service/effects.service';
 import { PopulationsService } from './populations-service/populations.service';
 import { GenotypeTypesService } from './genotypeTypes-service/genotype-types.service';
+import { VariantsService } from './variants-service/variants.service';
+import { IndividualsService } from './individuals-service/individuals.service';
 
 // MODELS
 import { Chromosome } from 'src/app/models/output/Chromosome';
@@ -21,8 +23,9 @@ import { Impact } from 'src/app/models/output/Impact';
 import { Effect } from 'src/app/models/output/Effect';
 import { Population } from 'src/app/models/output/Population';
 import { GenotypeType } from 'src/app/models/output/GenotypeType';
-import { IndividualsService } from './individuals-service/individuals.service';
 import { Individual } from 'src/app/models/output/Individual';
+import { VariantParams } from 'src/app/models/input/VariantParams';
+import { Variant } from 'src/app/models/output/Variant';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +40,7 @@ export class VarCanService extends ApiService {
   private populationService: PopulationsService;
   private genotypeTypeService: GenotypeTypesService;
   private individualService: IndividualsService;
+  private variantService: VariantsService;
   
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
@@ -82,4 +86,8 @@ export class VarCanService extends ApiService {
   getIndividuals(): Array<Individual> {
     return this.individualService.fetch();
   }   
+  
+  getVariants(data?: VariantParams): Page<Variant> {
+    return data !== null ? this.variantService.fetch(data) : this.variantService.fetch();
+  }     
 }
