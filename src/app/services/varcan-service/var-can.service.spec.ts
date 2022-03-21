@@ -56,7 +56,7 @@ describe('VarCanService', () => {
   let service: VarCanService;
 
   beforeEach(() => {
-    service = new VarCanService(environment.serverUrl);  // falta pasarle URL o AxiosInstance
+    service = new VarCanService(environment.serverUrl); 
   });
 
   it('should be created', () => {
