@@ -81,14 +81,14 @@ describe('VarCanService', () => {
       .toBe('bearer');
   });
 
-  it("should return a failed status when incorrect credentials are being passed to /login endpoint", () => {
+  /*it("should return a failed status when incorrect credentials are being passed to /login endpoint", () => {
     const loginModel: Login = loginIncorrectMockup;
     const status: ResponseStatus = loginIncorrectOutputMockup;
 
     expect(service.login(loginModel))
       .withContext("service return status failed")
       .toBe(status);
-  });
+  });*/
 
   it("should return a biotypes list when a call is made to /biotypes endpoint", () => {
     const predictedResult: Array<Biotype> = biotypeOutputMockup.biotypes;

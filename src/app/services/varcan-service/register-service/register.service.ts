@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
 
 import { CreateService } from '../create-service/create.service';
-import { Login } from 'src/app/models/input/Login';
 import { Token } from 'src/app/models/output/Token';
 import { Register } from 'src/app/models/input/Register';
 
@@ -16,7 +15,7 @@ export class RegisterService {
     this.httpHandler = httpHandler;
   }
 
-  fetch(data: Login): Token {
+  fetch(data: Register): Token {
     let token: Token;
     const createService = new CreateService(this.httpHandler);
     createService.create<Register, Token>('/register', data)

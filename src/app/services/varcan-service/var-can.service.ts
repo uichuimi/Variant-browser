@@ -57,6 +57,12 @@ export class VarCanService extends ApiService {
     this.biotypeService = new BiotypesService(this.httpHandler);
     this.geneService = new GenesService(this.httpHandler);
     this.impactService = new ImpactsService(this.httpHandler);
+    this.effectService = new EffectsService(this.httpHandler);
+    this.populationService = new PopulationsService(this.httpHandler);
+    this.genotypeTypeService = new GenotypeTypesService(this.httpHandler);
+    this.individualService = new IndividualsService(this.httpHandler);
+    this.variantService = new VariantsService(this.httpHandler);
+    this.loginService = new LoginService(this.httpHandler);
   }
 
   login(data: Login): Token {
