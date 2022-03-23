@@ -34,7 +34,7 @@ const impactOutputMockup: Array<Impact> = require('../../../../fixtures/varcanSe
 const genotypeTypeOutputMockup: Array<GenotypeType> = require('../../../../fixtures/varcanService/genotypeType/output/genotypeTypeOutputMockup.json');
 
 // INDIVIDUALS
-import * as individualOutputMockup from 'fixtures/varcanService/individual/output/individualOutputMockup.json';
+const individualOutputMockup: Array<Individual> = require('../../../../fixtures/varcanService/individual/output/individualOutputMockup.json');
 
 // EFFECTS
 const effectOutputMockup: Array<Effect> = require('../../../../fixtures/varcanService/effect/output/effectOutputMockup.json');
@@ -119,12 +119,13 @@ describe('VarCanService', () => {
     });
   });
 
-  /*it("should return an individuals list when a call is made to /individuals endpoint", () => {
-    const predictedResult: Array<Individual> = individualOutputMockup.individuals;
-
-    expect(service.getIndividuals())
-      .toBe(predictedResult);
-  });*/
+  it("should return an individuals list when a call is made to /individuals endpoint", () => {
+    service.getIndividuals().then(response => {
+      const individualsApi: Array<Individual> = response.data;
+      expect(individualsApi)
+        .toEqual(individualOutputMockup);
+    });
+  });
 
   it("should return an effects list when a call is made to /effects endpoint", () => {
     service.getEffects().then(response => {

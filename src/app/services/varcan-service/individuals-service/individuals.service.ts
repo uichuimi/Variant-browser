@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Impact } from 'src/app/models/output/Impact';
 import { Individual } from 'src/app/models/output/Individual';
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
@@ -9,22 +9,14 @@ import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.se
 })
 export class IndividualsService {
   readonly httpHandler: AxiosInstance;
+  readonly getFetchService: GetFetchService;
 
   constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
+    this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
-  fetch(): Array<Individual> {
-    let individualList: Array<Individual>;
-    const getFetchService = new GetFetchService(this.httpHandler);
-    getFetchService.fetch<null, Array<Individual>>('/individuals')
-      .then(response => {
-        if(response) {
-          console.log(response.data);
-          individualList = response.data;
-        }
-      })
-      .catch(error => console.log("Error individualService: " + error));
-    return individualList;   
+  fetch(): Promise<AxiosResponse<Array<Individual>>> {
+    return this.getFetchService.fetch<undefined, Array<Individual>>('/individuals');   
   } 
 }

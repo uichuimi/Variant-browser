@@ -99,7 +99,7 @@ export class VarCanService extends ApiService {
     return this.genotypeTypeService.fetch();
   }
 
-  getIndividuals(): Array<Individual> {
+  getIndividuals(): Promise<AxiosResponse<Array<Individual>>> {
     return this.individualService.fetch();
   }
 
