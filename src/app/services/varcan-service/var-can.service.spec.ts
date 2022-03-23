@@ -43,14 +43,15 @@ const effectOutputMockup: Array<Effect> = require('../../../../fixtures/varcanSe
 import * as populationsOutputMockup from 'fixtures/varcanService/population/output/populationsOutputMockup.json';
 
 // GENES
-import * as geneSingleParameterInputMockup from 'fixtures/varcanService/gene/input/geneSingleParameterInputMockup.json';
-import * as geneMultipleParametersInputMockup from 'fixtures/varcanService/gene/input/geneMutipleParametersInputMockup.json';
-import * as geneOutputMockup from 'fixtures/varcanService/gene/output/geneOutputMockup.json';
-import * as geneFilteredOutputMockup from 'fixtures/varcanService/gene/output/geneFilteredOutputMockup.json';
+const geneSingleParameterInputMockup: GeneParams = require('../../../../fixtures/varcanService/gene/input/geneSingleParameterInputMockup.json');
+const geneMultipleParametersInputMockup: GeneParams = require('../../../../fixtures/varcanService/gene/input/geneMutipleParametersInputMockup.json');
+const geneOutputMockup: Array<Gene> = require('../../../../fixtures/varcanService/gene/output/geneOutputMockup.json');
+const geneFilteredOutputMockup: Array<Gene> = require('../../../../fixtures/varcanService/gene/output/geneFilteredOutputMockup.json');
 
 // VARIANT
 import * as variantSingleParamOutputMockup from 'fixtures/varcanService/variant/input/variantSingleParamInputMockup.json';
 import * as variantMultipleParamsOutputMockup from 'fixtures/varcanService/variant/input/variantMultipleParamsInputMockup.json';
+import { Page } from 'src/app/models/output/Page';
 
 describe('VarCanService', () => {
   let service: VarCanService;
@@ -169,53 +170,42 @@ describe('VarCanService', () => {
   });
 
   it("should return a page of genes when no parameters are set in /genes endpoint", () => {
-    const predictedResult: Array<Gene> = geneOutputMockup.genes;
-
-    const result = service.getGenes();
-
-    expect(result.content)
-      .withContext("result.content return Array<Gene>")
-      .toBe(predictedResult);
-    expect(result.totalElements)
-      .withContext("result.content return Array<Gene>")
-      .toBe(21085);
-    expect(result.totalPages)
-      .withContext("result.content return Array<Gene>")
-      .toBe(1055);
+    service.getGenes().then(response => {
+      const genesApi: Page<Gene> = response.data;
+      expect(genesApi.content)
+        .toEqual(geneOutputMockup);
+      expect(genesApi.totalElements)
+        .toBe(21085); 
+      expect(genesApi.totalPages)
+        .withContext("result.content return Array<Gene>")
+        .toBe(1055);               
+    });
   });
 
   it("should return a page of genes filtered by query when a parameter is set in /genes endpoint", () => {
-    const geneModel: GeneParams = geneSingleParameterInputMockup;
-    const predictedResult: Array<Gene> = geneFilteredOutputMockup.genes;
-
-    const result = service.getGenes(geneModel);
-
-    expect(result.content)
-      .withContext("result.content return Array<Gene>")
-      .toBe(predictedResult);
-    expect(result.totalElements)
-      .withContext("result.content return Array<Gene>")
-      .toBe(1);
-    expect(result.totalPages)
-      .withContext("result.content return Array<Gene>")
-      .toBe(1);
+    service.getGenes(geneSingleParameterInputMockup).then(response => {
+      const genesApi: Page<Gene> = response.data;
+      expect(genesApi.content)
+        .toEqual(geneFilteredOutputMockup);
+      expect(genesApi.totalElements)
+        .toBe(1); 
+      expect(genesApi.totalPages)
+        .withContext("result.content return Array<Gene>")
+        .toBe(1);               
+    });
   });
 
   it("should return a page of genes filtered by query when all parameters are set in /genes endpoint", () => {
-    const geneModel: GeneParams = geneMultipleParametersInputMockup;
-    const predictedResult: Array<Gene> = geneFilteredOutputMockup.genes;
-
-    const result = service.getGenes(geneModel);
-
-    expect(result.content)
-      .withContext("result.content return Array<Gene>")
-      .toBe(predictedResult);
-    expect(result.totalElements)
-      .withContext("result.content return Array<Gene>")
-      .toBe(1);
-    expect(result.totalPages)
-      .withContext("result.content return Array<Gene>")
-      .toBe(1);
+    service.getGenes(geneMultipleParametersInputMockup).then(response => {
+      const genesApi: Page<Gene> = response.data;
+      expect(genesApi.content)
+        .toEqual(geneFilteredOutputMockup);
+      expect(genesApi.totalElements)
+        .toBe(1); 
+      expect(genesApi.totalPages)
+        .withContext("result.content return Array<Gene>")
+        .toBe(1);               
+    });
   });
 
   // ToDo: esperar a que endpoint /variant esté hecho

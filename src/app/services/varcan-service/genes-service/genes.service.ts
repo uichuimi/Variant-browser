@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { Gene } from 'src/app/models/output/Gene';
 import { Page } from 'src/app/models/output/Page';
@@ -11,31 +11,15 @@ import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.se
 })
 export class GenesService {
   readonly httpHandler: AxiosInstance;
+  readonly getFetchService: GetFetchService;
 
   constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
+    this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
-  fetch(query?: GeneParams): Page<Gene> {
-    let geneList: Page<Gene>;
-    const getFetchService = new GetFetchService(this.httpHandler);
-
-    query !== null ? (getFetchService.fetch<GeneParams, Page<Gene>>('/genes', query)
-      .then(response => {
-        if(response) {
-          console.log(response.data);
-          geneList = response.data;
-        }
-      })
-      .catch(error => console.log("Error geneService: " + error))) : 
-      (getFetchService.fetch<GeneParams, Page<Gene>>('/genes')
-      .then(response => {
-        if(response) {
-          console.log(response.data);
-          geneList = response.data;
-        }
-      })
-      .catch(error => console.log("Error geneService: " + error)));
-    return geneList;   
+  fetch(query?: GeneParams): Promise<AxiosResponse<Page<Gene>>> {
+    return query !== null ? this.getFetchService.fetch<GeneParams, Page<Gene>>('/genes', query) 
+      : this.getFetchService.fetch<undefined, Page<Gene>>('/genes');
   }  
 }

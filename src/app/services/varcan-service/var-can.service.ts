@@ -79,7 +79,7 @@ export class VarCanService extends ApiService {
     return this.biotypeService.fetch();
   }
 
-  getGenes(query?: GeneParams): Page<Gene> {
+  getGenes(query?: GeneParams): Promise<AxiosResponse<Page<Gene>>> {
     return query !== null ? this.geneService.fetch(query) : this.geneService.fetch();
   }
 
