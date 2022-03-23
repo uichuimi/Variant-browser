@@ -40,7 +40,8 @@ const individualOutputMockup: Array<Individual> = require('../../../../fixtures/
 const effectOutputMockup: Array<Effect> = require('../../../../fixtures/varcanService/effect/output/effectOutputMockup.json');
 
 // POPULATIONS
-import * as populationsOutputMockup from 'fixtures/varcanService/population/output/populationsOutputMockup.json';
+const populationsAscOutputMockup: Array<Population> = require('../../../../fixtures/varcanService/population/output/populationsAscOutputMockup.json');
+const populationsDescOutputMockup: Array<Population> = require('../../../../fixtures/varcanService/population/output/populationsDescOutputMockup.json');
 
 // GENES
 const geneSingleParameterInputMockup: GeneParams = require('../../../../fixtures/varcanService/gene/input/geneSingleParameterInputMockup.json');
@@ -135,29 +136,29 @@ describe('VarCanService', () => {
     });
   });
 
-  /*it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
-    const predictedResult: Array<Population> = populationsOutputMockup.asc;
-    const result: Array<Population> = service.getPopulations();
-
-    expect(result)
-      .toBe(predictedResult);
-    expect(result[0].id)
-      .toBe(1);
-    expect(result[result.length-1].id)
-      .toBe(12);
+  it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
+    service.getPopulations().then(response => {
+      const populationsApi: Array<Population> = response.data;
+      expect(populationsApi)
+        .toEqual(populationsAscOutputMockup);
+      expect(populationsApi[0].id)
+        .toBe(1);
+      expect(populationsApi[populationsApi.length-1].id)
+        .toBe(12);
+    });
   });
 
   it("should return a populations descending sorted list when a call is made to /populations endpoint", () => {
-    const predictedResult: Array<Population> = populationsOutputMockup.desc;
-    const result: Array<Population> = service.getPopulations("id,desc");
-
-    expect(result)
-      .toBe(predictedResult);
-    expect(result[0].id)
-      .toBe(12);
-    expect(result[result.length-1].id)
-      .toBe(1);
-  });*/
+    service.getPopulations("id,desc").then(response => {
+      const populationsApi: Array<Population> = response.data;
+      expect(populationsApi)
+        .toEqual(populationsDescOutputMockup);
+      expect(populationsApi[0].id)
+        .toBe(12);
+      expect(populationsApi[populationsApi.length-1].id)
+        .toBe(1);
+    });
+  });
 
   it("should return a page of genes when no parameters are set in /genes endpoint", () => {
     service.getGenes().then(response => {

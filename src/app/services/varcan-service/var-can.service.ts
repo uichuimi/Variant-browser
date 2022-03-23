@@ -52,7 +52,7 @@ export class VarCanService extends ApiService {
       baseURL: this.url,
       timeout: 2000,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1aWNodWltaSIsImV4cCI6MTY0ODEwODk1NiwiaWF0IjoxNjQ4MDcyOTU2fQ.yO5tO_OQiq-8h59gsuw43Bkd1gwqg7HCGGbFX1VzmvSBBGPnhjhI8ENp-yPwUdVISZuPDmOj51iHR-Nl9KOeRA'
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1aWNodWltaSIsImV4cCI6MTY0ODExNDE5MiwiaWF0IjoxNjQ4MDc4MTkyfQ.ICJSNy8LGXIJFXueaN27gW36L3H9JiRYA7AGNfui2vyFD7HHePY1NuJky68qkDsWXBz56dlfHu32yBQTY4hVTQ'
       }
     });
     this.chromosomeService = new ChromosomesService(this.httpHandler);
@@ -91,7 +91,7 @@ export class VarCanService extends ApiService {
     return this.effectService.fetch();
   }
 
-  getPopulations(sort?: string): Array<Population> {
+  getPopulations(sort?: string): Promise<AxiosResponse<Array<Population>>> {
     return sort !== null ? this.populationService.fetch(sort) : this.populationService.fetch();
   }
 
