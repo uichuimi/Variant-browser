@@ -83,7 +83,7 @@ export class VarCanService extends ApiService {
     return query !== null ? this.geneService.fetch(query) : this.geneService.fetch();
   }
 
-  getImpacts(): Array<Impact> {
+  getImpacts(): Promise<AxiosResponse<Array<Impact>>> {
     return this.impactService.fetch();
   }
 
