@@ -31,7 +31,7 @@ const chromosomeOutputMockup: Array<Chromosome> = require('../../../../fixtures/
 import * as impactOutputMockup from 'fixtures/varcanService/impact/output/impactOutputMockup.json';
 
 // GENOTYPE_TYPE
-import * as genotypeTypeOutputMockup from 'fixtures/varcanService/genotypeType/output/genotypeTypeOutputMockup.json';
+const genotypeTypeOutputMockup: Array<GenotypeType> = require('../../../../fixtures/varcanService/genotypeType/output/genotypeTypeOutputMockup.json');
 
 // INDIVIDUALS
 import * as individualOutputMockup from 'fixtures/varcanService/individual/output/individualOutputMockup.json';
@@ -69,16 +69,12 @@ describe('VarCanService', () => {
     const result: Token = service.login(loginModel);
 
     expect(result['access_token'])
-      .withContext("service returned access_token")
       .toBeTruthy()
     expect(result['refresh_token'])
-      .withContext("service returned refresh_token")
       .toBeTruthy();
     expect(result['expires_in'])
-      .withContext("service returned expires_in")
       .toBeTruthy();
     expect(result['token_type'])
-      .withContext("service returned token_type")
       .toBe('bearer');
   });
 
@@ -111,23 +107,21 @@ describe('VarCanService', () => {
     const predictedResult: Array<Impact> = impactOutputMockup.impacts;
 
     expect(service.getImpacts())
-      .withContext('service return Array<Impact>')
       .toBe(predictedResult);
   });
 
   it("should return a genotype_types list when a call is made to /genotype_type endpoint", () => {
-    const predictedResult: Array<GenotypeType> = genotypeTypeOutputMockup.genotypeType;
-
-    expect(service.getGenotypeTypes())
-      .withContext("service return Array<GenotypeType>")
-      .toBe(predictedResult);
+    service.getGenotypeTypes().then(response => {
+      const genotypeTypesApi: Array<GenotypeType> = response.data;
+      expect(genotypeTypesApi)
+        .toEqual(genotypeTypeOutputMockup);
+    });
   });
 
   it("should return an individuals list when a call is made to /individuals endpoint", () => {
     const predictedResult: Array<Individual> = individualOutputMockup.individuals;
 
     expect(service.getIndividuals())
-      .withContext("service return Array<Individual>")
       .toBe(predictedResult);
   });
 
@@ -144,13 +138,10 @@ describe('VarCanService', () => {
     const result: Array<Population> = service.getPopulations();
 
     expect(result)
-      .withContext("service return Array<Population>")
       .toBe(predictedResult);
     expect(result[0].id)
-      .withContext("first Population must have id 1")
       .toBe(1);
     expect(result[result.length-1].id)
-      .withContext("last Population must have id 12")
       .toBe(12);
   });
 
@@ -159,13 +150,10 @@ describe('VarCanService', () => {
     const result: Array<Population> = service.getPopulations("id,desc");
 
     expect(result)
-      .withContext("service return Array<Population>")
       .toBe(predictedResult);
     expect(result[0].id)
-      .withContext("first Population must have id 1")
       .toBe(12);
     expect(result[result.length-1].id)
-      .withContext("last Population must have id 12")
       .toBe(1);
   });
 
@@ -177,7 +165,6 @@ describe('VarCanService', () => {
       expect(genesApi.totalElements)
         .toBe(21085); 
       expect(genesApi.totalPages)
-        .withContext("result.content return Array<Gene>")
         .toBe(1055);               
     });
   });
@@ -190,7 +177,6 @@ describe('VarCanService', () => {
       expect(genesApi.totalElements)
         .toBe(1); 
       expect(genesApi.totalPages)
-        .withContext("result.content return Array<Gene>")
         .toBe(1);               
     });
   });
@@ -203,7 +189,6 @@ describe('VarCanService', () => {
       expect(genesApi.totalElements)
         .toBe(1); 
       expect(genesApi.totalPages)
-        .withContext("result.content return Array<Gene>")
         .toBe(1);               
     });
   });

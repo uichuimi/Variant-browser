@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { GenotypeType } from 'src/app/models/output/GenotypeType';
 import { Impact } from 'src/app/models/output/Impact';
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
@@ -9,22 +9,14 @@ import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.se
 })
 export class GenotypeTypesService {
   readonly httpHandler: AxiosInstance;
+  readonly getFetchService: GetFetchService;
 
   constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
+    this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
-  fetch(): Array<GenotypeType> {
-    let genotypeTypeList: Array<GenotypeType>;
-    const getFetchService = new GetFetchService(this.httpHandler);
-    getFetchService.fetch<null, Array<GenotypeType>>('/genotype_type')
-      .then(response => {
-        if(response) {
-          console.log(response.data);
-          genotypeTypeList = response.data;
-        }
-      })
-      .catch(error => console.log("Error genotypeTypeService: " + error));
-    return genotypeTypeList;   
+  fetch(): Promise<AxiosResponse<Array<GenotypeType>>> {
+    return this.getFetchService.fetch<undefined, Array<GenotypeType>>('/genotype_type');  
   } 
 }

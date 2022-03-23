@@ -95,7 +95,7 @@ export class VarCanService extends ApiService {
     return sort !== null ? this.populationService.fetch(sort) : this.populationService.fetch();
   }
 
-  getGenotypeTypes(): Array<GenotypeType> {
+  getGenotypeTypes(): Promise<AxiosResponse<Array<GenotypeType>>> {
     return this.genotypeTypeService.fetch();
   }
 

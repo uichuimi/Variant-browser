@@ -1,16 +1,14 @@
-{
-    "genotypeType": [
-        {
-            "id": 1,
-            "name": "WILDTYPE"
-        },
-        {
-            "id": 2,
-            "name": "HETEROZYGOUS"
-        },
-        {
-            "id": 3,
-            "name": "HOMOZYGOUS"
-        }
-    ]
-}
+[
+    {
+        "id": 1,
+        "name": "WILDTYPE"
+    },
+    {
+        "id": 2,
+        "name": "HETEROZYGOUS"
+    },
+    {
+        "id": 3,
+        "name": "HOMOZYGOUS"
+    }
+]

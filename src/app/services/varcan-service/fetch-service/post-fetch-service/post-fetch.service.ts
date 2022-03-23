@@ -12,6 +12,6 @@ export class PostFetchService extends FetchService {
   }
 
   fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<AxiosResponse<U>> {
-    return this.httpHandler.get(endpoint, data);  
+    return this.httpHandler.get<U>(endpoint, data);  
   }  
 }
