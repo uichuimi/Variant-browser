@@ -1,229 +1,227 @@
-{
-    "chromosomes": [
-        {
-            "id": 1,
-            "ncbi": "1",
-            "genebank": "CM000663.2",
-            "refseq": "NC_000001.11",
-            "ucsc": "chr1",
-            "sequence": 1,
-            "length": 248956422
-        },
-        {
-            "id": 24,
-            "ncbi": "Y",
-            "genebank": "CM000686.2",
-            "refseq": "NC_000024.10",
-            "ucsc": "chrY",
-            "sequence": 24,
-            "length": 57227415
-        },
-        {
-            "id": 21,
-            "ncbi": "21",
-            "genebank": "CM000683.2",
-            "refseq": "NC_000021.9",
-            "ucsc": "chr21",
-            "sequence": 21,
-            "length": 46709983
-        },
-        {
-            "id": 20,
-            "ncbi": "20",
-            "genebank": "CM000682.2",
-            "refseq": "NC_000020.11",
-            "ucsc": "chr20",
-            "sequence": 20,
-            "length": 64444167
-        },
-        {
-            "id": 14,
-            "ncbi": "14",
-            "genebank": "CM000676.2",
-            "refseq": "NC_000014.9",
-            "ucsc": "chr14",
-            "sequence": 14,
-            "length": 107043718
-        },
-        {
-            "id": 13,
-            "ncbi": "13",
-            "genebank": "CM000675.2",
-            "refseq": "NC_000013.11",
-            "ucsc": "chr13",
-            "sequence": 13,
-            "length": 114364328
-        },
-        {
-            "id": 9,
-            "ncbi": "9",
-            "genebank": "CM000671.2",
-            "refseq": "NC_000009.12",
-            "ucsc": "chr9",
-            "sequence": 9,
-            "length": 138394717
-        },
-        {
-            "id": 12,
-            "ncbi": "12",
-            "genebank": "CM000674.2",
-            "refseq": "NC_000012.12",
-            "ucsc": "chr12",
-            "sequence": 12,
-            "length": 133275309
-        },
-        {
-            "id": 25,
-            "ncbi": "MT",
-            "genebank": "J01415.2",
-            "refseq": "NC_012920.1",
-            "ucsc": "chrM",
-            "sequence": 25,
-            "length": 16569
-        },
-        {
-            "id": 2,
-            "ncbi": "2",
-            "genebank": "CM000664.2",
-            "refseq": "NC_000002.12",
-            "ucsc": "chr2",
-            "sequence": 2,
-            "length": 242193529
-        },
-        {
-            "id": 16,
-            "ncbi": "16",
-            "genebank": "CM000678.2",
-            "refseq": "NC_000016.10",
-            "ucsc": "chr16",
-            "sequence": 16,
-            "length": 90338345
-        },
-        {
-            "id": 19,
-            "ncbi": "19",
-            "genebank": "CM000681.2",
-            "refseq": "NC_000019.10",
-            "ucsc": "chr19",
-            "sequence": 19,
-            "length": 58617616
-        },
-        {
-            "id": 22,
-            "ncbi": "22",
-            "genebank": "CM000684.2",
-            "refseq": "NC_000022.11",
-            "ucsc": "chr22",
-            "sequence": 22,
-            "length": 50818468
-        },
-        {
-            "id": 8,
-            "ncbi": "8",
-            "genebank": "CM000670.2",
-            "refseq": "NC_000008.11",
-            "ucsc": "chr8",
-            "sequence": 8,
-            "length": 145138636
-        },
-        {
-            "id": 10,
-            "ncbi": "10",
-            "genebank": "CM000672.2",
-            "refseq": "NC_000010.11",
-            "ucsc": "chr10",
-            "sequence": 10,
-            "length": 133797422
-        },
-        {
-            "id": 4,
-            "ncbi": "4",
-            "genebank": "CM000666.2",
-            "refseq": "NC_000004.12",
-            "ucsc": "chr4",
-            "sequence": 4,
-            "length": 190214555
-        },
-        {
-            "id": 3,
-            "ncbi": "3",
-            "genebank": "CM000665.2",
-            "refseq": "NC_000003.12",
-            "ucsc": "chr3",
-            "sequence": 3,
-            "length": 198295559
-        },
-        {
-            "id": 15,
-            "ncbi": "15",
-            "genebank": "CM000677.2",
-            "refseq": "NC_000015.10",
-            "ucsc": "chr15",
-            "sequence": 15,
-            "length": 101991189
-        },
-        {
-            "id": 23,
-            "ncbi": "X",
-            "genebank": "CM000685.2",
-            "refseq": "NC_000023.11",
-            "ucsc": "chrX",
-            "sequence": 23,
-            "length": 156040895
-        },
-        {
-            "id": 18,
-            "ncbi": "18",
-            "genebank": "CM000680.2",
-            "refseq": "NC_000018.10",
-            "ucsc": "chr18",
-            "sequence": 18,
-            "length": 80373285
-        },
-        {
-            "id": 5,
-            "ncbi": "5",
-            "genebank": "CM000667.2",
-            "refseq": "NC_000005.10",
-            "ucsc": "chr5",
-            "sequence": 5,
-            "length": 181538259
-        },
-        {
-            "id": 6,
-            "ncbi": "6",
-            "genebank": "CM000668.2",
-            "refseq": "NC_000006.12",
-            "ucsc": "chr6",
-            "sequence": 6,
-            "length": 170805979
-        },
-        {
-            "id": 11,
-            "ncbi": "11",
-            "genebank": "CM000673.2",
-            "refseq": "NC_000011.10",
-            "ucsc": "chr11",
-            "sequence": 11,
-            "length": 135086622
-        },
-        {
-            "id": 7,
-            "ncbi": "7",
-            "genebank": "CM000669.2",
-            "refseq": "NC_000007.14",
-            "ucsc": "chr7",
-            "sequence": 7,
-            "length": 159345973
-        },
-        {
-            "id": 17,
-            "ncbi": "17",
-            "genebank": "CM000679.2",
-            "refseq": "NC_000017.11",
-            "ucsc": "chr17",
-            "sequence": 17,
-            "length": 83257441
-        }
-      ]    
-}
+[
+  {
+      "id": 1,
+      "ncbi": "1",
+      "genebank": "CM000663.2",
+      "refseq": "NC_000001.11",
+      "ucsc": "chr1",
+      "sequence": 1,
+      "length": 248956422
+  },
+  {
+      "id": 24,
+      "ncbi": "Y",
+      "genebank": "CM000686.2",
+      "refseq": "NC_000024.10",
+      "ucsc": "chrY",
+      "sequence": 24,
+      "length": 57227415
+  },
+  {
+      "id": 21,
+      "ncbi": "21",
+      "genebank": "CM000683.2",
+      "refseq": "NC_000021.9",
+      "ucsc": "chr21",
+      "sequence": 21,
+      "length": 46709983
+  },
+  {
+      "id": 20,
+      "ncbi": "20",
+      "genebank": "CM000682.2",
+      "refseq": "NC_000020.11",
+      "ucsc": "chr20",
+      "sequence": 20,
+      "length": 64444167
+  },
+  {
+      "id": 14,
+      "ncbi": "14",
+      "genebank": "CM000676.2",
+      "refseq": "NC_000014.9",
+      "ucsc": "chr14",
+      "sequence": 14,
+      "length": 107043718
+  },
+  {
+      "id": 13,
+      "ncbi": "13",
+      "genebank": "CM000675.2",
+      "refseq": "NC_000013.11",
+      "ucsc": "chr13",
+      "sequence": 13,
+      "length": 114364328
+  },
+  {
+      "id": 9,
+      "ncbi": "9",
+      "genebank": "CM000671.2",
+      "refseq": "NC_000009.12",
+      "ucsc": "chr9",
+      "sequence": 9,
+      "length": 138394717
+  },
+  {
+      "id": 12,
+      "ncbi": "12",
+      "genebank": "CM000674.2",
+      "refseq": "NC_000012.12",
+      "ucsc": "chr12",
+      "sequence": 12,
+      "length": 133275309
+  },
+  {
+      "id": 25,
+      "ncbi": "MT",
+      "genebank": "J01415.2",
+      "refseq": "NC_012920.1",
+      "ucsc": "chrM",
+      "sequence": 25,
+      "length": 16569
+  },
+  {
+      "id": 2,
+      "ncbi": "2",
+      "genebank": "CM000664.2",
+      "refseq": "NC_000002.12",
+      "ucsc": "chr2",
+      "sequence": 2,
+      "length": 242193529
+  },
+  {
+      "id": 16,
+      "ncbi": "16",
+      "genebank": "CM000678.2",
+      "refseq": "NC_000016.10",
+      "ucsc": "chr16",
+      "sequence": 16,
+      "length": 90338345
+  },
+  {
+      "id": 19,
+      "ncbi": "19",
+      "genebank": "CM000681.2",
+      "refseq": "NC_000019.10",
+      "ucsc": "chr19",
+      "sequence": 19,
+      "length": 58617616
+  },
+  {
+      "id": 22,
+      "ncbi": "22",
+      "genebank": "CM000684.2",
+      "refseq": "NC_000022.11",
+      "ucsc": "chr22",
+      "sequence": 22,
+      "length": 50818468
+  },
+  {
+      "id": 8,
+      "ncbi": "8",
+      "genebank": "CM000670.2",
+      "refseq": "NC_000008.11",
+      "ucsc": "chr8",
+      "sequence": 8,
+      "length": 145138636
+  },
+  {
+      "id": 10,
+      "ncbi": "10",
+      "genebank": "CM000672.2",
+      "refseq": "NC_000010.11",
+      "ucsc": "chr10",
+      "sequence": 10,
+      "length": 133797422
+  },
+  {
+      "id": 4,
+      "ncbi": "4",
+      "genebank": "CM000666.2",
+      "refseq": "NC_000004.12",
+      "ucsc": "chr4",
+      "sequence": 4,
+      "length": 190214555
+  },
+  {
+      "id": 3,
+      "ncbi": "3",
+      "genebank": "CM000665.2",
+      "refseq": "NC_000003.12",
+      "ucsc": "chr3",
+      "sequence": 3,
+      "length": 198295559
+  },
+  {
+      "id": 15,
+      "ncbi": "15",
+      "genebank": "CM000677.2",
+      "refseq": "NC_000015.10",
+      "ucsc": "chr15",
+      "sequence": 15,
+      "length": 101991189
+  },
+  {
+      "id": 23,
+      "ncbi": "X",
+      "genebank": "CM000685.2",
+      "refseq": "NC_000023.11",
+      "ucsc": "chrX",
+      "sequence": 23,
+      "length": 156040895
+  },
+  {
+      "id": 18,
+      "ncbi": "18",
+      "genebank": "CM000680.2",
+      "refseq": "NC_000018.10",
+      "ucsc": "chr18",
+      "sequence": 18,
+      "length": 80373285
+  },
+  {
+      "id": 5,
+      "ncbi": "5",
+      "genebank": "CM000667.2",
+      "refseq": "NC_000005.10",
+      "ucsc": "chr5",
+      "sequence": 5,
+      "length": 181538259
+  },
+  {
+      "id": 6,
+      "ncbi": "6",
+      "genebank": "CM000668.2",
+      "refseq": "NC_000006.12",
+      "ucsc": "chr6",
+      "sequence": 6,
+      "length": 170805979
+  },
+  {
+      "id": 11,
+      "ncbi": "11",
+      "genebank": "CM000673.2",
+      "refseq": "NC_000011.10",
+      "ucsc": "chr11",
+      "sequence": 11,
+      "length": 135086622
+  },
+  {
+      "id": 7,
+      "ncbi": "7",
+      "genebank": "CM000669.2",
+      "refseq": "NC_000007.14",
+      "ucsc": "chr7",
+      "sequence": 7,
+      "length": 159345973
+  },
+  {
+      "id": 17,
+      "ncbi": "17",
+      "genebank": "CM000679.2",
+      "refseq": "NC_000017.11",
+      "ucsc": "chr17",
+      "sequence": 17,
+      "length": 83257441
+  }
+]

@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import axios, {AxiosInstance, AxiosResponse} from 'axios';
 
-import * as chromosomeOutputMockup from 'fixtures/varcanService/chromosome/output/chromosomeOutputMockup.json';
 import { Chromosome } from 'src/app/models/output/Chromosome';
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
 
@@ -10,24 +9,14 @@ import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.se
 })
 export class ChromosomesService {
   readonly httpHandler: AxiosInstance;
+  readonly getFetchService: GetFetchService;
 
   constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
+    this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
-  fetch(): Array<Chromosome> {
-    let chromosomeList: Array<Chromosome>;
-    const getFetchService = new GetFetchService(this.httpHandler);
-    getFetchService.fetch<null, Array<Chromosome>>('/chromosomes')
-      .then(response => {
-        if(response) {
-          console.log(response.data);
-          chromosomeList = response.data;
-        }
-      })
-      .catch(error => console.log("Error chromosomeService: " + error));
-    return chromosomeList;
-    /*let pruebaArray: Array<Chromosome> = chromosomeOutputMockup.chromosomes;
-    return pruebaArray;   */ 
+  fetch(): Promise<AxiosResponse<Array<Chromosome>>> {
+    return this.getFetchService.fetch<undefined, Array<Chromosome>>('/chromosomes');
   }
 }

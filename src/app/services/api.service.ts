@@ -4,7 +4,7 @@ import { Injectable, Inject } from '@angular/core';
   providedIn: 'root'
 })
 export class ApiService {
-  private url: string;
+  protected url: string;
 
   constructor(@Inject(String) serverUrl: string) {
     this.url = serverUrl;
