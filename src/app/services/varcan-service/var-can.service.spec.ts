@@ -22,10 +22,10 @@ import * as loginIncorrectMockup from 'fixtures/varcanService/login/input/loginI
 import * as loginIncorrectOutputMockup from 'fixtures/varcanService/login/output/loginIncorrectOutputMockup.json';
 
 // BIOTYPES
-import * as biotypeOutputMockup from 'fixtures/varcanService/biotype/output/biotypeOutputMockup.json';
+const biotypeOutputMockup: Array<Biotype> = require('../../../../fixtures/varcanService/biotype/output/biotypeOutputMockup.json');
 
 // CHROMOSOMES
-const chromosomeOutputMockup = require('../../../../fixtures/varcanService/chromosome/output/chromosomeOutputMockup.json');
+const chromosomeOutputMockup: Array<Chromosome> = require('../../../../fixtures/varcanService/chromosome/output/chromosomeOutputMockup.json');
 
 // IMPACTS
 import * as impactOutputMockup from 'fixtures/varcanService/impact/output/impactOutputMockup.json';
@@ -91,20 +91,18 @@ describe('VarCanService', () => {
   });*/
 
   it("should return a biotypes list when a call is made to /biotypes endpoint", () => {
-    const predictedResult: Array<Biotype> = biotypeOutputMockup.biotypes;
-
-    expect(service.getBiotypes())
-      .withContext('service return Array<Biotype>')
-      .toBe(predictedResult);
+    service.getBiotypes().then(response => {
+      const biotypesApi: Array<Biotype> = response.data;
+      expect(biotypesApi)
+        .toEqual(biotypeOutputMockup);
+    });
   });
 
   it('should return a chromosomes list when a call is made to /chromosomes endpoint', () => {
-    const chromosomesMockup: Array<Chromosome> = chromosomeOutputMockup;
     service.getChromosomes().then(response => {
       const chromosomesApi: Array<Chromosome> = response.data;
       expect(chromosomesApi)
-        // .withContext('service return Array<Chromosome>')
-        .toEqual(chromosomesMockup);
+        .toEqual(chromosomeOutputMockup);
     });
   });
 
