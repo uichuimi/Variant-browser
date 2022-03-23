@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
 import { Effect } from 'src/app/models/output/Effect';
@@ -9,22 +9,14 @@ import { Effect } from 'src/app/models/output/Effect';
 })
 export class EffectsService {
   readonly httpHandler: AxiosInstance;
+  readonly getFetchService: GetFetchService;
 
   constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
+    this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
-  fetch(): Array<Effect> {
-    let effectList: Array<Effect>;
-    const getFetchService = new GetFetchService(this.httpHandler);
-    getFetchService.fetch<null, Array<Effect>>('/effects')
-      .then(response => {
-        if(response) {
-          console.log(response.data);
-          effectList = response.data;
-        }
-      })
-      .catch(error => console.log("Error effectService: " + error));
-    return effectList;   
+  fetch(): Promise<AxiosResponse<Array<Effect>>> {
+    return this.getFetchService.fetch<undefined, Array<Effect>>('/effects'); 
   } 
 }

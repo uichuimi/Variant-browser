@@ -87,7 +87,7 @@ export class VarCanService extends ApiService {
     return this.impactService.fetch();
   }
 
-  getEffects(): Array<Effect> {
+  getEffects(): Promise<AxiosResponse<Array<Effect>>> {
     return this.effectService.fetch();
   }
 

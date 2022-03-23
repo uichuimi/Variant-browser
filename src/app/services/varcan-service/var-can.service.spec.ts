@@ -37,7 +37,7 @@ import * as genotypeTypeOutputMockup from 'fixtures/varcanService/genotypeType/o
 import * as individualOutputMockup from 'fixtures/varcanService/individual/output/individualOutputMockup.json';
 
 // EFFECTS
-import * as effectOutputMockup from 'fixtures/varcanService/effect/output/effectOutputMockup.json';
+const effectOutputMockup: Array<Effect> = require('../../../../fixtures/varcanService/effect/output/effectOutputMockup.json');
 
 // POPULATIONS
 import * as populationsOutputMockup from 'fixtures/varcanService/population/output/populationsOutputMockup.json';
@@ -131,11 +131,11 @@ describe('VarCanService', () => {
   });
 
   it("should return an effects list when a call is made to /effects endpoint", () => {
-    const predictedResult: Array<Effect> = effectOutputMockup.effects;
-
-    expect(service.getEffects())
-      .withContext("service return Array<Effect>")
-      .toBe(predictedResult);
+    service.getEffects().then(response => {
+      const effectsApi: Array<Effect> = response.data;
+      expect(effectsApi)
+        .toEqual(effectOutputMockup);
+    });
   });
 
   it("should return a populations ascending sorted list when a call is made to /populations endpoint", () => {
