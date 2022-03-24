@@ -52,7 +52,7 @@ export class VarCanService extends ApiService {
       baseURL: this.url,
       timeout: 2000,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1aWNodWltaSIsImV4cCI6MTY0ODExNDE5MiwiaWF0IjoxNjQ4MDc4MTkyfQ.ICJSNy8LGXIJFXueaN27gW36L3H9JiRYA7AGNfui2vyFD7HHePY1NuJky68qkDsWXBz56dlfHu32yBQTY4hVTQ'
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1aWNodWltaSIsImV4cCI6MTY0ODE3NTc4MCwiaWF0IjoxNjQ4MTM5NzgwfQ._3AT0xo5UP1RPMUWad_JxoAmo7mGzcVDp8pHaGRRnx7LMIrg2tdf2Iu7d4OL6iphAZBv9nDSjE0PjGbFfF5xqg'
       }
     });
     this.chromosomeService = new ChromosomesService(this.httpHandler);
@@ -67,7 +67,7 @@ export class VarCanService extends ApiService {
     this.loginService = new LoginService(this.httpHandler);
   }
 
-  login(data: Login): Token {
+  login(data: Login): Promise<AxiosResponse<Token>> {
     return this.loginService.fetch(data);
   }
 

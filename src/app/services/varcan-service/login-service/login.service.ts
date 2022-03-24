@@ -1,30 +1,24 @@
 import { Injectable, Inject } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
 import { Login } from 'src/app/models/input/Login';
 import { Token } from 'src/app/models/output/Token';
+import { GeneParams } from 'src/app/models/input/GeneParams';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
   readonly httpHandler: AxiosInstance;
+  readonly postFetchService: PostFetchService;
 
   constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
+    this.postFetchService = new PostFetchService(this.httpHandler);
   }
 
-  fetch(data: Login): Token {
-    let token: Token;
-    const postFetchService = new PostFetchService(this.httpHandler);
-    postFetchService.fetch<Login, Token>('/login', data)
-      .catch(error => console.log("Error loginService: " + error))
-      .then(response => {
-        if(response) {
-          token = response.data;
-        }
-      });
-    return token;
+  fetch(data: Login): Promise<AxiosResponse<Token>> {
+    return this.postFetchService.fetch<Login, Token>('/login', data);
   } 
 }

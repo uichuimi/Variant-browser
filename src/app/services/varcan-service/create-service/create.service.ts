@@ -13,6 +13,6 @@ export class CreateService implements ICreatable {
   }
   
   create<T, U>(endpoint: string, data: T): Promise<AxiosResponse<U>> {
-    return this.httpHandler.post(endpoint, data);
+    return this.httpHandler.post<U>(endpoint, data);
   }
 }
