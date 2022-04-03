@@ -148,7 +148,7 @@ describe('VarCanService', () => {
     });
   });
 
-  /*it("should return a populations descending sorted list when a call is made to /populations endpoint", () => {
+  it("should return a populations descending sorted list when a call is made to /populations endpoint", () => {
     service.getPopulations("id,desc").then(response => {
       const populationsApi: Array<Population> = response.data;
       expect(populationsApi)
@@ -158,7 +158,7 @@ describe('VarCanService', () => {
       expect(populationsApi[populationsApi.length-1].id)
         .toBe(1);
     });
-  });*/
+  });
 
   it("should return a page of genes when no parameters are set in /genes endpoint", () => {
     service.getGenes().then(response => {

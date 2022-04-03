@@ -13,6 +13,7 @@ import { GenotypeTypesService } from './genotypeTypes-service/genotype-types.ser
 import { VariantsService } from './variants-service/variants.service';
 import { IndividualsService } from './individuals-service/individuals.service';
 import { LoginService } from './login-service/login.service';
+import { RegisterService } from './register-service/register.service';
 
 // MODELS
 import { Chromosome } from 'src/app/models/output/Chromosome';
@@ -29,6 +30,8 @@ import { VariantParams } from 'src/app/models/input/VariantParams';
 import { Variant } from 'src/app/models/output/Variant';
 import { Login } from 'src/app/models/input/Login';
 import { Token } from 'src/app/models/output/Token';
+import { Register } from 'src/app/models/input/Register';
+import { ResponseStatus } from 'src/app/models/output/ResponseStatus';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +48,7 @@ export class VarCanService extends ApiService {
   private individualService: IndividualsService;
   private variantService: VariantsService;
   private loginService: LoginService;
+  private registerService: RegisterService;
 
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
@@ -65,10 +69,15 @@ export class VarCanService extends ApiService {
     this.individualService = new IndividualsService(this.httpHandler);
     this.variantService = new VariantsService(this.httpHandler);
     this.loginService = new LoginService(this.httpHandler);
+    this.registerService = new RegisterService(this.httpHandler);
   }
 
   login(data: Login): Promise<AxiosResponse<Token>> {
     return this.loginService.fetch(data);
+  }
+
+  register(data: Register): Promise<AxiosResponse<ResponseStatus>> {
+    return this.registerService.create(data);
   }
 
   getChromosomes(): Promise<AxiosResponse<Array<Chromosome>>> {
