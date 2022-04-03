@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
 import { Page } from 'src/app/models/output/Page';
@@ -11,30 +11,16 @@ import { VariantParams } from 'src/app/models/input/VariantParams';
 })
 export class VariantsService {
   readonly httpHandler: AxiosInstance;
+  readonly postFetchService: PostFetchService;
 
   constructor(@Inject(axios) httpHandler: AxiosInstance) {
     this.httpHandler = httpHandler;
+    this.postFetchService = new PostFetchService(this.httpHandler);
   }
 
-  fetch(data?: VariantParams): Page<Variant> {
-    let variantList: Page<Variant>;
-    const postFetchService = new PostFetchService(this.httpHandler);
-    data !== null ? (postFetchService.fetch<VariantParams, Page<Variant>>('/variants', data)
-      .then(response => {
-        if(response) {
-          console.log(response.data);
-          variantList = response.data;
-        }
-      })
-      .catch(error => console.log("Error variantService: " + error))) :
-      (postFetchService.fetch<VariantParams, Page<Variant>>('/variants')
-        .then(response => {
-          if(response) {
-            console.log(response.data);
-            variantList = response.data;
-          }
-        })
-        .catch(error => console.log("Error variantService: " + error)));
-    return variantList;   
+  fetch(data?: VariantParams): Promise<AxiosResponse<Page<Variant>>> {
+    return data !== null ? 
+      this.postFetchService.fetch<VariantParams, Page<Variant>>('/variants', data) : 
+      this.postFetchService.fetch<VariantParams, Page<Variant>>('/variants', data);
   } 
 }

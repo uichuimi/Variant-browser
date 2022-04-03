@@ -8,6 +8,11 @@ import { ResponseStatus } from 'src/app/models/output/ResponseStatus';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase RegisterService se encarga de instanciar a CreateService, 
+ * especificando el punto de ataque y el tipo que debe devolver
+ */
 export class RegisterService {
   readonly httpHandler: AxiosInstance;
   readonly createService: CreateService;

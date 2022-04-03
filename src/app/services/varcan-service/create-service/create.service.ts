@@ -5,6 +5,11 @@ import { ICreatable } from 'src/app/interfaces/ICreatable';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase CreateService se encarga de 
+ * hacer las llamadas tipo POST a la API
+ */
 export class CreateService implements ICreatable {
   private httpHandler: AxiosInstance;
 
@@ -12,6 +17,12 @@ export class CreateService implements ICreatable {
     this.httpHandler = httpHandler;
   }
   
+  /**
+   * 
+   * @param endpoint punto de la API al que ataca
+   * @param data datos que van en el body de la llamada
+   * @returns Promise<AxiosResponse<U>> (Promesa genérica)
+   */
   create<T, U>(endpoint: string, data: T): Promise<AxiosResponse<U>> {
     return this.httpHandler.post<U>(endpoint, data);
   }

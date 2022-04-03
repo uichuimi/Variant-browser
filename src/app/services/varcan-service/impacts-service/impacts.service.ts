@@ -7,6 +7,11 @@ import { Impact } from 'src/app/models/output/Impact';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase ImpactsService se encarga de instanciar a GetFetchService, 
+ * especificando el punto de ataque y el tipo que debe devolver
+ */
 export class ImpactsService {
   readonly httpHandler: AxiosInstance;
   readonly getFetchService: GetFetchService;

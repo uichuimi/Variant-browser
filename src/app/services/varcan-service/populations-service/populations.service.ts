@@ -7,6 +7,11 @@ import { Population } from 'src/app/models/output/Population';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase PopulationsService se encarga de instanciar a GetFetchService, 
+ * especificando el punto de ataque y el tipo que debe devolver
+ */
 export class PopulationsService {
   readonly httpHandler: AxiosInstance;
   readonly getFetchService: GetFetchService;

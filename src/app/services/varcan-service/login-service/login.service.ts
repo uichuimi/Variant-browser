@@ -9,6 +9,11 @@ import { GeneParams } from 'src/app/models/input/GeneParams';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase LoginService se encarga de instanciar a PostFetchService, 
+ * especificando el punto de ataque y el tipo que debe devolver
+ */
 export class LoginService {
   readonly httpHandler: AxiosInstance;
   readonly postFetchService: PostFetchService;

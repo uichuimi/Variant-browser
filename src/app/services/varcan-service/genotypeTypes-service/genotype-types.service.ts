@@ -7,6 +7,11 @@ import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.se
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase GenotypeTypesService se encarga de instanciar a GetFetchService, 
+ * especificando el punto de ataque y el tipo que debe devolver
+ */
 export class GenotypeTypesService {
   readonly httpHandler: AxiosInstance;
   readonly getFetchService: GetFetchService;

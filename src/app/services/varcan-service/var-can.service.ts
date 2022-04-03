@@ -37,6 +37,11 @@ import { TokenStorageService } from './tokenStorage-service/token-storage.servic
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * La clase VarCanService es el servicio que se 
+ * encarga de instanciar a todos los demás (patrón Singleton)
+ */
 export class VarCanService extends ApiService {
   private httpHandler: AxiosInstance;
   private chromosomeService: ChromosomesService;
@@ -75,47 +80,108 @@ export class VarCanService extends ApiService {
     this.registerService = new RegisterService(this.httpHandler);
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando se abra logueará al usuario
+   * @param data modelo de entrada de Login (username y password)
+   * @returns Promise<AxiosResponse<Token>>
+   */
+
   login(data: Login): Promise<AxiosResponse<Token>> {
     return this.loginService.fetch(data);
   }
+
+  /**
+   * Se encarga de crear una promesa que cuando se abra registrará a un usuario
+   * @param data modelo de entrada de Register (username y password)
+   * @returns Promise<AxiosResponse<ResponseStatus>>
+   */
 
   register(data: Register): Promise<AxiosResponse<ResponseStatus>> {
     return this.registerService.create(data);
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando 
+   * se abra devolverá un listado de cromosomas
+   * @returns Promise<AxiosResponse<Array<Chromosome>>>
+   */
   getChromosomes(): Promise<AxiosResponse<Array<Chromosome>>> {
     return this.chromosomeService.fetch();
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando 
+   * se abra devolverá un listado de biotipos
+   * @returns Promise<AxiosResponse<Array<Biotype>>>
+   */
   getBiotypes(): Promise<AxiosResponse<Array<Biotype>>> {
     return this.biotypeService.fetch();
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando 
+   * se abra devolverá un listado paginado de genes
+   * @param query modelo de entrada de GeneParams
+   * @returns Promise<AxiosResponse<Page<Gene>>>
+   */
   getGenes(query?: GeneParams): Promise<AxiosResponse<Page<Gene>>> {
     return query !== null ? this.geneService.fetch(query) : this.geneService.fetch();
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando 
+   * se abra devolverá un listado de impactos
+   * @returns Promise<AxiosResponse<Array<Impact>>>
+   */
   getImpacts(): Promise<AxiosResponse<Array<Impact>>> {
     return this.impactService.fetch();
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando 
+   * se abra devolverá un listado de efectos
+   * @returns Promise<AxiosResponse<Array<Effect>>>
+   */
   getEffects(): Promise<AxiosResponse<Array<Effect>>> {
     return this.effectService.fetch();
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando 
+   * se abra devolverá un listado de poblaciones
+   * @param sort indica si se quiere el listado 
+   * ordenado de forma ascendente o descendente
+   * @returns Promise<AxiosResponse<Array<Population>>>
+   */
   getPopulations(sort?: string): Promise<AxiosResponse<Array<Population>>> {
     return sort !== null ? this.populationService.fetch(sort) : this.populationService.fetch();
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando se 
+   * abra devolverá un listado de tipos de genotipos
+   * @returns Promise<AxiosResponse<Array<GenotypeType>>>
+   */
   getGenotypeTypes(): Promise<AxiosResponse<Array<GenotypeType>>> {
     return this.genotypeTypeService.fetch();
   }
 
+  /**
+   * Se encarga de crear una promesa que cuando 
+   * se abra devolverá un listado de individuos
+   * @returns Promise<AxiosResponse<Array<Individual>>>
+   */
   getIndividuals(): Promise<AxiosResponse<Array<Individual>>> {
     return this.individualService.fetch();
   }
 
-  getVariants(data?: VariantParams): Page<Variant> {
+  /**
+   * Se encarga de crear una promesa que cuando se 
+   * abra devolverá un listado paginado de variantes
+   * @param data modelo de entrada de VariantParams
+   * @returns Page<Variant>
+   */
+  getVariants(data?: VariantParams): Promise<AxiosResponse<Page<Variant>>> {
     return data !== null ? this.variantService.fetch(data) : this.variantService.fetch();
   }
 }
