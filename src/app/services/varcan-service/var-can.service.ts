@@ -32,6 +32,7 @@ import { Login } from 'src/app/models/input/Login';
 import { Token } from 'src/app/models/output/Token';
 import { Register } from 'src/app/models/input/Register';
 import { ResponseStatus } from 'src/app/models/output/ResponseStatus';
+import { TokenStorageService } from './tokenStorage-service/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -49,14 +50,16 @@ export class VarCanService extends ApiService {
   private variantService: VariantsService;
   private loginService: LoginService;
   private registerService: RegisterService;
+  private tokenStorageService: TokenStorageService;
 
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
+    this.tokenStorageService = new TokenStorageService();
     this.httpHandler = axios.create({
       baseURL: this.url,
       timeout: 2000,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1aWNodWltaSIsImV4cCI6MTY0ODE3NTc4MCwiaWF0IjoxNjQ4MTM5NzgwfQ._3AT0xo5UP1RPMUWad_JxoAmo7mGzcVDp8pHaGRRnx7LMIrg2tdf2Iu7d4OL6iphAZBv9nDSjE0PjGbFfF5xqg'
+        Authorization: `Bearer ${this.tokenStorageService.getToken()}`
       }
     });
     this.chromosomeService = new ChromosomesService(this.httpHandler);
