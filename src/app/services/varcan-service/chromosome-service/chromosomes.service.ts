@@ -21,6 +21,11 @@ export class ChromosomesService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/chromosome) y el tipo que debe devolver (Chromosome)
+   * @returns Promise<AxiosResponse<Array<Chromosome>>>
+   */
   fetch(): Promise<AxiosResponse<Array<Chromosome>>> {
     return this.getFetchService.fetch<undefined, Array<Chromosome>>('/chromosomes');
   }

@@ -21,6 +21,11 @@ export class GenotypeTypesService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/genotype_type) y el tipo que debe devolver (GenotypeType)
+   * @returns Promise<AxiosResponse<Array<GenotypeType>>>
+   */
   fetch(): Promise<AxiosResponse<Array<GenotypeType>>> {
     return this.getFetchService.fetch<undefined, Array<GenotypeType>>('/genotype_type');  
   } 

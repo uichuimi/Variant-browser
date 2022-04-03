@@ -16,6 +16,11 @@ export class UserService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/user) y el tipo que debe devolver (User)
+   * @returns Promise<AxiosResponse<User>>
+   */
   fetch(): Promise<AxiosResponse<User>> {
     return this.getFetchService.fetch<undefined, User>('/user');      
   } 

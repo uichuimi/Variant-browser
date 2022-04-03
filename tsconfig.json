@@ -22,7 +22,7 @@
     "strictInjectionParameters": true
   },
   "typedocOptions": {
-    "entryPoints": ["src/app"],
+    "entryPoints": ["src/app/services"],
     "out": "docs"
   }  
 }

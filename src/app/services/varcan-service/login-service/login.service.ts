@@ -23,6 +23,12 @@ export class LoginService {
     this.postFetchService = new PostFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de PostFetchService, especificando el punto
+   * de ataque (/login) y el tipo que debe devolver (Token)
+   * @param data datos que se insertan en el body de la llamada
+   * @returns Promise<AxiosResponse<Token>>
+   */
   fetch(data: Login): Promise<AxiosResponse<Token>> {
     return this.postFetchService.fetch<Login, Token>('/login', data);
   } 

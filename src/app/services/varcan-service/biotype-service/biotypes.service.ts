@@ -22,6 +22,11 @@ export class BiotypesService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/biotypes) y el tipo que debe devolver (Biotype)
+   * @returns Promise<AxiosResponse<Array<Biotype>>>
+   */
   fetch(): Promise<AxiosResponse<Array<Biotype>>> {
     return this.getFetchService.fetch<undefined, Array<Biotype>>('/biotypes');  
   }  

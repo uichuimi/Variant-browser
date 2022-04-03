@@ -21,6 +21,11 @@ export class IndividualsService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/individuals) y el tipo que debe devolver (Individual)
+   * @returns Promise<AxiosResponse<Array<Individual>>>
+   */
   fetch(): Promise<AxiosResponse<Array<Individual>>> {
     return this.getFetchService.fetch<undefined, Array<Individual>>('/individuals');   
   } 

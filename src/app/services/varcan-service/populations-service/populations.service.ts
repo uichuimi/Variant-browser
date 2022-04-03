@@ -21,6 +21,12 @@ export class PopulationsService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/populations) y el tipo que debe devolver (Population)
+   * @param sort 
+   * @returns Promise<AxiosResponse<Array<Population>>>
+   */
   fetch(sort?: string): Promise<AxiosResponse<Array<Population>>> {
     return sort !== null ? (this.getFetchService.fetch<undefined, Array<Population>>('/populations')) 
     : (this.getFetchService.fetch<undefined, Array<Population>>('/populations'));

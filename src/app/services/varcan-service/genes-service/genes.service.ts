@@ -23,6 +23,12 @@ export class GenesService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/genes) y el tipo que debe devolver (Gene)
+   * @param query datos que se le pasan a la query string de la llamada
+   * @returns Promise<AxiosResponse<Page<Gene>>>
+   */
   fetch(query?: GeneParams): Promise<AxiosResponse<Page<Gene>>> {
     return query !== null ? this.getFetchService.fetch<GeneParams, Page<Gene>>('/genes', query) 
       : this.getFetchService.fetch<undefined, Page<Gene>>('/genes');

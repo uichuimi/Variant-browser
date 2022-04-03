@@ -21,6 +21,11 @@ export class EffectsService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/effects) y el tipo que debe devolver (Effect)
+   * @returns Promise<AxiosResponse<Array<Effect>>>
+   */
   fetch(): Promise<AxiosResponse<Array<Effect>>> {
     return this.getFetchService.fetch<undefined, Array<Effect>>('/effects'); 
   } 

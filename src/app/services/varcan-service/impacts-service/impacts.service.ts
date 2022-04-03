@@ -21,6 +21,11 @@ export class ImpactsService {
     this.getFetchService = new GetFetchService(this.httpHandler);
   }
 
+  /**
+   * Usa el método fetch de GetFetchService, especificando el punto
+   * de ataque (/impacts) y el tipo que debe devolver (Impact)
+   * @returns Promise<AxiosResponse<Array<Impact>>>
+   */
   fetch(): Promise<AxiosResponse<Array<Impact>>> {
     return this.getFetchService.fetch<undefined, Array<Impact>>('/impacts');  
   } 
