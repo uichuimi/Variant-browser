@@ -17,7 +17,7 @@ import { ResponseStatus } from 'src/app/models/output/ResponseStatus';
 
 // Inputs and outputs mockups
 // LOGIN
-import * as loginCorrectMockup from 'fixtures/varcanService/login/input/loginCorrectMockup.json'
+const loginCorrectMockup: Login = require('../../../../fixtures/varcanService/login/input/loginCorrectMockup.json');
 import * as loginIncorrectMockup from 'fixtures/varcanService/login/input/loginIncorrectMockup.json';
 import * as loginIncorrectOutputMockup from 'fixtures/varcanService/login/output/loginIncorrectOutputMockup.json';
 
@@ -65,19 +65,19 @@ describe('VarCanService', () => {
     expect(service).toBeTruthy();
   });
 
-  /*it('should return a valid token when correct credentials are being passed to /login endpoint', () => {
-    const loginModel: Login = loginCorrectMockup;
-    const result: Token = service.login(loginModel);
-
-    expect(result['access_token'])
-      .toBeTruthy()
-    expect(result['refresh_token'])
-      .toBeTruthy();
-    expect(result['expires_in'])
-      .toBeTruthy();
-    expect(result['token_type'])
-      .toBe('bearer');
-  });*/
+  it('should return a valid token when correct credentials are being passed to /login endpoint', () => {
+    service.login(loginCorrectMockup).then(response => {
+      const loginApi: Token = response;
+      expect(loginApi['access_token'])
+        .toBeTruthy();
+      expect(loginApi['refresh_token'])
+        .toBeTruthy();
+      expect(loginApi['expires_in'])
+        .toBeTruthy();
+      expect(loginApi['token_type'])
+        .toBe('bearer');
+    });
+  });
 
   /*it("should return a failed status when incorrect credentials are being passed to /login endpoint", () => {
     const loginModel: Login = loginIncorrectMockup;

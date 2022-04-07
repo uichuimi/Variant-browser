@@ -4,7 +4,6 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
 import { Login } from 'src/app/models/input/Login';
 import { Token } from 'src/app/models/output/Token';
-import { GeneParams } from 'src/app/models/input/GeneParams';
 
 @Injectable({
   providedIn: 'root'

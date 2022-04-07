@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import axios from 'axios';
 
 import { TokenStorageService } from './token-storage.service';
 
@@ -6,8 +7,7 @@ describe('TokenStorageService', () => {
   let service: TokenStorageService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(TokenStorageService);
+    service = new TokenStorageService();
   });
 
   it('should be created', () => {

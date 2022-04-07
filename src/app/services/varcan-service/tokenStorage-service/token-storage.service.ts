@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AxiosInstance } from 'axios';
+import { Token } from 'src/app/models/output/Token';
 
 const TOKEN_KEY = 'auth-token';
 
@@ -26,9 +28,8 @@ export class TokenStorageService {
    * Borra el token anterior y guarda el nuevo pasado por parámetro
    * @param token token que se consigue al hacer login
    */
-  public saveToken(token: string) {
-    window.sessionStorage.removeItem(TOKEN_KEY);
-    window.sessionStorage.setItem(TOKEN_KEY, token);
+  public saveToken(httpHandler: AxiosInstance, token: Token) {
+    httpHandler.defaults.headers['Authorization'] = `${token.token_type} ${token.refresh_token}`;
   }
 
   /**

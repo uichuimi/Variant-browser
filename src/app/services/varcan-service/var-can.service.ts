@@ -62,11 +62,10 @@ export class VarCanService extends ApiService {
     this.tokenStorageService = new TokenStorageService();
     this.httpHandler = axios.create({
       baseURL: this.url,
-      timeout: 2000,
-      headers: {
-        Authorization: `Bearer ${this.tokenStorageService.getToken()}`
-      }
+      timeout: 2000
     });
+    this.loginService = new LoginService(this.httpHandler);
+
     this.chromosomeService = new ChromosomesService(this.httpHandler);
     this.biotypeService = new BiotypesService(this.httpHandler);
     this.geneService = new GenesService(this.httpHandler);
@@ -76,7 +75,6 @@ export class VarCanService extends ApiService {
     this.genotypeTypeService = new GenotypeTypesService(this.httpHandler);
     this.individualService = new IndividualsService(this.httpHandler);
     this.variantService = new VariantsService(this.httpHandler);
-    this.loginService = new LoginService(this.httpHandler);
     this.registerService = new RegisterService(this.httpHandler);
   }
 
@@ -86,8 +84,11 @@ export class VarCanService extends ApiService {
    * @returns Promise<AxiosResponse<Token>>
    */
 
-  login(data: Login): Promise<AxiosResponse<Token>> {
-    return this.loginService.fetch(data);
+  login(data: Login): Promise<Token> {
+    return this.loginService.fetch(data).then(response => {
+      this.tokenStorageService.saveToken(this.httpHandler, response.data);
+      return response.data;
+    });
   }
 
   /**
