@@ -18,8 +18,8 @@ import { ResponseStatus } from 'src/app/models/output/ResponseStatus';
 // Inputs and outputs mockups
 // LOGIN
 const loginCorrectMockup: Login = require('../../../../fixtures/varcanService/login/input/loginCorrectMockup.json');
-import * as loginIncorrectMockup from 'fixtures/varcanService/login/input/loginIncorrectMockup.json';
-import * as loginIncorrectOutputMockup from 'fixtures/varcanService/login/output/loginIncorrectOutputMockup.json';
+const loginIncorrectMockup: ResponseStatus = require('../../../../fixtures/varcanService/login/input/loginIncorrectMockup.json');
+const loginIncorrectOutputMockup: ResponseStatus =  require('../../../../fixtures/varcanService/login/output/loginIncorrectOutputMockup.json');
 
 // BIOTYPES
 const biotypeOutputMockup: Array<Biotype> = require('../../../../fixtures/varcanService/biotype/output/biotypeOutputMockup.json');

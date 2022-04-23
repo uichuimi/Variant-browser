@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import { VarCanService } from './services/varcan-service/var-can.service';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +9,6 @@ import { VarCanService } from './services/varcan-service/var-can.service';
 /**
  * prueba AppComponent Class
  */
-export class AppComponent implements OnInit {
-  private roles: string[];
-  isLoggedIn = false;
-  username: string;
-
-  constructor(private varcanService: VarCanService) {  }
-
-  ngOnInit(): void {
-    this.varcanService.getChromosomes();
-  }
-
-  logout() {
-
-  }
+export class AppComponent {
+  title = 'Prueba';
 }
