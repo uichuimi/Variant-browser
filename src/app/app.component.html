@@ -1,6 +1,11 @@
 <div id="app">
   <nav class="navBar">
-    <button type="button" onclick="console.log('sign up')">Sign Up</button>
+    <button type="button">
+      <a routerLink="/register">Sign Up</a>
+    </button>
+    <button type="button">
+      <a routerLink="/login">Log Out</a>
+    </button>    
   </nav>
   <router-outlet></router-outlet>
 </div>

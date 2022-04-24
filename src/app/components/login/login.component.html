@@ -1,1 +1,26 @@
-<p>login works!</p>
+<div class="container">
+    <div class="header">
+        <img src="../../../assets/image/LOGO-SCS.png" alt="logo-scs">
+        <span id="name">Servicio Canario de la Salud</span>
+    </div>
+    <h3>Sign in with your access credentials</h3>
+    <form #login="ngForm" (ngSubmit)="submit(login)">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input #username="ngModel" type="text" name="username" class="form-control" ngModel required>
+            <div *ngIf="username.touched && username.invalid">
+                <span class="error">You must provide a username!!</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input #password="ngModel" type="password" name="password" class="form-control" ngModel required>
+            <div *ngIf="password.touched && password.invalid">
+                <span class="error">You must provide a password!!</span>
+            </div>            
+        </div>
+        <button type="submit">
+            Access
+        </button>
+    </form>
+</div>
