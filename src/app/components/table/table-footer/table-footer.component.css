@@ -2,10 +2,22 @@
 	width: 100%;
 	display: flex;
     align-items: center;
-    background-color: #26509A;
+    background-color: #fff;
+    border: 2px solid #000;
 }
 
 .footer .info {
     flex-grow: 1;
     text-align: left;
+}
+
+button {
+    outline: none;
+    background-color: transparent;
+}
+
+span {
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
 }
