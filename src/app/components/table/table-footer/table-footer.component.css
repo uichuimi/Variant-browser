@@ -1,0 +1,11 @@
+.footer {
+	width: 100%;
+	display: flex;
+    align-items: center;
+    background-color: #26509A;
+}
+
+.footer .info {
+    flex-grow: 1;
+    text-align: left;
+}

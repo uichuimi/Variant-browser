@@ -17,12 +17,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import { TableComponent } from './components/table/table.component';
+import { TableContentComponent } from './components/table/table-content/table-content.component';
+import { TableFooterComponent } from './components/table/table-footer/table-footer.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
+    TableContentComponent,
+    TableFooterComponent,
   ],
   imports: [
     FormsModule,

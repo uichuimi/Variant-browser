@@ -1,9 +1,29 @@
-.header{
-    width: 100%;
-    border: 1px solid #000;
+.header {
+	width: 100%;
+	display: flex;
+    align-items: center;
     background-color: #26509A;
 }
 
-h4 {
+.header .title {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.button {
+    background-color: #9E9BA1;
+    border: 2px solid #000;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+  }
+
+.downloadButton {
+    border-radius: 50%;
+}
+
+.title {
     text-align: center;
 }
