@@ -1,1 +1,51 @@
-<p>register works!</p>
+<div class="container">
+    <div class="header">
+        <img src="../../../assets/image/LOGO-SCS.png" alt="logo-scs">
+        <span id="name">Servicio Canario de la Salud</span>
+    </div>
+    <h3>Sign in with your access credentials</h3>
+    <form #register="ngForm" (ngSubmit)="submit(register)">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input #firstName="ngModel" type="text" name="firstName" class="form-control" ngModel required>
+            <div *ngIf="firstName.touched && firstName.invalid">
+                <span class="error">You must provide your first name!!</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input #lastName="ngModel" type="text" name="lastName" class="form-control" ngModel required>
+            <div *ngIf="lastName.touched && lastName.invalid">
+                <span class="error">You must provide your last name!!</span>
+            </div>            
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input #email="ngModel" type="email" name="email" class="form-control" ngModel required>
+            <div *ngIf="email.touched && email.invalid">
+                <span class="error">You must provide an email!!</span>
+            </div>            
+        </div> 
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input #username="ngModel" type="text" name="username" class="form-control" ngModel required>
+            <div *ngIf="username.touched && username.invalid">
+                <span class="error">You must provide an username!!</span>
+            </div>            
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input #password="ngModel" type="password" name="password" class="form-control" ngModel required>
+            <div *ngIf="password.touched && password.invalid">
+                <span class="error">You must provide a password!!</span>
+            </div>            
+        </div>  
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" name="confirmPassword" class="form-control" ngModel required>           
+        </div>                                 
+        <button type="submit">
+            Sign Up
+        </button>
+    </form>
+</div>
