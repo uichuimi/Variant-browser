@@ -3,6 +3,7 @@
 	display: flex;
     align-items: center;
     background-color: #26509A;
+    border: 2px solid #000;
 }
 
 .header .title {
