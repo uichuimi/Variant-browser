@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-table-footer',
   templateUrl: './table-footer.component.html',
   styleUrls: ['./table-footer.component.css']
 })
-export class TableFooterComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class TableFooterComponent {
+  visible = false;
 
 }

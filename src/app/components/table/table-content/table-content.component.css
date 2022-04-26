@@ -1,18 +1,14 @@
 .table {
 	width: 100%;
-	border: 1px solid #26509A; 
+	border: 1px solid;
+	margin-bottom: 0px;
 }
 
 .tableHeader {
-    background-color: #26509A;
-}
-
-table, td, th {
-	border: 1px solid;
+    background-color: #9cc2e5;
 }
   
 table {
 	width: 100%;
-	border-collapse: collapse;
 	text-align: center;
 } 
