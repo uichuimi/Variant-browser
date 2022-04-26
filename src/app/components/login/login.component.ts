@@ -1,25 +1,47 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 // SERVICES
-import { LoginService } from 'src/app/services/varcan-service/login-service/login.service';
+import { VarCanService } from 'src/app/services/varcan-service/var-can.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  private service: VarCanService;
+  loginIncorrect = false;
+  loading = false;
 
   constructor(private router: Router) { }
 
+  ngOnInit(): void {
+    this.service = new VarCanService(environment.serverUrl)
+  }
+
+  onClick() {
+    console.log("sdfdasfa");
+    this.loginIncorrect = false;
+  }
+
   submit(login) {
+    this.loginIncorrect = false;
     const navigationDetails: string[] = ['/variants'];
     console.log("valid/invalid: " + login.invalid);
 
     if(!login.invalid) {
       console.log("valid");
-      this.router.navigate(navigationDetails);
+      const username = login.form.controls.username.value;
+      const password = login.form.controls.password.value
+      this.service.login({"username": username, "password": password}).then(response => {
+        this.router.navigate(navigationDetails);
+        return response;
+      }).catch(error => {
+        this.loginIncorrect = true;
+        console.log("login error: " + error);
+      });
     }
     console.log("Form submitted", login);
   }
