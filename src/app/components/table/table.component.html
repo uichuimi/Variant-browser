@@ -9,6 +9,11 @@
             </button>
         </div>
     </div>
-    <app-table-content></app-table-content>
+    <div *ngIf="loading" class="loadingContainer">
+        <img src="../../../assets/icon/icons8-spinner.gif" alt="loading">
+    </div>
+    <app-table-content
+        *ngfor="let variant of variants.content"
+        [variant]="variant"></app-table-content>
     <app-table-footer></app-table-footer>
 </div>

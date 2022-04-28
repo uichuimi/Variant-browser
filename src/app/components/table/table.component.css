@@ -24,3 +24,8 @@
 .title {
     text-align: center;
 }
+
+.loadingContainer {
+    text-align: center; 
+    border: 2px solid;
+}

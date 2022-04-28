@@ -42,10 +42,20 @@
         </div>  
         <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input type="password" name="confirmPassword" class="form-control" ngModel required>           
+            <input #confirmPassword="ngModel" type="password" name="confirmPassword" class="form-control" ngModel required>   
+            <div *ngIf="confirmPassword.touched && confirmPassword.invalid">
+                <span class="error">You must confirm your password!!</span>
+            </div>                     
         </div>                                 
-        <button type="submit">
+        <button 
+            type="submit" 
+            [ngClass]="{'disabled': !register.valid || register.form.value.password !== register.form.value.confirmPassword}"
+            [disabled]="!register.valid || register.form.value.password !== register.form.value.confirmPassword">
             Sign Up
         </button>
     </form>
+</div>
+<div class="passwordError" 
+    [@passwordError]="register.valid && register.form.value.password !== register.form.value.confirmPassword ? 'open' : 'closed'">
+    Passwords do not match
 </div>

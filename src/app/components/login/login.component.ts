@@ -33,8 +33,7 @@ export class LoginComponent implements OnInit {
 
     if(!login.invalid) {
       console.log("valid");
-      const username = login.form.controls.username.value;
-      const password = login.form.controls.password.value
+      const { username, password } = login.form.value;
       this.service.login({"username": username, "password": password}).then(response => {
         this.router.navigate(navigationDetails);
         return response;

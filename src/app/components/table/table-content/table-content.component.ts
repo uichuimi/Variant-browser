@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-table-content',
@@ -12,4 +12,5 @@ export class TableContentComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  @Input() variant = {};
 }
