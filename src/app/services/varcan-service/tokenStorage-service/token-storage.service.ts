@@ -29,9 +29,7 @@ export class TokenStorageService {
    * @param token token que se consigue al hacer login
    */
   public saveToken(httpHandler: AxiosInstance, token: Token) {
-    console.log("token: " + token.refresh_token);
     httpHandler.defaults.headers['Authorization'] = `${token.token_type} ${token.refresh_token}`;
-    console.log("httpHandler: ", httpHandler.defaults.headers);
   }
 
   /**

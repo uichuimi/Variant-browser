@@ -13,7 +13,28 @@
         <img src="../../../assets/icon/icons8-spinner.gif" alt="loading">
     </div>
     <table class="table">   
-        <app-table-content></app-table-content>
+        <tr class="tableHeader">
+            <th>SNP Id</th>
+            <th>Coordinate</th>
+            <th>Variant</th>
+            <th>HGVS.p</th>
+            <th>Gene</th>
+            <th>Consequence</th>
+            <th>DP</th>
+            <th>Frecuencia</th>
+            <th>GMAF</th>
+        </tr>
+        <tr *ngFor="let variant of variants.content;let indice=index">
+            <td>{{ variant.identifier }}</td>
+            <td>Maria Anders</td>
+            <td>{{ variant.reference }} / {{ variant.alternative }}</td>
+            <td>{{ variant.consequence[0].hgvsp }}</td>
+            <td>Germany</td>
+            <td>Germany</td>
+            <td>{{ dp[indice] }}</td>
+            <td>{{ localFrequency[indice] }}</td>
+            <td>{{ globalFrequency[indice] }}</td>            
+        </tr>
     </table>
     <app-table-footer></app-table-footer>
 </div>
