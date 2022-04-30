@@ -27,6 +27,6 @@ export class VariantsService {
   fetch(data?: VariantParams): Promise<AxiosResponse<Page<Variant>>> {
     return data !== null ? 
       this.postFetchService.fetch<VariantParams, Page<Variant>>('/variants', data) : 
-      this.postFetchService.fetch<VariantParams, Page<Variant>>('/variants', data);
+      this.postFetchService.fetch<VariantParams, Page<Variant>>('/variants');
   } 
 }
