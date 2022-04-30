@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import {
   trigger,
   state,
@@ -8,6 +7,9 @@ import {
   animate,
   transition
 } from '@angular/animations';
+
+// CONSTANT
+import { GlobalConstants } from 'src/app/common/global-constants';
 
 // SERVICES
 import { VarCanService } from 'src/app/services/varcan-service/var-can.service';
@@ -54,7 +56,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.service = new VarCanService(environment.serverUrl)
+    this.service = GlobalConstants.getService();
   }
 
   onClick() {

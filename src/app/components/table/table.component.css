@@ -1,4 +1,4 @@
-.table {
+.container {
     padding-left: 50px;
     padding-right: 50px;
 }
@@ -29,3 +29,12 @@
     text-align: center; 
     border: 2px solid;
 }
+
+.table {
+	border: 1px solid;
+	margin-bottom: 0px;
+}
+ 
+table {
+	text-align: center;
+} 

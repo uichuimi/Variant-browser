@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
+
+// CONSTANTS
+import { GlobalConstants } from 'src/app/common/global-constants';
 
 // MODELS
 import { Page } from 'src/app/models/output/Page';
@@ -21,8 +23,9 @@ export class TableComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.service = new VarCanService(environment.serverUrl);
+    this.service = GlobalConstants.getService();
     this.service.getVariants({size: 200}).then(response => {
+      this.loading = false;
       this.variants = response.data;
     }).catch(error => {
       console.log("variants error: " + error)
