@@ -12,7 +12,7 @@
     <div *ngIf="loading" class="loadingContainer">
         <img src="../../../assets/icon/icons8-spinner.gif" alt="loading">
     </div>
-    <table class="table">   
+    <table *ngIf="!loading" class="table">   
         <tr class="tableHeader">
             <th>SNP Id</th>
             <th>Coordinate</th>
@@ -25,10 +25,16 @@
             <th>GMAF</th>
         </tr>
         <tr *ngFor="let variant of variants.content;let indice=index">
-            <td>{{ variant.identifier }}</td>
+            <td>
+                <span *ngIf="variant.identifier !== null">{{ variant.identifier }}</span>
+                <span *ngIf="variant.identifier === null">-</span>
+            </td>
             <td>Maria Anders</td>
             <td>{{ variant.reference }} / {{ variant.alternative }}</td>
-            <td>{{ variant.consequence[0].hgvsp }}</td>
+            <td>
+                <span *ngIf="variant.consequence[0].hgvsp !== null">{{ variant.consequence[0].hgvsp }}</span>
+                <span *ngIf="variant.consequence[0].hgvsp === null">-</span>
+            </td>
             <td>Germany</td>
             <td>Germany</td>
             <td>{{ dp[indice] }}</td>
