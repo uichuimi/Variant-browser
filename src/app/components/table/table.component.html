@@ -35,7 +35,7 @@
                 <span *ngIf="variant.consequence[0].hgvsp !== null">{{ variant.consequence[0].hgvsp }}</span>
                 <span *ngIf="variant.consequence[0].hgvsp === null">-</span>
             </td>
-            <td>Germany</td>
+            <td>{{ geneSymbols[indice] }}</td>
             <td>Germany</td>
             <td>{{ dp[indice] }}</td>
             <td>{{ localFrequency[indice] }}</td>

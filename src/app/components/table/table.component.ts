@@ -22,6 +22,7 @@ export class TableComponent implements OnInit {
   dp: Array<number> = [];
   localFrequency: Array<String> = [];
   globalFrequency: Array<String> = [];
+  geneSymbols: Array<String> = [];
 
   loading = true;
 
@@ -40,6 +41,7 @@ export class TableComponent implements OnInit {
       this.calculateDP(response.data);              // CALCULAR DPs
       this.calculateLocalFrequency(response.data);  // CALCULAR FRECUENCIA LOCAL
       this.calculateGlobalFrequency(response.data); // CALCULAR FRECUENCIA GLOBAL
+      this.getGeneSymbol(response.data);            // OBTENER SÍMBOLO DEL GEN
       console.log("variants: ", this.variants);
     }).catch(error => {
       console.log("variants error: " + error)
@@ -94,7 +96,16 @@ export class TableComponent implements OnInit {
       an = 0;
       af = 0;
     });  
-  }   
+  }
+  
+  getGeneSymbol(data) {
+    data.content.map(variant => {
+      this.service.getBatchGenes({"ids": [variant.consequence[0].gene]}).then(response => {
+        this.geneSymbols.push(response.data[0].symbol);       
+      })
+    });
+    this.service.getBatchGenes()
+  }  
 }
 
 /* let ac: number;
