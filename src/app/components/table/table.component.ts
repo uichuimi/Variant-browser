@@ -6,6 +6,8 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 // MODELS
 import { Page } from 'src/app/models/output/Page';
 import { Variant } from 'src/app/models/output/Variant';
+import { Chromosome } from 'src/app/models/output/Chromosome';
+import { Effect } from 'src/app/models/output/Effect';
 
 // SERVICES
 import { VarCanService } from 'src/app/services/varcan-service/var-can.service';
@@ -17,6 +19,8 @@ import { VarCanService } from 'src/app/services/varcan-service/var-can.service';
 })
 export class TableComponent implements OnInit {
   private service: VarCanService;
+  private chromosomesList: Chromosome[];
+  private effectsList: Effect[];
 
   variants: Page<Variant>;
   dp: Array<number> = [];
@@ -30,10 +34,10 @@ export class TableComponent implements OnInit {
   positionX: number;
   positionY: number;
 
-  constructor() { }
-
   ngOnInit(): void {
     this.service = GlobalConstants.getService();
+    this.chromosomesList = GlobalConstants.getChromosomes();
+    this.effectsList = GlobalConstants.getEffects();
     this.getVariants();
   }
 
@@ -52,6 +56,7 @@ export class TableComponent implements OnInit {
     });    
   }
 
+  // MÉTODOS AUXILIARES
   calculateDP(data) {
     let an: number = 0;
 
@@ -106,11 +111,12 @@ export class TableComponent implements OnInit {
     data.content.map(variant => {
       this.service.getBatchGenes({"ids": [variant.consequence[0].gene]}).then(response => {
         this.geneSymbols.push(response.data[0].symbol);       
-      })
+      }).catch(error => console.log("BacthGenes error: " + error));
     });
     this.service.getBatchGenes()
   }  
 
+  // CONTROL DE EVENTOS
   mouseOver(event,index) {
     // STORE MOUSE POSITION
     console.log('Position X: ' + event.pageX + " Position Y: " + event.pageY);  

@@ -73,6 +73,9 @@ export class LoginComponent implements OnInit {
       console.log("valid");
       const { username, password } = login.form.value;
       this.service.login({"username": username, "password": password}).then(response => {
+        GlobalConstants.setChromosomes();
+        GlobalConstants.setEffects();
+            
         this.router.navigate(navigationDetails);
         return response;
       }).catch(error => {
