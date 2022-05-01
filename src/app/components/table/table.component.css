@@ -38,7 +38,17 @@
 .tableHeader {
     background-color: #9cc2e5;
 }
+
+.variantSymbol {
+    position: absolute;
+    bottom: 100px;
+    background-color: #9cc2e5;
+}
  
 table {
 	text-align: center;
 } 
+
+td {
+    text-overflow: ellipsis;
+}

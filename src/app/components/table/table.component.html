@@ -30,7 +30,22 @@
                 <span *ngIf="variant.identifier === null">-</span>
             </td>
             <td>Maria Anders</td>
-            <td>{{ variant.reference }} / {{ variant.alternative }}</td>
+            <td>
+                <span *ngIf="variant.reference.length < 7 && variant.alternative.length < 7">
+                    {{ variant.reference }} / {{ variant.alternative }}
+                </span>
+                <span *ngIf="variant.reference.length >= 7"
+                    (mouseover)="mouseOver($event,indice)"
+                    (mouseleave)="mouseLeave()">
+                    {{ variant.reference.substring(0,6) }}... / {{ variant.alternative }}
+                </span>
+                <span 
+                    *ngIf="variant.alternative.length >= 7"
+                    (mouseover)="mouseOver($event,indice)"
+                    (mouseleave)="mouseLeave()">
+                    {{ variant.reference }} / {{ variant.alternative.substring(0,6) }}...
+                </span>
+            </td>
             <td>
                 <span *ngIf="variant.consequence[0].hgvsp !== null">{{ variant.consequence[0].hgvsp }}</span>
                 <span *ngIf="variant.consequence[0].hgvsp === null">-</span>
@@ -43,4 +58,8 @@
         </tr>
     </table>
     <app-table-footer></app-table-footer>
+    <div *ngIf="showVariantSymbol" [ngStyle]="{'position': 'absolute', 'top': positionY, 'left': positionX}">
+        <span>{{ variantToShow }}</span>                
+    </div>     
 </div>
+

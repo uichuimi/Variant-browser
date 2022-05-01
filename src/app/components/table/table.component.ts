@@ -25,6 +25,10 @@ export class TableComponent implements OnInit {
   geneSymbols: Array<String> = [];
 
   loading = true;
+  showVariantSymbol = false;
+  variantToShow = "";
+  positionX: number;
+  positionY: number;
 
   constructor() { }
 
@@ -106,21 +110,19 @@ export class TableComponent implements OnInit {
     });
     this.service.getBatchGenes()
   }  
-}
 
-/* let ac: number;
-let an: number;
-let af: number;    
-data.content.map((variant) => {
-  variant.frequencies.map((frequency) => {
-    if(frequency.population === 1) {
-      ac += frequency.ac;
-      an += frequency.an;
-    }
-  });
-  af = ac / an;
-  this.dp.push(ac + " / " + an + " (" + af + ")");
-  ac = 0;
-  an = 0;
-  af = 0;
-}); */
+  mouseOver(event,index) {
+    // STORE MOUSE POSITION
+    console.log('Position X: ' + event.pageX + " Position Y: " + event.pageY);  
+    this.positionX = event.pageX;
+    this.positionY = event.pageY;
+
+    this.showVariantSymbol = true;  
+    this.variantToShow = this.variants.content[index].reference + " / " + this.variants.content[index].alternative;
+    console.log("variantToShow: " + this.variantToShow);
+  }
+
+  mouseLeave() {
+    this.showVariantSymbol = false;
+  }
+}
