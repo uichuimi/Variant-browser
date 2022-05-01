@@ -27,6 +27,8 @@ export class TableComponent implements OnInit {
   localFrequency: Array<String> = [];
   globalFrequency: Array<String> = [];
   geneSymbols: Array<String> = [];
+  ucsc: Array<String> = [];
+  effect: Array<String> = [];
 
   loading = true;
   showVariantSymbol = false;
@@ -50,6 +52,8 @@ export class TableComponent implements OnInit {
       this.calculateLocalFrequency(response.data);  // CALCULAR FRECUENCIA LOCAL
       this.calculateGlobalFrequency(response.data); // CALCULAR FRECUENCIA GLOBAL
       this.getGeneSymbol(response.data);            // OBTENER SÍMBOLO DEL GEN
+      this.getCoordinate(response.data);            // OBTENER UCSC
+      this.getConsequence(response.data);           // OBTENER CONSECUENCIAS
       console.log("variants: ", this.variants);
     }).catch(error => {
       console.log("variants error: " + error)
@@ -115,6 +119,22 @@ export class TableComponent implements OnInit {
     });
     this.service.getBatchGenes()
   }  
+
+  getCoordinate(data) {
+    let chromosomeElement: Chromosome;
+    data.content.map(variant => {
+      chromosomeElement = this.chromosomesList.find(element => element.id === variant.chromosome);
+      this.ucsc.push(chromosomeElement.ucsc);
+    });
+  }
+
+  getConsequence(data) {
+    let effect: Effect;
+    data.content.map(variant => {
+      effect = this.effectsList.find(element => element.id === variant.consequence[0].effect);
+      this.effect.push(effect.name);
+    });
+  }
 
   // CONTROL DE EVENTOS
   mouseOver(event,index) {

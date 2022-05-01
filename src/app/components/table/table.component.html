@@ -29,7 +29,7 @@
                 <span *ngIf="variant.identifier !== null">{{ variant.identifier }}</span>
                 <span *ngIf="variant.identifier === null">-</span>
             </td>
-            <td>Maria Anders</td>
+            <td>{{ ucsc[indice] }}:{{ variant.position }}</td>
             <td>
                 <span *ngIf="variant.reference.length < 7 && variant.alternative.length < 7">
                     {{ variant.reference }} / {{ variant.alternative }}
@@ -51,14 +51,14 @@
                 <span *ngIf="variant.consequence[0].hgvsp === null">-</span>
             </td>
             <td>{{ geneSymbols[indice] }}</td>
-            <td>Germany</td>
+            <td>{{ effect[indice] }}</td>
             <td>{{ dp[indice] }}</td>
             <td>{{ localFrequency[indice] }}</td>
             <td>{{ globalFrequency[indice] }}</td>            
         </tr>
     </table>
     <app-table-footer></app-table-footer>
-    <div *ngIf="showVariantSymbol" [ngStyle]="{'position': 'absolute', 'top': positionY, 'left': positionX}">
+    <div *ngIf="showVariantSymbol">
         <span>{{ variantToShow }}</span>                
     </div>     
 </div>
