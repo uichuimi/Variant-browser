@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-table-footer',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./table-footer.component.css']
 })
 export class TableFooterComponent {
-  visible = false;
+  visible = true;
 
+  @Input() filteredElements = 0;
 }

@@ -57,7 +57,7 @@
             <td>{{ globalFrequency[indice] }}</td>            
         </tr>
     </table>
-    <app-table-footer></app-table-footer>
+    <app-table-footer [filteredElements]="variants.totalElements"></app-table-footer>
     <div *ngIf="showVariantSymbol">
         <span>{{ variantToShow }}</span>                
     </div>     
