@@ -9,6 +9,18 @@
             </button>
         </div>
     </div>
+    <app-table-footer 
+        [filteredElements]="variants.totalElements"
+        [first]="first"
+        [initial]="initial"
+        [last]="last"
+        [final]="final"
+        [totalPages]="totalPages"
+        [numberOfElements]="numberOfElements"
+        (prevPageEvent)="prevPage()"
+        (nextPageEvent)="nextPage()"
+        (firstPageEvent)="firstPage()"
+        (lastPageEvent)="lastPage()"></app-table-footer>    
     <div *ngIf="loading" class="loadingContainer">
         <img src="../../../assets/icon/icons8-spinner.gif" alt="loading">
     </div>
@@ -24,7 +36,7 @@
             <th>Frecuencia</th>
             <th>GMAF</th>
         </tr>
-        <tr *ngFor="let variant of variants.content;let indice=index">
+        <tr *ngFor="let variant of variants.slice(initial,final);let indice=index">
             <td>
                 <span *ngIf="variant.identifier !== null">{{ variant.identifier }}</span>
                 <span *ngIf="variant.identifier === null">-</span>
@@ -57,7 +69,6 @@
             <td>{{ globalFrequency[indice] }}</td>            
         </tr>
     </table>
-    <app-table-footer [filteredElements]="variants.totalElements"></app-table-footer>
     <div *ngIf="showVariantSymbol">
         <span>{{ variantToShow }}</span>                
     </div>     

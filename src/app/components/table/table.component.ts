@@ -22,7 +22,7 @@ export class TableComponent implements OnInit {
   private chromosomesList: Chromosome[];
   private effectsList: Effect[];
 
-  variants: Page<Variant>;
+  variants: Array<Variant>;
   dp: Array<number> = [];
   localFrequency: Array<String> = [];
   globalFrequency: Array<String> = [];
@@ -30,11 +30,22 @@ export class TableComponent implements OnInit {
   ucsc: Array<String> = [];
   effect: Array<String> = [];
 
-  loading = true;
-  showVariantSymbol = false;
-  variantToShow = "";
+  loading = true;                 // LLAMADA VARIANTS CARGANDO
+  showVariantSymbol = false;      // RATÓN SOBRE ALTERNATIVE O REFERENCE CON MÁS DE 6 CARACTERES
+  variantToShow = "";             // ALTERNATIVE Y REFERENCE COMPLETA
+
+  // POSICIÓN RATÓN
   positionX: number;
   positionY: number;
+
+  // CONTROL DE PÁGINA ACTUAL
+  initial: number = 0;
+  final: number = 20;
+  page: number = 0;
+  first: boolean = true; 
+  last: boolean = false;
+  totalPages: number;
+  numberOfElements: number;
 
   ngOnInit(): void {
     this.service = GlobalConstants.getService();
@@ -44,10 +55,19 @@ export class TableComponent implements OnInit {
   }
 
   getVariants() {
-    this.service.getVariants({size: 200}).then(response => {
+    this.service.getVariants({size: 200, page: this.page}).then(response => {
       this.loading = false;
-      this.variants = response.data;
+      this.first = response.data.first;
+      this.last = response.data.last;
+      this.totalPages = response.data.totalPages;
+      this.numberOfElements = response.data.numberOfElements;
+      this.variants = response.data.content;
 
+      if(this.last) {
+        this.initial = this.numberOfElements-(this.numberOfElements % 20);
+        this.final = this.numberOfElements;
+        console.log("initial: " + this.initial + " final: " + this.final);      
+      }
       this.calculateDP(response.data);              // CALCULAR DPs
       this.calculateLocalFrequency(response.data);  // CALCULAR FRECUENCIA LOCAL
       this.calculateGlobalFrequency(response.data); // CALCULAR FRECUENCIA GLOBAL
@@ -57,7 +77,7 @@ export class TableComponent implements OnInit {
       console.log("variants: ", this.variants);
     }).catch(error => {
       console.log("variants error: " + error)
-    });    
+    });
   }
 
   // MÉTODOS AUXILIARES
@@ -146,11 +166,50 @@ export class TableComponent implements OnInit {
     this.positionY = event.pageY;
 
     this.showVariantSymbol = true;  
-    this.variantToShow = this.variants.content[index].reference + " / " + this.variants.content[index].alternative;
+    this.variantToShow = this.variants[index].reference + " / " + this.variants[index].alternative;
     console.log("variantToShow: " + this.variantToShow);
   }
 
   mouseLeave() {
     this.showVariantSymbol = false;
   }
+
+  nextPage() {
+    this.initial += 20;
+    this.final += 20;
+    if(this.final % 220 === 0) {
+      this.loading = true;
+      this.page += 1;
+      this.initial = 0;
+      this.final = 20;      
+      this.getVariants();
+    }
+  }
+
+  prevPage() {
+    if(this.initial === 0) {
+      this.loading = true;
+      this.page -= 1;
+      this.initial = 180;
+      this.final = 200;      
+      this.getVariants();
+    } else {
+      this.initial -= 20;
+      this.final -= 20;
+    }
+  }  
+
+  firstPage() {
+    this.loading = true;
+    this.initial = 0;
+    this.final = 20;
+    this.page = 0;
+    this.getVariants();
+  }
+
+  lastPage() {
+    this.loading = true;
+    this.page = this.totalPages - 1;
+    this.getVariants();
+  }  
 }
