@@ -93,7 +93,9 @@ export class TableComponent implements OnInit {
   }  
 
   calculateGlobalFrequency(data) {
-    let ac, an, af: number = 0;
+    let ac: number = 0
+    let an: number = 0
+    let af: number = 0;
 
     data.content.map((variant) => {
       variant.frequencies.map((frequency) => {

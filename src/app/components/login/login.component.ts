@@ -66,24 +66,32 @@ export class LoginComponent implements OnInit {
 
   submit(login) {
     this.loginIncorrect = false;
-    const navigationDetails: string[] = ['/variants'];
-    console.log("valid/invalid: " + login.invalid);
 
     if(!login.invalid) {
       console.log("valid");
-      const { username, password } = login.form.value;
-      this.service.login({"username": username, "password": password}).then(response => {
-        GlobalConstants.setChromosomes();
-        GlobalConstants.setEffects();
-            
-        this.router.navigate(navigationDetails);
-        return response;
-      }).catch(error => {
-        this.loginIncorrect = true;
-        console.log("login error: " + error);
-      });
+      this.login(login);
     }
     console.log("Form submitted", login);
   }
 
+  login(login) {
+    const navigationDetails: string[] = ['/variants'];
+    const { username, password } = login.form.value;
+
+    this.service.login({"username": username, "password": password}).then(response => {
+      this.setLocalStorage();
+      sessionStorage.setItem('username', username);
+
+      this.router.navigate(navigationDetails);
+      return response;
+    }).catch(error => {
+      this.loginIncorrect = true;
+      console.log("login error: " + error);
+    });
+  }
+
+  setLocalStorage(): void {
+    GlobalConstants.setChromosomes();
+    GlobalConstants.setEffects();
+  }
 }
