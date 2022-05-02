@@ -1,6 +1,7 @@
 .container {
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 30px;
 }
 
 .header {
@@ -33,6 +34,8 @@
 .table {
 	border: 1px solid;
 	margin-bottom: 0px;
+    table-layout: fixed;
+    width: 100%;
 }
 
 .tableHeader {
@@ -44,11 +47,16 @@
     bottom: 100px;
     background-color: #9cc2e5;
 }
- 
+
+#identifierLink {
+    text-decoration: none;
+}
+
 table {
 	text-align: center;
 } 
 
 td {
-    text-overflow: ellipsis;
+    word-wrap: break-word;
+    vertical-align: middle;
 }

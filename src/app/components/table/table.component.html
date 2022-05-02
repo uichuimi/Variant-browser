@@ -10,7 +10,7 @@
         </div>
     </div>
     <app-table-footer 
-        [filteredElements]="variants.totalElements"
+        [filteredElements]="filteredElements"
         [first]="first"
         [initial]="initial"
         [last]="last"
@@ -38,7 +38,9 @@
         </tr>
         <tr *ngFor="let variant of variants.slice(initial,final);let indice=index">
             <td>
-                <span *ngIf="variant.identifier !== null">{{ variant.identifier }}</span>
+                <a id="identifierLink" href="https://www.ncbi.nlm.nih.gov/snp/{{ variant.identifier }}" target="_blank">
+                    <span *ngIf="variant.identifier !== null">{{ variant.identifier }}</span>
+                </a>
                 <span *ngIf="variant.identifier === null">-</span>
             </td>
             <td>{{ ucsc[indice] }}:{{ variant.position }}</td>

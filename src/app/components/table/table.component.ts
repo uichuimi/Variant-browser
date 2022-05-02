@@ -29,6 +29,7 @@ export class TableComponent implements OnInit {
   geneSymbols: Array<String> = [];
   ucsc: Array<String> = [];
   effect: Array<String> = [];
+  filteredElements: number;
 
   loading = true;                 // LLAMADA VARIANTS CARGANDO
   showVariantSymbol = false;      // RATÓN SOBRE ALTERNATIVE O REFERENCE CON MÁS DE 6 CARACTERES
@@ -61,6 +62,7 @@ export class TableComponent implements OnInit {
       this.last = response.data.last;
       this.totalPages = response.data.totalPages;
       this.numberOfElements = response.data.numberOfElements;
+      this.filteredElements = response.data.totalElements;
       this.variants = response.data.content;
 
       if(this.last) {
