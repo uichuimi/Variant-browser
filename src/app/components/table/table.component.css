@@ -48,6 +48,11 @@
     background-color: #9cc2e5;
 }
 
+.selected {
+    background-color: #9cc2e5;
+    border: 2px solid #71a1cd;
+}
+
 #identifierLink {
     text-decoration: none;
 }

@@ -40,7 +40,11 @@
             <th>Frecuencia</th>
             <th>GMAF</th>
         </tr>
-        <tr *ngFor="let variant of variants.slice(initial,final);let indice=index">
+        <tr 
+            *ngFor="let variant of variants.slice(initial,final);let indice=index"
+            (click)="selectVariant(variant)"
+            [ngClass]="{ 'selected': selectedVariant === variant }"
+        >
             <td>
                 <a id="identifierLink" href="https://www.ncbi.nlm.nih.gov/snp/{{ variant.identifier }}" target="_blank">
                     <span *ngIf="variant.identifier !== null">{{ variant.identifier }}</span>

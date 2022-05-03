@@ -33,6 +33,7 @@ export class TableComponent implements OnInit {
   loading = true;                 // LLAMADA VARIANTS CARGANDO
   showVariantSymbol = false;      // RATÓN SOBRE ALTERNATIVE O REFERENCE CON MÁS DE 6 CARACTERES
   variantToShow = "";             // ALTERNATIVE Y REFERENCE COMPLETA
+  selectedVariant: Variant;
 
   // CONTROL DE PÁGINA ACTUAL
   initial: number = 0;
@@ -186,6 +187,14 @@ export class TableComponent implements OnInit {
       case 180:
         return 10;
     }
+  }
+
+  selectVariant(variant: Variant) {
+    if(this.selectedVariant === variant) {
+      this.selectedVariant = null;
+      return;
+    }
+    this.selectedVariant = variant;
   }
 
   // CONTROL DE EVENTOS
