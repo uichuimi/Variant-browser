@@ -1,4 +1,7 @@
 <div class="container">
+    <div id="refAltContainer">
+        <span>{{ variantToShow }}</span>                
+    </div> 
     <div class="header">
         <div class="title">
             <h4>Variant</h4>
@@ -17,6 +20,7 @@
         [final]="final"
         [totalPages]="totalPages"
         [numberOfElements]="numberOfElements"
+        [pageNumber]="pageNumber"
         (prevPageEvent)="prevPage()"
         (nextPageEvent)="nextPage()"
         (firstPageEvent)="firstPage()"
@@ -70,9 +74,6 @@
             <td>{{ localFrequency[indice] }}</td>
             <td>{{ globalFrequency[indice] }}</td>            
         </tr>
-    </table>
-    <div *ngIf="showVariantSymbol">
-        <span>{{ variantToShow }}</span>                
-    </div>     
+    </table>    
 </div>
 

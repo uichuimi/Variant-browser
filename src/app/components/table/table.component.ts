@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from 'src/app/common/global-constants';
 
 // MODELS
-import { Page } from 'src/app/models/output/Page';
 import { Variant } from 'src/app/models/output/Variant';
 import { Chromosome } from 'src/app/models/output/Chromosome';
 import { Effect } from 'src/app/models/output/Effect';
@@ -35,41 +34,39 @@ export class TableComponent implements OnInit {
   showVariantSymbol = false;      // RATÓN SOBRE ALTERNATIVE O REFERENCE CON MÁS DE 6 CARACTERES
   variantToShow = "";             // ALTERNATIVE Y REFERENCE COMPLETA
 
-  // POSICIÓN RATÓN
-  positionX: number;
-  positionY: number;
-
   // CONTROL DE PÁGINA ACTUAL
   initial: number = 0;
   final: number = 20;
   page: number = 0;
+  pageNumber: number = 1;
   first: boolean = true; 
   last: boolean = false;
   totalPages: number;
   numberOfElements: number;
 
   ngOnInit(): void {
+    let container = document.getElementById('refAltContainer');
+    container.style.display = 'none';
+
     this.service = GlobalConstants.getService();
     this.chromosomesList = GlobalConstants.getChromosomes();
     this.effectsList = GlobalConstants.getEffects();
     this.getVariants();
   }
 
-  getVariants() {
+  getVariants(callbackFunction?) {
     this.service.getVariants({size: 200, page: this.page}).then(response => {
       this.loading = false;
       this.first = response.data.first;
       this.last = response.data.last;
       this.totalPages = response.data.totalPages;
-      this.numberOfElements = response.data.numberOfElements;
-      this.filteredElements = response.data.totalElements;
+      this.numberOfElements = response.data.numberOfElements;     // NÚMERO DE ELEMENTOS EN LA PÁG.
+      this.filteredElements = response.data.totalElements;        // NÚMERO DE ELEMENTOS EN TODAS LAS PÁGS.
       this.variants = response.data.content;
+      
+      var props = this;
+      if (callbackFunction) callbackFunction(props);     // CALCULAR ÍNDICES PARA ÚLTIMA PÁG.
 
-      if(this.last) {
-        this.initial = this.numberOfElements-(this.numberOfElements % 20);
-        this.final = this.numberOfElements;
-        console.log("initial: " + this.initial + " final: " + this.final);      
-      }
       this.calculateDP(response.data);              // CALCULAR DPs
       this.calculateLocalFrequency(response.data);  // CALCULAR FRECUENCIA LOCAL
       this.calculateGlobalFrequency(response.data); // CALCULAR FRECUENCIA GLOBAL
@@ -160,25 +157,77 @@ export class TableComponent implements OnInit {
     });
   }
 
+  calculateLastPageIndexes(props) {
+    props.initial = props.numberOfElements-(props.numberOfElements % 20);
+    props.final = props.numberOfElements;
+    props.pageNumber = (props.totalPages - 1) * 10 + props.adjustPageNumber(props.initial);
+  }
+  
+  adjustPageNumber(number): number {
+    switch(number) {
+      case 0:
+        return 1;
+      case 20:
+        return 2;
+      case 40:
+        return 3;
+      case 60:
+        return 4;
+      case 80:
+        return 5;
+      case 100:
+        return 6;
+      case 120:
+        return 7;
+      case 140:
+        return 8;
+      case 160:
+        return 9;
+      case 180:
+        return 10;
+    }
+  }
+
   // CONTROL DE EVENTOS
   mouseOver(event,index) {
-    // STORE MOUSE POSITION
-    console.log('Position X: ' + event.pageX + " Position Y: " + event.pageY);  
-    this.positionX = event.pageX;
-    this.positionY = event.pageY;
+    let container = document.getElementById('refAltContainer');
+    // STORE MOUSE POSITION 
+    var positionX = event.pageX - 100;
+    var positionY = event.pageY + 30;
+    console.log("position: " + container.offsetWidth);
 
-    this.showVariantSymbol = true;  
-    this.variantToShow = this.variants[index].reference + " / " + this.variants[index].alternative;
+    container.style.left = positionX + 'px';
+    container.style.top = positionY + 'px';
+    container.style.display = 'block';
+
+    var pageNumber = this.pageNumber.toString();
+    var units = parseInt(pageNumber.split('')[pageNumber.length-1]);
+    console.log("units: " + units);
+    var indexAux;
+
+    if(units === 0) {
+      indexAux = index + 180;
+    } else {
+      indexAux = index + (20 * (units - 1));
+    }
+    console.log("index: " + indexAux)
+    this.variantToShow = this.variants[indexAux].reference + " / " + this.variants[indexAux].alternative;
     console.log("variantToShow: " + this.variantToShow);
   }
 
   mouseLeave() {
-    this.showVariantSymbol = false;
+    let container = document.getElementById('refAltContainer');
+    container.style.display = 'none';
   }
 
   nextPage() {
+    this.pageNumber += 1;
     this.initial += 20;
     this.final += 20;
+
+    // SI EN LA ÚLTIMA PÁG. SE SOBREPASA EL NUM. DE ELEMENTOS LO AJUSTAMOS
+    if(this.last && this.final > this.numberOfElements) this.final = this.numberOfElements;
+
     if(this.final % 220 === 0) {
       this.loading = true;
       this.page += 1;
@@ -189,6 +238,7 @@ export class TableComponent implements OnInit {
   }
 
   prevPage() {
+    this.pageNumber -= 1;
     if(this.initial === 0) {
       this.loading = true;
       this.page -= 1;
@@ -196,12 +246,13 @@ export class TableComponent implements OnInit {
       this.final = 200;      
       this.getVariants();
     } else {
+      this.final = this.initial;
       this.initial -= 20;
-      this.final -= 20;
     }
   }  
 
   firstPage() {
+    this.pageNumber = 1;
     this.loading = true;
     this.initial = 0;
     this.final = 20;
@@ -212,6 +263,6 @@ export class TableComponent implements OnInit {
   lastPage() {
     this.loading = true;
     this.page = this.totalPages - 1;
-    this.getVariants();
-  }  
+    this.getVariants(this.calculateLastPageIndexes);
+  }
 }
