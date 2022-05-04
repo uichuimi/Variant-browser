@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="header">
+        <span>Genotypes filter</span>
+    </div>
+    <div class="filtersContainer">
+        <div class="filters">
+            <form #genotypeFilter="ngForm" (ngSubmit)="submit(genotypeFilter)">
+                <div class="form-group">
+                    <label for="selector">Selector</label>
+                    <select #selector="ngModel" name="selector" class="form-control" ngModel>
+                        <option value="ALL">All</option>
+                        <option value="ANY">Any</option>
+                        <option value="NONE">None</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="number">Number</label>
+                    <input 
+                        #number="ngModel" 
+                        type="text" 
+                        name="number" 
+                        class="form-control"
+                        [disabled]="genotypeFilter.value.selector !== 'ANY'"
+                        ngModel>
+                </div>
+                <div class="form-group">
+                    <label for="samples">Samples</label>
+                    <ng-multiselect-dropdown
+                        name="samples" 
+                        ngDefaultControl
+                        [settings]="samplesSettings"
+                        [data]="individualsList"
+                        [(ngModel)]="selectedSamples"
+                        (onSelect)="onSampleSelect($event)"
+                        (onSelectAll)="onSelectAllSamples($event)"
+                        class="form-control"
+                    >
+                    </ng-multiselect-dropdown>
+                </div>   
+                <div class="form-group">
+                    <label for="genotypes">Genotypes</label>
+                    <ng-multiselect-dropdown
+                        name="genotypes" 
+                        ngDefaultControl
+                        [settings]="genotypesSettings"
+                        [data]="genotypeTypesList"
+                        [(ngModel)]="selectedGenotypeTypes"
+                        (onSelect)="onSampleSelect($event)"
+                        (onSelectAll)="onSelectAllSamples($event)"
+                        class="form-control"
+                    >
+                    </ng-multiselect-dropdown>                    
+                </div>                              
+                <button id="addButton" type="submit">
+                    <span>Add</span>
+                </button>
+            </form>        
+        </div>
+        <div class="appliedFilters">
+            <span>ANY of 2 [CCAR_012, CCAR_0230, CCAR_0225] are [WILDTYPE]</span>
+            <button id="removeButton" (click)="removeFilter()">
+                <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">
+            </button>
+        </div>
+    </div>
+</div>

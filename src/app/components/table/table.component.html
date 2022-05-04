@@ -1,7 +1,12 @@
 <div class="container">
+    <!-- FILTRO DE GENOTIPOS -->
+    <app-genotype-filter></app-genotype-filter>
+
+    <!-- REF Y ALT COMPLETO DE VARIANTE -->
     <div id="refAltContainer">
         <span>{{ variantToShow }}</span>                
     </div> 
+    <!-- CABECERA TABLA DE VARIANTE -->
     <div class="header">
         <div class="title">
             <h4>Variant</h4>
@@ -12,6 +17,7 @@
             </button>
         </div>
     </div>
+    <!-- FOOTER TABLA DE VARIANTE -->
     <app-table-footer 
         [filteredElements]="filteredElements"
         [first]="first"
@@ -24,10 +30,13 @@
         (prevPageEvent)="prevPage()"
         (nextPageEvent)="nextPage()"
         (firstPageEvent)="firstPage()"
-        (lastPageEvent)="lastPage()"></app-table-footer>    
+        (lastPageEvent)="lastPage()"></app-table-footer>   
+
+    <!-- CONTENEDOR CARGANDO --> 
     <div *ngIf="loading" class="loadingContainer">
         <img src="../../../assets/icon/icons8-spinner.gif" alt="loading">
     </div>
+    <!-- TABLA DE VARIANTES -->
     <table *ngIf="!loading" class="table">   
         <tr class="tableHeader">
             <th>SNP Id</th>

@@ -27,6 +27,7 @@
     "file-saver": "^2.0.2",
     "jspdf": "^2.1.1",
     "jspdf-autotable": "^3.5.13",
+    "ng-multiselect-dropdown": "^0.3.8",
     "ng5-slider": "^1.2.6",
     "primeicons": "^4.0.0",
     "primeng": "^10.0.0",

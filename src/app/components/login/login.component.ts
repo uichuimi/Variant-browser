@@ -93,5 +93,8 @@ export class LoginComponent implements OnInit {
   setLocalStorage(): void {
     GlobalConstants.setChromosomes();
     GlobalConstants.setEffects();
+    GlobalConstants.setImpacts();
+    GlobalConstants.setGenotypeTypes();
+    GlobalConstants.setIndividuals();
   }
 }
