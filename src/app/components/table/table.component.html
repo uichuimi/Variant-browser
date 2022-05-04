@@ -57,13 +57,13 @@
                     {{ variant.reference }} / {{ variant.alternative }}
                 </span>
                 <span *ngIf="variant.reference.length >= 7"
-                    (mouseover)="mouseOver($event,indice)"
+                    (mouseover)="mouseOver($event,variant.reference,variant.alternative)"
                     (mouseleave)="mouseLeave()">
                     {{ variant.reference.substring(0,6) }}... / {{ variant.alternative }}
                 </span>
                 <span 
                     *ngIf="variant.alternative.length >= 7"
-                    (mouseover)="mouseOver($event,indice)"
+                    (mouseover)="mouseOver($event,variant.reference,variant.alternative)"
                     (mouseleave)="mouseLeave()">
                     {{ variant.reference }} / {{ variant.alternative.substring(0,6) }}...
                 </span>

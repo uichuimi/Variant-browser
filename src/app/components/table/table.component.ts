@@ -158,12 +158,14 @@ export class TableComponent implements OnInit {
     });
   }
 
+  // CALCULAR INICIO, FIN Y NUM. DE PÁG. CUANDO SE VA A LA ÚLTIMA PÁG.
   calculateLastPageIndexes(props) {
     props.initial = props.numberOfElements-(props.numberOfElements % 20);
     props.final = props.numberOfElements;
     props.pageNumber = (props.totalPages - 1) * 10 + props.adjustPageNumber(props.initial);
   }
   
+  // AJUSTAR NUM. DE PÁG QUE SE MUESTRA EN PIE DE PÁGINA
   adjustPageNumber(number): number {
     switch(number) {
       case 0:
@@ -198,7 +200,7 @@ export class TableComponent implements OnInit {
   }
 
   // CONTROL DE EVENTOS
-  mouseOver(event,index) {
+  mouseOver(event,ref,alt) {
     let container = document.getElementById('refAltContainer');
     // STORE MOUSE POSITION 
     var positionX = event.pageX - 100;
@@ -209,18 +211,7 @@ export class TableComponent implements OnInit {
     container.style.top = positionY + 'px';
     container.style.display = 'block';
 
-    var pageNumber = this.pageNumber.toString();
-    var units = parseInt(pageNumber.split('')[pageNumber.length-1]);
-    console.log("units: " + units);
-    var indexAux;
-
-    if(units === 0) {
-      indexAux = index + 180;
-    } else {
-      indexAux = index + (20 * (units - 1));
-    }
-    console.log("index: " + indexAux)
-    this.variantToShow = this.variants[indexAux].reference + " / " + this.variants[indexAux].alternative;
+    this.variantToShow = ref + " / " + alt;
     console.log("variantToShow: " + this.variantToShow);
   }
 
