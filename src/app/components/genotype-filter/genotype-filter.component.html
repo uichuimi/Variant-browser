@@ -7,7 +7,7 @@
             <form #genotypeFilter="ngForm" (ngSubmit)="submit(genotypeFilter)">
                 <div class="form-group">
                     <label for="selector">Selector</label>
-                    <select #selector="ngModel" name="selector" class="form-control" ngModel>
+                    <select #selector="ngModel" name="selector" class="form-control" ngModel required>
                         <option value="ALL">All</option>
                         <option value="ANY">Any</option>
                         <option value="NONE">None</option>
@@ -17,11 +17,14 @@
                     <label for="number">Number</label>
                     <input 
                         #number="ngModel" 
-                        type="text" 
+                        type="number" 
                         name="number" 
                         class="form-control"
                         [disabled]="genotypeFilter.value.selector !== 'ANY'"
-                        ngModel>
+                        min="1"
+                        value="1"
+                        ngModel
+                        required>
                 </div>
                 <div class="form-group">
                     <label for="samples">Samples</label>
@@ -34,6 +37,7 @@
                         (onSelect)="onSampleSelect($event)"
                         (onSelectAll)="onSelectAllSamples($event)"
                         class="form-control"
+                        required
                     >
                     </ng-multiselect-dropdown>
                 </div>   
@@ -48,19 +52,25 @@
                         (onSelect)="onSampleSelect($event)"
                         (onSelectAll)="onSelectAllSamples($event)"
                         class="form-control"
+                        required
                     >
                     </ng-multiselect-dropdown>                    
                 </div>                              
-                <button id="addButton" type="submit">
+                <button 
+                    type="submit" 
+                    [ngClass]="{'disabled': genotypeFilter.invalid, 'addButton': genotypeFilter.valid}" 
+                    [disabled]="genotypeFilter.invalid">
                     <span>Add</span>
                 </button>
             </form>        
         </div>
         <div class="appliedFilters">
-            <span>ANY of 2 [CCAR_012, CCAR_0230, CCAR_0225] are [WILDTYPE]</span>
-            <button id="removeButton" (click)="removeFilter()">
-                <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">
-            </button>
+            <div *ngFor="let appliedFilter of appliedFilters;let indice=index">
+                <span>{{ appliedFilter }}</span>
+                <button id="removeButton" (click)="removeFilter(indice)">
+                    <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">
+                </button>
+            </div>
         </div>
     </div>
 </div>
