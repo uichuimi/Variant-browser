@@ -28,6 +28,7 @@ export class TableComponent implements OnInit {
   geneSymbols: Array<String> = [];
   ucsc: Array<String> = [];
   effect: Array<String> = [];
+  appliedFilters;
   filteredElements: number;
 
   loading = true;                 // LLAMADA VARIANTS CARGANDO
@@ -44,6 +45,7 @@ export class TableComponent implements OnInit {
   last: boolean = false;
   totalPages: number;
   numberOfElements: number;
+  filtered: boolean;
 
   ngOnInit(): void {
     let container = document.getElementById('refAltContainer');
@@ -57,30 +59,46 @@ export class TableComponent implements OnInit {
 
   getVariants(callbackFunction?) {
     this.service.getVariants({size: 200, page: this.page}).then(response => {
-      this.loading = false;
-      this.first = response.data.first;
-      this.last = response.data.last;
-      this.totalPages = response.data.totalPages;
-      this.numberOfElements = response.data.numberOfElements;     // NÚMERO DE ELEMENTOS EN LA PÁG.
-      this.filteredElements = response.data.totalElements;        // NÚMERO DE ELEMENTOS EN TODAS LAS PÁGS.
-      this.variants = response.data.content;
-      
-      var props = this;
-      if (callbackFunction) callbackFunction(props);     // CALCULAR ÍNDICES PARA ÚLTIMA PÁG.
-
-      this.calculateDP(response.data);              // CALCULAR DPs
-      this.calculateLocalFrequency(response.data);  // CALCULAR FRECUENCIA LOCAL
-      this.calculateGlobalFrequency(response.data); // CALCULAR FRECUENCIA GLOBAL
-      this.getGeneSymbol(response.data);            // OBTENER SÍMBOLO DEL GEN
-      this.getCoordinate(response.data);            // OBTENER UCSC
-      this.getConsequence(response.data);           // OBTENER CONSECUENCIAS
-      console.log("variants: ", this.variants);
+      callbackFunction ? 
+        this.successResponse(response.data, callbackFunction) : this.successResponse(response.data);  
     }).catch(error => {
-      console.log("variants error: " + error)
+      console.log("variants error: " + error);
     });
   }
 
+  getVariantsFiltered(data, callbackFunction?) {
+    this.loading = true;
+    this.appliedFilters = data;
+    this.service.getVariants({size: 200, page: this.page, genotypeFilters: [this.appliedFilters]}).then(response => {
+      callbackFunction ? 
+        this.successResponse(response.data, callbackFunction) : this.successResponse(response.data);
+    }).catch(error => {
+      console.log("variants error: " + error);
+    });    
+  }
+
   // MÉTODOS AUXILIARES
+  successResponse(data, callbackFunction?) {
+    this.loading = false;
+    this.first = data.first;
+    this.last = data.last;
+    this.totalPages = data.totalPages;
+    this.numberOfElements = data.numberOfElements;     // NÚMERO DE ELEMENTOS EN LA PÁG.
+    this.filteredElements = data.totalElements;        // NÚMERO DE ELEMENTOS EN TODAS LAS PÁGS.
+    this.variants = data.content;
+    
+    var props = this;
+    if (callbackFunction) callbackFunction(props);     // CALCULAR ÍNDICES PARA ÚLTIMA PÁG.
+
+    this.calculateDP(data);              // CALCULAR DPs
+    this.calculateLocalFrequency(data);  // CALCULAR FRECUENCIA LOCAL
+    this.calculateGlobalFrequency(data); // CALCULAR FRECUENCIA GLOBAL
+    this.getGeneSymbol(data);            // OBTENER SÍMBOLO DEL GEN
+    this.getCoordinate(data);            // OBTENER UCSC
+    this.getConsequence(data);           // OBTENER CONSECUENCIAS
+    console.log("variants: ", this.variants);   
+  }
+
   calculateDP(data) {
     let an: number = 0;
 
@@ -103,7 +121,10 @@ export class TableComponent implements OnInit {
           an = frequency.an;
         }
       });
-      if(an !== 0) af = ac / an;
+      if(an !== 0) {
+        af = ac / an;
+        af = Number(af.toFixed(4));
+      }
 
       this.localFrequency.push(ac + " / " + an + " (" + af + ")");
       ac = 0;
@@ -124,7 +145,10 @@ export class TableComponent implements OnInit {
           an = frequency.an;
         }
       });
-      if(an !== 0) af = ac / an;
+      if(an !== 0) {
+        af = ac / an;
+        af = Number(af.toFixed(4));
+      }
 
       this.globalFrequency.push(ac + " / " + an + " (" + af + ")");
       ac = 0;
@@ -154,7 +178,7 @@ export class TableComponent implements OnInit {
     let effect: Effect;
     data.content.map(variant => {
       effect = this.effectsList.find(element => element.id === variant.consequence[0].effect);
-      this.effect.push(effect.name);
+      this.effect.push(effect.description);
     });
   }
 
@@ -233,7 +257,7 @@ export class TableComponent implements OnInit {
       this.page += 1;
       this.initial = 0;
       this.final = 20;      
-      this.getVariants();
+      this.filtered ? this.getVariantsFiltered(this.appliedFilters) : this.getVariants();
     }
   }
 
@@ -244,7 +268,7 @@ export class TableComponent implements OnInit {
       this.page -= 1;
       this.initial = 180;
       this.final = 200;      
-      this.getVariants();
+      this.filtered ? this.getVariantsFiltered(this.appliedFilters) : this.getVariants();
     } else {
       this.final = this.initial;
       this.initial -= 20;
@@ -257,12 +281,21 @@ export class TableComponent implements OnInit {
     this.initial = 0;
     this.final = 20;
     this.page = 0;
-    this.getVariants();
+    this.filtered ? this.getVariantsFiltered(this.appliedFilters) : this.getVariants();
   }
 
   lastPage() {
     this.loading = true;
     this.page = this.totalPages - 1;
-    this.getVariants(this.calculateLastPageIndexes);
+    this.filtered ? 
+      this.getVariantsFiltered(this.appliedFilters, this.calculateLastPageIndexes) : 
+      this.getVariants(this.calculateLastPageIndexes);
+  }
+
+  resetPage() {
+    this.page = 0;
+    this.pageNumber = 1;
+    this.filtered = !this.filtered;
+    if(!this.filtered) this.getVariants();
   }
 }

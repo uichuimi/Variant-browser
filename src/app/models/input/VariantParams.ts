@@ -4,5 +4,6 @@ export interface VariantParams {
     chromosomes?: Array<number>;
     genes?: Array<number>;
     start?: number; 
-    end?: number;    
+    end?: number;  
+    genotypeFilters?: Array<Object>;  
 }

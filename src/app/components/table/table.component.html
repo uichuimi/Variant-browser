@@ -1,6 +1,8 @@
 <div class="container">
     <!-- FILTRO DE GENOTIPOS -->
-    <app-genotype-filter></app-genotype-filter>
+    <app-genotype-filter
+        (resetPageEvent)="resetPage()"
+        (notifyFilterEvent)="getVariantsFiltered($event)"></app-genotype-filter>
 
     <!-- REF Y ALT COMPLETO DE VARIANTE -->
     <div id="refAltContainer">
@@ -42,7 +44,7 @@
             <th>SNP Id</th>
             <th>Coordinate</th>
             <th>Variant</th>
-            <th>HGVS.p</th>
+            <th>Change</th>
             <th>Gene</th>
             <th>Consequence</th>
             <th>DP</th>

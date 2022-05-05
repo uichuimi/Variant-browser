@@ -4,7 +4,7 @@
     </div>
     <div class="filtersContainer">
         <div class="filters">
-            <form #genotypeFilter="ngForm" (ngSubmit)="submit(genotypeFilter)">
+            <form #genotypeFilter="ngForm" (ngSubmit)="addFilter(genotypeFilter)">
                 <div class="form-group">
                     <label for="selector">Selector</label>
                     <select #selector="ngModel" name="selector" class="form-control" ngModel required>
@@ -34,9 +34,8 @@
                         [settings]="samplesSettings"
                         [data]="individualsList"
                         [(ngModel)]="selectedSamples"
-                        (onSelect)="onSampleSelect($event)"
-                        (onSelectAll)="onSelectAllSamples($event)"
                         class="form-control"
+                        style="border: none;"                        
                         required
                     >
                     </ng-multiselect-dropdown>
@@ -49,28 +48,30 @@
                         [settings]="genotypesSettings"
                         [data]="genotypeTypesList"
                         [(ngModel)]="selectedGenotypeTypes"
-                        (onSelect)="onSampleSelect($event)"
-                        (onSelectAll)="onSelectAllSamples($event)"
                         class="form-control"
+                        style="border: none;"
                         required
                     >
                     </ng-multiselect-dropdown>                    
                 </div>                              
                 <button 
                     type="submit" 
-                    [ngClass]="{'disabled': genotypeFilter.invalid, 'addButton': genotypeFilter.valid}" 
-                    [disabled]="genotypeFilter.invalid">
+                    [ngClass]="{
+                        'disabled': genotypeFilter.invalid || appliedFilters.length === 1, 
+                        'addButton': genotypeFilter.valid}" 
+                    [disabled]="genotypeFilter.invalid || appliedFilters.length === 1">
                     <span>Add</span>
                 </button>
             </form>        
         </div>
         <div class="appliedFilters">
-            <div *ngFor="let appliedFilter of appliedFilters;let indice=index">
+            <div *ngFor="let appliedFilter of appliedFilters.slice(0,5);let indice=index">
                 <span>{{ appliedFilter }}</span>
                 <button id="removeButton" (click)="removeFilter(indice)">
                     <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">
                 </button>
             </div>
+            <span id="extraFilters" *ngIf="appliedFilters.length > 5">+{{ calculateExtraFilters() }} filters applied</span>
         </div>
     </div>
 </div>

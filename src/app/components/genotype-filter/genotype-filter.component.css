@@ -28,9 +28,18 @@ label {
 .addButton {
     width: 100%;
     border-radius: 15px;
-    background-color: #ffcc84;
+    background-color: #9cc2e5;
     box-shadow: 5px 5px;
     font-weight: bold;    
+}
+
+.showAllFilters {
+    width: 100%;
+    border-radius: 15px;
+    background-color: #9cc2e5;
+    box-shadow: 5px 5px;
+    font-weight: bold;
+    margin-top: 15px;
 }
 
 .disabled {
@@ -54,6 +63,11 @@ label {
 #removeButton {
     background-color: transparent;
     border: none;
+}
+
+#extraFilters {
+    text-align: right;
+    margin-top: 15px;
 }
 
 button:hover {
