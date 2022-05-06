@@ -96,5 +96,6 @@ export class LoginComponent implements OnInit {
     GlobalConstants.setImpacts();
     GlobalConstants.setGenotypeTypes();
     GlobalConstants.setIndividuals();
+    GlobalConstants.setBiotypes();
   }
 }

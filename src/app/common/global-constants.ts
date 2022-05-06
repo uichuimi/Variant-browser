@@ -6,6 +6,7 @@ import { Impact } from '../models/output/Impact';
 import { Effect } from '../models/output/Effect';
 import { GenotypeType } from '../models/output/GenotypeType';
 import { Individual } from '../models/output/Individual';
+import { Biotype } from '../models/output/Biotype';
 
 // SERVICES
 import { VarCanService } from 'src/app/services/varcan-service/var-can.service';
@@ -72,5 +73,15 @@ export class GlobalConstants {
 
   static getIndividuals(): Individual[] {
     return JSON.parse(localStorage.getItem('individuals'));
+  }
+
+  static setBiotypes() {
+    this.service.getBiotypes().then(response => {
+      localStorage.setItem('biotypes', JSON.stringify(response.data));
+    }).catch(error => console.log("Biotypes error: " + error));   
+  }
+
+  static getBiotypes(): Biotype[] {
+    return JSON.parse(localStorage.getItem('biotypes'));
   }
 }

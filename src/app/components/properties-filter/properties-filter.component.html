@@ -31,18 +31,64 @@
                 </div>   
                 <div class="form-group">
                     <label for="value">Value</label>
-                    <select 
-                        *ngIf="propertiesFilter.value.field.type === 'list'" 
-                        #value="ngModel" 
-                        name="value" 
-                        class="form-control" 
-                        ngModel 
-                        required
-                    >
-                        <option *ngFor="let fieldOption of fieldOptions" [ngValue]="fieldOption">
-                            {{ fieldOption.name }}
-                        </option>
-                    </select>
+                    <ng-container *ngIf="propertiesFilter.value.field.type === 'list'">
+                        <!-- OPCIONES PARA CHROMOSOMES -->
+                        <ng-container *ngIf="propertiesFilter.value.field.name === 'Chromosomes'">
+                            <ng-multiselect-dropdown
+                                name="value" 
+                                ngDefaultControl
+                                [settings]="chromosomeSettings"
+                                [data]="chromosomesList"
+                                [(ngModel)]="selectedChromosomes"
+                                class="form-control"
+                                style="border: none;"                        
+                                required
+                            >
+                            </ng-multiselect-dropdown>
+                        </ng-container>
+                        <!-- OPCIONES PARA EFFECTS -->
+                        <ng-container *ngIf="propertiesFilter.value.field.name === 'Effects'">
+                            <ng-multiselect-dropdown
+                                name="value" 
+                                ngDefaultControl
+                                [settings]="effectSettings"
+                                [data]="effectsList"
+                                [(ngModel)]="selectedEffects"
+                                class="form-control"
+                                style="border: none;"                        
+                                required
+                            >
+                            </ng-multiselect-dropdown>
+                        </ng-container>
+                        <!-- OPCIONES PARA IMPACTS -->
+                        <ng-container *ngIf="propertiesFilter.value.field.name === 'Impacts'">
+                            <ng-multiselect-dropdown
+                                name="value" 
+                                ngDefaultControl
+                                [settings]="impactSettings"
+                                [data]="impactsList"
+                                [(ngModel)]="selectedImpacts"
+                                class="form-control"
+                                style="border: none;"                        
+                                required
+                            >
+                            </ng-multiselect-dropdown>
+                        </ng-container>
+                        <!-- OPCIONES PARA BIOTYPES -->
+                        <ng-container *ngIf="propertiesFilter.value.field.name === 'Biotypes'">
+                            <ng-multiselect-dropdown
+                                name="value" 
+                                ngDefaultControl
+                                [settings]="biotypeSettings"
+                                [data]="biotypesList"
+                                [(ngModel)]="selectedBiotypes"
+                                class="form-control"
+                                style="border: none;"                        
+                                required
+                            >
+                            </ng-multiselect-dropdown>
+                        </ng-container>                                                                          
+                    </ng-container>
                     <input
                         *ngIf="propertiesFilter.value.field.type !== 'list'"
                         #value="ngModel" 
