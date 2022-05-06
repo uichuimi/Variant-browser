@@ -13,6 +13,7 @@ import { TableComponent } from './components/table/table.component';
 import { TableFooterComponent } from './components/table/table-footer/table-footer.component';
 import { RegisterComponent } from './components/register/register.component';
 import { GenotypeFilterComponent } from './components/genotype-filter/genotype-filter.component';
+import { PropertiesFilterComponent } from './components/properties-filter/properties-filter.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { GenotypeFilterComponent } from './components/genotype-filter/genotype-f
     TableFooterComponent,
     RegisterComponent,
     GenotypeFilterComponent,
+    PropertiesFilterComponent,
   ],
   imports: [
     AppRoutingModule,

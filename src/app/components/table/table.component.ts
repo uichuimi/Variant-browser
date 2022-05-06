@@ -35,6 +35,7 @@ export class TableComponent implements OnInit {
   showVariantSymbol = false;      // RATÓN SOBRE ALTERNATIVE O REFERENCE CON MÁS DE 6 CARACTERES
   variantToShow = "";             // ALTERNATIVE Y REFERENCE COMPLETA
   selectedVariant: Variant;
+  filterToShow: String = 'properties';
 
   // CONTROL DE PÁGINA ACTUAL
   initial: number = 0;
@@ -242,6 +243,10 @@ export class TableComponent implements OnInit {
   mouseLeave() {
     let container = document.getElementById('refAltContainer');
     container.style.display = 'none';
+  }
+
+  toggleProperty(filter: String) {
+    this.filterToShow = filter;
   }
 
   nextPage() {

@@ -1,8 +1,16 @@
 <div class="container">
     <!-- FILTRO DE GENOTIPOS -->
-    <app-genotype-filter
-        (resetPageEvent)="resetPage()"
-        (notifyFilterEvent)="getVariantsFiltered($event)"></app-genotype-filter>
+    <div>
+        <div class="toggleButtons">
+            <button (click)="toggleProperty('properties')">Properties filter</button>
+            <button (click)="toggleProperty('genotypes')">Genotypes filter</button>
+        </div>
+        <app-properties-filter *ngIf="filterToShow === 'properties'"></app-properties-filter>
+        <app-genotype-filter
+            *ngIf="filterToShow === 'genotypes'"
+            (resetPageEvent)="resetPage()"
+            (notifyFilterEvent)="getVariantsFiltered($event)"></app-genotype-filter>
+    </div>
 
     <!-- REF Y ALT COMPLETO DE VARIANTE -->
     <div id="refAltContainer">
