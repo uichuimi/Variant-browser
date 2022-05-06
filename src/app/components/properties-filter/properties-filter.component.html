@@ -1,1 +1,68 @@
-<p>properties-filter works!</p>
+<div class="container">
+    <div class="header">
+        <span>Properties filter</span>
+    </div>
+    <div class="filtersContainer">
+        <div class="filters">
+            <form #propertiesFilter="ngForm" (ngSubmit)="addFilter(propertiesFilter)">
+                <div class="form-group">
+                    <label for="field">Field</label>
+                    <select #field="ngModel" name="field" class="form-control" ngModel required>
+                        <option *ngFor="let fieldOption of fieldOptions" [ngValue]="fieldOption">
+                            {{ fieldOption.name }}
+                        </option>
+                    </select>
+                </div>  
+                <div class="form-group">
+                    <label for="operator">Operator</label>
+                    <select 
+                        #operator="ngModel" 
+                        name="operator" 
+                        class="form-control" 
+                        [disabled]="propertiesFilter.value.field.type !== 'number'"
+                        ngModel 
+                        required
+                    >
+                        <option value="greater">></option>
+                        <option value="lower"><</option>
+                        <option value="greaterEqual">>=</option>
+                        <option value="lowerEqual"><=</option>
+                    </select>
+                </div>   
+                <div class="form-group">
+                    <label for="value">Value</label>
+                    <select 
+                        *ngIf="propertiesFilter.value.field.type === 'list'" 
+                        #value="ngModel" 
+                        name="value" 
+                        class="form-control" 
+                        ngModel 
+                        required
+                    >
+                        <option *ngFor="let fieldOption of fieldOptions" [ngValue]="fieldOption">
+                            {{ fieldOption.name }}
+                        </option>
+                    </select>
+                    <input
+                        *ngIf="propertiesFilter.value.field.type !== 'list'"
+                        #value="ngModel" 
+                        type="number" 
+                        name="value"
+                        class="form-control" 
+                        min="1"
+                        value="1"                        
+                        ngModel 
+                        required>                   
+                </div>                                                          
+                <button 
+                    type="submit" 
+                    [ngClass]="{
+                        'disabled': propertiesFilter.invalid, 
+                        'addButton': propertiesFilter.valid}" 
+                    [disabled]="propertiesFilter.invalid">
+                    <span>Add</span>
+                </button>
+            </form>        
+        </div>
+    </div>
+</div>
