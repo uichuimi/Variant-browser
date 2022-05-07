@@ -28,7 +28,8 @@ export class TableComponent implements OnInit {
   geneSymbols: Array<String> = [];
   ucsc: Array<String> = [];
   effect: Array<String> = [];
-  appliedFilters;
+  appliedGenotypeFilters: Object = {};
+  appliedPropertiesFilters: Object = {};
   filteredElements: number;
 
   loading = true;                 // LLAMADA VARIANTS CARGANDO
@@ -55,10 +56,13 @@ export class TableComponent implements OnInit {
     this.service = GlobalConstants.getService();
     this.chromosomesList = GlobalConstants.getChromosomes();
     this.effectsList = GlobalConstants.getEffects();
-    this.getVariants();
+    this.getAllVariants();
   }
 
-  getVariants(callbackFunction?) {
+  getAllVariants(callbackFunction?) {
+    console.log("=============all=============");
+    this.loading = true;
+
     this.service.getVariants({size: 200, page: this.page}).then(response => {
       callbackFunction ? 
         this.successResponse(response.data, callbackFunction) : this.successResponse(response.data);  
@@ -67,10 +71,11 @@ export class TableComponent implements OnInit {
     });
   }
 
-  getVariantsFiltered(data, callbackFunction?) {
+  getVariantsFilteredByGenotypes(callbackFunction?) {
+    console.log("=============genotypes=============");
     this.loading = true;
-    this.appliedFilters = data;
-    this.service.getVariants({size: 200, page: this.page, genotypeFilters: [this.appliedFilters]}).then(response => {
+
+    this.service.getVariants({size: 200, page: this.page, genotypeFilters: [this.appliedGenotypeFilters]}).then(response => {
       callbackFunction ? 
         this.successResponse(response.data, callbackFunction) : this.successResponse(response.data);
     }).catch(error => {
@@ -78,9 +83,34 @@ export class TableComponent implements OnInit {
     });    
   }
 
-  prueba(data) {
-    console.log("data: ", data);
-  }
+  getVariantsFilteredByProperties(callbackFunction?) {
+    console.log("=============properties=============");
+    this.loading = true;
+
+    this.service.getVariants({size: 200, page: this.page, ...this.appliedPropertiesFilters}).then(response => {
+      callbackFunction ? 
+        this.successResponse(response.data, callbackFunction) : this.successResponse(response.data);
+    }).catch(error => {
+      console.log("variants error: " + error);
+    });    
+  }  
+
+  getVariantsFiltered(callbackFunction?) {
+    console.log("=============both=============");
+    this.loading = true;
+
+    this.service.getVariants({
+      size: 200, 
+      page: this.page, 
+      genotypeFilters: [this.appliedGenotypeFilters], 
+      ...this.appliedPropertiesFilters
+    }).then(response => {
+      callbackFunction ? 
+        this.successResponse(response.data, callbackFunction) : this.successResponse(response.data);
+    }).catch(error => {
+      console.log("variants error: " + error);
+    });    
+  }   
 
   // MÉTODOS AUXILIARES
   successResponse(data, callbackFunction?) {
@@ -257,7 +287,7 @@ export class TableComponent implements OnInit {
       this.page += 1;
       this.initial = 0;
       this.final = 20;      
-      this.filtered ? this.getVariantsFiltered(this.appliedFilters) : this.getVariants();
+      this.getVariantsDef();
     }
   }
 
@@ -268,7 +298,7 @@ export class TableComponent implements OnInit {
       this.page -= 1;
       this.initial = 180;
       this.final = 200;      
-      this.filtered ? this.getVariantsFiltered(this.appliedFilters) : this.getVariants();
+      this.getVariantsDef();
     } else {
       this.final = this.initial;
       this.initial -= 20;
@@ -281,21 +311,42 @@ export class TableComponent implements OnInit {
     this.initial = 0;
     this.final = 20;
     this.page = 0;
-    this.filtered ? this.getVariantsFiltered(this.appliedFilters) : this.getVariants();
+    this.getVariantsDef();
   }
 
   lastPage() {
     this.loading = true;
     this.page = this.totalPages - 1;
-    this.filtered ? 
-      this.getVariantsFiltered(this.appliedFilters, this.calculateLastPageIndexes) : 
-      this.getVariants(this.calculateLastPageIndexes);
+    this.getVariantsDef(this.calculateLastPageIndexes);
   }
 
-  resetPage() {
+  setGenotypeTypesFilter(data) {
+    console.log("genotypes: ", data);
+    this.appliedGenotypeFilters = data; 
+  }
+
+  setPropertiesFilter(data) {
+    console.log("properties: ", data);
+    this.appliedPropertiesFilters = data;    
+  }  
+
+  getVariantsDef(callbackFunction?) {
+    if(Object.keys(this.appliedPropertiesFilters).length === 0 && Object.keys(this.appliedGenotypeFilters).length === 0) {
+      callbackFunction ? this.getAllVariants(callbackFunction) : this.getAllVariants();
+    } else if(Object.keys(this.appliedPropertiesFilters).length === 0 && Object.keys(this.appliedGenotypeFilters).length !== 0) {
+      callbackFunction ? this.getVariantsFilteredByGenotypes(callbackFunction) : this.getVariantsFilteredByGenotypes();
+    } else if(Object.keys(this.appliedPropertiesFilters).length !== 0 && Object.keys(this.appliedGenotypeFilters).length === 0) {
+      callbackFunction ? this.getVariantsFilteredByProperties(callbackFunction) : this.getVariantsFilteredByProperties();
+    } else if(Object.keys(this.appliedPropertiesFilters).length !== 0 && Object.keys(this.appliedGenotypeFilters).length !== 0) {
+      callbackFunction ? this.getVariantsFiltered(callbackFunction) : this.getVariantsFiltered();
+    }     
+  }
+
+  resetShownVariants() {
     this.page = 0;
     this.pageNumber = 1;
-    this.filtered = !this.filtered;
-    if(!this.filtered) this.getVariants();
+    this.initial = 0;
+    this.final = 20;
+    this.getVariantsDef();
   }
 }

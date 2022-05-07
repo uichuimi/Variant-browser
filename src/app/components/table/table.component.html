@@ -7,11 +7,12 @@
         </div>
         <app-properties-filter 
             *ngIf="filterToShow === 'properties'"
-            (notifyFilterEvent)="prueba($event)"></app-properties-filter>
+            (resetPageEvent)="resetShownVariants()"
+            (notifyFilterEvent)="setPropertiesFilter($event)"></app-properties-filter>
         <app-genotype-filter
             *ngIf="filterToShow === 'genotypes'"
-            (resetPageEvent)="resetPage()"
-            (notifyFilterEvent)="getVariantsFiltered($event)"></app-genotype-filter>
+            (resetPageEvent)="resetShownVariants()"
+            (notifyFilterEvent)="setGenotypeTypesFilter($event)"></app-genotype-filter>
     </div>
 
     <!-- REF Y ALT COMPLETO DE VARIANTE -->

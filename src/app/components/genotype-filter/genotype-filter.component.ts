@@ -95,13 +95,14 @@ export class GenotypeFilterComponent implements OnInit {
       }
     }
 
-    this.resetPageEvent.emit();
     this.notifyFilterEvent.emit(genotypeFilters);
+    this.resetPageEvent.emit();
   }
 
   removeFilter(indice) {
-    this.resetPageEvent.emit();
     this.appliedFilters.splice(indice,1);
+    this.notifyFilterEvent.emit({});
+    this.resetPageEvent.emit();
   }
 
   calculateExtraFilters(): number {

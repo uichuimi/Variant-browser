@@ -50,6 +50,7 @@ export class PropertiesFilterComponent implements OnInit {
   selectedBiotypes = [];  
 
   // OUTPUT EVENTS
+  @Output() resetPageEvent = new EventEmitter();
   @Output() notifyFilterEvent = new EventEmitter();  
 
   ngOnInit(): void {
@@ -151,6 +152,7 @@ export class PropertiesFilterComponent implements OnInit {
     console.log("appliedFilters: ", this.appliedFilters);
     console.log("appliedFiltersList: ", this.appliedFiltersList);
     this.notifyFilterEvent.emit(this.appliedFilters);
+    this.resetPageEvent.emit();
   }
 
   removeFilter(key) {
@@ -158,6 +160,7 @@ export class PropertiesFilterComponent implements OnInit {
     delete this.appliedFilters[key];
     delete this.appliedFiltersList[key];
     this.notifyFilterEvent.emit(this.appliedFilters);
+    this.resetPageEvent.emit();
   }  
 
 /*   getAppliedFiltersLength() {
