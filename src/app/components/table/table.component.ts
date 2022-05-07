@@ -78,6 +78,10 @@ export class TableComponent implements OnInit {
     });    
   }
 
+  prueba(data) {
+    console.log("data: ", data);
+  }
+
   // MÉTODOS AUXILIARES
   successResponse(data, callbackFunction?) {
     this.loading = false;
@@ -192,28 +196,19 @@ export class TableComponent implements OnInit {
   
   // AJUSTAR NUM. DE PÁG QUE SE MUESTRA EN PIE DE PÁGINA
   adjustPageNumber(number): number {
-    switch(number) {
-      case 0:
-        return 1;
-      case 20:
-        return 2;
-      case 40:
-        return 3;
-      case 60:
-        return 4;
-      case 80:
-        return 5;
-      case 100:
-        return 6;
-      case 120:
-        return 7;
-      case 140:
-        return 8;
-      case 160:
-        return 9;
-      case 180:
-        return 10;
+    var valueTransform = {
+      0: 1,
+      20: 2,
+      40: 3,
+      60: 4,
+      80: 5,
+      100: 6,
+      120: 7,
+      140: 8,
+      160: 9,
+      180: 10
     }
+    return valueTransform[number];
   }
 
   selectVariant(variant: Variant) {

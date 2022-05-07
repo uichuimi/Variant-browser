@@ -23,10 +23,10 @@
                         ngModel 
                         required
                     >
-                        <option value="greater">></option>
-                        <option value="lower"><</option>
-                        <option value="greaterEqual">>=</option>
-                        <option value="lowerEqual"><=</option>
+                        <option value=">">></option>
+                        <option value="<"><</option>
+                        <option value=">=">>=</option>
+                        <option value="<="><=</option>
                     </select>
                 </div>   
                 <div class="form-group">
@@ -110,5 +110,21 @@
                 </button>
             </form>        
         </div>
+        <div class="appliedFilters">
+            <div *ngFor="let appliedFilter of appliedFiltersList | keyvalue">
+                <span *ngIf="inputType === 'number'">
+                    {{ appliedFilter.key }} {{ appliedFilter.value.operator }} {{ appliedFilter.value.value }}
+                </span>
+                <span *ngIf="inputType === 'list'">
+                    {{ appliedFilter.key }} equals [{{ appliedFilter.value }}]
+                </span>
+                <button id="removeButton" (click)="removeFilter(appliedFilter.key)">
+                    <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">
+                </button>
+            </div>
+<!--             <span id="extraFilters" *ngIf="getAppliedFiltersLength() > 5">
+                +{{ getAppliedFiltersLength()-5 }} filters applied
+            </span> -->
+        </div>        
     </div>
 </div>

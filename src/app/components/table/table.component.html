@@ -5,7 +5,9 @@
             <button (click)="toggleProperty('properties')">Properties filter</button>
             <button (click)="toggleProperty('genotypes')">Genotypes filter</button>
         </div>
-        <app-properties-filter *ngIf="filterToShow === 'properties'"></app-properties-filter>
+        <app-properties-filter 
+            *ngIf="filterToShow === 'properties'"
+            (notifyFilterEvent)="prueba($event)"></app-properties-filter>
         <app-genotype-filter
             *ngIf="filterToShow === 'genotypes'"
             (resetPageEvent)="resetPage()"

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 // CONSTANTS
@@ -16,6 +16,8 @@ import { Biotype } from 'src/app/models/output/Biotype';
   styleUrls: ['./properties-filter.component.css']
 })
 export class PropertiesFilterComponent implements OnInit {
+  appliedFilters: Object = {};
+
   fieldOptions: Array<Object> = [
     { type: 'number', name: 'Start' },
     { type: 'number', name: 'End' },
@@ -29,6 +31,8 @@ export class PropertiesFilterComponent implements OnInit {
     { type: 'list', name: 'Biotypes' },
     { type: 'list', name: 'Identifiers' }
   ];
+  appliedFiltersList = new Set([]);
+  inputType: String = 'list';
 
   chromosomesList: Chromosome[];
   chromosomeSettings: IDropdownSettings = {};
@@ -45,6 +49,9 @@ export class PropertiesFilterComponent implements OnInit {
   biotypesList: Biotype[];
   biotypeSettings: IDropdownSettings = {};
   selectedBiotypes = [];  
+
+  // OUTPUT EVENTS
+  @Output() notifyFilterEvent = new EventEmitter();  
 
   ngOnInit(): void {
     this.chromosomesList = GlobalConstants.getChromosomes();
@@ -90,6 +97,67 @@ export class PropertiesFilterComponent implements OnInit {
   }
 
   addFilter(propertiesFilter) {
-    console.log("propertiesFilter: ", propertiesFilter);
+    const { field, operator, value } = propertiesFilter.value;
+    var props = this;   // REFERENCIA A PROPIEDADES DE LA CLASE;
+    var filterCreator;
+
+    var fieldName = field.name;
+    var fieldNameLowerCase = fieldName.toLowerCase();
+    
+    var name = {
+      'Chromosomes': 'ucsc',
+      'Genes': '',
+      'Effects': 'description',
+      'Impacts': 'name',
+      'Biotypes': 'name',
+      'Identifiers': ''  
+    }
+    var identifierName = name[fieldName];
+
+    if(field.type === 'list') {
+      filterCreator = {
+        [fieldName]: function(props) {
+          var ids = new Set([]);
+          var names = new Set([]);
+          value.map(val => {
+            ids.add(val.id);
+            names.add(val[identifierName]);
+          });
+          
+          let filters = {...props.appliedFilters, [fieldNameLowerCase]: [...ids]};
+          let filtersList = {...props.appliedFiltersList, [fieldNameLowerCase]: [...names]};
+          let inputType = 'list';
+          return { filters, filtersList, inputType };
+        }
+      }
+    } else if(field.type === 'number') {
+      filterCreator = {
+        [fieldName]: function(props) {
+          let filters = {...props.appliedFilters, [fieldNameLowerCase]: value};
+          let filtersList = {...props.appliedFiltersList, [fieldNameLowerCase]: {'operator': operator, 'value': value}};
+          let inputType = 'number';
+          return { filters, filtersList, inputType };
+        }
+      }
+    }
+    
+    console.log("fieldName (fuera): " + fieldName);
+    this.appliedFilters = filterCreator[fieldName](props).filters;
+    this.appliedFiltersList = filterCreator[fieldName](props).filtersList;
+    this.inputType = filterCreator[fieldName](props).inputType;
+
+    console.log("appliedFilters: ", this.appliedFilters);
+    console.log("appliedFiltersList: ", this.appliedFiltersList);
+    this.notifyFilterEvent.emit(this.appliedFilters);
   }
+
+  removeFilter(key) {
+    console.log("remove: " + key);
+    delete this.appliedFilters[key];
+    this.notifyFilterEvent.emit(this.appliedFilters);
+  }  
+
+/*   getAppliedFiltersLength() {
+    return Object.keys(this.appliedFilters).length;
+  } */
 }

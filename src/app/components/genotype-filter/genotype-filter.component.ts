@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 // CONSTANTS
@@ -106,7 +106,5 @@ export class GenotypeFilterComponent implements OnInit {
 
   calculateExtraFilters(): number {
     return this.appliedFilters.length - 5;
-  }
-
- 
+  } 
 }
