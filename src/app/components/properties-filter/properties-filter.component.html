@@ -15,19 +15,47 @@
                 </div>  
                 <div class="form-group">
                     <label for="operator">Operator</label>
-                    <select 
-                        #operator="ngModel" 
-                        name="operator" 
-                        class="form-control" 
-                        [disabled]="propertiesFilter.value.field.type !== 'number'"
-                        ngModel 
-                        required
+                    <ng-container *ngIf="propertiesFilter.value.field.name === 'Start'">
+                        <select 
+                            #operator="ngModel" 
+                            name="operator" 
+                            class="form-control" 
+                            [disabled]="propertiesFilter.value.field.type !== 'number'"
+                            ngModel 
+                            required
+                        >
+                            <option value=">=">>=</option>
+                        </select>
+                    </ng-container>
+                    <ng-container *ngIf="propertiesFilter.value.field.name === 'End'">
+                        <select 
+                            #operator="ngModel" 
+                            name="operator" 
+                            class="form-control" 
+                            [disabled]="propertiesFilter.value.field.type !== 'number'"
+                            ngModel 
+                            required
+                        >
+                            <option value="<="><=</option>
+                        </select>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="propertiesFilter.value.field.name !== 'Start' && propertiesFilter.value.field.name !== 'End'"
                     >
-                        <option value=">">></option>
-                        <option value="<"><</option>
-                        <option value=">=">>=</option>
-                        <option value="<="><=</option>
-                    </select>
+                        <select 
+                            #operator="ngModel" 
+                            name="operator" 
+                            class="form-control" 
+                            [disabled]="propertiesFilter.value.field.type !== 'number'"
+                            ngModel 
+                            required
+                        >
+                            <option value=">">></option>
+                            <option value="<"><</option>
+                            <option value=">=">>=</option>
+                            <option value="<="><=</option>
+                        </select>
+                    </ng-container>
                 </div>   
                 <div class="form-group">
                     <label for="value">Value</label>

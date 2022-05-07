@@ -92,13 +92,13 @@ export class PropertiesFilterComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 2,
       allowSearchFilter: true       
-    };          
+    };   
   }
 
   addFilter(propertiesFilter) {
     const { field, operator, value } = propertiesFilter.value;
     var props = this;   // REFERENCIA A PROPIEDADES DE LA CLASE;
-    var filterCreator;
+    var filterCreator;  // LÓGICA PARA CREAR BODY DE LLAMADA POST /VARIANTS
 
     var fieldName = field.name;
     var fieldNameLowerCase = fieldName.toLowerCase();
@@ -111,7 +111,7 @@ export class PropertiesFilterComponent implements OnInit {
       'Biotypes': 'name',
       'Identifiers': ''  
     }
-    var identifierName = name[fieldName];
+    var identifierName = name[fieldName];   // OBTENER NOMBRE DE LA PROPIEDAD QUE IDENTIFICA CADA TIPO DE DATO
 
     if(field.type === 'list') {
       filterCreator = {
