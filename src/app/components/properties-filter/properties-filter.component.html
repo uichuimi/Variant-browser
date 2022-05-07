@@ -112,11 +112,11 @@
         </div>
         <div class="appliedFilters">
             <div *ngFor="let appliedFilter of appliedFiltersList | keyvalue">
-                <span *ngIf="inputType === 'number'">
+                <span *ngIf="appliedFilter.value.inputType === 'number'">
                     {{ appliedFilter.key }} {{ appliedFilter.value.operator }} {{ appliedFilter.value.value }}
                 </span>
-                <span *ngIf="inputType === 'list'">
-                    {{ appliedFilter.key }} equals [{{ appliedFilter.value }}]
+                <span *ngIf="appliedFilter.value.inputType === 'list'">
+                    {{ appliedFilter.key }} equals [{{ appliedFilter.value.values }}]
                 </span>
                 <button id="removeButton" (click)="removeFilter(appliedFilter.key)">
                     <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">

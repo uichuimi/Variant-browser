@@ -32,7 +32,6 @@ export class PropertiesFilterComponent implements OnInit {
     { type: 'list', name: 'Identifiers' }
   ];
   appliedFiltersList = new Set([]);
-  inputType: String = 'list';
 
   chromosomesList: Chromosome[];
   chromosomeSettings: IDropdownSettings = {};
@@ -125,18 +124,22 @@ export class PropertiesFilterComponent implements OnInit {
           });
           
           let filters = {...props.appliedFilters, [fieldNameLowerCase]: [...ids]};
-          let filtersList = {...props.appliedFiltersList, [fieldNameLowerCase]: [...names]};
-          let inputType = 'list';
-          return { filters, filtersList, inputType };
+          let filtersList = {
+            ...props.appliedFiltersList, 
+            [fieldNameLowerCase]: {'inputType': 'list', 'values': [...names]}
+          };
+          return { filters, filtersList };
         }
       }
     } else if(field.type === 'number') {
       filterCreator = {
         [fieldName]: function(props) {
           let filters = {...props.appliedFilters, [fieldNameLowerCase]: value};
-          let filtersList = {...props.appliedFiltersList, [fieldNameLowerCase]: {'operator': operator, 'value': value}};
-          let inputType = 'number';
-          return { filters, filtersList, inputType };
+          let filtersList = {
+            ...props.appliedFiltersList, 
+            [fieldNameLowerCase]: {'inputType': 'number', 'operator': operator, 'value': value}
+          };
+          return { filters, filtersList };
         }
       }
     }
@@ -144,7 +147,6 @@ export class PropertiesFilterComponent implements OnInit {
     console.log("fieldName (fuera): " + fieldName);
     this.appliedFilters = filterCreator[fieldName](props).filters;
     this.appliedFiltersList = filterCreator[fieldName](props).filtersList;
-    this.inputType = filterCreator[fieldName](props).inputType;
 
     console.log("appliedFilters: ", this.appliedFilters);
     console.log("appliedFiltersList: ", this.appliedFiltersList);
@@ -154,6 +156,7 @@ export class PropertiesFilterComponent implements OnInit {
   removeFilter(key) {
     console.log("remove: " + key);
     delete this.appliedFilters[key];
+    delete this.appliedFiltersList[key];
     this.notifyFilterEvent.emit(this.appliedFilters);
   }  
 
