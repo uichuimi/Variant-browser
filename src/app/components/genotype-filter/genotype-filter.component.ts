@@ -20,7 +20,7 @@ export class GenotypeFilterComponent implements OnInit {
   individualsList: Individual[];
   genotypeTypesList: GenotypeType[];
 
-  appliedFilters: Array<String> = [];
+  appliedFilters: any = {};
   samplesSettings: IDropdownSettings = {};
   selectedSamples = [];
   genotypesSettings: IDropdownSettings = {};
@@ -80,7 +80,11 @@ export class GenotypeFilterComponent implements OnInit {
 
 
     if (typeof number !== 'undefined') {
-      this.appliedFilters.push(`${selector} of ${number} [${sampleCodes}] are [${genotypeTypesNames}]`)
+      this.appliedFilters = {
+        ...this.appliedFilters, 
+        'filter': `${selector} of ${number} [${sampleCodes}] are [${genotypeTypesNames}]`
+      };
+      //this.appliedFilters.push(`${selector} of ${number} [${sampleCodes}] are [${genotypeTypesNames}]`)
       genotypeFilters = {
         individual,
         genotypeType,
@@ -88,7 +92,11 @@ export class GenotypeFilterComponent implements OnInit {
         number
       }
     } else {
-      this.appliedFilters.push(`${selector} of [${sampleCodes}] are [${genotypeTypesNames}]`);
+      this.appliedFilters = {
+        ...this.appliedFilters, 
+        'filter': `${selector} of [${sampleCodes}] are [${genotypeTypesNames}]`
+      };      
+      //this.appliedFilters.push(`${selector} of [${sampleCodes}] are [${genotypeTypesNames}]`);
       genotypeFilters = {
         individual,
         genotypeType,
@@ -106,18 +114,22 @@ export class GenotypeFilterComponent implements OnInit {
     this.resetPageEvent.emit();
   }
 
-  removeFilter(indice) {
-    this.appliedFilters.splice(indice,1);
+  removeFilter(key) {
+    delete this.appliedFilters[key];
     localStorage.setItem("allFiltersGenotype", JSON.stringify(this.appliedFilters));  // ELIMINAR FILTRO DE LOCALSTORAGE
     this.notifyFilterEvent.emit({});
     this.resetPageEvent.emit();
   }
 
   getAllFilters() {
-    this.appliedFilters = JSON.parse(localStorage.getItem("allFiltersGenotype"))
+    this.appliedFilters = JSON.parse(localStorage.getItem("allFiltersGenotype"));
   }
 
-  calculateExtraFilters(): number {
+/*   calculateExtraFilters(): number {
     return this.appliedFilters.length - 5;
-  } 
+  }  */
+
+  getAppliedFiltersLength() {
+    return Object.keys(this.appliedFilters).length;
+  }  
 }

@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit {
   }
 
   onClick() {
-    console.log("sdfdasfa");
     this.loginIncorrect = false;
   }
 
@@ -80,7 +79,7 @@ export class LoginComponent implements OnInit {
 
     this.service.login({"username": username, "password": password}).then(response => {
       this.setLocalStorage();
-      sessionStorage.setItem('username', username);
+      sessionStorage.setItem('token', response.refresh_token);
 
       this.router.navigate(navigationDetails);
       return response;

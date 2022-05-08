@@ -57,21 +57,21 @@
                 <button 
                     type="submit" 
                     [ngClass]="{
-                        'disabled': genotypeFilter.invalid || appliedFilters.length === 1, 
+                        'disabled': genotypeFilter.invalid, 
                         'addButton': genotypeFilter.valid}" 
-                    [disabled]="genotypeFilter.invalid || appliedFilters.length === 1">
+                    [disabled]="genotypeFilter.invalid">
                     <span>Add</span>
                 </button>
             </form>        
         </div>
         <div class="appliedFilters">
-            <div *ngFor="let appliedFilter of appliedFilters.slice(0,5);let indice=index">
-                <span>{{ appliedFilter }}</span>
-                <button id="removeButton" (click)="removeFilter(indice)">
+            <div *ngFor="let appliedFilter of appliedFilters | keyvalue">
+                <span>{{ appliedFilter.value }}</span>
+                <button id="removeButton" (click)="removeFilter(appliedFilter.key)">
                     <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">
                 </button>
             </div>
-            <span id="extraFilters" *ngIf="appliedFilters.length > 5">+{{ calculateExtraFilters() }} filters applied</span>
+            <!-- <span id="extraFilters" *ngIf="appliedFilters.length > 5">+{{ calculateExtraFilters() }} filters applied</span> -->
         </div>
     </div>
 </div>
