@@ -51,7 +51,8 @@ export class GenotypeFilterComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 2,
       allowSearchFilter: true      
-    }    
+    }  
+    this.getAllFilters();  
   }
 
   // MÉTODOS PARA FILTRADO
@@ -95,14 +96,25 @@ export class GenotypeFilterComponent implements OnInit {
       }
     }
 
+    // PERSISTIR FILTROS
+    localStorage.setItem("allFiltersGenotype", JSON.stringify(this.appliedFilters));  
+    
+    // OBTENER TODOS LOS FILTROS
+    this.getAllFilters();
+
     this.notifyFilterEvent.emit(genotypeFilters);
     this.resetPageEvent.emit();
   }
 
   removeFilter(indice) {
     this.appliedFilters.splice(indice,1);
+    localStorage.setItem("allFiltersGenotype", JSON.stringify(this.appliedFilters));  // ELIMINAR FILTRO DE LOCALSTORAGE
     this.notifyFilterEvent.emit({});
     this.resetPageEvent.emit();
+  }
+
+  getAllFilters() {
+    this.appliedFilters = JSON.parse(localStorage.getItem("allFiltersGenotype"))
   }
 
   calculateExtraFilters(): number {

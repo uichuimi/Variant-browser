@@ -31,7 +31,7 @@ export class PropertiesFilterComponent implements OnInit {
     { type: 'list', name: 'Biotypes' },
     { type: 'list', name: 'Identifiers' }
   ];
-  appliedFiltersList = new Set([]);
+  appliedFiltersList: any = {};
 
   chromosomesList: Chromosome[];
   chromosomeSettings: IDropdownSettings = {};
@@ -93,7 +93,8 @@ export class PropertiesFilterComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 2,
       allowSearchFilter: true       
-    };   
+    }; 
+    this.getAllFilters();  
   }
 
   addFilter(propertiesFilter) {
@@ -149,6 +150,12 @@ export class PropertiesFilterComponent implements OnInit {
     this.appliedFilters = filterCreator[fieldName](props).filters;
     this.appliedFiltersList = filterCreator[fieldName](props).filtersList;
 
+    // PERSISTIR FILTROS
+    localStorage.setItem("allFilters", JSON.stringify(this.appliedFiltersList));  
+    
+    // OBTENER TODOS LOS FILTROS
+    this.getAllFilters();
+
     console.log("appliedFilters: ", this.appliedFilters);
     console.log("appliedFiltersList: ", this.appliedFiltersList);
     this.notifyFilterEvent.emit(this.appliedFilters);
@@ -159,9 +166,14 @@ export class PropertiesFilterComponent implements OnInit {
     console.log("remove: " + key);
     delete this.appliedFilters[key];
     delete this.appliedFiltersList[key];
+    localStorage.setItem("allFilters", JSON.stringify(this.appliedFiltersList));  // ELIMINAR FILTRO DE LOCALSTORAGE
     this.notifyFilterEvent.emit(this.appliedFilters);
     this.resetPageEvent.emit();
   }  
+
+  getAllFilters() {
+    this.appliedFiltersList = JSON.parse(localStorage.getItem("allFilters"));
+  }
 
 /*   getAppliedFiltersLength() {
     return Object.keys(this.appliedFilters).length;

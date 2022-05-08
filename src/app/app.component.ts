@@ -14,5 +14,6 @@ export class AppComponent {
 
   logOut() {
     sessionStorage.clear();
+    localStorage.clear();
   }
 }
