@@ -14,6 +14,7 @@ export class AppComponent {
 
   logOut() {
     sessionStorage.clear();
-    localStorage.clear();
+    localStorage.removeItem('allFilters');
+    localStorage.removeItem('allFiltersGenotype');
   }
 }

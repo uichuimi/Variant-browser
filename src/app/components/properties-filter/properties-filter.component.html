@@ -130,18 +130,30 @@
                                 required
                             >
                             </ng-multiselect-dropdown>
-                        </ng-container>                                                                          
+                        </ng-container>                                                                                                
                     </ng-container>
+                    <!-- OPCIONES PARA FILTROS NUMÉRICOS -->
+                    <ng-container *ngIf="propertiesFilter.value.field.name !== 'Identifiers'">
+                        <input
+                            *ngIf="propertiesFilter.value.field.type !== 'list'"
+                            #value="ngModel" 
+                            type="number" 
+                            name="value"
+                            class="form-control" 
+                            min="1"
+                            value="1"                        
+                            ngModel 
+                            required> 
+                    </ng-container>
+                    <!-- OPCIONES PARA IDENTIFICADORES -->  
                     <input
-                        *ngIf="propertiesFilter.value.field.type !== 'list'"
+                        *ngIf="propertiesFilter.value.field.name === 'Identifiers'"
                         #value="ngModel" 
-                        type="number" 
+                        type="text" 
                         name="value"
-                        class="form-control" 
-                        min="1"
-                        value="1"                        
+                        class="form-control"                         
                         ngModel 
-                        required>                   
+                        required>                                          
                 </div>                                                          
                 <button 
                     type="submit" 

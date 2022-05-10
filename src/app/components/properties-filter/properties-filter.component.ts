@@ -34,7 +34,7 @@ export class PropertiesFilterComponent implements OnInit {
     { type: 'list', name: 'Effects' },
     { type: 'list', name: 'Impacts' },
     { type: 'list', name: 'Biotypes' },
-    { type: 'list', name: 'Identifiers' }
+    { type: 'id', name: 'Identifiers' }
   ];
   appliedFiltersList: any = {};
 
@@ -61,6 +61,7 @@ export class PropertiesFilterComponent implements OnInit {
   // OUTPUT EVENTS
   @Output() resetPageEvent = new EventEmitter();
   @Output() notifyFilterEvent = new EventEmitter();  
+  @Output() notifyIdentifierFilterEvent = new EventEmitter();
 
   ngOnInit(): void {
     this.service = GlobalConstants.getService();
@@ -162,6 +163,16 @@ export class PropertiesFilterComponent implements OnInit {
             [fieldNameLowerCase]: {'inputType': 'number', 'operator': operator, 'value': value}
           };
           return { filters, filtersList };
+        }
+      }
+    } else if(field.type === 'id') {
+      filterCreator = {
+        'Identifiers': function(props) {
+          let identifiersArray = value.split(",");
+          let filters = {"identifiers": identifiersArray};
+          let filtersList = {"identifiers": {'inputType': 'list', 'values': identifiersArray}};
+          props.notifyIdentifierFilterEvent.emit();
+          return { filters, filtersList };          
         }
       }
     }

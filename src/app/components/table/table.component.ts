@@ -198,7 +198,6 @@ export class TableComponent implements OnInit {
         this.geneSymbols.push(response.data[0].symbol);       
       }).catch(error => console.log("BacthGenes error: " + error));
     });
-    this.service.getBatchGenes()
   }  
 
   getCoordinate(data) {
@@ -348,5 +347,10 @@ export class TableComponent implements OnInit {
     this.initial = 0;
     this.final = 20;
     this.getVariantsDef();
+  }
+
+  resetGenotypeFilter() {
+    console.log("holaaaaa")
+    this.appliedGenotypeFilters = {};
   }
 }
