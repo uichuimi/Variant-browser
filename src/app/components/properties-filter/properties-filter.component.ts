@@ -120,6 +120,7 @@ export class PropertiesFilterComponent implements OnInit {
 
   addFilter(propertiesFilter) {
     const { field, operator, value } = propertiesFilter.value;
+    console.log("value: ", value);
     var props = this;   // REFERENCIA A PROPIEDADES DE LA CLASE;
     var filterCreator;  // LÓGICA PARA CREAR BODY DE LLAMADA POST /VARIANTS
 

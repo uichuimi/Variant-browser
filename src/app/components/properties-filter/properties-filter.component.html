@@ -133,18 +133,16 @@
                         </ng-container>                                                                                                
                     </ng-container>
                     <!-- OPCIONES PARA FILTROS NUMÉRICOS -->
-                    <ng-container *ngIf="propertiesFilter.value.field.name !== 'Identifiers'">
-                        <input
-                            *ngIf="propertiesFilter.value.field.type !== 'list'"
-                            #value="ngModel" 
-                            type="number" 
-                            name="value"
-                            class="form-control" 
-                            min="1"
-                            value="1"                        
-                            ngModel 
-                            required> 
-                    </ng-container>
+                    <input
+                        *ngIf="propertiesFilter.value.field.type !== 'list' && propertiesFilter.value.field.name !== 'Identifiers'"
+                        #value="ngModel" 
+                        type="number" 
+                        name="value"
+                        class="form-control" 
+                        min="1"
+                        value="1"                        
+                        ngModel 
+                        required> 
                     <!-- OPCIONES PARA IDENTIFICADORES -->  
                     <input
                         *ngIf="propertiesFilter.value.field.name === 'Identifiers'"
