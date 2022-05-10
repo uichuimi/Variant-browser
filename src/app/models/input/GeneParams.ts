@@ -1,3 +1,3 @@
 export interface GeneParams {
-    ensg: string
+    search: string
 }

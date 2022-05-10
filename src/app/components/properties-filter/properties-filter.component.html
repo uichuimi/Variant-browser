@@ -74,6 +74,21 @@
                             >
                             </ng-multiselect-dropdown>
                         </ng-container>
+                        <!-- OPCIONES PARA GENES -->
+                        <ng-container *ngIf="propertiesFilter.value.field.name === 'Genes'">
+                            <ng-multiselect-dropdown
+                                name="value" 
+                                ngDefaultControl
+                                [settings]="geneSettings"
+                                [data]="genesList"
+                                [(ngModel)]="selectedGenes"
+                                (onFilterChange)="getGenes($event)"
+                                class="form-control"
+                                style="border: none;"                        
+                                required
+                            >
+                            </ng-multiselect-dropdown>
+                        </ng-container>                        
                         <!-- OPCIONES PARA EFFECTS -->
                         <ng-container *ngIf="propertiesFilter.value.field.name === 'Effects'">
                             <ng-multiselect-dropdown

@@ -8,9 +8,6 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 import { Individual } from 'src/app/models/output/Individual';
 import { GenotypeType } from 'src/app/models/output/GenotypeType';
 
-// SERVICES
-import { VarCanService } from 'src/app/services/varcan-service/var-can.service';
-
 @Component({
   selector: 'app-genotype-filter',
   templateUrl: './genotype-filter.component.html',

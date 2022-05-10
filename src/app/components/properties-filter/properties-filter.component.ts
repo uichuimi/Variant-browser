@@ -10,12 +10,17 @@ import { Effect } from 'src/app/models/output/Effect';
 import { Impact } from 'src/app/models/output/Impact';
 import { Biotype } from 'src/app/models/output/Biotype';
 
+// SERVICES
+import { VarCanService } from 'src/app/services/varcan-service/var-can.service';
+import { Gene } from 'src/app/models/output/Gene';
+
 @Component({
   selector: 'app-properties-filter',
   templateUrl: './properties-filter.component.html',
   styleUrls: ['./properties-filter.component.css']
 })
 export class PropertiesFilterComponent implements OnInit {
+  private service: VarCanService;
   appliedFilters: Object = {};
 
   fieldOptions: Array<Object> = [
@@ -47,13 +52,18 @@ export class PropertiesFilterComponent implements OnInit {
 
   biotypesList: Biotype[];
   biotypeSettings: IDropdownSettings = {};
-  selectedBiotypes = [];  
+  selectedBiotypes = []; 
+  
+  genesList: Gene[];
+  geneSettings: IDropdownSettings = {};
+  selectedGenes = [];
 
   // OUTPUT EVENTS
   @Output() resetPageEvent = new EventEmitter();
   @Output() notifyFilterEvent = new EventEmitter();  
 
   ngOnInit(): void {
+    this.service = GlobalConstants.getService();
     this.chromosomesList = GlobalConstants.getChromosomes();
     this.effectsList = GlobalConstants.getEffects();
     this.impactsList = GlobalConstants.getImpacts();
@@ -92,8 +102,18 @@ export class PropertiesFilterComponent implements OnInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 2,
-      allowSearchFilter: true       
+      allowSearchFilter: false       
     }; 
+    this.geneSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'symbol',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 2,
+      allowSearchFilter: true,
+      allowRemoteDataSearch: true
+    };    
     this.getAllFilters();  
   }
 
@@ -107,7 +127,7 @@ export class PropertiesFilterComponent implements OnInit {
     
     var name = {
       'Chromosomes': 'ucsc',
-      'Genes': '',
+      'Genes': 'symbol',
       'Effects': 'description',
       'Impacts': 'name',
       'Biotypes': 'name',
@@ -170,6 +190,14 @@ export class PropertiesFilterComponent implements OnInit {
     this.notifyFilterEvent.emit(this.appliedFilters);
     this.resetPageEvent.emit();
   }  
+
+  getGenes(data) {
+    console.log("data filter gene: ", data);
+    this.service.getGenes({"search": data}).then(response => {
+      this.genesList = response.data.content;
+      console.log("response: ", response.data);
+    }).catch(error => console.log("Genes filtered by name error: " + error));
+  }
 
   getAllFilters() {
     this.appliedFiltersList = JSON.parse(localStorage.getItem("allFilters"));

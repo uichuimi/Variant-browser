@@ -24,6 +24,12 @@ export class GetFetchService extends FetchService {
    * @returns Promise<AxiosResponse<U>> (Promesa genérica)
    */
   fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<AxiosResponse<U>> {
-    return query !== null ? this.httpHandler.get<U>(endpoint, query) : this.httpHandler.get<U>(endpoint);
+    console.log("query: ", query);
+    if(typeof query !== 'undefined') {
+      let endpointFilter = `${endpoint}?search=${query['search']}`
+      return this.httpHandler.get<U>(endpointFilter);  
+    } else {
+      return this.httpHandler.get<U>(endpoint);
+    }
   }
 }
