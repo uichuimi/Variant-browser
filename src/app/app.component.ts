@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {environment} from '../environments/environment';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +9,6 @@ import {environment} from '../environments/environment';
 /**
  * prueba AppComponent Class
  */
-export class AppComponent implements OnInit {
-  private roles: string[];
-  isLoggedIn = false;
-  username: string;
-
-  constructor() {  }
-
-  ngOnInit(): void {
-
-  }
-
-  logout() {
-
-  }
+export class AppComponent {
+  title = 'Prueba';
 }

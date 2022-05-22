@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+
 export interface ICreatable {
-    create<T,U>(data: T, endpoint: string): U;
+    create<T,U>(endpoint: string, data: T): Promise<AxiosResponse<U>>;
 }

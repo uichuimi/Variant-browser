@@ -1,13 +1,17 @@
-import { TestBed } from '@angular/core/testing';
+import axios from 'axios';
 
 import { RegisterService } from './register.service';
 
 describe('RegisterService', () => {
   let service: RegisterService;
-
+  let httpHandler = axios.create({
+    baseURL: "http://localhost:8080",
+    timeout: 2000,
+    //headers: { Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1aWNodWltaSIsImV4cCI6MTY0Nzg0MjQzOCwiaWF0IjoxNjQ3ODA2NDM4fQ.86Eyn3eR6H2fnub7xgHylivzcCMvT4B1gion254TtbTySKmHcnqYt6iC1BR3ILN5rQYO1wR3pGh6aoo3ImivlA' }
+  });
+  
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(RegisterService);
+    service = new RegisterService(httpHandler);
   });
 
   it('should be created', () => {
