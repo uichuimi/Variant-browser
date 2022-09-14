@@ -7,4 +7,5 @@ export interface Page<Type> {
     first: boolean;
     last: boolean;
     content: Array<Type>;
+    numberOfElements: number;
 }

@@ -24,6 +24,6 @@ export class PostFetchService extends FetchService {
    * @returns Promise<AxiosResponse<U>> (Promesa genérica)
    */
   fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<AxiosResponse<U>> {
-    return this.httpHandler.get<U>(endpoint, data);  
+    return this.httpHandler.post<U>(endpoint, data);  
   }  
 }

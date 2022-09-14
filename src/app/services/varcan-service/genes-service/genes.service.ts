@@ -30,7 +30,7 @@ export class GenesService {
    * @returns Promise<AxiosResponse<Page<Gene>>>
    */
   fetch(query?: GeneParams): Promise<AxiosResponse<Page<Gene>>> {
-    return query !== null ? this.getFetchService.fetch<GeneParams, Page<Gene>>('/genes', query) 
+    return query !== null ? this.getFetchService.fetch<GeneParams, Page<Gene>>('/genes', undefined, query) 
       : this.getFetchService.fetch<undefined, Page<Gene>>('/genes');
   }  
 }

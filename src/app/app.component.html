@@ -1,10 +1,11 @@
 <div id="app">
-  <h1> {{title}} </h1>
-  <hr />
-  <app-table
-    [headerName]="title"></app-table>
-
-  <div class="container">
-    <router-outlet></router-outlet>
-  </div>
+  <nav class="navBar">
+    <button type="button">
+      <a routerLink="/register">Sign Up</a>
+    </button>
+    <button type="button" (click)="logOut()">
+      <a routerLink="/login">Log Out</a>
+    </button>    
+  </nav>
+  <router-outlet></router-outlet>
 </div>

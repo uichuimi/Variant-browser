@@ -14,6 +14,8 @@ import { VariantsService } from './variants-service/variants.service';
 import { IndividualsService } from './individuals-service/individuals.service';
 import { LoginService } from './login-service/login.service';
 import { RegisterService } from './register-service/register.service';
+import { TokenStorageService } from './tokenStorage-service/token-storage.service';
+import { BatchGeneService } from './batchGene-service/batch-gene.service';
 
 // MODELS
 import { Chromosome } from 'src/app/models/output/Chromosome';
@@ -32,7 +34,6 @@ import { Login } from 'src/app/models/input/Login';
 import { Token } from 'src/app/models/output/Token';
 import { Register } from 'src/app/models/input/Register';
 import { ResponseStatus } from 'src/app/models/output/ResponseStatus';
-import { TokenStorageService } from './tokenStorage-service/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,7 @@ export class VarCanService extends ApiService {
   private loginService: LoginService;
   private registerService: RegisterService;
   private tokenStorageService: TokenStorageService;
+  private batchGeneService: BatchGeneService;
 
   constructor(@Inject(String) serverUrl: string) {
     super(serverUrl);
@@ -76,6 +78,7 @@ export class VarCanService extends ApiService {
     this.individualService = new IndividualsService(this.httpHandler);
     this.variantService = new VariantsService(this.httpHandler);
     this.registerService = new RegisterService(this.httpHandler);
+    this.batchGeneService = new BatchGeneService(this.httpHandler);
   }
 
   /**
@@ -185,4 +188,8 @@ export class VarCanService extends ApiService {
   getVariants(data?: VariantParams): Promise<AxiosResponse<Page<Variant>>> {
     return data !== null ? this.variantService.fetch(data) : this.variantService.fetch();
   }
+
+  getBatchGenes(data?): Promise<AxiosResponse<Array<Gene>>> {
+    return data !== null ? this.batchGeneService.fetch(data) : this.batchGeneService.fetch();
+  }  
 }
