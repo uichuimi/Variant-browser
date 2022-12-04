@@ -1,0 +1,35 @@
+{
+  "name": "variant-browser-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/variant-browser-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@angular-devkit/build-angular:protractor",
+      "options": {
+        "protractorConfig": "apps/variant-browser-e2e/protractor.conf.js",
+        "devServerTarget": "variant-browser:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "variant-browser:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/variant-browser-e2e/**/*.{js,ts}"
+        ]
+      }
+    }
+  },
+  "implicitDependencies": [
+    "variant-browser"
+  ],
+  "tags": []
+}

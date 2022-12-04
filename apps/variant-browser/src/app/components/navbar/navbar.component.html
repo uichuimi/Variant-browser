@@ -1,0 +1,11 @@
+<nav class="navBar">
+  <button *ngIf="isSignUp" type="button">
+    <a routerLink="/register">Sign Up</a>
+  </button>
+  <button *ngIf="isLogOut" type="button" (click)="logOut()">
+    <a routerLink="/login" (click)="logOut()">Log Out</a>
+  </button>
+  <button *ngIf="isGoBack" type="button">
+    <a routerLink="/">Go back</a>
+  </button>
+</nav>

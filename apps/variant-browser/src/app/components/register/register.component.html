@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="header">
+        <a href="/"><img src="../../../assets/image/LOGO-SCS.png" alt="logo-scs"></a>
+        <span id="name">Servicio Canario de la Salud</span>
+    </div>
+    <h3>Create an account</h3>
+    <form #register="ngForm" (ngSubmit)="submit(register)">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input #firstName="ngModel" type="text" name="firstName" class="form-control" ngModel required>
+            <span
+                class="error"
+                *ngIf="firstName.touched && firstName.invalid"
+                [@inputError]>You must provide your first name!!</span>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input #lastName="ngModel" type="text" name="lastName" class="form-control" ngModel required>
+            <span
+                class="error"
+                *ngIf="lastName.touched && lastName.invalid"
+                [@inputError]>You must provide your last name!!</span>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input #email="ngModel" type="email" name="email" class="form-control" ngModel required>
+            <span
+                class="error"
+                *ngIf="email.touched && email.invalid"
+                [@inputError]>You must provide an email!!</span>
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input #username="ngModel" type="text" name="username" class="form-control" ngModel required>
+            <span
+                class="error"
+                *ngIf="username.touched && username.invalid"
+                [@inputError]>You must provide an username!!</span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input #password="ngModel" type="password" name="password" class="form-control" ngModel required>
+            <span
+                class="error"
+                *ngIf="password.touched && password.invalid"
+                [@inputError]>You must provide a password!!</span>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input #confirmPassword="ngModel" type="password" name="confirmPassword" class="form-control" ngModel required>
+            <span
+                class="error"
+                *ngIf="confirmPassword.touched && confirmPassword.invalid"
+                [@inputError]>You must confirm your password!!</span>
+        </div>
+        <button
+            type="submit"
+            [ngClass]="{'disabled': !register.valid || register.form.value.password !== register.form.value.confirmPassword}"
+            [disabled]="!register.valid || register.form.value.password !== register.form.value.confirmPassword">
+            Sign Up
+        </button>
+    </form>
+</div>
+<div class="passwordError"
+    [@passwordError]="register.valid && register.form.value.password !== register.form.value.confirmPassword ? 'open' : 'closed'">
+    Passwords do not match
+</div>

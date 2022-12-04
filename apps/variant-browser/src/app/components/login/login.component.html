@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="header">
+        <a href="/"><img src="../../../assets/image/LOGO-SCS.png" alt="logo-scs"></a>
+        <span id="name">Servicio Canario de la Salud</span>
+    </div>
+    <h3>Sign in with your access credentials</h3>
+    <form #login="ngForm" (ngSubmit)="submit(login)">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input
+                #username="ngModel"
+                type="text"
+                name="username"
+                class="form-control"
+                placeholder="Username"
+                (click)="onClick()"
+                ngModel
+                required>
+            <span
+                class="error"
+                *ngIf="username.touched && username.invalid"
+                [@inputError]>You must provide a username!!</span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input
+                #password="ngModel"
+                type="password"
+                name="password"
+                class="form-control"
+                (click)="onClick()"
+                placeholder="Password"
+                ngModel
+                required
+            >
+            <span
+                class="error"
+                *ngIf="password.touched && password.invalid"
+                [@inputError]>You must provide a password!!</span>
+        </div>
+        <button
+            type="submit"
+            [ngClass]="{'disabled': login.invalid}"
+            [disabled]="login.invalid">
+            <span>Access</span>
+            <!--<img *ngIf="loading" src="../../../assets/icon/icons8-loading-circle.gif" alt="loading" width="30px" height="30px">-->
+        </button>
+    </form>
+</div>
+<div class="passwordError"
+    [@passwordError]="loginIncorrect ? 'open' : 'closed'">
+    Invalid credentials
+</div>
