@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 1,
   "projects": {
     "variant-browser": "apps/variant-browser",
     "variant-browser-e2e": "apps/variant-browser-e2e"
