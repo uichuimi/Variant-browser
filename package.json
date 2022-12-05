@@ -30,6 +30,7 @@
     "file-saver": "^2.0.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.13",
+    "materialize-css": "^1.0.0-rc.2",
     "ng-multiselect-dropdown": "^0.3.8",
     "ng5-slider": "^1.2.6",
     "primeicons": "^6.0.1",

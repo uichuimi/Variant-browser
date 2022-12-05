@@ -7,8 +7,8 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import {VarCanService} from '../../services/varcan-service/var-can.service';
-import {GlobalConstants} from '../../common/global-constants';
+import {VarCanService} from '../../services/api/varcan-service/var-can.service';
+import {GlobalConstants} from '../../services/common/global-constants';
 
 @Component({
   selector: 'app-login',

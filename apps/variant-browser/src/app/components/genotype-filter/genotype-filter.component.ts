@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Individual } from "../../models/output/Individual";
 import { GenotypeType } from "../../models/output/GenotypeType";
-import { GlobalConstants } from "../../common/global-constants";
+import { GlobalConstants } from "../../services/common/global-constants";
 
 @Component({
   selector: 'app-genotype-filter',

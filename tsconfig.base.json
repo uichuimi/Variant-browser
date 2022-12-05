@@ -25,11 +25,11 @@
   },
   "typedocOptions": {
     "entryPoints": [
-      "src/app/services",
-      "src/app/models",
-      "src/app/interfaces",
-      "src/app/components",
-      "src/app/common"
+      "apps/variant-browser/src/app/services",
+      "apps/variant-browser/src/app/models",
+      "apps/variant-browser/src/app/interfaces",
+      "apps/variant-browser/src/app/components",
+      "apps/variant-browser/src/app/common"
     ],
     "entryPointStrategy": "expand",
     "exclude": "**/*+(index|.spec|.e2e|.prod|.dev).ts",

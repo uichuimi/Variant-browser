@@ -20,6 +20,9 @@ import {VariantDetailsComponent} from './components/variant-details/variant-deta
 import {environment} from '../environments/environment';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { MatTableModule } from "@angular/material/table";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { DragDropModule } from "@angular/cdk/drag-drop";
+import { MatSortModule } from "@angular/material/sort";
 
 
 @NgModule({
@@ -42,7 +45,10 @@ import { MatTableModule } from "@angular/material/table";
     BrowserAnimationsModule,
     FormsModule,
     NgMultiSelectDropDownModule.forRoot(),
-    MatTableModule
+    MatTableModule,
+    MatTooltipModule,
+    DragDropModule,
+    MatSortModule
   ],
   bootstrap: [AppComponent],
   providers: [

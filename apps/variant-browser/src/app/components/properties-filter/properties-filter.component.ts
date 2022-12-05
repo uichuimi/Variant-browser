@@ -8,8 +8,8 @@ import { Chromosome } from "../../models/output/Chromosome";
 import { Effect } from "../../models/output/Effect";
 import { Impact } from "../../models/output/Impact";
 import { Biotype } from "../../models/output/Biotype";
-import { VarCanService } from "../../services/varcan-service/var-can.service";
-import { GlobalConstants } from "../../common/global-constants";
+import { VarCanService } from "../../services/api/varcan-service/var-can.service";
+import { GlobalConstants } from "../../services/common/global-constants";
 import { Gene } from "../../models/output/Gene";
 
 @Component({

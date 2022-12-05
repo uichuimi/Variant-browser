@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-/*   it(`should have as title 'variant-browser'`, () => {
+/*   it(`should have as title 'variant-line-browser'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('variant-browser');
+    expect(app.title).toEqual('variant-line-browser');
   });
- 
+
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('variant-browser app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('variant-line-browser app is running!');
   });*/
 });

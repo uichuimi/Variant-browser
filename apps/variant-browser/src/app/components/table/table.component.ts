@@ -1,18 +1,16 @@
-import {Component, OnInit } from '@angular/core';
-import { VarCanService } from "../../services/varcan-service/var-can.service";
-import { GlobalConstants } from "../../common/global-constants";
-import { VariantParams } from "../../models/input/VariantParams";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { Variant } from "../../models/output/Variant";
-import { Chromosome } from "../../models/output/Chromosome";
-import { Effect } from "../../models/output/Effect";
-import { Biotype } from "../../models/output/Biotype";
 import { Impact } from "../../models/output/Impact";
-import { Individual } from "../../models/output/Individual";
-import { Population } from "../../models/output/Population";
-import { GenotypeType } from "../../models/output/GenotypeType";
-import { VariantLine } from "../../models/data-structure/VariantLine";
-import { Page } from "../../models/output/Page";
 import { animate, state, style, transition, trigger } from "@angular/animations";
+import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
+import { VariantLine } from "../../models/table/VariantLine";
+import { Sort } from "@angular/material/sort";
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
+
+interface TableHeaderMeta {
+  name: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-table',
@@ -27,31 +25,47 @@ import { animate, state, style, transition, trigger } from "@angular/animations"
   ],
 })
 export class TableComponent implements OnInit {
-  private effects: Array<Effect>;
-  private chromosomes: Array<Chromosome>;
-  private biotypes: Array<Biotype>;
-  private impacts: Array<Impact>;
-  private individuals: Array<Individual>;
-  private population: Array<Population>;
-  private genotypeTypes: Array<GenotypeType>;
-  private variants: Page<Variant>;
-  variantLines: Array<VariantLine>;
-  dataSource;
-  constructor(private service: VarCanService, private globalConstants: GlobalConstants) {
-    this.globalConstants.initializeLocalStorage().then(() => {
-      this.effects = this.globalConstants.getEffects();
-      this.chromosomes = this.globalConstants.getChromosomes();
-      this.biotypes = this.globalConstants.getBiotypes();
-      this.impacts = this.globalConstants.getImpacts();
-      this.individuals = this.globalConstants.getIndividuals();
-      this.population = this.globalConstants.getPopulation();
-      this.genotypeTypes = this.globalConstants.getGenotypeTypes();
-    });
-  }
+  protected columnsToDisplay: Array<TableHeaderMeta> = [
+    { name: "id", label: "ID" },
+    { name: "snpId", label: "SNP ID" },
+    { name: "region", label: "Region" },
+    { name: "variant", label: "Variant" },
+    { name: "gene", label: "Gene" },
+    { name: "effect", label: "Effect" },
+    { name: "impact", label: "Impact" },
+    { name: "frequency", label: "Frequency (GC)" },
+    { name: "gmaf", label: "Global Minor Allele Frequency (GMAF)" },
+    { name: "dp", label: "Total Depth (DP)" }
+  ];
+  protected displayedColumns: Array<string> = this.columnsToDisplay.slice(1)
+    .map((headerMeta: TableHeaderMeta) => headerMeta.name);
+
+  constructor(protected dataSource: VariantLineDatasourceService) {}
 
   ngOnInit(): void {
     console.log('Init table');
     // this.getVariants();
+  }
+
+  sortData(event: Sort) {
+    this.dataSource.sortData(event);
+  }
+
+  getTooltip(column: string, line: VariantLine) {
+    return line[column];
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 
   /*getVariants(data: VariantParams = {size: this.size, page: this.page}, callbackFunction?) {
@@ -91,8 +105,8 @@ export class TableComponent implements OnInit {
   calculateDP(data) {
     let an = 0;
 
-    data.content.map((variant) => {
-      variant.frequencies.map((frequency) => {
+    data.content.map((variant-line) => {
+      variant-line.frequencies.map((frequency) => {
         an += frequency.an;
       });
       this.dp.push(an);
@@ -105,8 +119,8 @@ export class TableComponent implements OnInit {
     let an = 0;
     let af = 0;
 
-    data.content.map((variant) => {
-      variant.frequencies.map((frequency) => {
+    data.content.map((variant-line) => {
+      variant-line.frequencies.map((frequency) => {
         if (frequency.population === 1) {
           ac = frequency.ac;
           an = frequency.an;
@@ -129,8 +143,8 @@ export class TableComponent implements OnInit {
     let an = 0;
     let af = 0;
 
-    data.content.map((variant) => {
-      variant.frequencies.map((frequency) => {
+    data.content.map((variant-line) => {
+      variant-line.frequencies.map((frequency) => {
         if (frequency.population === 2) {
           ac = frequency.ac;
           an = frequency.an;
@@ -149,8 +163,8 @@ export class TableComponent implements OnInit {
   }
 
   getGeneSymbol(data) {
-    data.content.map(variant => {
-      this.service.getBatchGenes({ids: [variant.consequence[0].gene]}).then(response => {
+    data.content.map(variant-line => {
+      this.service.getBatchGenes({ids: [variant-line.consequence[0].gene]}).then(response => {
         this.geneSymbols.push(response.data[0].symbol);
       }).catch(error => console.log('BacthGenes error: ' + error));
     });
@@ -158,16 +172,16 @@ export class TableComponent implements OnInit {
 
   getCoordinate(data) {
     let chromosomeElement: Chromosome;
-    data.content.map(variant => {
-      chromosomeElement = this.chromosomesList.find(element => element.id === variant.chromosome);
+    data.content.map(variant-line => {
+      chromosomeElement = this.chromosomesList.find(element => element.id === variant-line.chromosome);
       this.ucsc.push(chromosomeElement.ucsc);
     });
   }
 
   getConsequence(data) {
     let effect: Effect;
-    data.content.map(variant => {
-      effect = this.effectsList.find(element => element.id === variant.consequence[0].effect);
+    data.content.map(variant-line => {
+      effect = this.effectsList.find(element => element.id === variant-line.consequence[0].effect);
       this.effect.push(effect.description);
     });
   }
@@ -196,11 +210,11 @@ export class TableComponent implements OnInit {
     return valueTransform[page];
   }
 
-  selectVariant(variant: Variant) {
-    if (this.selectedVariant === variant) {
+  selectVariant(variant-line: Variant) {
+    if (this.selectedVariant === variant-line) {
       this.selectedVariant = null;
     } else {
-      this.selectedVariant = variant;
+      this.selectedVariant = variant-line;
     }
   }
 
