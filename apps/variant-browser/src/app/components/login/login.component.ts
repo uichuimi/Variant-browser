@@ -8,7 +8,6 @@ import {
   transition
 } from '@angular/animations';
 import {VarCanService} from '../../services/api/varcan-service/var-can.service';
-import {GlobalConstants} from '../../services/common/global-constants';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +47,7 @@ export class LoginComponent  {
   loginIncorrect = false;
   loading = false;
 
-  constructor(private router: Router, private service: VarCanService, private globalConstants: GlobalConstants) { }
+  constructor(private router: Router, private service: VarCanService) { }
 
   onClick() {
     this.loginIncorrect = false;
@@ -67,8 +66,6 @@ export class LoginComponent  {
     const { username, password } = login.form.value;
 
     this.service.login({username, password}).then(response => {
-      sessionStorage.setItem('token', response.refresh_token);
-
       this.router.navigate(navigationDetails);
       return response;
     }).catch(error => {

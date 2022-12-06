@@ -1,0 +1,18 @@
+<mat-tab-group dynamicHeight>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <fa-icon [icon]="faDna"></fa-icon>
+      Genotype
+    </ng-template>
+    Genotype filter here!
+    <app-genotype-filter></app-genotype-filter>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <fa-icon [icon]="faScrewdriverWrench"></fa-icon>
+      Properties
+    </ng-template>
+    Properties filter here!
+  </mat-tab>
+</mat-tab-group>

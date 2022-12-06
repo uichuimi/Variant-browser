@@ -48,7 +48,7 @@ export class GenotypeFilterComponent implements OnInit {
       itemsShowLimit: 2,
       allowSearchFilter: true
     };
-    this.getAllFilters();
+    // this.getAllFilters();
   }
 
   // MÉTODOS PARA FILTRADO
@@ -120,10 +120,6 @@ export class GenotypeFilterComponent implements OnInit {
   getAllFilters() {
     this.appliedFilters = JSON.parse(localStorage.getItem('allFiltersGenotype'));
   }
-
-/*   calculateExtraFilters(): number {
-    return this.appliedFilters.length - 5;
-  }  */
 
   getAppliedFiltersLength() {
     return Object.keys(this.appliedFilters).length;

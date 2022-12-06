@@ -21,11 +21,10 @@ export class GlobalConstants {
   private individuals: Array<Individual>;
   private population: Array<Population>;
 
-  constructor(private service: VarCanService) {
-    Object.getOwnPropertyNames(this).forEach(property => console.log(property));
+  constructor(private readonly service: VarCanService) {
+    this.service.refreshLogin();
+    this.initializeLocalStorage();
   }
-  private static ID_POPULATION_GCA: number;
-  private static ID_POPULATION_ALL: number;
 
   static run(f: Record<string, any>, method: Exclude<keyof GlobalConstants, 'run'>): any {
     return f[method]();
@@ -115,7 +114,7 @@ export class GlobalConstants {
     return JSON.parse(localStorage.getItem('population'));
   }
 
-  private async initializeLocalStorage(): Promise<void> {
+  private initializeLocalStorage() {
     this.initializeChromosomes();
     this.initializeEffects();
     this.initializeImpacts();
@@ -123,5 +122,9 @@ export class GlobalConstants {
     this.initializeIndividuals();
     this.initializeBiotypes();
     this.initializePopulation();
+  }
+
+  disconnect() {
+    localStorage.clear();
   }
 }

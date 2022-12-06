@@ -15,15 +15,25 @@ import { RegisterComponent } from './components/register/register.component';
 import { GenotypeFilterComponent } from './components/genotype-filter/genotype-filter.component';
 import { PropertiesFilterComponent } from './components/properties-filter/properties-filter.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import {CommonModule} from '@angular/common';
-import {VariantDetailsComponent} from './components/variant-details/variant-details.component';
-import {environment} from '../environments/environment';
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { MatTableModule } from "@angular/material/table";
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { DragDropModule } from "@angular/cdk/drag-drop";
-import { MatSortModule } from "@angular/material/sort";
-
+import { CommonModule } from '@angular/common';
+import { VariantDetailsComponent } from './components/variant-details/variant-details.component';
+import { environment } from '../environments/environment';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { VariantTableToolbarComponent } from './components/variant-table-toolbar/variant-table-toolbar.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { VariantFilterPanelComponent } from './components/variant-filter-panel/variant-filter-panel.component';
+import { MatTabsModule } from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -35,7 +45,9 @@ import { MatSortModule } from "@angular/material/sort";
     GenotypeFilterComponent,
     PropertiesFilterComponent,
     NavbarComponent,
-    VariantDetailsComponent
+    VariantDetailsComponent,
+    VariantTableToolbarComponent,
+    VariantFilterPanelComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -48,12 +60,18 @@ import { MatSortModule } from "@angular/material/sort";
     MatTableModule,
     MatTooltipModule,
     DragDropModule,
-    MatSortModule
+    MatSortModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatToolbarModule,
+    MatTabsModule
   ],
   bootstrap: [AppComponent],
-  providers: [
-    {provide: 'environment', useValue: environment.serverUrl}
-  ]
+  providers: [{ provide: 'environment', useValue: environment.serverUrl }],
 })
-
-export class AppModule { }
+export class AppModule {}

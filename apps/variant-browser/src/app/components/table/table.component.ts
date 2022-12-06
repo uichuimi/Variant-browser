@@ -1,16 +1,16 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { Variant } from "../../models/output/Variant";
 import { Impact } from "../../models/output/Impact";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 import { VariantLine } from "../../models/table/VariantLine";
 import { Sort } from "@angular/material/sort";
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
+import { VariantParams } from "../../models/input/VariantParams";
+import { MatPaginator } from "@angular/material/paginator";
+import { Subject, tap } from "rxjs";
+import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";
 
-interface TableHeaderMeta {
-  name: string;
-  label: string;
-}
+
 
 @Component({
   selector: 'app-table',
@@ -24,50 +24,93 @@ interface TableHeaderMeta {
     ]),
   ],
 })
-export class TableComponent implements OnInit {
-  protected columnsToDisplay: Array<TableHeaderMeta> = [
-    { name: "id", label: "ID" },
-    { name: "snpId", label: "SNP ID" },
-    { name: "region", label: "Region" },
-    { name: "variant", label: "Variant" },
-    { name: "gene", label: "Gene" },
-    { name: "effect", label: "Effect" },
-    { name: "impact", label: "Impact" },
-    { name: "frequency", label: "Frequency (GC)" },
-    { name: "gmaf", label: "Global Minor Allele Frequency (GMAF)" },
-    { name: "dp", label: "Total Depth (DP)" }
-  ];
-  protected displayedColumns: Array<string> = this.columnsToDisplay.slice(1)
-    .map((headerMeta: TableHeaderMeta) => headerMeta.name);
+export class TableComponent implements OnInit, AfterViewInit {
+  protected variantParams: VariantParams;
+  protected page: number = 0;
+  protected size: number = 10;
+  protected columnsToDisplay: Array<TableHeaderMeta>;
+  protected displayedColumns: Array<string>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  protected onFilterChangeEvent: Subject<any> = new Subject<any>();
 
-  constructor(protected dataSource: VariantLineDatasourceService) {}
-
-  ngOnInit(): void {
-    console.log('Init table');
-    // this.getVariants();
+  constructor(protected dataSource: VariantLineDatasourceService) {
+    this.variantParams = { size: this.size, page: this.page };
+    this.columnsToDisplay = [
+      { name: "id", label: "ID", visualize: false },
+      { name: "snpId", label: "SNP ID", visualize: true },
+      { name: "region", label: "Region", visualize: true },
+      { name: "allele", label: "Allele", visualize: true },
+      { name: "gene", label: "Gene", visualize: true },
+      { name: "effect", label: "Effect", visualize: true },
+      { name: "impact", label: "Impact", visualize: true },
+      { name: "frequency", label: "Frequency (GC)", visualize: true },
+      { name: "gmaf", label: "Global Minor Allele Frequency (GMAF)", visualize: true },
+      { name: "dp", label: "Total Depth (DP)", visualize: true }
+    ];
+    this.loadColumnVisualization()
   }
 
-  sortData(event: Sort) {
-    this.dataSource.sortData(event);
+  ngOnInit(): void {
+    this.dataSource.updateVariantLine(this.variantParams);
+  }
+
+  ngAfterViewInit(): void {
+    this.paginator.page.pipe(
+      tap(() => this.loadVariantPage())
+    ).subscribe();
+  }
+
+  private loadColumnVisualization() {
+    this.displayedColumns = this.columnsToDisplay
+      .filter((column: TableHeaderMeta) => column.visualize)
+      .map((column: TableHeaderMeta) => column.name);
+  }
+
+  private loadVariantPage() {
+    this.page = this.paginator.pageIndex;
+    this.size = this.paginator.pageSize;
+    this.variantParams = {...this.variantParams, size: this.size, page: this.page};
+    this.dataSource.updateVariantLine(this.variantParams);
   }
 
   getTooltip(column: string, line: VariantLine) {
     return line[column];
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
+  onFilterChange($event: KeyboardEvent) {
+    this.onFilterChangeEvent.next($event);
   }
 
+  onColumnVisualizationChange($event: Array<TableHeaderMeta>) {
+    this.columnsToDisplay = $event;
+    console.log("VIZ CHANGE", this.columnsToDisplay);
+    this.loadColumnVisualization();
+  }
+
+  sortData($event: Sort) {
+    this.dataSource.sortData($event);
+  }
+
+  drop($event: CdkDragDrop<Array<string>, any>) {
+    if ($event.previousContainer === $event.container) {
+      moveItemInArray(this.displayedColumns, $event.previousIndex, $event.currentIndex);
+    } else {
+      transferArrayItem(
+        $event.previousContainer.data,
+        $event.container.data,
+        $event.previousIndex,
+        $event.currentIndex,
+      );
+    }
+    this.rearrangeColumnsMeta($event.previousIndex, $event.currentIndex);
+  }
+  private rearrangeColumnsMeta(previousIndex: number, currentIndex: number): void {
+    const previousMetaIndex: number = this.columnsToDisplay
+      .findIndex((column: TableHeaderMeta) => column.name === this.displayedColumns[previousIndex]);
+    const currentMetaIndex: number = this.columnsToDisplay
+      .findIndex((column: TableHeaderMeta) => column.name === this.displayedColumns[currentIndex]);
+    moveItemInArray(this.columnsToDisplay, previousMetaIndex, currentMetaIndex);
+  }
   /*getVariants(data: VariantParams = {size: this.size, page: this.page}, callbackFunction?) {
     console.log('=============search variants=============');
     this.loading = true;

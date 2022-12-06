@@ -92,6 +92,15 @@ export class VarCanService extends ApiService {
   }
 
   /**
+   * Recupera la cookie de sesión cada vez que se refresca una página de restringida
+   * @returns void
+   */
+  refreshLogin(): void {
+    const token: Token = this.tokenStorageService.getToken();
+    this.tokenStorageService.saveToken(this.httpHandler, token);
+  }
+
+  /**
    * Se encarga de crear una promesa que cuando se abra registrará a un usuario
    * @param data modelo de entrada de Register (username y password)
    * @returns Promise<AxiosResponse<ResponseStatus>>
@@ -99,6 +108,14 @@ export class VarCanService extends ApiService {
 
   register(data: Register): Promise<AxiosResponse<ResponseStatus>> {
     return this.registerService.create(data);
+  }
+
+  /**
+   * Cierra la sesión eliminando todos las cookies de sesión
+   * @returns void
+   */
+  logout(): void {
+    this.tokenStorageService.signout();
   }
 
   /**

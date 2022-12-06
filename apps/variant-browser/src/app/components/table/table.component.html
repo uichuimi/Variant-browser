@@ -1,9 +1,27 @@
-<div class="container">
+<section class="mat-elevation-z8">
   <div class="row">
+    <div class="col-12">
+      <app-variant-filter-panel></app-variant-filter-panel>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <app-variant-table-toolbar
+        [columnsToDisplay]="columnsToDisplay"
+        [onFilterChangeEvent]="onFilterChangeEvent"
+        (keyup)="onFilterChange($event)"
+        (columnVisualizationChangeEvent)="onColumnVisualizationChange($event)"
+      ></app-variant-table-toolbar>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col 12">
       <table mat-table
              [dataSource]="dataSource" multiTemplateDataRows
              matSort cdkDropList
-             class="mat-elevation-z8 col s12 m4 12 centered"
+             [cdkDropListData]="displayedColumns"
              cdkDropListOrientation="horizontal"
              (cdkDropListDropped)="drop($event)"
              (matSortChange)="sortData($event)"
@@ -29,18 +47,54 @@
               {{element[column.name]}}
             </span>
           </td>
+          <td mat-footer-cell *matFooterCellDef
+              [attr.colspan]="displayedColumns.length"
+          >
+            Filtered {{dataSource.totalFilteredVariants}} of {{dataSource.totalVariants}} variants.
+          </td>
         </ng-container>
         <thead>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         </thead>
         <tbody>
           <tr mat-row
               *matRowDef="let row; columns: displayedColumns;"
           ></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell"
+                [attr.colspan]="displayedColumns.length"
+                *ngIf="dataSource.noResult$ | async"
+            >
+              No data matching the search value.
+            </td>
+            <td class="spinner-container centered"
+                [attr.colspan]="displayedColumns.length"
+                *ngIf="dataSource.loading$ | async"
+            >
+              <mat-spinner></mat-spinner>
+            </td>
+          </tr>
+          <tr mat-footer-row
+              id="variant-table-footer"
+              *matFooterRowDef="[displayedColumns[0]]; sticky: true"
+              class="mat-table-row-sm position-relative mat-footer-row"
+          ></tr>
         </tbody>
       </table>
+
+      <mat-paginator
+        [length]="dataSource.totalFilteredVariants"
+        [pageSize]="size"
+        [pageIndex]="page"
+        [pageSizeOptions]="[5, 10, 25, 50, 100, 200]"
+        aria-label="Select page of users"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
   </div>
-</div>
+</section>
+
+
 <!--<div class="container text-center">
   <div class="row">
     <div class="col">

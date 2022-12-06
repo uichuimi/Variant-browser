@@ -1,13 +1,14 @@
 <nav>
-      <div class="nav-wrapper">
-        <a href="/" class="brand-logo">UICHUIMI</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li>
-              <a *ngIf="isSignUp" routerLink="/register">Sign Up</a>
-              <a *ngIf="isLogOut" routerLink="/login" (click)="logOut()">Log Out</a>
-              <a *ngIf="isGoBack" routerLink="/">Go back</a>
-          </li>
-        </ul>
-      </div>
+  <div class="nav-wrapper col-12">
+    <a href="/" class="brand-logo left">UICHUIMI</a>
+    <span class="brand-logo center">Variant browser</span>
+    <ul id="nav-mobile" class="right">
+      <li>
+        <a *ngIf="isSignUp" routerLink="/register">Sign Up</a>
+        <a *ngIf="isLogOut" routerLink="/login" (click)="logOut()">Log Out</a>
+        <a *ngIf="isGoBack" routerLink="/">Go back</a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
