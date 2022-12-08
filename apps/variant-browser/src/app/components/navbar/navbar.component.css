@@ -3,6 +3,14 @@ nav {
   width: auto;
 }
 
+.brand-logo {
+  margin-left: 0.5%;
+}
+
+ul#nav-mobile {
+  margin-right: 0.5%;
+}
+
 a {
   color: #FFFFFF;
   font-weight: bold;

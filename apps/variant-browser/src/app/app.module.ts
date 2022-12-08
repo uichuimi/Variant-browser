@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 // COMPONENTS
@@ -34,6 +34,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { VariantFilterPanelComponent } from './components/variant-filter-panel/variant-filter-panel.component';
 import { MatTabsModule } from "@angular/material/tabs";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatSelectModule } from "@angular/material/select";
+import { OverlayModule } from "@angular/cdk/overlay";
 
 @NgModule({
   declarations: [
@@ -69,7 +74,13 @@ import { MatTabsModule } from "@angular/material/tabs";
     MatIconModule,
     MatCheckboxModule,
     MatToolbarModule,
-    MatTabsModule
+    MatTabsModule,
+    MatGridListModule,
+    MatChipsModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    OverlayModule
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: 'environment', useValue: environment.serverUrl }],

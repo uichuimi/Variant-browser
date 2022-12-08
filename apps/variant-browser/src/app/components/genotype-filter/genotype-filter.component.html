@@ -1,77 +1,90 @@
-<div class="container">
-    <div class="header">
-        <span>Genotypes filter</span>
-    </div>
-    <div class="filtersContainer">
-        <div class="filters">
-            <form #genotypeFilter="ngForm" (ngSubmit)="addFilter(genotypeFilter)">
-                <div class="form-group">
-                    <label for="selector">Selector</label>
-                    <select #selector="ngModel" name="selector" class="form-control" ngModel required>
-                        <option value="ALL">All</option>
-                        <option value="ANY">Any</option>
-                        <option value="NONE">None</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="number">Number</label>
-                    <input 
-                        #number="ngModel" 
-                        type="number" 
-                        name="number" 
-                        class="form-control"
-                        [disabled]="genotypeFilter.value.selector !== 'ANY'"
-                        min="1"
-                        value="1"
-                        ngModel
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="samples">Samples</label>
-                    <ng-multiselect-dropdown
-                        name="samples" 
-                        ngDefaultControl
-                        [settings]="samplesSettings"
-                        [data]="individualsList"
-                        [(ngModel)]="selectedSamples"
-                        class="form-control"
-                        style="border: none;"                        
-                        required
-                    >
-                    </ng-multiselect-dropdown>
-                </div>   
-                <div class="form-group">
-                    <label for="genotypes">Genotypes</label>
-                    <ng-multiselect-dropdown
-                        name="genotypes" 
-                        ngDefaultControl
-                        [settings]="genotypesSettings"
-                        [data]="genotypeTypesList"
-                        [(ngModel)]="selectedGenotypeTypes"
-                        class="form-control"
-                        style="border: none;"
-                        required
-                    >
-                    </ng-multiselect-dropdown>                    
-                </div>                              
-                <button 
-                    type="submit" 
-                    [ngClass]="{
-                        'disabled': genotypeFilter.invalid, 
-                        'addButton': genotypeFilter.valid}" 
-                    [disabled]="genotypeFilter.invalid">
-                    <span>Add</span>
-                </button>
-            </form>        
-        </div>
-        <div class="appliedFilters">
-            <div *ngFor="let appliedFilter of appliedFilters | keyvalue">
-                <span>{{ appliedFilter.value }}</span>
-                <button id="removeButton" (click)="removeFilter(appliedFilter.key)">
-                    <img src="../../../assets/icon/icons8-residuos-48.png" alt="removeFilter" style="width: 30px; height: 30px;">
-                </button>
-            </div>
-            <!-- <span id="extraFilters" *ngIf="appliedFilters.length > 5">+{{ calculateExtraFilters() }} filters applied</span> -->
-        </div>
-    </div>
-</div>
+<mat-grid-list cols="2" rowHeight="fit">
+  <mat-grid-tile colspan="1" rowspan="1">
+    <form [formGroup]="genotypeFilterForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Arity</mat-label>
+        <mat-select [formControl]="selectorCtrl" #arityInput>
+          <mat-option *ngFor="let operator of allSelectors" [value]="operator.label">
+            {{operator.label}}
+          </mat-option>
+        </mat-select>
+        <button
+          matSuffix mat-icon-button type="button"
+          aria-label="Clear" (click)="onDeleteButtonClicked()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <br *ngIf="numberCtrl">
+
+      <mat-form-field
+        appearance="fill"
+        floatLabel="always"
+        *ngIf="numberCtrl"
+      >
+        <mat-label>Multiplicity</mat-label>
+        <input type="number" matInput placeholder="0" [formControl]="numberCtrl">
+      </mat-form-field>
+
+      <br>
+
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Samples</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Sample selection" [formControl]="individualCtrl">
+          <mat-chip-row
+            *ngFor="let sample of selectedSamples"
+            (removed)="onRemoveSampleChip(sample.code)"
+            [value]="sample.id"
+          >
+            {{sample.code}}
+            <button matChipRemove [attr.aria-label]="'remove ' + sample.id">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input matInput
+          [formControl]="searchInputCtrl" placeholder="Select samples"
+          [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="onInputSampleTokenEnd($event)"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onChangedSelectedSample($event)"
+        >
+          <mat-option
+            *ngFor="let sample of filteredSamples | async" [value]="sample.code"
+          >
+            {{sample.code}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <br>
+
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Genotypes</mat-label>
+        <mat-select [formControl]="genotypeTypeCtrl" multiple>
+          <mat-option *ngFor="let genotypeType of allGenotypes" [value]="genotypeType.id">
+            {{genotypeType.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <br>
+
+      <button
+        mat-fab extended [disabled]="!genotypeFilterForm.valid"
+        color="primary" class="submit-filter-button"
+        type="submit"
+      >
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
+    </form>
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="1" rowspan="1">
+    Genotype filter panel
+  </mat-grid-tile>
+</mat-grid-list>

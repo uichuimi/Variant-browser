@@ -1,80 +1,15 @@
-.container {
-    margin-bottom: 15px;
-    padding: 0px;
+mat-grid-list {
+  height: calc(50vh - 24px);
 }
 
-.header {
-    background-color: #9cc2e5;
-    border: 2px solid;
-    text-align: center;
+form {
+  align-content: center;
 }
 
-.filtersContainer {
-    display: flex;
-    justify-content: space-around;
-    border: 2px solid;
-    padding: 15px;
+mat-form-field {
+  width: 20vw;
 }
 
-.form-group {
-    display: flex;
-}
-
-label {
-    font-weight: bold;
-    width: 150px;
-}
-
-.addButton {
-    width: 100%;
-    border-radius: 15px;
-    background-color: #9cc2e5;
-    box-shadow: 5px 5px;
-    font-weight: bold;    
-}
-
-.showAllFilters {
-    width: 100%;
-    border-radius: 15px;
-    background-color: #9cc2e5;
-    box-shadow: 5px 5px;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-.disabled {
-    width: 100%;
-    border-radius: 15px;    
-    background-color: grey;
-    color: #fff;
-    box-shadow: 0px 0px;
-    font-weight: bold;    
-}
-
-.filters {
-    margin-right: 20px;
-}
-
-.appliedFilters {
-    display: flex;
-    flex-direction: column;
-}
-
-#removeButton {
-    background-color: transparent;
-    border: none;
-}
-
-#extraFilters {
-    text-align: right;
-    margin-top: 15px;
-}
-
-button:hover {
-    box-shadow: 0px 0px;
-}
-
-span {
-    font-weight: bold;
-    margin-right: 10px;
+.submit-filter-button {
+  margin-left: 7vw;
 }
