@@ -1,15 +1,41 @@
-mat-grid-list {
-  height: calc(50vh - 24px);
+span {
+  margin: 0 .5rem
 }
 
-form {
-  align-content: center;
+.genotype-filter-form {
+  max-height: 25rem;
+  overflow: auto;
 }
 
-mat-form-field {
-  width: 20vw;
+.genotype-filter-panel {
+  max-height: 25rem;
+  overflow: auto;
 }
 
-.submit-filter-button {
-  margin-left: 7vw;
+:host ::ng-deep .p-splitter {
+  height: 50%;
 }
+
+:host ::ng-deep .p-dropdown {
+  min-width: 15rem;
+  width: 18rem;
+}
+
+:host ::ng-deep .p-multiselect {
+  min-width: 15rem;
+  width: 18rem;
+}
+
+:host ::ng-deep .p-multiselect-panel {
+  position: relative;
+}
+
+:host ::ng-deep .p-inputNumber {
+  min-width: 15rem;
+  width: 18rem;
+}
+
+:host ::ng-deep .p-button {
+  margin-right: .5rem;
+}
+

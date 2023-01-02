@@ -2,38 +2,37 @@ import { Injectable } from "@angular/core";
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { BehaviorSubject, Observable } from "rxjs";
 import { VariantLine } from "../../../models/table/VariantLine";
-import { VarCanService } from "../../api/varcan-service/var-can.service";
+import { VarcanService } from "../../api/varcan-service/varcan.service";
 import { GlobalConstants } from "../../common/global-constants";
-import { Page } from "../../../models/output/Page";
-import { Variant } from "../../../models/output/Variant";
-import { VariantParams } from "../../../models/input/VariantParams";
-import { Chromosome } from "../../../models/output/Chromosome";
-import { Effect } from "../../../models/output/Effect";
-import { Gene } from "../../../models/output/Gene";
-import { Consequence } from "../../../models/output/Consequence";
-import { Impact } from "../../../models/output/Impact";
-import { Population } from "../../../models/output/Population";
-import { Frequency } from "../../../models/output/Frequency";
+import { Page } from "../../api/varcan-service/models/response/Page";
+import { Variant } from "../../api/varcan-service/models/response/Variant";
+import { VariantParams } from "../../api/varcan-service/models/request/VariantParams";
+import { Chromosome } from "../../api/varcan-service/models/response/Chromosome";
+import { Effect } from "../../api/varcan-service/models/response/Effect";
+import { Gene } from "../../api/varcan-service/models/response/Gene";
+import { Consequence } from "../../api/varcan-service/models/response/Consequence";
+import { Impact } from "../../api/varcan-service/models/response/Impact";
+import { Population } from "../../api/varcan-service/models/response/Population";
+import { Frequency } from "../../api/varcan-service/models/response/Frequency";
 import { Sort } from "@angular/material/sort";
-import { Genotype } from "../../../models/output/Genotype";
+import { Genotype } from "../../api/varcan-service/models/response/Genotype";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class VariantLineDatasourceService extends DataSource<VariantLine> {
+  totalFilteredVariants: number = 0;
+  totalVariants: number = -1;
+  loading$: Observable<boolean>;
+  noResult$: Observable<boolean>;
   private dataStream: BehaviorSubject<Array<VariantLine>>;
   private loadingSubject: BehaviorSubject<boolean>;
   private noResultSubject: BehaviorSubject<boolean>;
   private cachedVariantLines: Array<VariantLine>;
-  totalFilteredVariants: number = 0;
-  totalVariants: number = -1;
 
-  loading$: Observable<boolean>;
-  noResult$: Observable<boolean>
-
-  constructor(private readonly service: VarCanService,
+  constructor(private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants) {
     super();
     this.loadingSubject = new BehaviorSubject<boolean>(false);
@@ -67,27 +66,11 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
 
     if (filteredVariantLines.length === 0) {
       this.noResultSubject.next(true);
-    }
-    else {
+    } else {
       this.noResultSubject.next(false);
     }
 
     this.dataStream.next(filteredVariantLines);
-  }
-
-  private isMatchingFilterPattern(variantLineKeys: string[], variantLine: VariantLine, value: string): boolean {
-    let isMatching: Array<boolean> = [];
-    variantLineKeys.forEach((field: string) => {
-      switch (field) {
-        case "id":
-          isMatching.push(variantLine.id === parseInt(value));
-          break;
-        default:
-          isMatching.push(variantLine[field].toLowerCase().includes(value));
-          break;
-      }
-    });
-    return isMatching.some((element: boolean) => element === true);
   }
 
   sortData(sort: Sort) {
@@ -106,11 +89,44 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     this.dataStream.next(sortedVariantLines);
   }
 
+  updateVariantLine(variantParams: VariantParams): void {
+    this.loadingSubject.next(true);
+    this.service.getVariants(variantParams).then(response => {
+      const page: Page<Variant> = response.data;
+      this.totalFilteredVariants = page.totalElements;
+      if (this.totalVariants < 0) {
+        this.totalVariants = page.totalElements;
+      }
+      const variants: Array<Variant> = page.content;
+      this.getGeneList(variants).then((genes: Array<Gene>) => {
+        this.cachedVariantLines = variants.map((variant: Variant) => {
+          return this.generateVariantLine(variant, genes);
+        });
+        this.dataStream.next(this.cachedVariantLines);
+      });
+    }).finally(() => this.loadingSubject.next(false));
+  }
+
+  private isMatchingFilterPattern(variantLineKeys: string[], variantLine: VariantLine, value: string): boolean {
+    let isMatching: Array<boolean> = [];
+    variantLineKeys.forEach((field: string) => {
+      switch (field) {
+        case "id":
+          isMatching.push(variantLine.id === parseInt(value));
+          break;
+        default:
+          isMatching.push(variantLine[field].toLowerCase().includes(value));
+          break;
+      }
+    });
+    return isMatching.some((element: boolean) => element === true);
+  }
+
   private compareValues(a: VariantLine, b: VariantLine, field: string): boolean {
     switch (field) {
       case "frequency" || "gmaf":
         const regexFreq = /\(\d+\.*\d*%\)/g;
-        const regexLastIndex = /%/g
+        const regexLastIndex = /%/g;
         let aLastIndex: number = a[field].search(regexLastIndex);
         let bLastIndex: number = b[field].search(regexLastIndex);
         let aFreq = a[field].match(regexFreq).toString().substring(1, aLastIndex);
@@ -133,7 +149,7 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
       .then(response => response.data);
   }
 
-  private getChromosomeNameFromId(chromosomeId: number, nameType: string = 'ucsc'): string {
+  private getChromosomeNameFromId(chromosomeId: number, nameType: string = "ucsc"): string {
     const chromosomeList: Array<Chromosome> = this.globalConstants.getChromosomes();
     const targetChromosome: Chromosome = chromosomeList.find((chromosome: Chromosome) => chromosome.id === chromosomeId);
     return targetChromosome[nameType] || "-";
@@ -175,10 +191,10 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
   }
 
   private getConsequenceWithHighestImpact(consequenceList: Array<Consequence>): Consequence {
-    const impactNames: Array<string> = ['HIGH', 'MODERATE', 'LOW', 'MODIFIER'];
+    const impactNames: Array<string> = ["HIGH", "MODERATE", "LOW", "MODIFIER"];
     const impactIds: Array<number> = impactNames.map(name => this.getImpactIdFromName(name));
     const consequences: Array<Consequence> = impactIds.map((impactId: number) => {
-      return consequenceList.find((consequence: Consequence) => consequence.impact === impactId)
+      return consequenceList.find((consequence: Consequence) => consequence.impact === impactId);
     });
     return consequences.find((consequence: Consequence) => consequence != null);
   }
@@ -198,23 +214,6 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     let dp = 0;
     genotypes.forEach((genotype: Genotype) => dp += genotype.altCount + genotype.refCount);
     return `${dp}`;
-  }
-
-  updateVariantLine(variantParams: VariantParams): void {
-    this.loadingSubject.next(true);
-    this.service.getVariants(variantParams).then(response => {
-      const page: Page<Variant> = response.data;
-      this.totalFilteredVariants = page.totalElements;
-      if (this.totalVariants < 0) this.totalVariants = page.totalElements;
-      console.log("HOLAAAA API");
-      const variants: Array<Variant> = page.content;
-      this.getGeneList(variants).then((genes: Array<Gene>) => {
-        this.cachedVariantLines = variants.map((variant: Variant) => {
-          return this.generateVariantLine(variant, genes);
-        });
-        this.dataStream.next(this.cachedVariantLines);
-      });
-    }).finally(() => this.loadingSubject.next(false));
   }
 
   private generateVariantLine(variant: Variant, genes: Array<Gene>) {

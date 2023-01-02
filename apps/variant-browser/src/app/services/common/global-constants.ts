@@ -1,12 +1,12 @@
-import { Chromosome } from '../../models/output/Chromosome';
-import { Impact } from '../../models/output/Impact';
-import { Effect } from '../../models/output/Effect';
-import { GenotypeType } from '../../models/output/GenotypeType';
-import { Individual } from '../../models/output/Individual';
-import { Biotype } from '../../models/output/Biotype';
-import {Population} from '../../models/output/Population';
+import { Chromosome } from '../api/varcan-service/models/response/Chromosome';
+import { Impact } from '../api/varcan-service/models/response/Impact';
+import { Effect } from '../api/varcan-service/models/response/Effect';
+import { GenotypeType } from '../api/varcan-service/models/response/GenotypeType';
+import { Individual } from '../api/varcan-service/models/response/Individual';
+import { Biotype } from '../api/varcan-service/models/response/Biotype';
+import {Population} from '../api/varcan-service/models/response/Population';
 import {Injectable} from '@angular/core';
-import { VarCanService } from "../api/varcan-service/var-can.service";
+import { VarcanService } from "../api/varcan-service/varcan.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +21,12 @@ export class GlobalConstants {
   private individuals: Array<Individual>;
   private population: Array<Population>;
 
-  constructor(private readonly service: VarCanService) {
+  constructor(private readonly service: VarcanService) {
     this.service.refreshLogin();
     this.initializeLocalStorage();
   }
 
-  static run(f: Record<string, any>, method: Exclude<keyof GlobalConstants, 'run'>): any {
+  run(f: Record<string, any>, method: Exclude<keyof GlobalConstants, 'run'>): any {
     return f[method]();
   }
 

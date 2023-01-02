@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import { faListUl } from "@fortawesome/free-solid-svg-icons";
+import { Component, OnInit } from "@angular/core";
+import { PrimeNGConfig } from "primeng/api";
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,10 @@ import { faListUl } from "@fortawesome/free-solid-svg-icons";
 /**
  * prueba AppComponent Class
  */
-export class AppComponent {
-  faListUl = faListUl;
+export class AppComponent implements OnInit {
+  constructor(private primengConfig: PrimeNGConfig) { }
+
+  ngOnInit(): void {
+    this.primengConfig.ripple = false;
+  }
 }

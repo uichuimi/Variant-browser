@@ -21,9 +21,10 @@
         "styles": [
           "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
           "node_modules/primeicons/primeicons.css",
-          "node_modules/primeng/resources/themes/saga-blue/theme.css",
-          "node_modules/primeng/resources/primeng.min.css",
           "node_modules/materialize-css/dist/css/materialize.min.css",
+          "node_modules/primeng/resources/themes/md-light-deeppurple/theme.css",
+          "node_modules/primeng/resources/primeng.min.css",
+          "node_modules/primeflex/primeflex.css",
           "apps/variant-browser/src/styles.css"
         ],
         "scripts": [
@@ -40,7 +41,9 @@
               "replace": "apps/variant-browser/src/environments/environment.ts",
               "with": "apps/variant-browser/src/environments/environment.dev.ts"
             }
-          ]
+          ],
+          "sourceMap": true,
+          "optimization": false
         },
         "production": {
           "fileReplacements": [
@@ -136,7 +139,8 @@
               "replace": "src/environments/environment.ts",
               "with": "src/environments/environment.dev.ts"
             }
-          ]
+          ],
+          "sourceMap": true
         },
         "production": {
           "fileReplacements": [

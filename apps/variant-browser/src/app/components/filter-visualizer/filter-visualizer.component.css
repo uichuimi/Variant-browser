@@ -1,0 +1,19 @@
+.item-list-detail {
+  flex: 1 1 0;
+  width: 100%;
+}
+
+.item-list-action {
+  display: flex;
+  align-items: flex-end;
+}
+
+button {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+:host ::ng-deep .p-orderlist-list {
+  max-height: 10rem;
+}

@@ -7,7 +7,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import {VarCanService} from '../../services/api/varcan-service/var-can.service';
+import {VarcanService} from '../../services/api/varcan-service/varcan.service';
 
 @Component({
   selector: 'app-login',
@@ -47,7 +47,7 @@ export class LoginComponent  {
   loginIncorrect = false;
   loading = false;
 
-  constructor(private router: Router, private service: VarCanService) { }
+  constructor(private router: Router, private service: VarcanService) { }
 
   onClick() {
     this.loginIncorrect = false;

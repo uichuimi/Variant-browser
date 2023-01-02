@@ -1,90 +1,121 @@
-<mat-grid-list cols="2" rowHeight="fit">
-  <mat-grid-tile colspan="1" rowspan="1">
-    <form [formGroup]="genotypeFilterForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Arity</mat-label>
-        <mat-select [formControl]="selectorCtrl" #arityInput>
-          <mat-option *ngFor="let operator of allSelectors" [value]="operator.label">
-            {{operator.label}}
-          </mat-option>
-        </mat-select>
-        <button
-          matSuffix mat-icon-button type="button"
-          aria-label="Clear" (click)="onDeleteButtonClicked()">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <br *ngIf="numberCtrl">
-
-      <mat-form-field
-        appearance="fill"
-        floatLabel="always"
-        *ngIf="numberCtrl"
-      >
-        <mat-label>Multiplicity</mat-label>
-        <input type="number" matInput placeholder="0" [formControl]="numberCtrl">
-      </mat-form-field>
-
-      <br>
-
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Samples</mat-label>
-        <mat-chip-grid #chipGrid aria-label="Sample selection" [formControl]="individualCtrl">
-          <mat-chip-row
-            *ngFor="let sample of selectedSamples"
-            (removed)="onRemoveSampleChip(sample.code)"
-            [value]="sample.id"
-          >
-            {{sample.code}}
-            <button matChipRemove [attr.aria-label]="'remove ' + sample.id">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip-row>
-        </mat-chip-grid>
-        <input matInput
-          [formControl]="searchInputCtrl" placeholder="Select samples"
-          [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="onInputSampleTokenEnd($event)"
-          [matAutocomplete]="auto"
-        />
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="onChangedSelectedSample($event)"
+<div class="card">
+  <p-splitter styleClass="flex justify-content-center mb-5 align-content-center"
+              [layout]="layout"
+              [appDeviceWidthBreakpoint]="appDeviceWidthBreakpointEvent">
+    <ng-template pTemplate>
+      <div class="genotype-filter-form flex flex-column col-12">
+        <form
+          class="flex flex-column col-12 justify-content-center align-content-center"
+          [formGroup]="genotypeFilterForm"
+          (submit)="onSubmit()"
         >
-          <mat-option
-            *ngFor="let sample of filteredSamples | async" [value]="sample.code"
-          >
-            {{sample.code}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
 
-      <br>
+          <div class="flex col-12 align-items-center justify-content-center">
+          <span class="p-float-label">
+            <p-dropdown
+              [options]="allSetOperators"
+              appendTo="body"
+              [(ngModel)]="selectedSetOperators"
+              placeholder="Select group operator"
+              optionValue="selector"
+              optionLabel="label"
+              [showClear]="true"
+              inputId="selector"
+              [formControl]="this.selectorCtrl"
+            ></p-dropdown>
+            <label for="selector">
+              <fa-icon [icon]="faPeopleGroup"></fa-icon>
+              <span>Group operator</span>
+            </label>
+          </span>
+          </div>
 
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Genotypes</mat-label>
-        <mat-select [formControl]="genotypeTypeCtrl" multiple>
-          <mat-option *ngFor="let genotypeType of allGenotypes" [value]="genotypeType.id">
-            {{genotypeType.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
 
-      <br>
+          <div class="flex col-12 align-items-center justify-content-center" *ngIf="numberCtrl">
+          <span class="p-float-label">
+            <p-inputNumber
+              [formControl]="numberCtrl"
+              [(ngModel)]="number"
+              [showButtons]="true"
+              [min]="1"
+              inputId="number"
+              mode="decimal"
+            >
+            </p-inputNumber>
+            <label for="number">
+              <fa-icon [icon]="faHashtag"></fa-icon>
+              <span>Any number</span>
+            </label>
+          </span>
+          </div>
 
-      <button
-        mat-fab extended [disabled]="!genotypeFilterForm.valid"
-        color="primary" class="submit-filter-button"
-        type="submit"
-      >
-        <mat-icon>add</mat-icon>
-        Add
-      </button>
-    </form>
-  </mat-grid-tile>
+          <div class="flex col-12 align-items-center justify-content-center">
+          <span class="p-float-label">
+            <p-multiSelect
+              [options]="allSamples"
+              appendTo="body"
+              [group]="true"
+              [(ngModel)]="selectedSamples"
+              defaultLabel="Select samples"
+              scrollHeight="250px"
+              display="chip"
+              optionGroupLabel="name"
+              optionGroupChildren="value"
+              optionLabel="code"
+              optionValue="id"
+              [showClear]="true"
+              inputId="samples"
+              [formControl]="this.individualCtrl"
+            >
+              <ng-template let-group pTemplate="group">
+                <div class="flex align-items-center">
+                  <span>{{ group.name }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <label for="samples">
+              <fa-icon [icon]="faVial"></fa-icon>
+              <span>Samples</span>
+            </label>
+          </span>
+          </div>
 
-  <mat-grid-tile colspan="1" rowspan="1">
-    Genotype filter panel
-  </mat-grid-tile>
-</mat-grid-list>
+          <div class="flex col-12 align-items-center justify-content-center">
+          <span class="p-float-label">
+            <p-multiSelect
+              [options]="allGenotypes"
+              appendTo="body"
+              [(ngModel)]="selectedGenotypes"
+              defaultLabel="Select genotype"
+              display="chip"
+              optionLabel="name"
+              optionValue="id"
+              [showClear]="true"
+              inputId="genotypes"
+              [formControl]="genotypeTypeCtrl"
+            ></p-multiSelect>
+            <label for="genotypes">
+              <fa-icon [icon]="faDna"></fa-icon>
+              <span>Genotypes</span>
+            </label>
+          </span>
+          </div>
+
+          <div class="flex col-12 align-items-center justify-content-center">
+            <button pButton pRipple type="submit" class="p-button-rounded">
+              <fa-icon [icon]="faPlus"></fa-icon>
+              <span>Add</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+
+
+    <ng-template pTemplate>
+      <div class="genotype-filter-panel flex flex-column col-12">
+        <app-filter-visualizer [filter]="filter" (deleteFilter)="onDeleteFilter($event)"></app-filter-visualizer>
+      </div>
+    </ng-template>
+  </p-splitter>
+</div>

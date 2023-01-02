@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 // COMPONENTS
@@ -33,12 +33,27 @@ import { VariantTableToolbarComponent } from './components/variant-table-toolbar
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { VariantFilterPanelComponent } from './components/variant-filter-panel/variant-filter-panel.component';
-import { MatTabsModule } from "@angular/material/tabs";
-import { MatGridListModule } from "@angular/material/grid-list";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatSelectModule } from "@angular/material/select";
-import { OverlayModule } from "@angular/cdk/overlay";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { SplitterModule } from 'primeng/splitter';
+import { TabViewModule } from 'primeng/tabview';
+import { DeviceWidthBreakpointDirective } from './directives/device-width-breakpoint.directive';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { InputTextModule } from 'primeng/inputtext';
+import { ChipsModule } from 'primeng/chips';
+import { FilterVisualizerComponent } from './components/filter-visualizer/filter-visualizer.component';
+import { ListboxModule } from "primeng/listbox";
+import { TableModule } from "primeng/table";
+import { OrderListModule } from "primeng/orderlist";
+import { ChipModule } from "primeng/chip";
 
 @NgModule({
   declarations: [
@@ -53,6 +68,8 @@ import { OverlayModule } from "@angular/cdk/overlay";
     VariantDetailsComponent,
     VariantTableToolbarComponent,
     VariantFilterPanelComponent,
+    DeviceWidthBreakpointDirective,
+    FilterVisualizerComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -80,7 +97,20 @@ import { OverlayModule } from "@angular/cdk/overlay";
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatSelectModule,
-    OverlayModule
+    OverlayModule,
+    SplitterModule,
+    TabViewModule,
+    DropdownModule,
+    InputNumberModule,
+    MultiSelectModule,
+    ButtonModule,
+    RippleModule,
+    InputTextModule,
+    ChipsModule,
+    ListboxModule,
+    TableModule,
+    OrderListModule,
+    ChipModule
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: 'environment', useValue: environment.serverUrl }],

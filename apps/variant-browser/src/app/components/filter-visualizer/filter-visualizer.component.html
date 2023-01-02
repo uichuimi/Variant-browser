@@ -1,0 +1,32 @@
+<div class="flex flex-column col-12 align-content-center justify-content-center">
+  <p-orderList #orderList
+               [value]="allFilters"
+               [style]="{width: '100%'}"
+               header="Filters"
+               filterBy="filter"
+               filterPlaceholder="Search a filter..."
+               [dragdrop]="true"
+               [stripedRows]="true"
+  >
+    <ng-template let-item pTemplate="item">
+      <div class="filter-item flex flex-row col-12">
+        <div class="item-list-detail flex col-1" *ngFor="let detail of item.attributes">
+          <p-chip [label]="detail.filter" styleClass="mr-2" *ngIf="detail.type === 'chip'"></p-chip>
+          <span *ngIf="detail.type === 'text'">{{detail.filter}}</span>
+        </div>
+
+        <div class="item-list-action flex col-1">
+          <button
+            pButton
+            pRipple
+            type="button"
+            class="p-button-rounded p-button-danger"
+            (click)="onDeleteFilter(item)"
+          >
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </p-orderList>
+</div>

@@ -1,207 +1,362 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
-
-import {VariantParams} from '../../models/input/VariantParams';
-import {Page} from '../../models/output/Page';
-import {AxiosResponse} from 'axios';
-import { Chromosome } from "../../models/output/Chromosome";
-import { Effect } from "../../models/output/Effect";
-import { Impact } from "../../models/output/Impact";
-import { Biotype } from "../../models/output/Biotype";
-import { VarCanService } from "../../services/api/varcan-service/var-can.service";
+import { Component, EventEmitter, OnDestroy, OnInit } from "@angular/core";
 import { GlobalConstants } from "../../services/common/global-constants";
-import { Gene } from "../../models/output/Gene";
+import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { faCodeCompare, faHashtag, faKeyboard, faListCheck, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { ScreenBreakpointAttributeValue } from "../../directives/device-width-breakpoint.directive";
+import { Subscription } from "rxjs";
+import { Chromosome } from "../../services/api/varcan-service/models/response/Chromosome";
+import { Effect } from "../../services/api/varcan-service/models/response/Effect";
+import { Biotype } from "../../services/api/varcan-service/models/response/Biotype";
+import { Filter, FilterAttribute } from "../../models/event-object/filter";
+import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
+import { VarcanService } from "../../services/api/varcan-service/varcan.service";
+import { GeneBodyParams } from "../../services/api/varcan-service/models/request/gene-body-params";
+import { Gene } from "../../services/api/varcan-service/models/response/Gene";
+import { VarcanAPIEntities } from "../../services/api/varcan-service/misc/varcan-api-entities";
+
+interface DropListOption {
+  name: string;
+  label: string;
+  excludes?: Array<string>;
+}
+
+enum InputValueTypeEnum {
+  NUMERIC,
+  DROPLIST,
+  STRING
+}
 
 @Component({
-  selector: 'app-properties-filter',
-  templateUrl: './properties-filter.component.html',
-  styleUrls: ['./properties-filter.component.css']
+  selector: "app-properties-filter",
+  templateUrl: "./properties-filter.component.html",
+  styleUrls: ["./properties-filter.component.css"]
 })
-export class PropertiesFilterComponent implements OnInit {
-  private appliedFilters: VariantParams = {};
-
-  private visibleDropListOptionIds = {
-    chromosomes: 'ucsc',
-    effects: 'description',
-    impacts: 'name',
-    biotypes: 'name'
+export class PropertiesFilterComponent implements OnInit, OnDestroy {
+  filter: Filter;
+  protected faPlus: IconDefinition = faPlus;
+  protected faTag: IconDefinition = faTag;
+  protected faListCheck: IconDefinition = faListCheck;
+  protected faHashtag: IconDefinition = faHashtag;
+  protected faKeyboard: IconDefinition = faKeyboard;
+  protected faCodeCompare: IconDefinition = faCodeCompare;
+  protected propertyFilterForm: FormGroup;
+  protected allProperties: Array<DropListOption>;
+  protected selectedProperty: Array<string>;
+  protected allComparators: Array<DropListOption>;
+  protected allSelectableComparators: Array<DropListOption>;
+  protected allValues: Array<object>;
+  protected selectedValues: Array<any>;
+  protected stringValue: string;
+  protected numericValue: string;
+  protected defaultValueLabel: string;
+  protected inputValueType: InputValueTypeEnum;
+  protected propertyLabel: string;
+  protected selectedComparator: Array<DropListOption>;
+  protected appDeviceWidthBreakpointEvent: EventEmitter<string> = new EventEmitter<string>();
+  protected propertyCtrlEvent: Subscription;
+  protected layout: string;
+  protected deviceBreakpointToggle: ScreenBreakpointAttributeValue = {
+    lg: "horizontal",
+    xl: "horizontal",
+    default: "vertical"
   };
+  private propertyFilterParams: VariantParams;
 
-  fieldOptions: Array<object> = [
-    { type: 'number', name: 'Start' },
-    { type: 'number', name: 'End' },
-    { type: 'number', name: 'GMAF' },
-    { type: 'number', name: 'Polyphen' },
-    { type: 'number', name: 'Sift' },
-    { type: 'list', name: 'Chromosomes' },
-    { type: 'list', name: 'Effects' },
-    { type: 'list', name: 'Impacts' },
-    { type: 'list', name: 'Biotypes' },
-    { type: 'id', name: 'Genes' },
-    { type: 'id', name: 'Identifiers' }
-  ];
-  appliedFiltersList: any = {};
+  constructor(private fb: FormBuilder, private globalConstants: GlobalConstants,
+              private service: VarcanService) {
+    this.allProperties = [
+      VarcanAPIEntities.START,
+      VarcanAPIEntities.END,
+      VarcanAPIEntities.GENES,
+      VarcanAPIEntities.BIOTYPES,
+      VarcanAPIEntities.EFFECTS,
+      VarcanAPIEntities.IMPACTS,
+      VarcanAPIEntities.CHROMOSOMES,
+      VarcanAPIEntities.IDENTIFIERS
+    ];
+    this.propertyFilterParams = {};
 
-  chromosomesList: Chromosome[];
-  chromosomeSettings: IDropdownSettings = {};
-  selectedChromosomes = [];
+    this.allComparators = [
+      { name: "<", label: "Less than", excludes: ["start", "end"] },
+      { name: "<=", label: "Less or equal than", excludes: ["start"] },
+      { name: "==", label: "Equal to", excludes: ["start", "end"] },
+      { name: "=!", label: "Distinct to", excludes: ["start", "end"] },
+      { name: ">", label: "Greater than", excludes: ["start", "end"] },
+      { name: ">=", label: "Greater or equal than", excludes: ["end"] }
+    ];
 
-  effectsList: Effect[];
-  effectSettings: IDropdownSettings = {};
-  selectedEffects = [];
+    this.propertyFilterForm = fb.group({
+      property: fb.control("", [Validators.required])
+    });
 
-  impactsList: Impact[];
-  impactSettings: IDropdownSettings = {};
-  selectedImpacts = [];
+    this.layout = this.deviceBreakpointToggle.default;
+  }
 
-  biotypesList: Biotype[];
-  biotypeSettings: IDropdownSettings = {};
-  selectedBiotypes = [];
+  get propertyCtrl(): FormControl {
+    return this.propertyFilterForm.get("property") as FormControl;
+  }
 
-  // OUTPUT EVENTS
-  @Output() resetPageEvent = new EventEmitter();
-  @Output() notifyFilterEvent = new EventEmitter();
+  get comparatorCtrl(): FormControl {
+    return this.propertyFilterForm.get("comparator") as FormControl;
+  }
 
-  constructor(private service: VarCanService, private globalConstants: GlobalConstants) {
+  get valueCtrl(): FormControl {
+    return this.propertyFilterForm.get("value") as FormControl;
   }
 
   ngOnInit(): void {
-    this.chromosomesList = this.globalConstants.getChromosomes();
-    this.effectsList = this.globalConstants.getEffects();
-    this.impactsList = this.globalConstants.getImpacts();
-    this.biotypesList = this.globalConstants.getBiotypes();
-
-    this.chromosomeSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'ucsc',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true,
-      enableCheckAll: true
-    };
-    this.effectSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'description',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
-    this.impactSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: false
-    };
-    this.biotypeSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
-    this.getAllFilters();
+    this.onPropertyCtrlValueChangeEvent();
+    this.onDeviceDeviceWidthBreakPointEvent();
   }
 
-  async addFilter(propertiesFilter) {
-    const { field, operator, value } = propertiesFilter.value;
-    const fieldName = field.name.toLowerCase();
+  ngOnDestroy(): void {
+    this.propertyCtrlEvent.unsubscribe();
+    this.appDeviceWidthBreakpointEvent.unsubscribe();
+  }
 
-    if (field.type === 'list') {
-      this.createFilterDropdownList(fieldName, field, operator, value);
-    } else if (field.type === 'number') {
-      this.createFilterDropdownNumber(fieldName, field, operator, value);
-    } else if (field.type === 'id') {
-      await this.createFilterDropdownId(fieldName, field, operator, value);
+  onDeleteFilter($event: Filter) {
+    const propertyName: string = $event.name;
+    const propertyValue: any = $event.value;
+    switch (propertyName) {
+      case VarcanAPIEntities.START.name || VarcanAPIEntities.END.name:
+        delete this.propertyFilterParams[propertyName];
+        break;
+      default:
+        const allEntities = this.propertyFilterParams[propertyName];
+        if (allEntities !== undefined) {
+          const nonDeletedEntities: Array<number> = this.propertyFilterParams[propertyName]
+            .filter((id: number) => !propertyValue.includes(id));
+          this.propertyFilterParams[propertyName] = nonDeletedEntities;
+        } else {
+          delete this.propertyFilterParams[propertyName];
+        }
+        break;
     }
-
-    // PERSISTIR FILTROS
-    localStorage.setItem('allFilters', JSON.stringify(this.appliedFiltersList));
-
-    // OBTENER TODOS LOS FILTROS
-    this.getAllFilters();
-
-    this.notifyFilterEvent.emit(this.appliedFilters);
-    this.resetPageEvent.emit();
   }
 
-  removeFilter(key) {
-    const fieldNameUpperCase = key.charAt(0).toUpperCase() + key.substr(1);
-    console.log('remove: ' + key);
-    delete this.appliedFilters[key];
-    delete this.appliedFiltersList[key];
-    this['selected' + fieldNameUpperCase] = [];
-
-    if (this.appliedFiltersList.length === 0) {
-      localStorage.removeItem('allFilters');
+  protected async onSubmit() {
+    if (this.propertyFilterForm.valid) {
+      const propertyKey = this.propertyFilterForm.value.property;
+      const propertyComparator = this.propertyFilterForm.value.comparator;
+      const propertyValue = this.propertyFilterForm.value.value;
+      const value = await this.managePropertyValues(propertyKey, propertyValue);
+      this.propertyFilterParams = { ...this.propertyFilterParams, [propertyKey]: value };
+      this.addFilterItem(propertyKey, propertyComparator, propertyValue);
     } else {
-      localStorage.setItem('allFilters', JSON.stringify(this.appliedFiltersList));
+      console.error("Invalid submission: ", this.propertyFilterForm);
     }
-
-    this.notifyFilterEvent.emit(this.appliedFilters);
-    this.resetPageEvent.emit();
   }
 
-  private createFilterDropdownList(fieldName: string, field: any, numericOperator: any, value: any) {
-    const identifierName = this.visibleDropListOptionIds[fieldName];
+  protected isValueTypeNumeric() {
+    return this.inputValueType === InputValueTypeEnum.NUMERIC;
+  }
 
-    const ids: Set<number> = new Set([]);
-    const names: Set<string> = new Set([]);
-    value.map(val => {
-      ids.add(val.id);
-      names.add(val[identifierName]);
+  protected isValueTypeDropList() {
+    return this.inputValueType === InputValueTypeEnum.DROPLIST;
+  }
+
+  protected isValueTypeString() {
+    return this.inputValueType === InputValueTypeEnum.STRING;
+  }
+
+  protected getValueIcon(): IconDefinition {
+    if (this.isValueTypeNumeric()) {
+      return this.faHashtag;
+    } else if (this.isValueTypeString()) {
+      return this.faKeyboard;
+    } else {
+      return this.faListCheck;
+    }
+  }
+
+  private onDeviceDeviceWidthBreakPointEvent() {
+    this.appDeviceWidthBreakpointEvent.subscribe((value) => {
+      this.layout = this.getLayout(value);
     });
-
-    this.appliedFilters = {...this.appliedFilters, [fieldName]: [...ids]};
-    this.appliedFiltersList = {
-      ...this.appliedFiltersList,
-      [fieldName]: {inputType: field.type, values: [...names]}
-    };
   }
 
-  private createFilterDropdownNumber(fieldName: string, field: any, numericOperator: any, numericValue: number) {
-    this.appliedFilters = {...this.appliedFilters, [fieldName]: numericValue};
-    this.appliedFiltersList = {
-      ...this.appliedFiltersList,
-      [fieldName]: {inputType: field.type, operator: numericOperator, value: numericValue}
-    };
-  }
-
-  private async createFilterDropdownId(fieldName: string, field: any, numericOperator: any, value: any) {
-    let identifierValues = value.replaceAll(/\s/g, '').split(',');
-    identifierValues = [...new Set(identifierValues)];
-    let identifiers = [];
-
-    if (fieldName === 'genes') {
-      const genePromises = identifierValues.map(gene => this.service.getGenes({search: gene}));
-      await Promise.all(genePromises).then(responses => {
-        responses.map((response: AxiosResponse<Page<Gene>>) => {
-          identifiers.push.apply(identifiers, response.data.content.map(gene => gene.id));
-        });
+  private onPropertyCtrlValueChangeEvent() {
+    this.propertyCtrlEvent = this.propertyCtrl.valueChanges
+      .subscribe((property: string) => {
+        if (property != null) {
+          this.generateResponsiveFields(property);
+        } else {
+          this.propertyFilterForm.removeControl("comparator");
+          this.propertyFilterForm.removeControl("value");
+        }
+        this.propertyFilterForm.updateValueAndValidity();
       });
+  }
+
+  private generateResponsiveFields(property: string) {
+    const capitalizeProperty = property.charAt(0).toUpperCase() + property.substring(1);
+    this.propertyLabel = capitalizeProperty;
+    const numericProperties = ["start", "end"];
+    const stringProperties = ["genes", "identifiers"];
+    let validators: Array<ValidatorFn> = [Validators.required];
+
+    if (numericProperties.includes(property)) {
+      this.inputValueType = InputValueTypeEnum.NUMERIC;
+      if (this.propertyFilterParams !== undefined) {
+        if (property === VarcanAPIEntities.START.name
+          && VarcanAPIEntities.END.name in this.propertyFilterParams) {
+          const end: number = this.propertyFilterParams.end;
+          validators = [...validators, Validators.max(3), Validators.min(0)];
+        } else if (property == VarcanAPIEntities.END.name
+          && VarcanAPIEntities.START.name in this.propertyFilterParams) {
+          const start: number = this.propertyFilterParams.start;
+          validators = [...validators, Validators.min(1), Validators.min(0)];
+        }
+      }
+      this.generateResponsiveComparatorField(property);
+    } else if (!stringProperties.includes(property)) {
+      this.inputValueType = InputValueTypeEnum.DROPLIST;
+      this.propertyFilterForm.removeControl("comparator");
+      this.generateResponsiveDropListField(property, capitalizeProperty);
     } else {
-      identifiers = identifierValues;
+      this.propertyFilterForm.removeControl("comparator");
+      this.inputValueType = InputValueTypeEnum.STRING;
     }
 
-    this.appliedFilters = {...this.appliedFilters, [fieldName]: identifiers};
-    this.appliedFiltersList = {
-      ...this.appliedFiltersList,
-      [fieldName]: {inputType: field.type, values: identifierValues}
+    const valueInput: FormControl = new FormControl(
+      "",
+      validators
+    );
+    console.log(valueInput, validators);
+    this.propertyFilterForm
+      .addControl("value", valueInput);
+  }
+
+  private generateResponsiveComparatorField(property: string) {
+    this.allSelectableComparators = this.allComparators.filter((comparator) => !comparator.excludes.includes(property));
+    const comparator: FormControl = new FormControl("", [Validators.required]);
+    this.propertyFilterForm
+      .addControl("comparator", comparator);
+  }
+
+  private generateResponsiveDropListField(property: string, capitalizeProperty: string) {
+    this.extractPropertyAPIData(property, capitalizeProperty);
+    this.generateValueOptionLabels(property);
+  }
+
+  private extractPropertyAPIData(property: string, capitalizeProperty: string) {
+    this.defaultValueLabel = `Select ${property}`;
+    const method: any = `get${capitalizeProperty}`;
+    this.allValues = this.globalConstants.run(this.globalConstants, method);
+  }
+
+  private generateValueOptionLabels(property: string) {
+    switch (property) {
+      case VarcanAPIEntities.CHROMOSOMES.name:
+        this.allValues = this.allValues.map((chromosome: Chromosome) => {
+          chromosome["label"] = `${chromosome.ucsc} / ${chromosome.genebank} / ${chromosome.refseq}`;
+          return chromosome;
+        });
+        break;
+      case VarcanAPIEntities.EFFECTS.name:
+        this.allValues = this.allValues.map((effect: Effect) => {
+          const description = effect.description.replace(/_/g, " ");
+          effect["label"] = `${effect.accession} / ${description} (${effect.impact.name})`;
+          return effect;
+        });
+        break;
+      case VarcanAPIEntities.BIOTYPES.name:
+        this.allValues = this.allValues.map((biotype: Biotype) => {
+          const name = biotype.name.replace(/_/g, " ");
+          biotype["label"] = `${biotype.accession} / ${name}`;
+          return biotype;
+        });
+        break;
+      default:
+        this.allValues = this.allValues.map((value: object) => {
+          value["label"] = value["name"];
+          return value;
+        });
+        break;
+    }
+  }
+
+  private getLayout(value: string): string {
+    if (Object.keys(this.deviceBreakpointToggle).includes(value)) {
+      return this.deviceBreakpointToggle[value];
+    } else {
+      return this.deviceBreakpointToggle.default;
+    }
+  }
+
+  private addFilterItem(propertyKey: string, propertyComparator: string, propertyValue: any) {
+    let filterStr: string;
+    switch (this.inputValueType) {
+      case InputValueTypeEnum.NUMERIC:
+        filterStr = `${propertyKey} ${propertyComparator} ${propertyValue}`;
+        break;
+      default:
+        const propertyValueNames = this.getPropertyValueNames(propertyKey, propertyValue);
+        filterStr = `${propertyKey} in [${propertyValueNames}]`;
+        break;
+    }
+
+    const attributes: Array<FilterAttribute> = filterStr.split(" ")
+      .map((word: string) => {
+        return { filter: word, type: word === "in" ? "text" : "chip" };
+      });
+    this.filter = {
+      name: propertyKey,
+      value: propertyValue,
+      filterString: filterStr,
+      attributes: attributes
     };
   }
 
-  getAllFilters() {
-    this.appliedFiltersList = JSON.parse(localStorage.getItem('allFilters'));
+  private getPropertyValueNames(propertyKey: string, propertyValue: Array<number>) {
+    if (propertyKey == VarcanAPIEntities.GENES.name || propertyKey == VarcanAPIEntities.IDENTIFIERS.name) {
+      return propertyValue;
+    }
+
+    const filteredValues = this.allValues
+      .filter((object) => propertyValue.includes(object["id"]));
+    switch (propertyKey) {
+      case VarcanAPIEntities.CHROMOSOMES.name:
+        return filteredValues.map((chromosome: Chromosome) => chromosome.ucsc);
+        break;
+      case VarcanAPIEntities.EFFECTS.name:
+        return filteredValues.map((effect: Effect) => effect.description);
+        break;
+      default:
+        return filteredValues.map((object) => object["name"]);
+        break;
+    }
   }
-  /*   getAppliedFiltersLength() {
-      return Object.keys(this.appliedFilters).length;
-    } */
+
+  private managePropertyValues(propertyKey: string, propertyValue: any) {
+    const existingValue = this.propertyFilterParams[propertyKey];
+    switch (propertyKey) {
+      case VarcanAPIEntities.GENES.name:
+        const genesRequest: GeneBodyParams = { names: propertyValue };
+        this.service.getBatchGenes(genesRequest).then(response => {
+          propertyValue = response.data;
+        });
+        const geneIds = propertyValue.map((gene: Gene) => gene.id);
+        if (propertyKey in this.propertyFilterParams) {
+          return this.unionTwoArrays(existingValue, geneIds);
+        }
+        break;
+      default:
+        if (existingValue !== undefined &&
+          typeof existingValue === "object" &&
+          typeof propertyValue === "object") {
+          return this.unionTwoArrays(existingValue, propertyValue);
+        }
+        break;
+    }
+
+    return propertyValue;
+  }
+
+  private unionTwoArrays(firstSet, secondSet) {
+    let union = [...firstSet, ...secondSet];
+    return union
+      .filter((value, index, self) => self.indexOf(value) === index);
+  }
 }

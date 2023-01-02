@@ -33,6 +33,7 @@
     "materialize-css": "^1.0.0-rc.2",
     "ng-multiselect-dropdown": "^0.3.8",
     "ng5-slider": "^1.2.6",
+    "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primeng": "^15.0.0-rc.1",
     "rxjs": "^7.6.0",

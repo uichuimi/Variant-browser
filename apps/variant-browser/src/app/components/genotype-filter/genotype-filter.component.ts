@@ -1,144 +1,243 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { GenotypeFilterParams } from "../../models/input/GenotypeFilterParams";
-import { VariantParams } from "../../models/input/VariantParams";
+import { Component, EventEmitter, OnDestroy, OnInit } from "@angular/core";
+import { GenotypeFilterParams } from "../../services/api/varcan-service/models/request/GenotypeFilterParams";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { map, Observable, startWith } from "rxjs";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { Subscription } from "rxjs";
 import { GlobalConstants } from "../../services/common/global-constants";
-import { Individual } from "../../models/output/Individual";
-import { GenotypeType } from "../../models/output/GenotypeType";
+import { Individual } from "../../services/api/varcan-service/models/response/Individual";
+import { GenotypeType } from "../../services/api/varcan-service/models/response/GenotypeType";
+import { ScreenBreakpointAttributeValue } from "../../directives/device-width-breakpoint.directive";
+import { faDna, faHashtag, faPeopleGroup, faPlus, faVial } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { Filter } from "../../models/event-object/filter";
 
-interface OperatorMeta {
+interface Arity {
   selector: string;
   label: string;
 }
 
+interface SampleSelectGroup {
+  disabled?: boolean;
+  name: string;
+  value: Array<Individual>;
+}
+
 @Component({
-  selector: 'app-genotype-filter',
-  templateUrl: './genotype-filter.component.html',
-  styleUrls: ['./genotype-filter.component.css']
+  selector: "app-genotype-filter",
+  templateUrl: "./genotype-filter.component.html",
+  styleUrls: ["./genotype-filter.component.css"]
 })
-export class GenotypeFilterComponent implements OnInit {
-  @ViewChild('arityInput') arityInput;
-  @Input() variantParams: VariantParams;
-  private genotypeParams: Array<GenotypeFilterParams> = new Array<GenotypeFilterParams>();
+export class GenotypeFilterComponent implements OnInit, OnDestroy {
+  number: number;
+  protected faPeopleGroup: IconDefinition = faPeopleGroup;
+  protected faHashtag: IconDefinition = faHashtag;
+  protected faVial: IconDefinition = faVial;
+  protected faDna: IconDefinition = faDna;
+  protected faPlus: IconDefinition = faPlus;
+  protected appDeviceWidthBreakpointEvent: EventEmitter<string> = new EventEmitter<string>();
+  protected layout: string;
+  protected deviceBreakpointToggle: ScreenBreakpointAttributeValue = {
+    lg: "horizontal",
+    xl: "horizontal",
+    default: "vertical"
+  };
   protected genotypeFilterForm: FormGroup;
-  protected selectedSelectors: Array<string> = [];
-  protected allSelectors: Array<OperatorMeta> = [
+  protected allSetOperators: Array<Arity> = [
     { selector: "ANY", label: "Any" },
     { selector: "ALL", label: "All" },
     { selector: "NONE", label: "None" }
   ];
-  protected selectedSamples: Array<Individual> = [];
-  protected allSamples: Array<Individual>;
-  protected filteredSamples: Observable<Array<Individual>>;
-  protected searchInputCtrl: FormControl = new FormControl<any>('');
+
+  protected selectedSetOperators: Arity;
+  protected allSamples: Array<object>;
+  protected selectedSamples: Array<number> = [];
   protected allGenotypes: Array<GenotypeType>;
-  protected filteredOperators: Observable<Array<string>>
-  protected separatorKeysCodes: Array<number> = [ENTER, COMMA];
+  protected selectedGenotypes: Array<number> = [];
+  protected filter: Filter;
+  private selectorCtrlEvent: Subscription;
+  private genotypeFilterParams: Array<GenotypeFilterParams>;
 
   constructor(private fb: FormBuilder, protected globalConstants: GlobalConstants) {
+    this.genotypeFilterParams = new Array<GenotypeFilterParams>();
     this.genotypeFilterForm = fb.group({
       genotypeFilters: fb.group({
         individual: fb.control([], [Validators.required]),
         genotypeType: fb.control([], [Validators.required]),
-        selector: fb.control('', [Validators.required])
+        selector: fb.control("", [Validators.required])
       })
     });
 
-    this.allSamples = this.globalConstants.getIndividuals();
     this.allGenotypes = this.globalConstants.getGenotypeTypes();
-
-    this.individualCtrl.valueChanges.subscribe((selectedSamples: Array<number>) => {
-      if (selectedSamples == null) return;
-      this.selectedSamples = this.selectedSamples
-        .filter((sample: Individual, index: number, array: Array<Individual>) => {
-          return array.indexOf(sample) === index;
-        })
-    });
-  }
-
-  ngOnInit(): void {
-    this.selectorCtrl.valueChanges.subscribe(selector => {
-      if (selector == 'Any') {
-        this.genotypeFiltersCtrl.addControl(
-          'number',
-          new FormControl(1, [Validators.required, Validators.min(1)])
-        )
-      } else {
-        this.genotypeFiltersCtrl.removeControl('number');
-      }
-      this.genotypeFiltersCtrl.updateValueAndValidity();
-    });
-
-    this.filteredSamples = this.searchInputCtrl.valueChanges.pipe(
-      startWith(null),
-      map((sample: string | null) => {
-        return sample ? this.filterSamples(sample) : this.allSamples.slice();
-      }),
-    );
+    this.generateSampleSelectOptions();
+    this.layout = this.deviceBreakpointToggle.default;
   }
 
   get genotypeFiltersCtrl(): FormGroup {
-    return this.genotypeFilterForm.get('genotypeFilters') as FormGroup;
+    return this.genotypeFilterForm.get("genotypeFilters") as FormGroup;
   }
 
   get selectorCtrl(): FormControl {
-    return this.genotypeFilterForm.get('genotypeFilters.selector') as FormControl;
+    return this.genotypeFilterForm.get("genotypeFilters.selector") as FormControl;
   }
 
   get genotypeTypeCtrl(): FormControl {
-    return this.genotypeFilterForm.get('genotypeFilters.genotypeType') as FormControl;
+    return this.genotypeFilterForm.get("genotypeFilters.genotypeType") as FormControl;
   }
 
   get individualCtrl(): FormControl {
-    return this.genotypeFilterForm.get('genotypeFilters.individual') as FormControl;
+    return this.genotypeFilterForm.get("genotypeFilters.individual") as FormControl;
   }
 
   get numberCtrl(): FormControl {
-    return this.genotypeFilterForm.get('genotypeFilters.number') as FormControl;
+    return this.genotypeFilterForm.get("genotypeFilters.number") as FormControl;
   }
 
-  private filterSamples(value: string): Array<Individual> {
-    const filterCode: string = value.toLowerCase();
-    return this.allSamples
-      .filter((sample: Individual) => sample.code.toLowerCase().includes(filterCode));
+  ngOnInit(): void {
+    this.generateResponsiveNumberField();
+    this.appDeviceWidthBreakpointEvent.subscribe((value) => {
+      this.layout = this.getLayout(value);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.appDeviceWidthBreakpointEvent.unsubscribe();
+    this.selectorCtrlEvent.unsubscribe();
   }
 
   onSubmit() {
-    console.log("SUBMIT");
-  }
-
-  onInputSampleTokenEnd($event: MatChipInputEvent) {
-    const value = ($event.value || '').trim();
-    const foundSample: Individual = this.allSamples
-      .find((sample: Individual) => sample.code === value);
-
-    if (value && foundSample) {
-      this.selectedSamples.push(this.allSamples.find((sample: Individual) => sample.code === value));
-    }
-
-    $event.chipInput!.clear();
-    this.individualCtrl.setValue(null);
-  }
-
-  onRemoveSampleChip(code: string) {
-    const index = this.selectedSamples.findIndex((sample: Individual) => sample.code === code);
-
-    if (index >= 0) {
-      this.selectedSamples.splice(index, 1);
+    if (this.genotypeFilterForm.valid) {
+      const genotypeFilter: GenotypeFilterParams = { ...this.genotypeFilterForm.value.genotypeFilters };
+      this.genotypeFilterParams = [...this.genotypeFilterParams, genotypeFilter];
+      console.log(this.genotypeFilterParams);
+      this.addNewFilterItem();
+    } else {
+      console.error("Invalid submission: ", this.genotypeFilterForm.value);
     }
   }
 
-  onChangedSelectedSample($event: MatAutocompleteSelectedEvent) {
-    const value = $event.option.viewValue;
-    this.selectedSamples.push(this.allSamples.find((sample: Individual) => sample.code === value));
-    this.searchInputCtrl.setValue(null);
+  onDeleteFilter($event: Filter) {
+    const targetGenotypeFilter: GenotypeFilterParams = this.generateTargetFilter($event);
+    this.genotypeFilterParams = this.getFiltersWithoutTarget(targetGenotypeFilter);
   }
 
-  onDeleteButtonClicked() {
-    this.arityInput.value = '';
+  private generateSampleSelectOptions() {
+    const individuals = this.globalConstants.getIndividuals();
+    const sampleGroups = individuals
+      .map((individual: Individual) => individual.code.toUpperCase().split("_")[0])
+      .filter((group: string, index: number, array: Array<string>) => array.indexOf(group) === index);
+    this.allSamples = sampleGroups.map((group: string): SampleSelectGroup => {
+      return {
+        name: group,
+        value: individuals.filter((individual: Individual) => individual.code.toUpperCase().includes(group))
+      };
+    });
+  }
+
+  private generateResponsiveNumberField() {
+    this.selectorCtrlEvent = this.selectorCtrl.valueChanges
+      .subscribe(selector => {
+        if (selector == "ANY") {
+          this.genotypeFiltersCtrl.addControl(
+            "number",
+            new FormControl(1,
+              [Validators.required, Validators.min(1)])
+          );
+        } else {
+          this.genotypeFiltersCtrl.removeControl("number");
+        }
+        this.genotypeFiltersCtrl.updateValueAndValidity();
+      });
+  }
+
+  private getLayout(value: string): string {
+    if (Object.keys(this.deviceBreakpointToggle).includes(value)) {
+      return this.deviceBreakpointToggle[value];
+    } else {
+      return this.deviceBreakpointToggle.default;
+    }
+  }
+
+  private addNewFilterItem() {
+    const genotypeFilters: GenotypeFilterParams = this.genotypeFilterForm.value.genotypeFilters;
+    this.filter = {
+      name: "selector,number,individual,genotypeType",
+      value: `${genotypeFilters.selector} ${genotypeFilters.number} [${genotypeFilters.individual}] [${genotypeFilters.genotypeType}]`,
+      filterString: "",
+      attributes: []
+    };
+
+    this.addFilterAttribute(genotypeFilters.selector, "chip");
+
+    if (genotypeFilters.number) {
+      this.addFilterAttribute(genotypeFilters.number, "chip");
+    }
+
+    this.addFilterAttribute("of", "text");
+    const individualNames = this.getSampleNames(genotypeFilters.individual);
+    this.addFilterAttribute(`[${individualNames}]`, "chip");
+
+    this.addFilterAttribute("is", "text");
+    const genotypeNames = this.getGenotypeNames(genotypeFilters.genotypeType);
+    this.addFilterAttribute(`[${genotypeNames}]`, "chip");
+
+    console.log(this.filter);
+  }
+
+  private getSampleNames(sampleIds: Array<number>) {
+    return sampleIds.map((sampleId: number) => {
+      const sample: Individual = this.globalConstants.getIndividuals()
+        .find((sample: Individual) => sample.id === sampleId);
+      return sample.code;
+    });
+  }
+
+  private getGenotypeNames(genotypeIds: Array<number>) {
+    return genotypeIds.map((genotypeId: number) => {
+      const genotype: GenotypeType = this.allGenotypes
+        .find((genotype: GenotypeType) => genotype.id === genotypeId);
+      return genotype.name;
+    });
+  }
+
+  private addFilterAttribute(value: any, type: string) {
+    let filterStr: string = `${value} `;
+    this.filter.attributes.push(
+      {
+        filter: value,
+        type: type
+      }
+    );
+    this.filter.filterString += filterStr;
+  }
+
+  private generateTargetFilter(filter: Filter): GenotypeFilterParams {
+    const params = filter.value.split(" ");
+    const targetGenotypeFilter: GenotypeFilterParams = {
+      selector: params[0],
+      number: Number.parseInt(params[1]),
+      individual: JSON.parse(params[2]),
+      genotypeType: JSON.parse(params[3])
+    };
+    return targetGenotypeFilter;
+  }
+
+  private getFiltersWithoutTarget(target: GenotypeFilterParams): Array<GenotypeFilterParams> {
+    const filtersWithNoTarget: Array<GenotypeFilterParams> = this.genotypeFilterParams
+      .filter((value: GenotypeFilterParams) => {
+        const isTargetNumberPresent = value.number != null;
+        const matchSelector = value.selector === target.selector;
+        const matchNumber = isTargetNumberPresent ? value.number === target.number : true;
+        const matchIndividuals = this.cardinalSimilarity(target.individual, value.individual);
+        const matchGenotype = this.cardinalSimilarity(target.genotypeType, value.genotypeType);
+
+        return !matchSelector || !matchNumber || !matchIndividuals || !matchGenotype;
+      });
+    return filtersWithNoTarget;
+  }
+
+  private cardinalSimilarity(a: Array<any>, b: Array<any>) {
+    const cardinalA = a.length;
+    const cardinalB = b.length;
+    const cardinalIntersect = b.filter(id => a.includes(id)).length;
+    return cardinalIntersect === cardinalA && cardinalA === cardinalB;
   }
 }

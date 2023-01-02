@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { Impact } from "../../models/output/Impact";
+import { Impact } from "../../services/api/varcan-service/models/response/Impact";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 import { VariantLine } from "../../models/table/VariantLine";
 import { Sort } from "@angular/material/sort";
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
-import { VariantParams } from "../../models/input/VariantParams";
+import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
 import { MatPaginator } from "@angular/material/paginator";
 import { Subject, tap } from "rxjs";
 import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";

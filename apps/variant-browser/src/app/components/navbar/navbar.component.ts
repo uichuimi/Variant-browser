@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 import {Location} from "@angular/common";
-import { VarCanService } from "../../services/api/varcan-service/var-can.service";
+import { VarcanService } from "../../services/api/varcan-service/varcan.service";
 import { GlobalConstants } from "../../services/common/global-constants";
 
 @Component({
@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private location: Location,
               private router: Router,
-              private readonly service: VarCanService,
+              private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants) {
     router.events.subscribe(value => {
       if (value instanceof RouterEvent) {

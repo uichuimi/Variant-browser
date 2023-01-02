@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { Subject } from "rxjs";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";
@@ -9,7 +9,7 @@ import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";
   styleUrls: ['./variant-table-toolbar.component.css'],
 })
 
-export class VariantTableToolbarComponent implements OnInit {
+export class VariantTableToolbarComponent implements OnInit, OnDestroy {
   @Input() onFilterChangeEvent: Subject<any>;
   @Input() columnsToDisplay: Array<TableHeaderMeta>;
   @Output() columnVisualizationChangeEvent: EventEmitter<Array<TableHeaderMeta>>;

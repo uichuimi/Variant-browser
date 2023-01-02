@@ -1,17 +1,17 @@
-<mat-tab-group dynamicHeight>
-  <mat-tab>
-    <ng-template mat-tab-label>
+<p-tabView styleClass="tabview-custom">
+  <p-tabPanel>
+    <ng-template pTemplate="header">
       <fa-icon [icon]="faDna"></fa-icon>
-      Genotype
+      <span>Genotypes</span>
     </ng-template>
     <app-genotype-filter></app-genotype-filter>
-  </mat-tab>
+  </p-tabPanel>
 
-  <mat-tab>
-    <ng-template mat-tab-label>
+  <p-tabPanel>
+    <ng-template pTemplate="header">
       <fa-icon [icon]="faScrewdriverWrench"></fa-icon>
-      Properties
+      <span>Properties</span>
     </ng-template>
-    Properties filter here!
-  </mat-tab>
-</mat-tab-group>
+    <app-properties-filter></app-properties-filter>
+  </p-tabPanel>
+</p-tabView>
