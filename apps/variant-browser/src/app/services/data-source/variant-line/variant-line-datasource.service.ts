@@ -89,7 +89,7 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     this.dataStream.next(sortedVariantLines);
   }
 
-  updateVariantLine(variantParams: VariantParams): void {
+  async updateVariantLine(variantParams: VariantParams) {
     this.loadingSubject.next(true);
     this.service.getVariants(variantParams).then(response => {
       const page: Page<Variant> = response.data;
@@ -132,6 +132,8 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
         let aFreq = a[field].match(regexFreq).toString().substring(1, aLastIndex);
         let bFreq = b[field].match(regexFreq).toString().substring(1, bLastIndex);
         return parseFloat(aFreq) < parseFloat(bFreq);
+      case "id":
+        return a[field] < b[field];
       default:
         return (a[field] as string).localeCompare((b[field] as string)) < 0;
     }

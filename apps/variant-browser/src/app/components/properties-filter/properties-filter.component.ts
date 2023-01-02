@@ -14,6 +14,7 @@ import { VarcanService } from "../../services/api/varcan-service/varcan.service"
 import { GeneBodyParams } from "../../services/api/varcan-service/models/request/gene-body-params";
 import { Gene } from "../../services/api/varcan-service/models/response/Gene";
 import { VarcanAPIEntities } from "../../services/api/varcan-service/misc/varcan-api-entities";
+import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 
 interface DropListOption {
   name: string;
@@ -47,7 +48,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   protected allSelectableComparators: Array<DropListOption>;
   protected allValues: Array<object>;
   protected selectedValues: Array<any>;
-  protected stringValue: string;
+  protected stringValue: number;
   protected numericValue: string;
   protected defaultValueLabel: string;
   protected inputValueType: InputValueTypeEnum;
@@ -63,8 +64,10 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   };
   private propertyFilterParams: VariantParams;
 
-  constructor(private fb: FormBuilder, private globalConstants: GlobalConstants,
-              private service: VarcanService) {
+  constructor(private fb: FormBuilder,
+              private globalConstants: GlobalConstants,
+              private service: VarcanService,
+              private dataSource: VariantLineDatasourceService) {
     this.allProperties = [
       VarcanAPIEntities.START,
       VarcanAPIEntities.END,
@@ -125,9 +128,8 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
       default:
         const allEntities = this.propertyFilterParams[propertyName];
         if (allEntities !== undefined) {
-          const nonDeletedEntities: Array<number> = this.propertyFilterParams[propertyName]
+          this.propertyFilterParams[propertyName] = this.propertyFilterParams[propertyName]
             .filter((id: number) => !propertyValue.includes(id));
-          this.propertyFilterParams[propertyName] = nonDeletedEntities;
         } else {
           delete this.propertyFilterParams[propertyName];
         }
@@ -143,6 +145,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
       const value = await this.managePropertyValues(propertyKey, propertyValue);
       this.propertyFilterParams = { ...this.propertyFilterParams, [propertyKey]: value };
       this.addFilterItem(propertyKey, propertyComparator, propertyValue);
+      await this.dataSource.updateVariantLine(this.propertyFilterParams);
     } else {
       console.error("Invalid submission: ", this.propertyFilterForm);
     }
@@ -194,7 +197,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     this.propertyLabel = capitalizeProperty;
     const numericProperties = ["start", "end"];
     const stringProperties = ["genes", "identifiers"];
-    let validators: Array<ValidatorFn> = [Validators.required];
+    let validators: Array<ValidatorFn> = [Validators.required, Validators.min(0)];
 
     if (numericProperties.includes(property)) {
       this.inputValueType = InputValueTypeEnum.NUMERIC;
@@ -202,11 +205,11 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
         if (property === VarcanAPIEntities.START.name
           && VarcanAPIEntities.END.name in this.propertyFilterParams) {
           const end: number = this.propertyFilterParams.end;
-          validators = [...validators, Validators.max(3), Validators.min(0)];
+          validators.push(Validators.max(end));
         } else if (property == VarcanAPIEntities.END.name
           && VarcanAPIEntities.START.name in this.propertyFilterParams) {
           const start: number = this.propertyFilterParams.start;
-          validators = [...validators, Validators.min(1), Validators.min(0)];
+          validators.push(Validators.min(start));
         }
       }
       this.generateResponsiveComparatorField(property);
@@ -218,7 +221,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
       this.propertyFilterForm.removeControl("comparator");
       this.inputValueType = InputValueTypeEnum.STRING;
     }
-
+    console.log(this.propertyFilterParams);
     const valueInput: FormControl = new FormControl(
       "",
       validators
@@ -319,39 +322,33 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     switch (propertyKey) {
       case VarcanAPIEntities.CHROMOSOMES.name:
         return filteredValues.map((chromosome: Chromosome) => chromosome.ucsc);
-        break;
       case VarcanAPIEntities.EFFECTS.name:
         return filteredValues.map((effect: Effect) => effect.description);
-        break;
       default:
         return filteredValues.map((object) => object["name"]);
-        break;
     }
   }
 
-  private managePropertyValues(propertyKey: string, propertyValue: any) {
+  private async managePropertyValues(propertyKey: string, propertyValue: any) {
     const existingValue = this.propertyFilterParams[propertyKey];
     switch (propertyKey) {
       case VarcanAPIEntities.GENES.name:
         const genesRequest: GeneBodyParams = { names: propertyValue };
-        this.service.getBatchGenes(genesRequest).then(response => {
-          propertyValue = response.data;
-        });
+        propertyValue = await this.service.getBatchGenes(genesRequest)
+          .then(response => response.data);
         const geneIds = propertyValue.map((gene: Gene) => gene.id);
         if (propertyKey in this.propertyFilterParams) {
           return this.unionTwoArrays(existingValue, geneIds);
         }
-        break;
+        return geneIds;
       default:
         if (existingValue !== undefined &&
           typeof existingValue === "object" &&
           typeof propertyValue === "object") {
           return this.unionTwoArrays(existingValue, propertyValue);
         }
-        break;
+        return propertyValue;
     }
-
-    return propertyValue;
   }
 
   private unionTwoArrays(firstSet, secondSet) {

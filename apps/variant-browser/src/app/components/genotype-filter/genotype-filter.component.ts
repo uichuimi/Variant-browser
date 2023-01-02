@@ -9,6 +9,7 @@ import { ScreenBreakpointAttributeValue } from "../../directives/device-width-br
 import { faDna, faHashtag, faPeopleGroup, faPlus, faVial } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { Filter } from "../../models/event-object/filter";
+import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 
 interface Arity {
   selector: string;
@@ -56,7 +57,8 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
   private selectorCtrlEvent: Subscription;
   private genotypeFilterParams: Array<GenotypeFilterParams>;
 
-  constructor(private fb: FormBuilder, protected globalConstants: GlobalConstants) {
+  constructor(private fb: FormBuilder, protected globalConstants: GlobalConstants,
+              private dataSource: VariantLineDatasourceService) {
     this.genotypeFilterParams = new Array<GenotypeFilterParams>();
     this.genotypeFilterForm = fb.group({
       genotypeFilters: fb.group({
@@ -103,12 +105,12 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     this.selectorCtrlEvent.unsubscribe();
   }
 
-  onSubmit() {
+  protected async onSubmit() {
     if (this.genotypeFilterForm.valid) {
       const genotypeFilter: GenotypeFilterParams = { ...this.genotypeFilterForm.value.genotypeFilters };
       this.genotypeFilterParams = [...this.genotypeFilterParams, genotypeFilter];
-      console.log(this.genotypeFilterParams);
       this.addNewFilterItem();
+      await this.dataSource.updateVariantLine({genotypeFilters: this.genotypeFilterParams})
     } else {
       console.error("Invalid submission: ", this.genotypeFilterForm.value);
     }
@@ -211,17 +213,16 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   private generateTargetFilter(filter: Filter): GenotypeFilterParams {
     const params = filter.value.split(" ");
-    const targetGenotypeFilter: GenotypeFilterParams = {
+    return {
       selector: params[0],
       number: Number.parseInt(params[1]),
       individual: JSON.parse(params[2]),
       genotypeType: JSON.parse(params[3])
     };
-    return targetGenotypeFilter;
   }
 
   private getFiltersWithoutTarget(target: GenotypeFilterParams): Array<GenotypeFilterParams> {
-    const filtersWithNoTarget: Array<GenotypeFilterParams> = this.genotypeFilterParams
+    return this.genotypeFilterParams
       .filter((value: GenotypeFilterParams) => {
         const isTargetNumberPresent = value.number != null;
         const matchSelector = value.selector === target.selector;
@@ -231,7 +232,6 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
         return !matchSelector || !matchNumber || !matchIndividuals || !matchGenotype;
       });
-    return filtersWithNoTarget;
   }
 
   private cardinalSimilarity(a: Array<any>, b: Array<any>) {
