@@ -16,6 +16,8 @@ import { Population } from "../../api/varcan-service/models/response/Population"
 import { Frequency } from "../../api/varcan-service/models/response/Frequency";
 import { Sort } from "@angular/material/sort";
 import { Genotype } from "../../api/varcan-service/models/response/Genotype";
+import { VarcanAPIEntities } from "../../api/varcan-service/misc/varcan-api-entities";
+import { GenotypeFilterParams } from "../../api/varcan-service/models/request/GenotypeFilterParams";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
@@ -24,10 +26,11 @@ const DECIMAL_CIPHER_APROXIMATION = 5;
 })
 export class VariantLineDatasourceService extends DataSource<VariantLine> {
   totalFilteredVariants: number = 0;
-  totalVariants: number = -1;
+  totalVariants: number = 0;
   loading$: Observable<boolean>;
   noResult$: Observable<boolean>;
   private dataStream: BehaviorSubject<Array<VariantLine>>;
+  private variantParams: VariantParams;
   private loadingSubject: BehaviorSubject<boolean>;
   private noResultSubject: BehaviorSubject<boolean>;
   private cachedVariantLines: Array<VariantLine>;
@@ -35,6 +38,7 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
   constructor(private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants) {
     super();
+    this.variantParams = {size: 200, page: 0, genotypeFilters: new Array<GenotypeFilterParams>()};
     this.loadingSubject = new BehaviorSubject<boolean>(false);
     this.noResultSubject = new BehaviorSubject<boolean>(false);
     this.loading$ = this.loadingSubject.asObservable();
@@ -89,12 +93,12 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     this.dataStream.next(sortedVariantLines);
   }
 
-  async updateVariantLine(variantParams: VariantParams) {
+  async updateVariantLine() {
     this.loadingSubject.next(true);
-    this.service.getVariants(variantParams).then(response => {
+    this.service.getVariants(this.variantParams).then(response => {
       const page: Page<Variant> = response.data;
       this.totalFilteredVariants = page.totalElements;
-      if (this.totalVariants < 0) {
+      if (this.totalVariants === 0) {
         this.totalVariants = page.totalElements;
       }
       const variants: Array<Variant> = page.content;
@@ -239,5 +243,59 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
       dp: dp,
       gmaf: gmaf
     };
+  }
+
+  private cardinalSimilarity(a: Array<any>, b: Array<any>) {
+    const cardinalA = a.length;
+    const cardinalB = b.length;
+    const cardinalIntersect = b.filter(id => a.includes(id)).length;
+    return cardinalIntersect === cardinalA && cardinalA === cardinalB;
+  }
+
+  async addPropertyFilter(propertyKey: string, value: any) {
+    this.variantParams = {...this.variantParams, [propertyKey]: value};
+    await this.updateVariantLine();
+  }
+
+  async deletePropertyFilter(propertyKey: string, value: any){
+    switch (propertyKey) {
+      case VarcanAPIEntities.START.name || VarcanAPIEntities.END.name:
+        delete this.variantParams[propertyKey];
+        break;
+      default:
+        const allEntities = this.variantParams[propertyKey];
+        if (allEntities !== undefined) {
+          this.variantParams[propertyKey] = this.variantParams[propertyKey]
+            .filter((id: number) => !value.includes(id));
+        } else {
+          delete this.variantParams[propertyKey];
+        }
+        break;
+    }
+    await this.updateVariantLine();
+  }
+
+  async addGenotypeFilter(genotype: GenotypeFilterParams) {
+    const genotypeFilters = [...this.variantParams.genotypeFilters, genotype];
+    this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters };
+    await this.updateVariantLine();
+  }
+
+  async deleteGenotypeFilter(target: GenotypeFilterParams){
+    this.variantParams.genotypeFilters = this.variantParams.genotypeFilters
+      .filter((value: GenotypeFilterParams) => {
+        const isTargetNumberPresent = value.number != null;
+        const matchSelector = value.selector === target.selector;
+        const matchNumber = isTargetNumberPresent ? value.number === target.number : true;
+        const matchIndividuals = this.cardinalSimilarity(target.individual, value.individual);
+        const matchGenotype = this.cardinalSimilarity(target.genotypeType, value.genotypeType);
+
+        return !matchSelector || !matchNumber || !matchIndividuals || !matchGenotype;
+      });
+    await this.updateVariantLine();
+  }
+
+  getVariantParams(): VariantParams {
+    return this.variantParams;
   }
 }

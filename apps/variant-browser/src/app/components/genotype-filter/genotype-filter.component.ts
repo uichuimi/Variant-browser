@@ -55,11 +55,9 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
   protected selectedGenotypes: Array<number> = [];
   protected filter: Filter;
   private selectorCtrlEvent: Subscription;
-  private genotypeFilterParams: Array<GenotypeFilterParams>;
 
   constructor(private fb: FormBuilder, protected globalConstants: GlobalConstants,
               private dataSource: VariantLineDatasourceService) {
-    this.genotypeFilterParams = new Array<GenotypeFilterParams>();
     this.genotypeFilterForm = fb.group({
       genotypeFilters: fb.group({
         individual: fb.control([], [Validators.required]),
@@ -108,17 +106,16 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
   protected async onSubmit() {
     if (this.genotypeFilterForm.valid) {
       const genotypeFilter: GenotypeFilterParams = { ...this.genotypeFilterForm.value.genotypeFilters };
-      this.genotypeFilterParams = [...this.genotypeFilterParams, genotypeFilter];
       this.addNewFilterItem();
-      await this.dataSource.updateVariantLine({genotypeFilters: this.genotypeFilterParams})
+      await this.dataSource.addGenotypeFilter(genotypeFilter)
     } else {
       console.error("Invalid submission: ", this.genotypeFilterForm.value);
     }
   }
 
-  onDeleteFilter($event: Filter) {
+  async onDeleteFilter($event: Filter) {
     const targetGenotypeFilter: GenotypeFilterParams = this.generateTargetFilter($event);
-    this.genotypeFilterParams = this.getFiltersWithoutTarget(targetGenotypeFilter);
+    await this.dataSource.deleteGenotypeFilter(targetGenotypeFilter);
   }
 
   private generateSampleSelectOptions() {
@@ -219,25 +216,5 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
       individual: JSON.parse(params[2]),
       genotypeType: JSON.parse(params[3])
     };
-  }
-
-  private getFiltersWithoutTarget(target: GenotypeFilterParams): Array<GenotypeFilterParams> {
-    return this.genotypeFilterParams
-      .filter((value: GenotypeFilterParams) => {
-        const isTargetNumberPresent = value.number != null;
-        const matchSelector = value.selector === target.selector;
-        const matchNumber = isTargetNumberPresent ? value.number === target.number : true;
-        const matchIndividuals = this.cardinalSimilarity(target.individual, value.individual);
-        const matchGenotype = this.cardinalSimilarity(target.genotypeType, value.genotypeType);
-
-        return !matchSelector || !matchNumber || !matchIndividuals || !matchGenotype;
-      });
-  }
-
-  private cardinalSimilarity(a: Array<any>, b: Array<any>) {
-    const cardinalA = a.length;
-    const cardinalB = b.length;
-    const cardinalIntersect = b.filter(id => a.includes(id)).length;
-    return cardinalIntersect === cardinalA && cardinalA === cardinalB;
   }
 }

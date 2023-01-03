@@ -50,8 +50,8 @@ export class TableComponent implements OnInit, AfterViewInit {
     this.loadColumnVisualization()
   }
 
-  ngOnInit(): void {
-    this.dataSource.updateVariantLine(this.variantParams);
+  async ngOnInit() {
+    await this.dataSource.updateVariantLine();
   }
 
   ngAfterViewInit(): void {
@@ -69,8 +69,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   private async loadVariantPage() {
     this.page = this.paginator.pageIndex;
     this.size = this.paginator.pageSize;
-    this.variantParams = {...this.variantParams, size: this.size, page: this.page};
-    await this.dataSource.updateVariantLine(this.variantParams);
+    await this.dataSource.addPropertyFilter("page", this.paginator.pageIndex);
+    await this.dataSource.addPropertyFilter("size", this.paginator.pageSize);
   }
 
   getTooltip(column: string, line: VariantLine) {
