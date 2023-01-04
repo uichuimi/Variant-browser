@@ -10,7 +10,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { TableComponent } from './components/table/table.component';
-import { TableFooterComponent } from './components/table/table-footer/table-footer.component';
 import { RegisterComponent } from './components/register/register.component';
 import { GenotypeFilterComponent } from './components/genotype-filter/genotype-filter.component';
 import { PropertiesFilterComponent } from './components/properties-filter/properties-filter.component';
@@ -54,13 +53,13 @@ import { ListboxModule } from "primeng/listbox";
 import { TableModule } from "primeng/table";
 import { OrderListModule } from "primeng/orderlist";
 import { ChipModule } from "primeng/chip";
+import { SidebarModule } from "primeng/sidebar";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     TableComponent,
-    TableFooterComponent,
     RegisterComponent,
     GenotypeFilterComponent,
     PropertiesFilterComponent,
@@ -110,7 +109,8 @@ import { ChipModule } from "primeng/chip";
     ListboxModule,
     TableModule,
     OrderListModule,
-    ChipModule
+    ChipModule,
+    SidebarModule
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: 'environment', useValue: environment.serverUrl }],

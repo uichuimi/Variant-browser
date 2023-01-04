@@ -119,7 +119,8 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   async onDeleteFilter($event: Filter) {
     const propertyName: string = $event.name;
     const propertyValue: any = $event.value;
-    await this.dataSource.deletePropertyFilter(propertyName, propertyValue);
+    this.dataSource.deletePropertyFilter(propertyName, propertyValue);
+    await this.dataSource.updateVariantLine();
   }
 
   protected async onSubmit() {
@@ -128,8 +129,10 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
       const propertyComparator = this.propertyFilterForm.value.comparator;
       const propertyValue = this.propertyFilterForm.value.value;
       const value = await this.managePropertyValues(propertyKey, propertyValue);
+
       this.addFilterItem(propertyKey, propertyComparator, propertyValue);
-      await this.dataSource.addPropertyFilter(propertyKey, value);
+      this.dataSource.addPropertyFilter(propertyKey, value);
+      await this.dataSource.updateVariantLine();
     } else {
       console.error("Invalid submission: ", this.propertyFilterForm);
     }

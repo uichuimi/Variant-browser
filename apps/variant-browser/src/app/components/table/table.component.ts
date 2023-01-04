@@ -5,7 +5,6 @@ import { VariantLineDatasourceService } from "../../services/data-source/variant
 import { VariantLine } from "../../models/table/VariantLine";
 import { Sort } from "@angular/material/sort";
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
-import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
 import { MatPaginator } from "@angular/material/paginator";
 import { Subject, tap } from "rxjs";
 import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";
@@ -25,16 +24,15 @@ import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";
   ],
 })
 export class TableComponent implements OnInit, AfterViewInit {
-  protected variantParams: VariantParams;
   protected page: number = 0;
   protected size: number = 10;
   protected columnsToDisplay: Array<TableHeaderMeta>;
   protected displayedColumns: Array<string>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   protected onFilterChangeEvent: Subject<any> = new Subject<any>();
+  showVariantFilters: boolean;
 
   constructor(protected dataSource: VariantLineDatasourceService) {
-    this.variantParams = { size: this.size, page: this.page };
     this.columnsToDisplay = [
       { name: "id", label: "ID", visualize: false },
       { name: "snpId", label: "SNP ID", visualize: true },
@@ -51,6 +49,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
+    this.dataSource.addPropertyFilter("size", this.size);
+    this.dataSource.addPropertyFilter("page", this.page);
     await this.dataSource.updateVariantLine();
   }
 
@@ -69,8 +69,9 @@ export class TableComponent implements OnInit, AfterViewInit {
   private async loadVariantPage() {
     this.page = this.paginator.pageIndex;
     this.size = this.paginator.pageSize;
-    await this.dataSource.addPropertyFilter("page", this.paginator.pageIndex);
-    await this.dataSource.addPropertyFilter("size", this.paginator.pageSize);
+    this.dataSource.addPropertyFilter("page", this.page);
+    this.dataSource.addPropertyFilter("size", this.size);
+    await this.dataSource.updateVariantLine();
   }
 
   getTooltip(column: string, line: VariantLine) {

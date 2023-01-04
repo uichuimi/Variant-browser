@@ -2,6 +2,10 @@ span {
   margin: 0 .5rem
 }
 
+mat-toolbar {
+  padding: 0;
+}
+
 .mat-form-field {
   transform: scale(0.75);
   font-size: 18px;

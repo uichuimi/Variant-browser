@@ -107,7 +107,8 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     if (this.genotypeFilterForm.valid) {
       const genotypeFilter: GenotypeFilterParams = { ...this.genotypeFilterForm.value.genotypeFilters };
       this.addNewFilterItem();
-      await this.dataSource.addGenotypeFilter(genotypeFilter)
+      this.dataSource.addGenotypeFilter(genotypeFilter);
+      await this.dataSource.updateVariantLine();
     } else {
       console.error("Invalid submission: ", this.genotypeFilterForm.value);
     }
@@ -115,7 +116,8 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   async onDeleteFilter($event: Filter) {
     const targetGenotypeFilter: GenotypeFilterParams = this.generateTargetFilter($event);
-    await this.dataSource.deleteGenotypeFilter(targetGenotypeFilter);
+    this.dataSource.deleteGenotypeFilter(targetGenotypeFilter);
+    await this.dataSource.updateVariantLine();
   }
 
   private generateSampleSelectOptions() {

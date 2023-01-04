@@ -38,7 +38,7 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
   constructor(private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants) {
     super();
-    this.variantParams = {size: 200, page: 0, genotypeFilters: new Array<GenotypeFilterParams>()};
+    this.variantParams = {genotypeFilters: new Array<GenotypeFilterParams>()};
     this.loadingSubject = new BehaviorSubject<boolean>(false);
     this.noResultSubject = new BehaviorSubject<boolean>(false);
     this.loading$ = this.loadingSubject.asObservable();
@@ -252,12 +252,11 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     return cardinalIntersect === cardinalA && cardinalA === cardinalB;
   }
 
-  async addPropertyFilter(propertyKey: string, value: any) {
+  addPropertyFilter(propertyKey: string, value: any) {
     this.variantParams = {...this.variantParams, [propertyKey]: value};
-    await this.updateVariantLine();
   }
 
-  async deletePropertyFilter(propertyKey: string, value: any){
+  deletePropertyFilter(propertyKey: string, value: any){
     switch (propertyKey) {
       case VarcanAPIEntities.START.name || VarcanAPIEntities.END.name:
         delete this.variantParams[propertyKey];
@@ -272,16 +271,14 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
         }
         break;
     }
-    await this.updateVariantLine();
   }
 
-  async addGenotypeFilter(genotype: GenotypeFilterParams) {
+  addGenotypeFilter(genotype: GenotypeFilterParams) {
     const genotypeFilters = [...this.variantParams.genotypeFilters, genotype];
     this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters };
-    await this.updateVariantLine();
   }
 
-  async deleteGenotypeFilter(target: GenotypeFilterParams){
+  deleteGenotypeFilter(target: GenotypeFilterParams){
     this.variantParams.genotypeFilters = this.variantParams.genotypeFilters
       .filter((value: GenotypeFilterParams) => {
         const isTargetNumberPresent = value.number != null;
@@ -292,7 +289,6 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
 
         return !matchSelector || !matchNumber || !matchIndividuals || !matchGenotype;
       });
-    await this.updateVariantLine();
   }
 
   getVariantParams(): VariantParams {

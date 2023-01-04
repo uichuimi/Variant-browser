@@ -14,3 +14,30 @@ tr.mat-footer-row td {
   font-weight: bold;
   text-align: center;
 }
+
+:host ::ng-deep .p-sidebar-bottom {
+  height: 75%;
+}
+
+:host ::ng-deep .button-float {
+  position: fixed;
+  bottom: 100px;
+  right: 60px;
+  cursor: pointer;
+  z-index: 500;
+  box-shadow: 4px 4px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
+:host ::ng-deep .p-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: white;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
