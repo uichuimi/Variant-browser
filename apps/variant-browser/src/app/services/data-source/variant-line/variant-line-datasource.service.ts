@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { BehaviorSubject, Observable } from "rxjs";
-import { VariantLine } from "../../../models/table/VariantLine";
+import { VariantLine } from "../models/variant-line";
 import { VarcanService } from "../../api/varcan-service/varcan.service";
 import { GlobalConstants } from "../../common/global-constants";
 import { Page } from "../../api/varcan-service/models/response/Page";
@@ -18,6 +18,8 @@ import { Sort } from "@angular/material/sort";
 import { Genotype } from "../../api/varcan-service/models/response/Genotype";
 import { VarcanAPIEntities } from "../../api/varcan-service/misc/varcan-api-entities";
 import { GenotypeFilterParams } from "../../api/varcan-service/models/request/GenotypeFilterParams";
+import { ConsequenceLine } from "./consequence-line/consequence-line";
+import { Biotype } from "../../api/varcan-service/models/response/Biotype";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
@@ -95,19 +97,23 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
 
   async updateVariantLine() {
     this.loadingSubject.next(true);
-    this.service.getVariants(this.variantParams).then(response => {
+    await this.service.getVariants(this.variantParams).then(response => {
       const page: Page<Variant> = response.data;
       this.totalFilteredVariants = page.totalElements;
       if (this.totalVariants === 0) {
         this.totalVariants = page.totalElements;
       }
-      const variants: Array<Variant> = page.content;
-      this.getGeneList(variants).then((genes: Array<Gene>) => {
-        this.cachedVariantLines = variants.map((variant: Variant) => {
-          return this.generateVariantLine(variant, genes);
-        });
-        this.dataStream.next(this.cachedVariantLines);
+      return page.content;
+    }).then(async (variants: Array<Variant>) => {
+      const biotypeCache: Array<Biotype> = this.globalConstants.getBiotypes();
+      const impactCache: Array<Impact> = this.globalConstants.getImpacts();
+      const effectCache: Array<Effect> = this.globalConstants.getEffects();
+      const geneCache: Array<Gene> = await this.getGeneCache(variants);
+      this.cachedVariantLines = variants.map((variant: Variant) => {
+        return this.generateVariantLine(variant, geneCache, biotypeCache,
+          impactCache, effectCache);
       });
+      this.dataStream.next(this.cachedVariantLines);
     }).finally(() => this.loadingSubject.next(false));
   }
 
@@ -143,16 +149,24 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     }
   }
 
-  private getGeneList(variants: Array<Variant>): Promise<Array<Gene>> {
+  private async getGeneCache(variants: Array<Variant>): Promise<Array<Gene>> {
+    const geneIds = this.getGeneIdsFromVariant(variants);
+    let geneCache: Array<Gene>;
+    await this.service.getBatchGenes({ ids: geneIds })
+      .then(response => geneCache = response.data);
+    return geneCache;
+  }
+
+  private getGeneIdsFromVariant(variants: Array<Variant>) {
     const geneIds: Array<Array<number>> = variants.map((variant: Variant) => {
       return variant.consequence.map((consequence: Consequence) => {
         return consequence.gene;
-      });
+      })
     });
 
     const flattenGeneIds = [].concat.apply([], geneIds);
-    return this.service.getBatchGenes({ ids: flattenGeneIds })
-      .then(response => response.data);
+    return flattenGeneIds
+      .filter((value, index, self) => self.indexOf(value) === index);
   }
 
   private getChromosomeNameFromId(chromosomeId: number, nameType: string = "ucsc"): string {
@@ -161,48 +175,10 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     return targetChromosome[nameType] || "-";
   }
 
-  private getEffectNameFromId(effectId: number): string {
-    const effectList: Array<Effect> = this.globalConstants.getEffects();
-    const targetEffect: Effect = effectList.find((effect: Effect) => effect.id === effectId);
-    return targetEffect.name || "-";
-  }
-
-  private getGeneNameFromId(geneId: number, geneList: Array<Gene>): string {
-    const targetGene: Gene = geneList.find((gene: Gene) => gene.id === geneId);
-    return targetGene.ensg || "-";
-  }
-
-  private getImpactIdFromName(impactName: string): number {
-    const impactList: Array<Impact> = this.globalConstants.getImpacts();
-    const targetImpact: Impact = impactList.find((impact: Impact) => impact.name === impactName);
-    return targetImpact.id;
-  }
-
-  private getImpactNameFromId(impactId: number): string {
-    const impactList: Array<Impact> = this.globalConstants.getImpacts();
-    const targetImpact: Impact = impactList.find((impact: Impact) => impact.id === impactId);
-    return targetImpact.name || "-";
-  }
-
   private getPopulationIdFromCode(populationCode: string): number {
     const populationList: Array<Population> = this.globalConstants.getPopulation();
     const targetPopulation: Population = populationList.find((population: Population) => population.code === populationCode);
     return targetPopulation.id;
-  }
-
-  private getPopulationNameFromId(populationId: number): string {
-    const populationList: Array<Population> = this.globalConstants.getPopulation();
-    const targetPopulation: Population = populationList.find((population: Population) => population.id === populationId);
-    return targetPopulation.name || "-";
-  }
-
-  private getConsequenceWithHighestImpact(consequenceList: Array<Consequence>): Consequence {
-    const impactNames: Array<string> = ["HIGH", "MODERATE", "LOW", "MODIFIER"];
-    const impactIds: Array<number> = impactNames.map(name => this.getImpactIdFromName(name));
-    const consequences: Array<Consequence> = impactIds.map((impactId: number) => {
-      return consequenceList.find((consequence: Consequence) => consequence.impact === impactId);
-    });
-    return consequences.find((consequence: Consequence) => consequence != null);
   }
 
   private getFrequencyByPopulationCode(frequencies: Array<Frequency>, populationCode: string): string {
@@ -222,12 +198,11 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     return `${dp}`;
   }
 
-  private generateVariantLine(variant: Variant, genes: Array<Gene>) {
+  private generateVariantLine(variant: Variant, geneCache: Array<Gene>, biotypeCache: Array<Biotype>,
+                              impactCache: Array<Impact>, effectCache: Array<Effect>) {
     const chromosome = this.getChromosomeNameFromId(variant.chromosome);
-    const consequence: Consequence = this.getConsequenceWithHighestImpact(variant.consequence);
-    const gene: string = this.getGeneNameFromId(consequence.gene, genes);
-    const effect: string = this.getEffectNameFromId(consequence.effect);
-    const impact: string = this.getImpactNameFromId(consequence.impact);
+    const consequenceLine: VariantLine = this.getConsequenceLineWithHigherImpact(variant, geneCache,
+      biotypeCache, impactCache, effectCache);
     const frequency: string = this.getFrequencyByPopulationCode(variant.frequencies, "gca");
     const dp: string = this.getTotalDepth(variant.genotypes);
     const gmaf: string = this.getFrequencyByPopulationCode(variant.frequencies, "all");
@@ -236,9 +211,7 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
       snpId: variant.identifier || "-",
       region: `${chromosome}:${variant.position}`,
       allele: `${variant.reference} / ${variant.alternative}`,
-      gene: gene,
-      effect: effect,
-      impact: impact,
+      ...consequenceLine,
       frequency: frequency,
       dp: dp,
       gmaf: gmaf
@@ -293,5 +266,15 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
 
   getVariantParams(): VariantParams {
     return this.variantParams;
+  }
+
+  private getConsequenceLineWithHigherImpact(variant: Variant, geneCache: Array<Gene>, biotypeCache: Array<Biotype>,
+                                             impactCache: Array<Impact>, effectCache: Array<Effect>): VariantLine {
+    const consequenceLines: Array<ConsequenceLine> = variant.consequence
+      .sort((a, b) => b.impact - a.impact)
+      .map((consequence: Consequence) => {
+        return new ConsequenceLine(consequence, geneCache, biotypeCache, impactCache, effectCache);
+      });
+    return consequenceLines[0].line;
   }
 }

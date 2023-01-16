@@ -2,12 +2,12 @@ import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { Impact } from "../../services/api/varcan-service/models/response/Impact";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
-import { VariantLine } from "../../models/table/VariantLine";
+import { VariantLine } from "../../services/data-source/models/variant-line";
 import { Sort } from "@angular/material/sort";
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { MatPaginator } from "@angular/material/paginator";
 import { Subject, tap } from "rxjs";
-import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";
+import { TableHeaderMeta } from "../../models/table/table-header-meta";
 
 
 
@@ -38,8 +38,8 @@ export class TableComponent implements OnInit, AfterViewInit {
       { name: "snpId", label: "SNP ID", visualize: true },
       { name: "region", label: "Region", visualize: true },
       { name: "allele", label: "Allele", visualize: true },
-      { name: "gene", label: "Gene", visualize: true },
-      { name: "effect", label: "Effect", visualize: true },
+      { name: "ensg", label: "ENSG", visualize: true },
+      { name: "effectName", label: "Effect", visualize: true },
       { name: "impact", label: "Impact", visualize: true },
       { name: "frequency", label: "Frequency (GC)", visualize: true },
       { name: "gmaf", label: "Global Minor Allele Frequency (GMAF)", visualize: true },

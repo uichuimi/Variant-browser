@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { Subject } from "rxjs";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
-import { TableHeaderMeta } from "../../models/table/TableHeaderMeta";
+import { TableHeaderMeta } from "../../models/table/table-header-meta";
 
 @Component({
   selector: 'app-variant-table-toolbar',
