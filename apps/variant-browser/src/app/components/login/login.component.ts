@@ -53,15 +53,15 @@ export class LoginComponent  {
     this.loginIncorrect = false;
   }
 
-  submit(login) {
+  async submit(login) {
     this.loginIncorrect = false;
 
     if (!login.invalid) {
-      this.login(login);
+      await this.login(login);
     }
   }
 
-  login(login) {
+  async login(login) {
     const navigationDetails: string[] = ['/variants'];
     const { username, password } = login.form.value;
 

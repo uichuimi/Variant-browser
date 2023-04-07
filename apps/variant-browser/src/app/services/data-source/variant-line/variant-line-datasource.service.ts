@@ -95,10 +95,10 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     this.dataStream.next(sortedVariantLines);
   }
 
-  async updateVariantLine() {
+  updateVariantLine() {
     this.loadingSubject.next(true);
-    await this.service.getVariants(this.variantParams).then(response => {
-      const page: Page<Variant> = response.data;
+    this.service.getVariants(this.variantParams).then(async response => {
+      const page: Page<Variant> = await response.data;
       this.totalFilteredVariants = page.totalElements;
       if (this.totalVariants === 0) {
         this.totalVariants = page.totalElements;
@@ -171,8 +171,12 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
 
   private getChromosomeNameFromId(chromosomeId: number, nameType: string = "ucsc"): string {
     const chromosomeList: Array<Chromosome> = this.globalConstants.getChromosomes();
-    const targetChromosome: Chromosome = chromosomeList.find((chromosome: Chromosome) => chromosome.id === chromosomeId);
-    return targetChromosome[nameType] || "-";
+    if (chromosomeList != null) {
+      const targetChromosome: Chromosome = chromosomeList.find((chromosome: Chromosome) => chromosome.id === chromosomeId);
+      return targetChromosome[nameType] || "-";
+    } else {
+      return "-";
+    }
   }
 
   private getPopulationIdFromCode(populationCode: string): number {

@@ -17,8 +17,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private location: Location,
               private router: Router,
-              private readonly service: VarcanService,
-              private readonly globalConstants: GlobalConstants) {
+              private readonly service: VarcanService) {
     router.events.subscribe(value => {
       if (value instanceof RouterEvent) {
         this.href = value.url;
@@ -46,7 +45,6 @@ export class NavbarComponent implements OnInit {
 
   logOut() {
     this.service.logout();
-    this.globalConstants.disconnect();
   }
 
 }

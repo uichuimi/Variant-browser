@@ -1,4 +1,4 @@
-<app-variant-table-toolbar
+<!--<app-variant-table-toolbar
   [columnsToDisplay]="columnsToDisplay"
   [onFilterChangeEvent]="onFilterChangeEvent"
   (keyup)="onFilterChange($event)"
@@ -84,7 +84,32 @@
       ></mat-paginator>
     </div>
   </div>
-</section>
+</section>-->
+
+<div class="card">
+  <p-table
+    [value]="variants" [lazy]="true" (onLazyLoad)="loadVariants($event)" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+    [paginator]="true" [rows]="rows" [totalRecords]="totalRecords" [loading]="loading" [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10,25,50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [(first)]="first"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns">{{ col.header }}</th>
+        </tr>
+      </thead>
+    </ng-template>
+    <ng-template pTemplate="body" let-variant>
+      <tr>
+        <td>{{variant.id}}</td>
+        <td>{{variant.identifier}}</td>
+        <td>{{variant.reference}}</td>
+        <td>{{variant.alternative}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
 
 <p-sidebar [(visible)]="showVariantFilters" position="bottom"
            [baseZIndex]="10000" style="float: right">

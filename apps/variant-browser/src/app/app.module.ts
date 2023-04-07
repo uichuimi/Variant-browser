@@ -54,6 +54,7 @@ import { TableModule } from "primeng/table";
 import { OrderListModule } from "primeng/orderlist";
 import { ChipModule } from "primeng/chip";
 import { SidebarModule } from "primeng/sidebar";
+import { PaginatorModule } from "primeng/paginator";
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { SidebarModule } from "primeng/sidebar";
     TableModule,
     OrderListModule,
     ChipModule,
-    SidebarModule
+    SidebarModule,
+    PaginatorModule
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: 'environment', useValue: environment.serverUrl }],

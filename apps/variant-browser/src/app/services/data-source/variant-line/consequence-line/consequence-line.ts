@@ -3,7 +3,6 @@ import { Gene } from "../../../api/varcan-service/models/response/Gene";
 import { Biotype } from "../../../api/varcan-service/models/response/Biotype";
 import { Impact } from "../../../api/varcan-service/models/response/Impact";
 import { Effect } from "../../../api/varcan-service/models/response/Effect";
-import { GlobalConstants } from "../../../common/global-constants";
 import { GeneLine } from "./gene-line";
 import { BiotypeLine } from "./biotype-line";
 import { EffectLine } from "./effect-line";

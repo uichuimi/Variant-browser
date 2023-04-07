@@ -122,15 +122,17 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   private generateSampleSelectOptions() {
     const individuals = this.globalConstants.getIndividuals();
-    const sampleGroups = individuals
-      .map((individual: Individual) => individual.code.toUpperCase().split("_")[0])
-      .filter((group: string, index: number, array: Array<string>) => array.indexOf(group) === index);
-    this.allSamples = sampleGroups.map((group: string): SampleSelectGroup => {
-      return {
-        name: group,
-        value: individuals.filter((individual: Individual) => individual.code.toUpperCase().includes(group))
-      };
-    });
+    if (individuals != null) {
+      const sampleGroups = individuals
+        .map((individual: Individual) => individual.code.toUpperCase().split("_")[0])
+        .filter((group: string, index: number, array: Array<string>) => array.indexOf(group) === index);
+      this.allSamples = sampleGroups.map((group: string): SampleSelectGroup => {
+        return {
+          name: group,
+          value: individuals.filter((individual: Individual) => individual.code.toUpperCase().includes(group))
+        };
+      });
+    }
   }
 
   private generateResponsiveNumberField() {

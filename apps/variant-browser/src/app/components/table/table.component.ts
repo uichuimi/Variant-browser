@@ -1,13 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { Impact } from "../../services/api/varcan-service/models/response/Impact";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { animate, state, style, transition, trigger } from "@angular/animations";
-import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
-import { VariantLine } from "../../services/data-source/models/variant-line";
-import { Sort } from "@angular/material/sort";
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
-import { MatPaginator } from "@angular/material/paginator";
-import { Subject, tap } from "rxjs";
-import { TableHeaderMeta } from "../../models/table/table-header-meta";
+import { GlobalConstants } from "../../services/common/global-constants";
+import { Variant } from "../../services/api/varcan-service/models/response/Variant";
+import { VarcanService } from "../../services/api/varcan-service/varcan.service";
+import { LazyLoadEvent } from "primeng/api";
+import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
+import { Paginator } from "primeng/paginator";
 
 
 
@@ -23,92 +21,70 @@ import { TableHeaderMeta } from "../../models/table/table-header-meta";
     ]),
   ],
 })
-export class TableComponent implements OnInit, AfterViewInit {
-  protected page: number = 0;
-  protected size: number = 10;
-  protected columnsToDisplay: Array<TableHeaderMeta>;
-  protected displayedColumns: Array<string>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  protected onFilterChangeEvent: Subject<any> = new Subject<any>();
-  showVariantFilters: boolean;
 
-  constructor(protected dataSource: VariantLineDatasourceService) {
-    this.columnsToDisplay = [
-      { name: "id", label: "ID", visualize: false },
-      { name: "snpId", label: "SNP ID", visualize: true },
-      { name: "region", label: "Region", visualize: true },
-      { name: "allele", label: "Allele", visualize: true },
-      { name: "ensg", label: "ENSG", visualize: true },
-      { name: "effectName", label: "Effect", visualize: true },
-      { name: "impact", label: "Impact", visualize: true },
-      { name: "frequency", label: "Frequency (GC)", visualize: true },
-      { name: "gmaf", label: "Global Minor Allele Frequency (GMAF)", visualize: true },
-      { name: "dp", label: "Total Depth (DP)", visualize: true }
-    ];
-    this.loadColumnVisualization()
+
+export class TableComponent implements OnInit {
+  protected variants: Array<Variant>;
+  protected totalRecords: number;
+  protected loading: boolean;
+  protected showVariantFilters: boolean;
+  protected variantParams: VariantParams;
+  protected first: number = 0;
+  protected rows: number = 10;
+  @ViewChild('paginator', {static: true}) paginator: Paginator;
+
+  constructor(private service: VarcanService, private globalConstants: GlobalConstants) {
+    this.variantParams = { size: 100 };
+    this.globalConstants.initializeLocalStorage();
   }
 
-  async ngOnInit() {
-    this.dataSource.addPropertyFilter("size", this.size);
-    this.dataSource.addPropertyFilter("page", this.page);
-    await this.dataSource.updateVariantLine();
+  ngOnInit() {
+    this.loading = true;
+  }
+  loadVariants(event: LazyLoadEvent) {
+    this.loading = true;
+    setTimeout(() => {
+      this.service.getVariants(this.variantParams).then(res => {
+        this.variants = res.data.content.map(this.markNullValues());
+        if (event.sortField != null && event.sortOrder != 0) {
+          this.sortData(event, event.sortField, event.sortOrder);
+        }
+        this.totalRecords = res.data.totalElements;
+        this.loading = false;
+      })
+    }, 1000)
   }
 
-  ngAfterViewInit(): void {
-    this.paginator.page.pipe(
-      tap(() => this.loadVariantPage())
-    ).subscribe();
+  private markNullValues() {
+    return (variant: Variant) => {
+      Object.keys(variant).forEach((field: string) => {
+        if (variant[field] == null) {
+          variant[field] = "-";
+        }
+      });
+      return variant;
+    };
   }
 
-  private loadColumnVisualization() {
-    this.displayedColumns = this.columnsToDisplay
-      .filter((column: TableHeaderMeta) => column.visualize)
-      .map((column: TableHeaderMeta) => column.name);
+  private sortData(event: LazyLoadEvent, field: string, order: number) {
+    this.variants = this.variants.sort(this.compareVariantFields(field, order));
   }
 
-  private async loadVariantPage() {
-    this.page = this.paginator.pageIndex;
-    this.size = this.paginator.pageSize;
-    this.dataSource.addPropertyFilter("page", this.page);
-    this.dataSource.addPropertyFilter("size", this.size);
-    await this.dataSource.updateVariantLine();
+  private compareVariantFields(field: string, order: number) {
+    return (a: Variant, b: Variant) => {
+      if (typeof a[field] === "string" && typeof b[field] === "string") {
+        return (a[field] as string).localeCompare((b[field] as string)) * order;
+      } else {
+        return ((a[field] as number) - (b[field] as number)) * order;
+      }
+    };
   }
 
-  getTooltip(column: string, line: VariantLine) {
-    return line[column];
+  protected updateCurrentPage(currentPage: number): void {
+    setTimeout(() => this.paginator.changePage(currentPage));
   }
 
-  onFilterChange($event: KeyboardEvent) {
-    this.onFilterChangeEvent.next($event);
-  }
-
-  onColumnVisualizationChange($event: Array<TableHeaderMeta>) {
-    this.columnsToDisplay = $event;
-    this.loadColumnVisualization();
-  }
-
-  sortData($event: Sort) {
-    this.dataSource.sortData($event);
-  }
-
-  drop($event: CdkDragDrop<Array<string>, any>) {
-    if ($event.previousContainer === $event.container) {
-      moveItemInArray(this.displayedColumns, $event.previousIndex, $event.currentIndex);
-    } else {
-      transferArrayItem(
-        $event.previousContainer.data,
-        $event.container.data,
-        $event.previousIndex,
-        $event.currentIndex,
-      );
-    }
-    this.rearrangeColumnsMeta($event.previousIndex, $event.currentIndex);
-  }
-  private rearrangeColumnsMeta(previousIndex: number, currentIndex: number): void {
-    const previousMetaIndex: number = this.columnsToDisplay
-      .findIndex((column: TableHeaderMeta) => column.name === this.displayedColumns[previousIndex]);
-    const currentMetaIndex: number = this.columnsToDisplay
-      .findIndex((column: TableHeaderMeta) => column.name === this.displayedColumns[currentIndex]);
-    moveItemInArray(this.columnsToDisplay, previousMetaIndex, currentMetaIndex);
+  protected reset() {
+    this.first = 0;
   }
 }

@@ -5,7 +5,7 @@ import { GenotypeType } from '../api/varcan-service/models/response/GenotypeType
 import { Individual } from '../api/varcan-service/models/response/Individual';
 import { Biotype } from '../api/varcan-service/models/response/Biotype';
 import {Population} from '../api/varcan-service/models/response/Population';
-import {Injectable} from '@angular/core';
+import { AfterContentInit, Injectable, OnInit } from "@angular/core";
 import { VarcanService } from "../api/varcan-service/varcan.service";
 
 @Injectable({
@@ -23,8 +23,8 @@ export class GlobalConstants {
 
   constructor(private readonly service: VarcanService) {
     this.service.refreshLogin();
-    this.initializeLocalStorage();
   }
+
 
   run(f: Record<string, any>, method: Exclude<keyof GlobalConstants, 'run'>): any {
     return f[method]();
@@ -114,17 +114,16 @@ export class GlobalConstants {
     return JSON.parse(localStorage.getItem('population'));
   }
 
-  private initializeLocalStorage() {
-    this.initializeChromosomes();
-    this.initializeEffects();
-    this.initializeImpacts();
-    this.initializeGenotypeTypes();
-    this.initializeIndividuals();
-    this.initializeBiotypes();
-    this.initializePopulation();
-  }
-
-  disconnect() {
-    localStorage.clear();
+  public initializeLocalStorage() {
+    const setValues: number = localStorage.length;
+    if (setValues == 0) {
+      this.initializeChromosomes();
+      this.initializeEffects();
+      this.initializeImpacts();
+      this.initializeGenotypeTypes();
+      this.initializeIndividuals();
+      this.initializeBiotypes();
+      this.initializePopulation();
+    }
   }
 }
