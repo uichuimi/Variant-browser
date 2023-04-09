@@ -83,7 +83,7 @@
 }
 
 .p-datatable .p-paginator-bottom {
-  display: none;
+  display: flex;
 }
 
 tbody.p-datatable-tbody {

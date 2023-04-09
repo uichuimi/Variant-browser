@@ -28,7 +28,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { VariantTableToolbarComponent } from './components/variant-table-toolbar/variant-table-toolbar.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { VariantFilterPanelComponent } from './components/variant-filter-panel/variant-filter-panel.component';
@@ -66,7 +65,6 @@ import { PaginatorModule } from "primeng/paginator";
     PropertiesFilterComponent,
     NavbarComponent,
     VariantDetailsComponent,
-    VariantTableToolbarComponent,
     VariantFilterPanelComponent,
     DeviceWidthBreakpointDirective,
     FilterVisualizerComponent,
@@ -79,24 +77,8 @@ import { PaginatorModule } from "primeng/paginator";
     BrowserAnimationsModule,
     FormsModule,
     NgMultiSelectDropDownModule.forRoot(),
-    MatTableModule,
-    MatTooltipModule,
     DragDropModule,
-    MatSortModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatToolbarModule,
-    MatTabsModule,
-    MatGridListModule,
-    MatChipsModule,
     ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatSelectModule,
     OverlayModule,
     SplitterModule,
     TabViewModule,

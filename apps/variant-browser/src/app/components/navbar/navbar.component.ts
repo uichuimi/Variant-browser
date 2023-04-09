@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 import {Location} from "@angular/common";
 import { VarcanService } from "../../services/api/varcan-service/varcan.service";
-import { GlobalConstants } from "../../services/common/global-constants";
 
 @Component({
   selector: 'app-navbar',

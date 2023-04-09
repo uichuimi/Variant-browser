@@ -5,7 +5,7 @@ import { GenotypeType } from '../api/varcan-service/models/response/GenotypeType
 import { Individual } from '../api/varcan-service/models/response/Individual';
 import { Biotype } from '../api/varcan-service/models/response/Biotype';
 import {Population} from '../api/varcan-service/models/response/Population';
-import { AfterContentInit, Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { VarcanService } from "../api/varcan-service/varcan.service";
 
 @Injectable({

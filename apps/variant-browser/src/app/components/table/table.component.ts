@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { GlobalConstants } from "../../services/common/global-constants";
-import { Variant } from "../../services/api/varcan-service/models/response/Variant";
 import { VarcanService } from "../../services/api/varcan-service/varcan.service";
-import { LazyLoadEvent } from "primeng/api";
 import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
 import { Paginator } from "primeng/paginator";
+import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
+import { VariantLine } from "../../services/data-source/models/variant-line";
 
 
 
@@ -24,60 +24,30 @@ import { Paginator } from "primeng/paginator";
 
 
 export class TableComponent implements OnInit {
-  protected variants: Array<Variant>;
-  protected totalRecords: number;
-  protected loading: boolean;
+  protected variants: Array<VariantLine>;
   protected showVariantFilters: boolean;
   protected variantParams: VariantParams;
   protected first: number = 0;
-  protected rows: number = 10;
+  protected rows: number = 5;
   @ViewChild('paginator', {static: true}) paginator: Paginator;
 
-  constructor(private service: VarcanService, private globalConstants: GlobalConstants) {
-    this.variantParams = { size: 100 };
+  constructor(private readonly service: VarcanService,
+              private readonly globalConstants: GlobalConstants,
+              protected dataSource: VariantLineDatasourceService) {
+    this.variantParams = { size: this.rows };
     this.globalConstants.initializeLocalStorage();
   }
 
-  ngOnInit() {
-    this.loading = true;
-  }
-  loadVariants(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      this.service.getVariants(this.variantParams).then(res => {
-        this.variants = res.data.content.map(this.markNullValues());
-        if (event.sortField != null && event.sortOrder != 0) {
-          this.sortData(event, event.sortField, event.sortOrder);
-        }
-        this.totalRecords = res.data.totalElements;
-        this.loading = false;
-      })
-    }, 1000)
+  ngOnInit(): void {
+    this.loadVariants({ first: 0, rows: this.rows });
   }
 
-  private markNullValues() {
-    return (variant: Variant) => {
-      Object.keys(variant).forEach((field: string) => {
-        if (variant[field] == null) {
-          variant[field] = "-";
-        }
-      });
-      return variant;
-    };
-  }
-
-  private sortData(event: LazyLoadEvent, field: string, order: number) {
-    this.variants = this.variants.sort(this.compareVariantFields(field, order));
-  }
-
-  private compareVariantFields(field: string, order: number) {
-    return (a: Variant, b: Variant) => {
-      if (typeof a[field] === "string" && typeof b[field] === "string") {
-        return (a[field] as string).localeCompare((b[field] as string)) * order;
-      } else {
-        return ((a[field] as number) - (b[field] as number)) * order;
-      }
-    };
+  async loadVariants(event) {
+    console.log(event, event.first / event.rows);
+    this.rows = event.rows;
+    this.variantParams.page = event.first / event.rows;
+    this.variantParams.size = event.rows;
+    this.variants = await this.dataSource.updateVariantLine(this.variantParams);
   }
 
   protected updateCurrentPage(currentPage: number): void {

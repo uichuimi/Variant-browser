@@ -1,6 +1,4 @@
 import { Injectable } from "@angular/core";
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
-import { BehaviorSubject, Observable } from "rxjs";
 import { VariantLine } from "../models/variant-line";
 import { VarcanService } from "../../api/varcan-service/varcan.service";
 import { GlobalConstants } from "../../common/global-constants";
@@ -14,107 +12,118 @@ import { Consequence } from "../../api/varcan-service/models/response/Consequenc
 import { Impact } from "../../api/varcan-service/models/response/Impact";
 import { Population } from "../../api/varcan-service/models/response/Population";
 import { Frequency } from "../../api/varcan-service/models/response/Frequency";
-import { Sort } from "@angular/material/sort";
 import { Genotype } from "../../api/varcan-service/models/response/Genotype";
 import { VarcanAPIEntities } from "../../api/varcan-service/misc/varcan-api-entities";
 import { GenotypeFilterParams } from "../../api/varcan-service/models/request/GenotypeFilterParams";
 import { ConsequenceLine } from "./consequence-line/consequence-line";
 import { Biotype } from "../../api/varcan-service/models/response/Biotype";
+import { LazyLoadEvent } from "primeng/api";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
 @Injectable({
   providedIn: "root"
 })
-export class VariantLineDatasourceService extends DataSource<VariantLine> {
-  totalFilteredVariants: number = 0;
-  totalVariants: number = 0;
-  loading$: Observable<boolean>;
-  noResult$: Observable<boolean>;
-  private dataStream: BehaviorSubject<Array<VariantLine>>;
+export class VariantLineDatasourceService {
+  private _loading: boolean;
+  private _totalRecords: number;
+  private _variantFields: Array<{name: string, label: string}>;
+  private variants: Array<Variant>;
+  private cachedVariantLines;
   private variantParams: VariantParams;
-  private loadingSubject: BehaviorSubject<boolean>;
-  private noResultSubject: BehaviorSubject<boolean>;
-  private cachedVariantLines: Array<VariantLine>;
+  private biotypeCache: Array<Biotype>;
+  private impactCache: Array<Impact>;
+  private effectCache: Array<Effect>;
+  private geneCache: Array<Gene>;
 
   constructor(private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants) {
-    super();
-    this.variantParams = {genotypeFilters: new Array<GenotypeFilterParams>()};
-    this.loadingSubject = new BehaviorSubject<boolean>(false);
-    this.noResultSubject = new BehaviorSubject<boolean>(false);
-    this.loading$ = this.loadingSubject.asObservable();
-    this.noResult$ = this.noResultSubject.asObservable();
-    this.dataStream = new BehaviorSubject<Array<VariantLine>>([]);
+    this._loading = true;
+    this._totalRecords = 0;
+    this._variantFields = [];
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<VariantLine[]> {
-    return this.dataStream.asObservable();
+  get loading() {
+    return this._loading;
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
-    this.dataStream.complete();
-    this.loadingSubject.complete();
+  get totalRecords() {
+    return this._totalRecords;
   }
 
-  filterData(value: string, pressedBackspace: boolean) {
-    let variantLines: Array<VariantLine> = this.dataStream.getValue();
+  get variantFields() {
+    return this._variantFields;
+  }
 
-    if (pressedBackspace) {
-      variantLines = this.cachedVariantLines;
-      this.dataStream.next(this.cachedVariantLines);
+  async updateVariantLine(variantParams?: VariantParams, event?: LazyLoadEvent) {
+    if (variantParams != null) {
+      this.variantParams = variantParams;
+    }
+    let page: Page<Variant>;
+    await this.service.getVariants(this.variantParams).then(res => page = res.data)
+    await this.getVariantLine(page, event);
+    this._loading = false;
+    return this.cachedVariantLines;
+  }
+
+  private async getVariantLine(page: Page<Variant>, event?: LazyLoadEvent) {
+    this._totalRecords = page.totalElements;
+    this.variants = page.content.map(this.markNullValues());
+
+    if (event != null && event.sortField != null && event.sortOrder != 0) {
+      this.sortData(event, event.sortField, event.sortOrder);
     }
 
-    const variantLineKeys = Object.keys(variantLines[0]);
-    let filteredVariantLines: Array<VariantLine> = variantLines.filter((variantLine: VariantLine) => {
-      return this.isMatchingFilterPattern(variantLineKeys, variantLine, value);
+    this.biotypeCache = this.globalConstants.getBiotypes();
+    this.impactCache = this.globalConstants.getImpacts();
+    this.effectCache = this.globalConstants.getEffects();
+    this.geneCache = await this.getGeneCache(this.variants);
+
+    this.cachedVariantLines = this.variants.map((variant: Variant) => {
+      return this.generateVariantLine(variant);
     });
 
-    if (filteredVariantLines.length === 0) {
-      this.noResultSubject.next(true);
-    } else {
-      this.noResultSubject.next(false);
+    if (this._variantFields.length == 0) {
+      this.extractTableFields();
     }
-
-    this.dataStream.next(filteredVariantLines);
   }
 
-  sortData(sort: Sort) {
-    let variantLines: Array<VariantLine> = this.dataStream.getValue();
-    let sortedVariantLines: Array<VariantLine>;
-    sortedVariantLines = variantLines.sort((a, b) => {
-      switch (sort.direction) {
-        case "asc":
-          return this.compareValues(a, b, sort.active) ? 1 : -1;
-        case "desc":
-          return this.compareValues(a, b, sort.active) ? -1 : 1;
-        default:
-          return 0;
-      }
-    });
-    this.dataStream.next(sortedVariantLines);
-  }
-
-  updateVariantLine() {
-    this.loadingSubject.next(true);
-    this.service.getVariants(this.variantParams).then(async response => {
-      const page: Page<Variant> = await response.data;
-      this.totalFilteredVariants = page.totalElements;
-      if (this.totalVariants === 0) {
-        this.totalVariants = page.totalElements;
-      }
-      return page.content;
-    }).then(async (variants: Array<Variant>) => {
-      const biotypeCache: Array<Biotype> = this.globalConstants.getBiotypes();
-      const impactCache: Array<Impact> = this.globalConstants.getImpacts();
-      const effectCache: Array<Effect> = this.globalConstants.getEffects();
-      const geneCache: Array<Gene> = await this.getGeneCache(variants);
-      this.cachedVariantLines = variants.map((variant: Variant) => {
-        return this.generateVariantLine(variant, geneCache, biotypeCache,
-          impactCache, effectCache);
+  private markNullValues() {
+    return (variant: Variant) => {
+      Object.keys(variant).forEach((field: string) => {
+        if (variant[field] == null) {
+          variant[field] = "-";
+        }
       });
-      this.dataStream.next(this.cachedVariantLines);
-    }).finally(() => this.loadingSubject.next(false));
+      return variant;
+    };
+  }
+
+  private sortData(event: LazyLoadEvent, field: string, order: number) {
+    this.variants = this.variants.sort(this.compareVariantFields(field, order));
+  }
+
+  private compareVariantFields(field: string, order: number) {
+    return (a: Variant, b: Variant) => {
+      if (typeof a[field] === "string" && typeof b[field] === "string") {
+        return (a[field] as string).localeCompare((b[field] as string)) * order;
+      } else {
+        return ((a[field] as number) - (b[field] as number)) * order;
+      }
+    };
+  }
+
+  private extractTableFields() {
+    let fieldNames: Array<string> = Object.keys(this.cachedVariantLines[0]);
+
+    this._variantFields = fieldNames.map((field: string) => {
+      let label = field.charAt(0).toUpperCase() + field.slice(1);
+      label = label.replace(/([a-z])([A-Z])/, '$1 $2');
+      return {
+        name: field,
+        label: label
+      };
+    });
   }
 
   private isMatchingFilterPattern(variantLineKeys: string[], variantLine: VariantLine, value: string): boolean {
@@ -152,7 +161,8 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
   private async getGeneCache(variants: Array<Variant>): Promise<Array<Gene>> {
     const geneIds = this.getGeneIdsFromVariant(variants);
     let geneCache: Array<Gene>;
-    await this.service.getBatchGenes({ ids: geneIds })
+    await this.service
+      .getBatchGenes({ ids: geneIds })
       .then(response => geneCache = response.data);
     return geneCache;
   }
@@ -202,11 +212,10 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
     return `${dp}`;
   }
 
-  private generateVariantLine(variant: Variant, geneCache: Array<Gene>, biotypeCache: Array<Biotype>,
-                              impactCache: Array<Impact>, effectCache: Array<Effect>) {
+  private generateVariantLine(variant: Variant) {
     const chromosome = this.getChromosomeNameFromId(variant.chromosome);
-    const consequenceLine: VariantLine = this.getConsequenceLineWithHigherImpact(variant, geneCache,
-      biotypeCache, impactCache, effectCache);
+    const consequenceLine: VariantLine = this.getConsequenceLineWithHigherImpact(variant, this.geneCache,
+      this.biotypeCache, this.impactCache, this.effectCache);
     const frequency: string = this.getFrequencyByPopulationCode(variant.frequencies, "gca");
     const dp: string = this.getTotalDepth(variant.genotypes);
     const gmaf: string = this.getFrequencyByPopulationCode(variant.frequencies, "all");
@@ -251,8 +260,14 @@ export class VariantLineDatasourceService extends DataSource<VariantLine> {
   }
 
   addGenotypeFilter(genotype: GenotypeFilterParams) {
-    const genotypeFilters = [...this.variantParams.genotypeFilters, genotype];
+    let genotypeFilters;
+    if (this.variantParams.genotypeFilters != null) {
+      genotypeFilters = [...this.variantParams.genotypeFilters, genotype];
+    } else {
+      genotypeFilters = [genotype];
+    }
     this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters };
+    console.log(this.variantParams);
   }
 
   deleteGenotypeFilter(target: GenotypeFilterParams){
