@@ -48,12 +48,21 @@ import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
 import { ChipsModule } from 'primeng/chips';
 import { FilterVisualizerComponent } from './components/filter-visualizer/filter-visualizer.component';
-import { ListboxModule } from "primeng/listbox";
-import { TableModule } from "primeng/table";
-import { OrderListModule } from "primeng/orderlist";
-import { ChipModule } from "primeng/chip";
-import { SidebarModule } from "primeng/sidebar";
-import { PaginatorModule } from "primeng/paginator";
+import { ListboxModule } from 'primeng/listbox';
+import { TableModule } from 'primeng/table';
+import { OrderListModule } from 'primeng/orderlist';
+import { ChipModule } from 'primeng/chip';
+import { SidebarModule } from 'primeng/sidebar';
+import { PaginatorModule } from 'primeng/paginator';
+import { VariantInfoPanelComponent } from './components/variant-info-panel/variant-info-panel.component';
+import { VariantPropertyTableComponent } from './components/variant-property-table/variant-property-table.component';
+import { VariantFrequencyTableComponent } from './components/variant-frequency-table/variant-frequency-table.component';
+import { VariantGenotypeTableComponent } from './components/variant-genotype-table/variant-genotype-table.component';
+import { VariantConsequenceTableComponent } from './components/variant-consequence-table/variant-consequence-table.component';
+import { AccordionModule } from "primeng/accordion";
+import { TooltipModule } from "primeng/tooltip";
+import { SpeedDialModule } from "primeng/speeddial";
+import { SplitButtonModule } from "primeng/splitbutton";
 
 @NgModule({
   declarations: [
@@ -68,6 +77,11 @@ import { PaginatorModule } from "primeng/paginator";
     VariantFilterPanelComponent,
     DeviceWidthBreakpointDirective,
     FilterVisualizerComponent,
+    VariantInfoPanelComponent,
+    VariantPropertyTableComponent,
+    VariantFrequencyTableComponent,
+    VariantGenotypeTableComponent,
+    VariantConsequenceTableComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -94,7 +108,11 @@ import { PaginatorModule } from "primeng/paginator";
     OrderListModule,
     ChipModule,
     SidebarModule,
-    PaginatorModule
+    PaginatorModule,
+    AccordionModule,
+    TooltipModule,
+    SpeedDialModule,
+    SplitButtonModule
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: 'environment', useValue: environment.serverUrl }],

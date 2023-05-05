@@ -30,7 +30,9 @@ import { Population } from "./models/response/Population";
 import { GenotypeType } from "./models/response/GenotypeType";
 import { Individual } from "./models/response/Individual";
 import { VariantParams } from "./models/request/VariantParams";
+import { CsvVariantReportParams } from "./models/request/CsvVariantReportParams";
 import { Variant } from "./models/response/Variant";
+import { DownloadCsvReportService } from "./endpoints/download-csv-report-service/download.csv.report.service";
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +57,7 @@ export class VarcanService extends ApiService {
   private registerService: RegisterService;
   private tokenStorageService: TokenStorageService;
   private batchGeneService: BatchGeneService;
+  private downloadCsvReportService: DownloadCsvReportService;
 
   constructor(@Inject('environment') serverUrl: string) {
     super(serverUrl);
@@ -76,6 +79,7 @@ export class VarcanService extends ApiService {
     this.variantService = new VariantsService(this.httpHandler);
     this.registerService = new RegisterService(this.httpHandler);
     this.batchGeneService = new BatchGeneService(this.httpHandler);
+    this.downloadCsvReportService = new DownloadCsvReportService(this.httpHandler);
   }
 
   /**
@@ -205,5 +209,9 @@ export class VarcanService extends ApiService {
 
   getBatchGenes(data?): Promise<AxiosResponse<Array<Gene>>> {
     return data !== null ? this.batchGeneService.fetch(data) : this.batchGeneService.fetch();
+  }
+
+  downloadCsvReport(data?: CsvVariantReportParams): Promise<AxiosResponse<string>> {
+    return data !== null ? this.downloadCsvReportService.fetch(data) : this.downloadCsvReportService.fetch();
   }
 }

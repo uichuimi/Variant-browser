@@ -1,7 +1,8 @@
 import { Gene } from "../../../api/varcan-service/models/response/Gene";
 import { VariantLine } from "../../models/variant-line";
+import { ConsequenceLine } from "../../models/consequence-line";
 
-export class GeneLine {
+export class GeneLineDataSource {
   private readonly name: string;
   private readonly ensg: string;
   private readonly hgnc: string;
@@ -16,7 +17,7 @@ export class GeneLine {
     this.symbol = gene.symbol || "-";
   }
 
-  get line(): VariantLine {
+  get line(): ConsequenceLine {
     return {
       geneName: this.name,
       ensg: this.ensg,

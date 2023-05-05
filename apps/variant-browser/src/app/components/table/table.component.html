@@ -1,119 +1,58 @@
-<!--<app-variant-table-toolbar
-  [columnsToDisplay]="columnsToDisplay"
-  [onFilterChangeEvent]="onFilterChangeEvent"
-  (keyup)="onFilterChange($event)"
-  (columnVisualizationChangeEvent)="onColumnVisualizationChange($event)"
-></app-variant-table-toolbar>
-
-<section>
-  <div class="row">
-    <div class="col 12">
-      <table mat-table
-             [dataSource]="dataSource" multiTemplateDataRows
-             matSort cdkDropList
-             [cdkDropListData]="displayedColumns"
-             cdkDropListOrientation="horizontal"
-             (cdkDropListDropped)="drop($event)"
-             (matSortChange)="sortData($event)"
-      >
-        <ng-container [matColumnDef]="column.name" *ngFor="let column of columnsToDisplay">
-          <th mat-header-cell
-              cdkDrag
-              *matHeaderCellDef
-              mat-sort-header
-          >
-            {{column.label}}
-          </th>
-          <td mat-cell *matCellDef="let element"
-              class="truncate-cell"
-              [matTooltip]="getTooltip(column.name, element)"
-          >
-            <a *ngIf="element[column.name] !== '-' && column.name === 'snpId'"
-               href="https://www.ncbi.nlm.nih.gov/snp/{{element[column.name]}}"
-               target="_blank">
-              {{element[column.name]}}
-            </a>
-            <span *ngIf="element[column.name] === '-' || column.name !== 'snpId'">
-              {{element[column.name]}}
-            </span>
-          </td>
-          <td mat-footer-cell *matFooterCellDef
-              [attr.colspan]="displayedColumns.length"
-          >
-            Filtered {{dataSource.totalFilteredVariants}} out of {{dataSource.totalVariants}} variants.
-          </td>
-        </ng-container>
-        <thead>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        </thead>
-        <tbody>
-          <tr mat-row
-              *matRowDef="let row; columns: displayedColumns;"
-          ></tr>
-
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell"
-                [attr.colspan]="displayedColumns.length"
-                *ngIf="dataSource.noResult$ | async"
-            >
-              No data matching the search value.
-            </td>
-            <td class="spinner-container centered"
-                [attr.colspan]="displayedColumns.length"
-                *ngIf="dataSource.loading$ | async"
-            >
-              <mat-spinner></mat-spinner>
-            </td>
-          </tr>
-
-          <tr mat-footer-row
-              id="variant-table-footer"
-              *matFooterRowDef="[displayedColumns[0]]; sticky: true"
-              class="mat-table-row-sm position-relative mat-footer-row"
-          ></tr>
-        </tbody>
-      </table>
-
-      <mat-paginator
-        [length]="dataSource.totalFilteredVariants"
-        [pageSize]="size"
-        [pageIndex]="page"
-        [pageSizeOptions]="[5, 10, 25, 50, 100, 200]"
-        aria-label="Select page of users"
-        showFirstLastButtons
-      ></mat-paginator>
-    </div>
-  </div>
-</section>-->
-
 <div class="card">
   <p-table
-    [columns]="dataSource.variantFields" [value]="variants" [lazy]="true" (onLazyLoad)="loadVariants($event)"
-    dataKey="id" [paginator]="true" [rows]="rows" [totalRecords]="dataSource.totalRecords"
+    [columns]="selectedColumns" [value]="variants" [lazy]="true" (onLazyLoad)="loadVariants($event)"
+    dataKey="id" [paginator]="true" [rows]="rows" [totalRecords]="dataSource.totalRecords" [resizableColumns]="true"
     [loading]="dataSource.loading" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 25, 50]"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(first)]="first" [autoLayout]="true"
+    styleClass="p-datatable-striped p-datatable-gridlines"
+    selectionMode="single" [(selection)]="selectedVariant" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect()"
+    [tableStyle]="{'max-width': '100%'}" [globalFilterFields]="getFilterFields()"
   >
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-between flex-wrap flex-row">
+
+        <p-multiSelect class="flex align-items-center justify-content-center flex-col"
+          [options]="cols" [(ngModel)]="selectedColumns"
+          selectedItemsLabel="{0} columns selected" [style]="{'min-width': '200px'}"
+          placeholder="Choose Columns" optionLabel="label"
+        >
+        </p-multiSelect>
+        <p-splitButton icon="pi pi-download" label="Download" [model]="this.items"
+           (onClick)="save('info')" class="flex align-items-center justify-content-center flex-col"
+           styleClass="p-button-rounded mr-2 mb-2"
+        ></p-splitButton>
+      </div>
+    </ng-template>
     <ng-template pTemplate="header" let-columns>
         <tr>
-          <th *ngFor="let col of columns">{{ col.label }}</th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.name">
+            {{ col.label }}
+          </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-variant let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns" class="centered">
-            {{ variant[col.name] }}
+        <tr [pSelectableRow]="variant">
+          <td *ngFor="let col of columns" class="centered ellipsis">
+            <span *ngIf="isMainVariantProperty(variant, col.name)" pTooltip="{{ variant[col.name] }}" tooltipPosition="top">{{ variant[col.name] }}</span>
+            <span *ngIf="isGenotype(variant, col.name)" pTooltip="{{ extractGenotype(variant, col.name) }}} " tooltipPosition="top">{{ extractGenotype(variant, col.name) }}</span>
+            <span *ngIf="isFrequency(variant, col.name)" pTooltip="{{ extractFrequency(variant, col.name) }} " tooltipPosition="top">{{ extractFrequency(variant, col.name) }}</span>
+            <span *ngIf="isConsequence(variant, col.name)" pTooltip="{{ extractConsequence(variant, col.name) }} " tooltipPosition="top">{{ extractConsequence(variant, col.name) }}</span>
           </td>
         </tr>
     </ng-template>
-
   </p-table>
 </div>
-<!--<p-paginator [rows]="rows" [totalRecords]="dataSource.totalRecords" (onPageChange)="loadVariants($event)"
-             [rowsPerPageOptions]="[5, 10, 25, 50]"
-></p-paginator>-->
+
 <p-sidebar [(visible)]="showVariantFilters" position="bottom"
            [baseZIndex]="10000" style="float: right">
   <app-variant-filter-panel></app-variant-filter-panel>
+</p-sidebar>
+
+<p-sidebar
+  [(visible)]="showVariantInfoPanel" position="right"
+  [baseZIndex]="10000" [style]="{'float': 'right', 'width': '50rem', 'display': 'flex'}"
+>
+  <app-variant-info-panel [variant]="selectedVariant"></app-variant-info-panel>
 </p-sidebar>
 <button pButton pRipple type="button"
         class="p-button-rounded p-button-primary button-float"

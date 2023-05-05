@@ -119,6 +119,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   async onDeleteFilter($event: Filter) {
     const propertyName: string = $event.name;
     const propertyValue: any = $event.value;
+    console.log(propertyName, propertyValue);
     this.dataSource.deletePropertyFilter(propertyName, propertyValue);
     await this.dataSource.updateVariantLine();
   }

@@ -181,8 +181,6 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     this.addFilterAttribute("is", "text");
     const genotypeNames = this.getGenotypeNames(genotypeFilters.genotypeType);
     this.addFilterAttribute(`[${genotypeNames}]`, "chip");
-
-    console.log(this.filter);
   }
 
   private getSampleNames(sampleIds: Array<number>) {

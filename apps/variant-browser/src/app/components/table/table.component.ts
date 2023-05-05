@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { GlobalConstants } from "../../services/common/global-constants";
 import { VarcanService } from "../../services/api/varcan-service/varcan.service";
@@ -6,6 +6,10 @@ import { VariantParams } from "../../services/api/varcan-service/models/request/
 import { Paginator } from "primeng/paginator";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 import { VariantLine } from "../../services/data-source/models/variant-line";
+import { FrequencyLine } from "../../services/data-source/models/frequency-line";
+import { SortEvent } from "primeng/api";
+import { faDna, faFileCsv } from "@fortawesome/free-solid-svg-icons";
+import { CsvVariantReportParams } from "../../services/api/varcan-service/models/request/CsvVariantReportParams";
 
 
 
@@ -25,11 +29,23 @@ import { VariantLine } from "../../services/data-source/models/variant-line";
 
 export class TableComponent implements OnInit {
   protected variants: Array<VariantLine>;
+  protected selectedVariant: VariantLine;
   protected showVariantFilters: boolean;
+  protected showVariantInfoPanel: boolean;
   protected variantParams: VariantParams;
   protected first: number = 0;
-  protected rows: number = 5;
+  protected rows: number = 10;
   @ViewChild('paginator', {static: true}) paginator: Paginator;
+  cols: any[];
+  _selectedColumns: any[];
+  protected propertyColumns: any[];
+  protected frequencyColumns: any[];
+  protected genotypeColumns: any[];
+  protected readonly Object = Object;
+  items: any[] = [
+    { label: 'CSV file', command: () => this.downloadCSV() },
+    { label: 'VCF file', command: () => console.log('http://angular.io') }
+  ];
 
   constructor(private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants,
@@ -38,16 +54,90 @@ export class TableComponent implements OnInit {
     this.globalConstants.initializeLocalStorage();
   }
 
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    this._selectedColumns = this.cols.filter((col) => val.includes(col));
+  }
+
   ngOnInit(): void {
     this.loadVariants({ first: 0, rows: this.rows });
+    this.dataSource.data$.subscribe((data) => {
+      this.variants = data;
+      if (this.variants.length > 0) {
+        this.updatePropertyColumns();
+        this.updatedFrequencyColumns();
+        this.updateGenotypeColumns()
+      }
+    });
+    this.cols = this.dataSource.variantFields;
+    this._selectedColumns = [
+      {
+        "name": "snpId",
+        "label": "Snp Id",
+        "show": true
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "show": true
+      },
+      {
+        "name": "allele",
+        "label": "Allele",
+        "show": true
+      },
+      {
+        "name": "dp",
+        "label": "Dp",
+        "show": true
+      },
+      {
+        "name": "gmaf",
+        "label": "Gmaf",
+        "show": true
+      }
+    ];
   }
 
   async loadVariants(event) {
-    console.log(event, event.first / event.rows);
     this.rows = event.rows;
+    const dataSourceVariantParams = this.dataSource.getVariantParams();
+    if (dataSourceVariantParams != null) this.variantParams = dataSourceVariantParams;
     this.variantParams.page = event.first / event.rows;
     this.variantParams.size = event.rows;
     this.variants = await this.dataSource.updateVariantLine(this.variantParams);
+    this.cols = this.dataSource.variantFields;
+  }
+
+  private updatePropertyColumns() {
+    const baseVariantFields = this.dataSource.variantFields
+      .filter(field => Object.keys(this.variants[0]).includes(field.name));
+    const consequenceFields: any[] = this.dataSource.variantFields
+      .filter(field => Object.keys(this.variants[0].consequences[0]).includes(field.name));
+    this.propertyColumns = baseVariantFields.concat(consequenceFields);
+  }
+
+  private updatedFrequencyColumns() {
+    const populationCodes = this.globalConstants.getPopulation()
+      .map(population => population.code);
+    this.frequencyColumns = this.dataSource.variantFields
+      .filter(field => ['population'].concat(populationCodes).includes(field.name));
+  }
+
+  private updateGenotypeColumns() {
+    const individualCodes = this.globalConstants.getIndividuals()
+      .map(individual => individual.code);
+    const baseColumns = [
+      {name: 'individual', label: 'Individual', show: true},
+      {name: 'genotype', label: 'Genotype', show: true},
+      {name: 'refCount', label: 'Reference count', show: true},
+      {name: 'altCount', label: 'Alternative count', show: true}
+    ]
+    this.genotypeColumns = this.dataSource.variantFields
+      .filter(field => individualCodes.includes(field.name)).concat(baseColumns);
   }
 
   protected updateCurrentPage(currentPage: number): void {
@@ -56,5 +146,162 @@ export class TableComponent implements OnInit {
 
   protected reset() {
     this.first = 0;
+  }
+
+  onSort($event: SortEvent) {
+    console.log($event);
+  }
+
+  protected isMainVariantProperty(variant: VariantLine, name: string) {
+    return Object.keys(variant).includes(name);
+  }
+
+  protected isGenotype(variant: VariantLine, name: string) {
+    if (variant.genotypes[0] === undefined) return false;
+    return this.globalConstants.getIndividuals()
+        .map(individual => individual.code).includes(name);
+  }
+
+  protected extractGenotype(variant: VariantLine, name: string) {
+    const targetGenotypeLine = variant.genotypes
+      .find(genotypeLine => genotypeLine.individual === name);
+    if (targetGenotypeLine === undefined) return "-";
+    return targetGenotypeLine[name];
+  }
+
+  protected isFrequency(variant: VariantLine, name: string) {
+    if (variant.frequencies[0] === undefined) return false;
+    return this.globalConstants.getPopulation()
+      .map(population => population.code).includes(name)
+      || name === 'population';
+  }
+
+  protected extractFrequency(variant: VariantLine, name: string) {
+    if (name === 'population') {
+      return variant.frequencies
+        .map(frequency => frequency.population).join(" | ");
+    }
+    const frequencyLine: FrequencyLine = variant.frequencies
+      .find(frequency => frequency.code === name);
+
+    if (frequencyLine === undefined) return "-";
+
+    return frequencyLine[name];
+  }
+
+  protected isConsequence(variant: VariantLine, name: string) {
+    if (variant.consequences[0] === undefined) return false;
+    return Object.keys(variant.consequences[0]).includes(name);
+  }
+
+  protected extractConsequence(variant: VariantLine, name: string) {
+    return variant.consequences.map(val => val[name]).join(' | ');
+  }
+
+  onRowSelect($event: any) {
+    this.selectedVariant = $event.data;
+    this.showVariantInfoPanel = true;
+  }
+  onRowUnselect() {
+    this.selectedVariant = null;
+    this.showVariantInfoPanel = false;
+  }
+
+  protected getFilterFields() {
+    return [
+      "id",
+      "snpId",
+      "region",
+      "allele",
+      "dp",
+      "gmaf",
+      "geneName",
+      "ensg",
+      "hgnc",
+      "ncbi",
+      "symbol",
+      "biotypeName",
+      "biotypeAccession",
+      "biotypeDescription",
+      "effectName",
+      "effectAccession",
+      "effectDescription",
+      "impact",
+      "transcript",
+      "sift",
+      "hgvsp",
+      "hgvsc",
+      "polyphen",
+      "afr",
+      "ami",
+      "asj",
+      "eas",
+      "fin",
+      "all",
+      "gca",
+      "amr",
+      "mid",
+      "nfe",
+      "oth",
+      "sas",
+      "population",
+      "CCAR_0283",
+      "CCAR_098",
+      "CCAR_112",
+      "DSH",
+      "JMG",
+      "NIV_060",
+      "NIV_084",
+      "NIV_102",
+      "ROS",
+      "SQZ_001",
+      "SQZ_030",
+      "SQZ_106",
+      "WDH21_001",
+      "WDH21_002"
+    ];
+  }
+
+  save(mode: string) {
+
+  }
+
+  private async downloadCSV() {
+    const fields = [
+      "PROP.CHROM",
+      "PROP.POS",
+      "PROP.ID",
+      "PROP.REF",
+      "PROP.ALT",
+      "PROP.DP",
+      "FREQ.GCA",
+      "FREQ.ALL",
+      "CONSQ.EFFECT",
+      "CONSQ.SYMBOL",
+      "CONSQ.BIOTYPE",
+      "CONSQ.IMPACT",
+      "CONSQ.HGVSc",
+      "CONSQ.HGVSp",
+      "GEN.CCAR_112",
+      "GEN.DSH"
+    ];
+    const downloadParams: CsvVariantReportParams = {
+      fields: fields
+    };
+
+    const csvReport = await this.service.downloadCsvReport(downloadParams).then(response => {
+      const csvReport = response.data;
+      const url = window.URL.createObjectURL(new Blob([csvReport], { type: 'text/csv' }));
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display:none');
+      a.href = url;
+      a.download = 'report.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    });
+
+
   }
 }

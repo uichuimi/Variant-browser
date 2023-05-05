@@ -1,0 +1,30 @@
+<p-table
+  [columns]="_selectedColumns" [value]="consequences"
+  dataKey="id" (sortFunction)="onSort($event)" [customSort]="true"
+  styleClass="p-datatable-striped p-datatable-gridlines"
+>
+  <ng-template pTemplate="caption">
+    <p-multiSelect
+      [options]="consequenceColumns" [(ngModel)]="selectedColumns"
+      selectedItemsLabel="{0} consequences selected" [style]="{'min-width': '200px'}"
+      placeholder="Choose consequence attribute" optionLabel="label"
+    >
+    </p-multiSelect>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" [pSortableColumn]="col.name" >
+        <p-columnFilter type="text" [field]="col.name" display="menu">
+        </p-columnFilter>
+        {{ col.label }} <p-sortIcon [field]="col.name"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-consequence let-columns="columns">
+    <tr>
+      <td class="centered" *ngFor="let col of columns">
+        <span>{{ consequence[col.name] }}</span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

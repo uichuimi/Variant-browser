@@ -15,6 +15,10 @@ table {
 /*  text-align: center;*/
 /*}*/
 
+td {
+  max-width: 10rem;
+}
+
 :host ::ng-deep .p-sidebar-bottom {
   height: 65%;
 }
@@ -49,3 +53,16 @@ table {
 .centered {
   text-align: center;
 }
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.download-button {
+  margin-top: .5%;
+  flex: fit-content;
+  float: left;
+}
+

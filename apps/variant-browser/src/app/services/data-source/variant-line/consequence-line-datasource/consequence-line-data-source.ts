@@ -3,17 +3,18 @@ import { Gene } from "../../../api/varcan-service/models/response/Gene";
 import { Biotype } from "../../../api/varcan-service/models/response/Biotype";
 import { Impact } from "../../../api/varcan-service/models/response/Impact";
 import { Effect } from "../../../api/varcan-service/models/response/Effect";
-import { GeneLine } from "./gene-line";
-import { BiotypeLine } from "./biotype-line";
-import { EffectLine } from "./effect-line";
+import { GeneLineDataSource } from "./gene-line-data-source";
+import { BiotypeLineDataSource } from "./biotype-line-data-source";
+import { EffectLineDataSource } from "./effect-line-data-source";
 import { VariantLine } from "../../models/variant-line";
-import { ImpactLine } from "./impact-line";
+import { ImpactLineDataSource } from "./impact-line-data-source";
+import { ConsequenceLine } from "../../models/consequence-line";
 
-export class ConsequenceLine {
-  private geneLine: GeneLine;
-  private biotypeLine: BiotypeLine;
-  private impactLine: ImpactLine;
-  private effectLine: EffectLine;
+export class ConsequenceLineDataSource {
+  private geneLine: GeneLineDataSource;
+  private biotypeLine: BiotypeLineDataSource;
+  private impactLine: ImpactLineDataSource;
+  private effectLine: EffectLineDataSource;
   private transcript: string;
   private sift: string;
   private hgvsp: string;
@@ -33,35 +34,35 @@ export class ConsequenceLine {
   }
 
 
-  private getGeneLineById(geneId: number, geneCache: Array<Gene>, biotypeCache: Array<Biotype>): GeneLine {
+  private getGeneLineById(geneId: number, geneCache: Array<Gene>, biotypeCache: Array<Biotype>): GeneLineDataSource {
     const gene: Gene = geneCache
       .find((gene: Gene) => gene.id === geneId);
 
     if (gene.biotype) {
       this.biotypeLine = this.getBiotypeLineById(gene.biotype.id, biotypeCache);
     } else {
-      this.biotypeLine = new BiotypeLine(null);
+      this.biotypeLine = new BiotypeLineDataSource(null);
     }
 
-    return new GeneLine(gene);
+    return new GeneLineDataSource(gene);
   }
 
-  private getEffectLineById(effectId: number, effectCache: Array<Effect>): EffectLine {
+  private getEffectLineById(effectId: number, effectCache: Array<Effect>): EffectLineDataSource {
     const effect: Effect = effectCache.find((effect: Effect) => effect.id === effectId);
-    return new EffectLine(effect);
+    return new EffectLineDataSource(effect);
   }
 
-  private getImpactLineById(impactId: number, impactCache: Array<Impact>): ImpactLine {
+  private getImpactLineById(impactId: number, impactCache: Array<Impact>): ImpactLineDataSource {
     const impact: Impact = impactCache.find((impact: Impact) => impact.id === impactId);
-    return new ImpactLine(impact);
+    return new ImpactLineDataSource(impact);
   }
 
-  private getBiotypeLineById(biotypeId: number, biotypeCache: Array<Biotype>): BiotypeLine {
+  private getBiotypeLineById(biotypeId: number, biotypeCache: Array<Biotype>): BiotypeLineDataSource {
     const biotype: Biotype = biotypeCache.find((biotype: Biotype) => biotype.id === biotypeId);
-    return new BiotypeLine(biotype);
+    return new BiotypeLineDataSource(biotype);
   }
 
-  get line(): VariantLine {
+  get line(): ConsequenceLine {
     return {
       ...this.geneLine.line,
       ...this.biotypeLine.line,
@@ -71,7 +72,7 @@ export class ConsequenceLine {
       sift: this.sift,
       hgvsp: this.hgvsp,
       hgvsc: this.hgvsc,
-      polyphen: this.polyphen
+      polyphen: this.polyphen,
     }
   }
 }

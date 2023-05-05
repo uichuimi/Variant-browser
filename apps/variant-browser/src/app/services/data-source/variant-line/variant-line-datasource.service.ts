@@ -15,9 +15,17 @@ import { Frequency } from "../../api/varcan-service/models/response/Frequency";
 import { Genotype } from "../../api/varcan-service/models/response/Genotype";
 import { VarcanAPIEntities } from "../../api/varcan-service/misc/varcan-api-entities";
 import { GenotypeFilterParams } from "../../api/varcan-service/models/request/GenotypeFilterParams";
-import { ConsequenceLine } from "./consequence-line/consequence-line";
+import { ConsequenceLineDataSource } from "./consequence-line-datasource/consequence-line-data-source";
 import { Biotype } from "../../api/varcan-service/models/response/Biotype";
 import { LazyLoadEvent } from "primeng/api";
+import { Observable, Subject } from "rxjs";
+import { GenotypeLineDataSource } from "./genotype-line-datasource/genotype-line-data-source";
+import { Individual } from "../../api/varcan-service/models/response/Individual";
+import { GenotypeType } from "../../api/varcan-service/models/response/GenotypeType";
+import { GenotypeLine } from "../models/genotype-line";
+import { ConsequenceLine } from "../models/consequence-line";
+import { FrequencyLine } from "../models/frequency-line";
+import { FrequencyLineDatasource } from "./frequency-line-datasource/frequency-line-datasource";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
@@ -27,7 +35,7 @@ const DECIMAL_CIPHER_APROXIMATION = 5;
 export class VariantLineDatasourceService {
   private _loading: boolean;
   private _totalRecords: number;
-  private _variantFields: Array<{name: string, label: string}>;
+  private _variantFields: Array<{name: string, label: string, show:boolean}>;
   private variants: Array<Variant>;
   private cachedVariantLines;
   private variantParams: VariantParams;
@@ -35,6 +43,11 @@ export class VariantLineDatasourceService {
   private impactCache: Array<Impact>;
   private effectCache: Array<Effect>;
   private geneCache: Array<Gene>;
+  private individualCache: Array<Individual>;
+  private genotypeTypeCache: Array<GenotypeType>;
+  private populationCache: Array<Population>;
+  private dataSubject = new Subject<any>();
+  data$: Observable<any> = this.dataSubject.asObservable();
 
   constructor(private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants) {
@@ -55,6 +68,21 @@ export class VariantLineDatasourceService {
     return this._variantFields;
   }
 
+  set variantFields(fields: any[]) {
+    fields.forEach((value) => {
+      this._variantFields = this._variantFields.map((variantField) => {
+        if (variantField.name === value.name) {
+          variantField.show = !value.show;
+        }
+        return variantField;
+      });
+    })
+  }
+
+  get variantLine() {
+    return this.cachedVariantLines;
+  }
+
   async updateVariantLine(variantParams?: VariantParams, event?: LazyLoadEvent) {
     if (variantParams != null) {
       this.variantParams = variantParams;
@@ -63,11 +91,18 @@ export class VariantLineDatasourceService {
     await this.service.getVariants(this.variantParams).then(res => page = res.data)
     await this.getVariantLine(page, event);
     this._loading = false;
+    this.data$ = this.cachedVariantLines;
+    this.dataSubject.next(this.data$);
     return this.cachedVariantLines;
   }
 
   private async getVariantLine(page: Page<Variant>, event?: LazyLoadEvent) {
     this._totalRecords = page.totalElements;
+    if (this.totalRecords == 0) {
+      this.variants = [];
+      this.cachedVariantLines = [];
+      return;
+    }
     this.variants = page.content.map(this.markNullValues());
 
     if (event != null && event.sortField != null && event.sortOrder != 0) {
@@ -77,6 +112,9 @@ export class VariantLineDatasourceService {
     this.biotypeCache = this.globalConstants.getBiotypes();
     this.impactCache = this.globalConstants.getImpacts();
     this.effectCache = this.globalConstants.getEffects();
+    this.individualCache = this.globalConstants.getIndividuals();
+    this.genotypeTypeCache = this.globalConstants.getGenotypeTypes();
+    this.populationCache = this.globalConstants.getPopulation();
     this.geneCache = await this.getGeneCache(this.variants);
 
     this.cachedVariantLines = this.variants.map((variant: Variant) => {
@@ -116,14 +154,42 @@ export class VariantLineDatasourceService {
   private extractTableFields() {
     let fieldNames: Array<string> = Object.keys(this.cachedVariantLines[0]);
 
-    this._variantFields = fieldNames.map((field: string) => {
-      let label = field.charAt(0).toUpperCase() + field.slice(1);
-      label = label.replace(/([a-z])([A-Z])/, '$1 $2');
-      return {
-        name: field,
-        label: label
-      };
+    const columns = fieldNames.map((field: string) => {
+      let label: string = this.labelize(field);
+      if (['consequences', 'frequencies', 'genotypes'].includes(field)) {
+        let innerFieldNames: Array<string>;
+        if (field === 'frequencies') {
+          innerFieldNames = this.populationCache
+            .map(population => population.code).concat(['population']);
+        } else if (field === 'genotypes') {
+          innerFieldNames = this.individualCache.map(individual => individual.code);
+        } else {
+          innerFieldNames= Object.keys(this.cachedVariantLines[0][field][0]);
+        }
+        const innerColumns = innerFieldNames.map((innerField: string) => {
+          let innerLabel: string = this.labelize(innerField);
+          return {
+            name: innerField,
+            label: innerLabel,
+            show: false
+          };
+        });
+        this._variantFields = this._variantFields.concat(innerColumns);
+      } else {
+        return {
+          name: field,
+          label: label,
+          show: true
+        };
+      }
     });
+    this._variantFields = columns.concat(this._variantFields);
+    this._variantFields = this._variantFields.filter((e) => e !== undefined);
+  }
+
+  private labelize(field: string) {
+    let label = field.charAt(0).toUpperCase() + field.slice(1);
+    return label.replace(/([a-z])([A-Z])/, "$1 $2");
   }
 
   private isMatchingFilterPattern(variantLineKeys: string[], variantLine: VariantLine, value: string): boolean {
@@ -201,7 +267,7 @@ export class VariantLineDatasourceService {
     if (targetFrequency != null) {
       let relativeFrequency: number = targetFrequency.ac / targetFrequency.an * 100;
       let roundRelativeFrequency = Math.round((relativeFrequency + Number.EPSILON) * 10 ** DECIMAL_CIPHER_APROXIMATION) / 10 ** DECIMAL_CIPHER_APROXIMATION;
-      return `${targetFrequency.ac} / ${targetFrequency.an} (${roundRelativeFrequency}%)`;
+      return `${targetFrequency.ac}/${targetFrequency.an} (${roundRelativeFrequency}%)`;
     }
     return "-";
   }
@@ -212,22 +278,24 @@ export class VariantLineDatasourceService {
     return `${dp}`;
   }
 
-  private generateVariantLine(variant: Variant) {
+  private generateVariantLine(variant: Variant): VariantLine {
     const chromosome = this.getChromosomeNameFromId(variant.chromosome);
-    const consequenceLine: VariantLine = this.getConsequenceLineWithHigherImpact(variant, this.geneCache,
-      this.biotypeCache, this.impactCache, this.effectCache);
-    const frequency: string = this.getFrequencyByPopulationCode(variant.frequencies, "gca");
+    const consequenceLine: Array<ConsequenceLine> = this.getConsequenceLines(variant.consequence);
+    const genotypeLines: Array<GenotypeLine> = this.getGenotypeLines(variant.reference,
+      variant.alternative, variant.genotypes)
+    const frequencyLines: Array<FrequencyLine> = this.getFrequencyLines(variant.frequencies);
     const dp: string = this.getTotalDepth(variant.genotypes);
     const gmaf: string = this.getFrequencyByPopulationCode(variant.frequencies, "all");
     return {
       id: variant.id,
       snpId: variant.identifier || "-",
       region: `${chromosome}:${variant.position}`,
-      allele: `${variant.reference} / ${variant.alternative}`,
-      ...consequenceLine,
-      frequency: frequency,
+      allele: `${variant.reference}|${variant.alternative}`,
+      consequences: consequenceLine,
+      frequencies: frequencyLines,
       dp: dp,
-      gmaf: gmaf
+      gmaf: gmaf,
+      genotypes: genotypeLines
     };
   }
 
@@ -252,6 +320,7 @@ export class VariantLineDatasourceService {
         if (allEntities !== undefined) {
           this.variantParams[propertyKey] = this.variantParams[propertyKey]
             .filter((id: number) => !value.includes(id));
+          if (this.variantParams[propertyKey].length == 0) delete this.variantParams[propertyKey];
         } else {
           delete this.variantParams[propertyKey];
         }
@@ -267,7 +336,6 @@ export class VariantLineDatasourceService {
       genotypeFilters = [genotype];
     }
     this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters };
-    console.log(this.variantParams);
   }
 
   deleteGenotypeFilter(target: GenotypeFilterParams){
@@ -288,12 +356,33 @@ export class VariantLineDatasourceService {
   }
 
   private getConsequenceLineWithHigherImpact(variant: Variant, geneCache: Array<Gene>, biotypeCache: Array<Biotype>,
-                                             impactCache: Array<Impact>, effectCache: Array<Effect>): VariantLine {
-    const consequenceLines: Array<ConsequenceLine> = variant.consequence
+                                             impactCache: Array<Impact>, effectCache: Array<Effect>): ConsequenceLine {
+    const consequenceLines: Array<ConsequenceLineDataSource> = variant.consequence
       .sort((a, b) => b.impact - a.impact)
       .map((consequence: Consequence) => {
-        return new ConsequenceLine(consequence, geneCache, biotypeCache, impactCache, effectCache);
+        return new ConsequenceLineDataSource(consequence, geneCache, biotypeCache, impactCache, effectCache);
       });
     return consequenceLines[0].line;
+  }
+
+  private getConsequenceLines(consequences: Array<Consequence>): Array<ConsequenceLine> {
+    const consequenceLines: Array<ConsequenceLine> = consequences
+      .map((consequence: Consequence) =>
+        new ConsequenceLineDataSource(consequence, this.geneCache,
+          this.biotypeCache, this.impactCache, this.effectCache).line);
+    return consequenceLines;
+  }
+
+  private getGenotypeLines(reference: string, alternative: string, genotypes: Array<Genotype>): Array<GenotypeLine> {
+    const genotypeLines: Array<GenotypeLine> = genotypes
+      .map((genotype: Genotype) =>
+        new GenotypeLineDataSource(reference, alternative, genotype, this.individualCache, this.genotypeTypeCache).line)
+    return genotypeLines;
+  }
+
+  private getFrequencyLines(frequencies: Array<Frequency>): Array<FrequencyLine> {
+    const frequencyLines: Array<FrequencyLine> = frequencies
+      .map((frequency: Frequency) => new FrequencyLineDatasource(frequency, this.populationCache).line);
+    return frequencyLines;
   }
 }

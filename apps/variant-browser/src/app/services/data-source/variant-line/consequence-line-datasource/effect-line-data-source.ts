@@ -1,7 +1,8 @@
 import { Effect } from "../../../api/varcan-service/models/response/Effect";
 import { VariantLine } from "../../models/variant-line";
+import { ConsequenceLine } from "../../models/consequence-line";
 
-export class EffectLine {
+export class EffectLineDataSource {
   private readonly name: string;
   private readonly accession: string;
   private readonly description: string;
@@ -12,7 +13,7 @@ export class EffectLine {
     this.description = effect.description || "-";
   }
 
-  get line(): VariantLine {
+  get line(): ConsequenceLine {
     return {
       effectName: this.name,
       effectAccession: this.accession,
