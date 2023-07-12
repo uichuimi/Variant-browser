@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
-import { User } from 'src/app/models/response/User';
+import { User } from '../../models/response/User';
 
 @Injectable({
   providedIn: 'root'

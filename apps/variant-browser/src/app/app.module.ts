@@ -18,24 +18,8 @@ import { CommonModule } from '@angular/common';
 import { VariantDetailsComponent } from './components/variant-details/variant-details.component';
 import { environment } from '../environments/environment';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatSortModule } from '@angular/material/sort';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { VariantFilterPanelComponent } from './components/variant-filter-panel/variant-filter-panel.component';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSelectModule } from '@angular/material/select';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { SplitterModule } from 'primeng/splitter';
 import { TabViewModule } from 'primeng/tabview';
@@ -59,10 +43,21 @@ import { VariantPropertyTableComponent } from './components/variant-property-tab
 import { VariantFrequencyTableComponent } from './components/variant-frequency-table/variant-frequency-table.component';
 import { VariantGenotypeTableComponent } from './components/variant-genotype-table/variant-genotype-table.component';
 import { VariantConsequenceTableComponent } from './components/variant-consequence-table/variant-consequence-table.component';
-import { AccordionModule } from "primeng/accordion";
-import { TooltipModule } from "primeng/tooltip";
-import { SpeedDialModule } from "primeng/speeddial";
-import { SplitButtonModule } from "primeng/splitbutton";
+import { AccordionModule } from 'primeng/accordion';
+import { TooltipModule } from 'primeng/tooltip';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { DownloadCsvDialogComponent } from './components/download-csv-dialog/download-csv-dialog.component';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { VarcanService } from './services/api/varcan-service/varcan.service';
+import { AuthGuardService } from './services/auth/auth-guard.service';
+import { TokenStorageService } from './services/api/varcan-service/endpoints/token-storage-service/token-storage.service';
+import { DialogModule } from 'primeng/dialog';
+import { PickListModule } from 'primeng/picklist';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ToolbarModule } from 'primeng/toolbar';
+import { FrequencyFilterComponent } from './components/frequency-filter/frequency-filter.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +77,8 @@ import { SplitButtonModule } from "primeng/splitbutton";
     VariantFrequencyTableComponent,
     VariantGenotypeTableComponent,
     VariantConsequenceTableComponent,
+    DownloadCsvDialogComponent,
+    FrequencyFilterComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -112,9 +109,20 @@ import { SplitButtonModule } from "primeng/splitbutton";
     AccordionModule,
     TooltipModule,
     SpeedDialModule,
-    SplitButtonModule
+    SplitButtonModule,
+    ToastModule,
+    ConfirmDialogModule,
+    DialogModule,
+    PickListModule,
+    FieldsetModule,
+    ToolbarModule,
   ],
   bootstrap: [AppComponent],
-  providers: [{ provide: 'environment', useValue: environment.serverUrl }],
+  providers: [
+    { provide: 'environment', useValue: environment.serverUrl },
+    VarcanService,
+    TokenStorageService,
+    AuthGuardService,
+  ],
 })
 export class AppModule {}

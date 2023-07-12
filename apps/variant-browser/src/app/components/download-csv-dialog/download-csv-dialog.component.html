@@ -1,0 +1,42 @@
+<div class="card flex justify-content-center">
+  <p-dialog header="Select output CSV fields" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', height: '60vw' }" [draggable]="false" [resizable]="false">
+    <p-fieldset legend="Property fields">
+      <span class="p-float-label m-2">
+            <p-multiSelect [options]="availablePropertyFields" [(ngModel)]="selectedPropertyFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }"></p-multiSelect>
+            <label for="properties">Select properties</label>
+      </span>
+    </p-fieldset>
+
+    <p-fieldset legend="Consequence fields">
+      <span class="p-float-label m-2">
+            <p-multiSelect [options]="availableConsequenceFields" [(ngModel)]="selectedConsequenceFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }"></p-multiSelect>
+            <label for="consequence">Select consequence</label>
+      </span>
+    </p-fieldset>
+
+    <p-fieldset legend="Frequency fields">
+      <span class="p-float-label m-2">
+            <p-multiSelect [options]="availableFrequencyFields" [(ngModel)]="selectedFrequencyFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }"></p-multiSelect>
+            <label for="frequency">Select frequencies</label>
+      </span>
+    </p-fieldset>
+
+    <p-fieldset legend="Sample fields">
+      <span class="p-float-label m-2">
+            <p-multiSelect [options]="availableSampleFields" [(ngModel)]="selectedSampleFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }" [group]="true">
+              <ng-template let-group pTemplate="group">
+                  <div class="flex align-items-center">
+                      <span>{{ group.group }}</span>
+                  </div>
+              </ng-template>
+            </p-multiSelect>
+            <label for="sample">Select sample fields</label>
+      </span>
+    </p-fieldset>
+    <div class="flex justify-content-center m-4">
+      <p-button (click)="download()" icon="pi pi-download" label="Download" class="mr-2"></p-button>
+      <p-button (click)="cancel()" icon="pi pi-times" label="Cancel" class="p-button-danger mr-2"></p-button>
+    </div>
+  </p-dialog>
+</div>
+

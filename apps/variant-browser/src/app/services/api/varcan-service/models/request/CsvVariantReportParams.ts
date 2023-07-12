@@ -1,8 +1,6 @@
 import {GenotypeFilterParams} from './GenotypeFilterParams';
 
 export interface CsvVariantReportParams {
-    page?: number;
-    size?: number;
     fields: Array<string>;
     chromosomes?: Array<number>;
     start?: number;

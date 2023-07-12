@@ -57,6 +57,7 @@
     "@types/node": "^12.19.4",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
+    "dependency-cruiser": "^13.1.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "jasmine-core": "~3.10.0",

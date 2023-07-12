@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import {
   trigger,
   state,
@@ -8,6 +7,7 @@ import {
   transition
 } from '@angular/animations';
 import {VarcanService} from '../../services/api/varcan-service/varcan.service';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -47,7 +47,7 @@ export class LoginComponent  {
   loginIncorrect = false;
   loading = false;
 
-  constructor(private router: Router, private service: VarcanService) { }
+  constructor(private service: VarcanService, private router: Router) { }
 
   onClick() {
     this.loginIncorrect = false;
@@ -57,17 +57,16 @@ export class LoginComponent  {
     this.loginIncorrect = false;
 
     if (!login.invalid) {
-      await this.login(login);
+      await this.performLogin(login);
     }
   }
 
-  async login(login) {
+  async performLogin(login) {
     const navigationDetails: string[] = ['/variants'];
     const { username, password } = login.form.value;
 
     this.service.login({username, password}).then(response => {
-      this.router.navigate(navigationDetails);
-      return response;
+      this.router.navigate(['/variants']);
     }).catch(error => {
       this.loginIncorrect = true;
       console.log('login error: ' + error);

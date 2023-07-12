@@ -8,8 +8,6 @@ import { VariantLineDatasourceService } from "../../services/data-source/variant
 import { VariantLine } from "../../services/data-source/models/variant-line";
 import { FrequencyLine } from "../../services/data-source/models/frequency-line";
 import { SortEvent } from "primeng/api";
-import { faDna, faFileCsv } from "@fortawesome/free-solid-svg-icons";
-import { CsvVariantReportParams } from "../../services/api/varcan-service/models/request/CsvVariantReportParams";
 
 
 
@@ -32,6 +30,7 @@ export class TableComponent implements OnInit {
   protected selectedVariant: VariantLine;
   protected showVariantFilters: boolean;
   protected showVariantInfoPanel: boolean;
+  protected showCsvDownloadDialog: boolean = false;
   protected variantParams: VariantParams;
   protected first: number = 0;
   protected rows: number = 10;
@@ -43,8 +42,8 @@ export class TableComponent implements OnInit {
   protected genotypeColumns: any[];
   protected readonly Object = Object;
   items: any[] = [
-    { label: 'CSV file', command: () => this.downloadCSV() },
-    { label: 'VCF file', command: () => console.log('http://angular.io') }
+    { label: 'CSV', command: () => this.onToggleShowCsvDownloadDialog() },
+    { label: 'VCF', command: () => console.log('http://angular.io') }
   ];
 
   constructor(private readonly service: VarcanService,
@@ -152,8 +151,13 @@ export class TableComponent implements OnInit {
     console.log($event);
   }
 
+  protected isSnpId(variant: VariantLine, name: string) {
+    return name === 'snpId' && variant.snpId !== '-';
+  }
+
   protected isMainVariantProperty(variant: VariantLine, name: string) {
-    return Object.keys(variant).includes(name);
+    if (name === "snpId" && variant.snpId === "-") return true
+    else return Object.keys(variant).includes(name) && name !== "snpId";
   }
 
   protected isGenotype(variant: VariantLine, name: string) {
@@ -262,46 +266,7 @@ export class TableComponent implements OnInit {
     ];
   }
 
-  save(mode: string) {
-
-  }
-
-  private async downloadCSV() {
-    const fields = [
-      "PROP.CHROM",
-      "PROP.POS",
-      "PROP.ID",
-      "PROP.REF",
-      "PROP.ALT",
-      "PROP.DP",
-      "FREQ.GCA",
-      "FREQ.ALL",
-      "CONSQ.EFFECT",
-      "CONSQ.SYMBOL",
-      "CONSQ.BIOTYPE",
-      "CONSQ.IMPACT",
-      "CONSQ.HGVSc",
-      "CONSQ.HGVSp",
-      "GEN.CCAR_112",
-      "GEN.DSH"
-    ];
-    const downloadParams: CsvVariantReportParams = {
-      fields: fields
-    };
-
-    const csvReport = await this.service.downloadCsvReport(downloadParams).then(response => {
-      const csvReport = response.data;
-      const url = window.URL.createObjectURL(new Blob([csvReport], { type: 'text/csv' }));
-      const a = document.createElement('a');
-      document.body.appendChild(a);
-      a.setAttribute('style', 'display:none');
-      a.href = url;
-      a.download = 'report.csv';
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-    });
-
-
+  onToggleShowCsvDownloadDialog() {
+    this.showCsvDownloadDialog = !this.showCsvDownloadDialog;
   }
 }

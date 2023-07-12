@@ -9,19 +9,22 @@
     [tableStyle]="{'max-width': '100%'}" [globalFilterFields]="getFilterFields()"
   >
     <ng-template pTemplate="caption">
-      <div class="flex justify-content-between flex-wrap flex-row">
+        <p-toolbar>
+          <div class="p-toolbar-group-start">
+            <p-multiSelect class="flex align-items-center justify-content-center flex-col"
+                           [options]="cols" [(ngModel)]="selectedColumns" display="chip"
+                           selectedItemsLabel="{0} columns selected" [style]="{'max-width': '20vw'}"
+                           placeholder="Choose Columns" optionLabel="label"
+            >
+            </p-multiSelect>
+          </div>
+          <div class="p-toolbar-group-end">
+            <p-button (click)="showVariantFilters = true" icon="pi pi-filter" class="mr-2"></p-button>
+            <p-splitButton icon="pi pi-download" [model]="this.items" (onClick)="onToggleShowCsvDownloadDialog()" class="mr-2"
+            ></p-splitButton>
+          </div>
+        </p-toolbar>
 
-        <p-multiSelect class="flex align-items-center justify-content-center flex-col"
-          [options]="cols" [(ngModel)]="selectedColumns"
-          selectedItemsLabel="{0} columns selected" [style]="{'min-width': '200px'}"
-          placeholder="Choose Columns" optionLabel="label"
-        >
-        </p-multiSelect>
-        <p-splitButton icon="pi pi-download" label="Download" [model]="this.items"
-           (onClick)="save('info')" class="flex align-items-center justify-content-center flex-col"
-           styleClass="p-button-rounded mr-2 mb-2"
-        ></p-splitButton>
-      </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
         <tr>
@@ -33,6 +36,7 @@
     <ng-template pTemplate="body" let-variant let-columns="columns">
         <tr [pSelectableRow]="variant">
           <td *ngFor="let col of columns" class="centered ellipsis">
+            <a *ngIf="isSnpId(variant, col.name)" href="http://ncbi.nlm.nih.gov/snp/{{ variant.snpId }}" pTooltip="{{ variant.snpId }}" tooltipPosition="top">{{ variant.snpId }}</a>
             <span *ngIf="isMainVariantProperty(variant, col.name)" pTooltip="{{ variant[col.name] }}" tooltipPosition="top">{{ variant[col.name] }}</span>
             <span *ngIf="isGenotype(variant, col.name)" pTooltip="{{ extractGenotype(variant, col.name) }}} " tooltipPosition="top">{{ extractGenotype(variant, col.name) }}</span>
             <span *ngIf="isFrequency(variant, col.name)" pTooltip="{{ extractFrequency(variant, col.name) }} " tooltipPosition="top">{{ extractFrequency(variant, col.name) }}</span>
@@ -54,8 +58,6 @@
 >
   <app-variant-info-panel [variant]="selectedVariant"></app-variant-info-panel>
 </p-sidebar>
-<button pButton pRipple type="button"
-        class="p-button-rounded p-button-primary button-float"
-        (click)="showVariantFilters = true"
-        icon="pi pi-filter"
-></button>
+
+
+<app-download-csv-dialog [visible]="showCsvDownloadDialog" (cancelCsvDownload)="onToggleShowCsvDownloadDialog()"></app-download-csv-dialog>

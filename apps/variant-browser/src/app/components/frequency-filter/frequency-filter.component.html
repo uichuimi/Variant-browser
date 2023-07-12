@@ -1,0 +1,23 @@
+<div class="card">
+  <p-splitter styleClass="flex justify-content-center mb-5 align-content-center"
+              [layout]="layout"
+              [appDeviceWidthBreakpoint]="appDeviceWidthBreakpointEvent">
+    <ng-template pTemplate>
+      <div class="genotype-filter-form flex flex-column col-12">
+        <form
+          class="flex flex-column col-12 justify-content-center align-content-center"
+          [formGroup]="frequencyFilterForm"
+          (submit)="onSubmit()"
+        >
+        </form>
+      </div>
+    </ng-template>
+
+
+    <ng-template pTemplate>
+      <div class="genotype-filter-panel flex flex-column col-12">
+        <app-filter-visualizer [filter]="filter" (deleteFilter)="onDeleteFilter($event)"></app-filter-visualizer>
+      </div>
+    </ng-template>
+  </p-splitter>
+</div>

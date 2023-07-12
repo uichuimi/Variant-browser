@@ -26,6 +26,7 @@ import { GenotypeLine } from "../models/genotype-line";
 import { ConsequenceLine } from "../models/consequence-line";
 import { FrequencyLine } from "../models/frequency-line";
 import { FrequencyLineDatasource } from "./frequency-line-datasource/frequency-line-datasource";
+import { CsvVariantReportParams } from "../../api/varcan-service/models/request/CsvVariantReportParams";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
@@ -353,6 +354,13 @@ export class VariantLineDatasourceService {
 
   getVariantParams(): VariantParams {
     return this.variantParams;
+  }
+
+  getCsvVariantReportParams(): CsvVariantReportParams {
+    const csvVariantReportParams: any = { ...this.variantParams }
+    delete csvVariantReportParams.page;
+    delete csvVariantReportParams.size;
+    return csvVariantReportParams;
   }
 
   private getConsequenceLineWithHigherImpact(variant: Variant, geneCache: Array<Gene>, biotypeCache: Array<Biotype>,

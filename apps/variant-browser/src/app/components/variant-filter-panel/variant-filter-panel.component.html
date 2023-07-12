@@ -14,4 +14,12 @@
     </ng-template>
     <app-properties-filter></app-properties-filter>
   </p-tabPanel>
+
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <fa-icon [icon]="faPercentage"></fa-icon>
+      <span>Frequencies</span>
+    </ng-template>
+    <app-frequency-filter></app-frequency-filter>
+  </p-tabPanel>
 </p-tabView>
