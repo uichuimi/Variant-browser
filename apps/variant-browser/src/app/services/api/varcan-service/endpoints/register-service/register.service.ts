@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { CreateService } from '../create-service/create.service';
-import { Register } from "../../models/request/Register";
+import { Register } from "../../models/request/register";
 import { ResponseStatus } from "../../models/response/ResponseStatus";
 
 @Injectable({

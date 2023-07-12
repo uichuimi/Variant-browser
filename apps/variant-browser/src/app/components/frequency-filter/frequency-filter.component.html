@@ -3,19 +3,82 @@
               [layout]="layout"
               [appDeviceWidthBreakpoint]="appDeviceWidthBreakpointEvent">
     <ng-template pTemplate>
-      <div class="genotype-filter-form flex flex-column col-12">
+      <div class="flex flex-column col-12">
         <form
           class="flex flex-column col-12 justify-content-center align-content-center"
           [formGroup]="frequencyFilterForm"
           (submit)="onSubmit()"
         >
+          <div class="flex col-12 align-items-center justify-content-center">
+            <span class="p-float-label">
+              <p-multiSelect [options]="allPopulations" [(ngModel)]="selectedPopulations"
+                             [filter]="true" optionValue="code" optionLabel="name"
+                             display="chip" [formControl]="populationCtrl"
+                             scrollHeight="250px" [showClear]="true">
+              </p-multiSelect>
+            <label for="populations">
+              <fa-icon [icon]="faPeopleGroup"></fa-icon>
+              <span>Population</span>
+            </label>
+          </span>
+          </div>
+
+          <div class="flex col-12 align-items-center justify-content-center">
+            <span class="p-float-label">
+              <p-dropdown
+                [options]="allNumericalComparators"
+                appendTo="body"
+                [(ngModel)]="selectedNumericalComparators"
+                placeholder="Select group operator"
+                optionValue="code"
+                optionLabel="label"
+                [showClear]="true"
+                inputId="selector"
+                [formControl]="operationCtrl"
+              ></p-dropdown>
+              <label for="operator">
+                <fa-icon [icon]="faCodeCompare"></fa-icon>
+                <span>Operator</span>
+              </label>
+            </span>
+          </div>
+
+          <div class="flex col-12 align-items-center justify-content-center">
+            <span class="p-float-label">
+              <p-inputNumber
+                [formControl]="afCtrl"
+                [(ngModel)]="af"
+                [showButtons]="true"
+                locale="en-US"
+                [minFractionDigits]="2"
+                [maxFractionDigits]="8"
+                [min]="0"
+                [max]="1"
+                [step]="0.01"
+                inputId="number"
+                mode="decimal"
+              >
+              </p-inputNumber>
+              <label for="af">
+                <fa-icon [icon]="faHashtag"></fa-icon>
+                <span>Frequency value</span>
+              </label>
+            </span>
+          </div>
+
+          <div class="flex col-12 align-items-center justify-content-center">
+            <button pButton pRipple type="submit" class="p-button-rounded">
+              <fa-icon [icon]="faPlus"></fa-icon>
+              <span>Add</span>
+            </button>
+          </div>
         </form>
       </div>
     </ng-template>
 
 
     <ng-template pTemplate>
-      <div class="genotype-filter-panel flex flex-column col-12">
+      <div class="flex flex-column col-12">
         <app-filter-visualizer [filter]="filter" (deleteFilter)="onDeleteFilter($event)"></app-filter-visualizer>
       </div>
     </ng-template>

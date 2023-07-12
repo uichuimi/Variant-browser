@@ -2,7 +2,7 @@ import { VarcanService } from "./varcan.service";
 import { environment } from "../../../../environments/environment";
 
 // MODELS
-import { Login } from "./models/request/Login";
+import { Login } from "./models/request/login";
 import { ResponseStatus } from "./models/response/ResponseStatus";
 import { Biotype } from "./models/response/Biotype";
 import { Chromosome } from "./models/response/Chromosome";

@@ -1,8 +1,7 @@
-import {GenotypeFilterParams} from './GenotypeFilterParams';
+import {GenotypeFilterParams} from './genotype-filter-params';
 
-export interface VariantParams {
-    page?: number;
-    size?: number;
+export interface CsvVariantReportParams {
+    fields: Array<string>;
     chromosomes?: Array<number>;
     start?: number;
     end?: number;

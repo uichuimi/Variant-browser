@@ -1,7 +1,9 @@
-import {GenotypeFilterParams} from './GenotypeFilterParams';
+import {GenotypeFilterParams} from './genotype-filter-params';
+import { FrequencyFilterParams } from "./frequency-filter-params";
 
-export interface CsvVariantReportParams {
-    fields: Array<string>;
+export interface VariantParams {
+    page?: number;
+    size?: number;
     chromosomes?: Array<number>;
     start?: number;
     end?: number;
@@ -11,4 +13,5 @@ export interface CsvVariantReportParams {
     impacts?: Array<number>;
     identifiers?: Array<number>;
     genotypeFilters?: Array<GenotypeFilterParams>;
+    frequencyFilters?: Array<FrequencyFilterParams>;
 }

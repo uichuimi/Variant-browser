@@ -11,41 +11,41 @@
         >
 
           <div class="flex col-12 align-items-center justify-content-center">
-          <span class="p-float-label">
-            <p-dropdown
-              [options]="allSetOperators"
-              appendTo="body"
-              [(ngModel)]="selectedSetOperators"
-              placeholder="Select group operator"
-              optionValue="selector"
-              optionLabel="label"
-              [showClear]="true"
-              inputId="selector"
-              [formControl]="this.selectorCtrl"
-            ></p-dropdown>
-            <label for="selector">
-              <fa-icon [icon]="faPeopleGroup"></fa-icon>
-              <span>Group operator</span>
-            </label>
-          </span>
+            <span class="p-float-label">
+              <p-dropdown
+                [options]="allSetOperators"
+                appendTo="body"
+                [(ngModel)]="selectedSetOperators"
+                placeholder="Select group operator"
+                optionValue="selector"
+                optionLabel="label"
+                [showClear]="true"
+                inputId="selector"
+                [formControl]="this.selectorCtrl"
+              ></p-dropdown>
+              <label for="selector">
+                <fa-icon [icon]="faPeopleGroup"></fa-icon>
+                <span>Group operator</span>
+              </label>
+            </span>
           </div>
 
           <div class="flex col-12 align-items-center justify-content-center" *ngIf="numberCtrl">
-          <span class="p-float-label">
-            <p-inputNumber
-              [formControl]="numberCtrl"
-              [(ngModel)]="number"
-              [showButtons]="true"
-              [min]="1"
-              inputId="number"
-              mode="decimal"
-            >
-            </p-inputNumber>
-            <label for="number">
-              <fa-icon [icon]="faHashtag"></fa-icon>
-              <span>Any number</span>
-            </label>
-          </span>
+            <span class="p-float-label">
+              <p-inputNumber
+                [formControl]="numberCtrl"
+                [(ngModel)]="number"
+                [showButtons]="true"
+                [min]="1"
+                inputId="number"
+                mode="decimal"
+              >
+              </p-inputNumber>
+              <label for="number">
+                <fa-icon [icon]="faHashtag"></fa-icon>
+                <span>Any number</span>
+              </label>
+            </span>
           </div>
 
           <div class="flex col-12 align-items-center justify-content-center">

@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
-import { VariantParams } from "../../models/request/VariantParams";
+import { VariantParams } from "../../models/request/variant-params";
 import { Page } from "../../models/response/Page";
 import { Variant } from "../../models/response/Variant";
-import { CsvVariantReportParams } from "../../models/request/CsvVariantReportParams";
+import { CsvVariantReportParams } from "../../models/request/csv-variant-report-params";
 
 @Injectable({
   providedIn: 'root'

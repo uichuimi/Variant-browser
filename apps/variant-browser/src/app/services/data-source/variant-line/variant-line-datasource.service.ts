@@ -4,7 +4,7 @@ import { VarcanService } from "../../api/varcan-service/varcan.service";
 import { GlobalConstants } from "../../common/global-constants";
 import { Page } from "../../api/varcan-service/models/response/Page";
 import { Variant } from "../../api/varcan-service/models/response/Variant";
-import { VariantParams } from "../../api/varcan-service/models/request/VariantParams";
+import { VariantParams } from "../../api/varcan-service/models/request/variant-params";
 import { Chromosome } from "../../api/varcan-service/models/response/Chromosome";
 import { Effect } from "../../api/varcan-service/models/response/Effect";
 import { Gene } from "../../api/varcan-service/models/response/Gene";
@@ -14,7 +14,7 @@ import { Population } from "../../api/varcan-service/models/response/Population"
 import { Frequency } from "../../api/varcan-service/models/response/Frequency";
 import { Genotype } from "../../api/varcan-service/models/response/Genotype";
 import { VarcanAPIEntities } from "../../api/varcan-service/misc/varcan-api-entities";
-import { GenotypeFilterParams } from "../../api/varcan-service/models/request/GenotypeFilterParams";
+import { GenotypeFilterParams } from "../../api/varcan-service/models/request/genotype-filter-params";
 import { ConsequenceLineDataSource } from "./consequence-line-datasource/consequence-line-data-source";
 import { Biotype } from "../../api/varcan-service/models/response/Biotype";
 import { LazyLoadEvent } from "primeng/api";
@@ -26,7 +26,8 @@ import { GenotypeLine } from "../models/genotype-line";
 import { ConsequenceLine } from "../models/consequence-line";
 import { FrequencyLine } from "../models/frequency-line";
 import { FrequencyLineDatasource } from "./frequency-line-datasource/frequency-line-datasource";
-import { CsvVariantReportParams } from "../../api/varcan-service/models/request/CsvVariantReportParams";
+import { CsvVariantReportParams } from "../../api/varcan-service/models/request/csv-variant-report-params";
+import { FrequencyFilterParams } from "../../api/varcan-service/models/request/frequency-filter-params";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
@@ -339,6 +340,16 @@ export class VariantLineDatasourceService {
     this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters };
   }
 
+  addFrequencyFilter(frequencyFilters: FrequencyFilterParams[]) {
+    const variantFrequencyFilters = this.variantParams.frequencyFilters;
+    if (variantFrequencyFilters == null) {
+      this.variantParams.frequencyFilters = frequencyFilters;
+    } else {
+      this.variantParams.frequencyFilters = this.variantParams.frequencyFilters
+        .concat(frequencyFilters);
+    }
+  }
+
   deleteGenotypeFilter(target: GenotypeFilterParams){
     this.variantParams.genotypeFilters = this.variantParams.genotypeFilters
       .filter((value: GenotypeFilterParams) => {
@@ -392,5 +403,9 @@ export class VariantLineDatasourceService {
     const frequencyLines: Array<FrequencyLine> = frequencies
       .map((frequency: Frequency) => new FrequencyLineDatasource(frequency, this.populationCache).line);
     return frequencyLines;
+  }
+
+  deleteFrequencyFilter(targetFrequencyFilter: FrequencyFilterParams[]) {
+
   }
 }

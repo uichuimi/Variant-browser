@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { PostFetchService } from '../fetch-service/post-fetch-service/post-fetch.service';
-import { Login } from "../../models/request/Login";
+import { Login } from "../../models/request/login";
 import { Token } from "../../models/response/Token";
 
 @Injectable({

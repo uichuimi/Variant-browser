@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from "@angular/core";
 import { GlobalConstants } from "../../services/common/global-constants";
 import { FormGroup } from "@angular/forms";
-import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
+import { VariantParams } from "../../services/api/varcan-service/models/request/variant-params";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 import { VarcanService } from "../../services/api/varcan-service/varcan.service";
-import { CsvVariantReportParams } from "../../services/api/varcan-service/models/request/CsvVariantReportParams";
+import { CsvVariantReportParams } from "../../services/api/varcan-service/models/request/csv-variant-report-params";
 
 @Component({
   selector: 'app-download-csv-dialog',

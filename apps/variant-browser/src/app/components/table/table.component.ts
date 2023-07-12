@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { GlobalConstants } from "../../services/common/global-constants";
 import { VarcanService } from "../../services/api/varcan-service/varcan.service";
-import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
+import { VariantParams } from "../../services/api/varcan-service/models/request/variant-params";
 import { Paginator } from "primeng/paginator";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 import { VariantLine } from "../../services/data-source/models/variant-line";
@@ -248,21 +248,7 @@ export class TableComponent implements OnInit {
       "nfe",
       "oth",
       "sas",
-      "population",
-      "CCAR_0283",
-      "CCAR_098",
-      "CCAR_112",
-      "DSH",
-      "JMG",
-      "NIV_060",
-      "NIV_084",
-      "NIV_102",
-      "ROS",
-      "SQZ_001",
-      "SQZ_030",
-      "SQZ_106",
-      "WDH21_001",
-      "WDH21_002"
+      "population"
     ];
   }
 

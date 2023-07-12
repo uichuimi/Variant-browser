@@ -9,7 +9,7 @@ import { Chromosome } from "../../services/api/varcan-service/models/response/Ch
 import { Effect } from "../../services/api/varcan-service/models/response/Effect";
 import { Biotype } from "../../services/api/varcan-service/models/response/Biotype";
 import { Filter, FilterAttribute } from "../../models/event-object/filter";
-import { VariantParams } from "../../services/api/varcan-service/models/request/VariantParams";
+import { VariantParams } from "../../services/api/varcan-service/models/request/variant-params";
 import { VarcanService } from "../../services/api/varcan-service/varcan.service";
 import { GeneBodyParams } from "../../services/api/varcan-service/models/request/gene-body-params";
 import { Gene } from "../../services/api/varcan-service/models/response/Gene";

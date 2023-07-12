@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit } from "@angular/core";
-import { GenotypeFilterParams } from "../../services/api/varcan-service/models/request/GenotypeFilterParams";
+import { GenotypeFilterParams } from "../../services/api/varcan-service/models/request/genotype-filter-params";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { GlobalConstants } from "../../services/common/global-constants";
