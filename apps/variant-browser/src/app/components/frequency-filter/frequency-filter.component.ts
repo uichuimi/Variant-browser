@@ -112,11 +112,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   }
 
   async onDeleteFilter($event: Filter) {
-    const propertyName: string = $event.name;
-    const propertyValue: any = $event.value;
     const targetFrequencyFilter: FrequencyFilterParams[] = [this.generateTargetFilter($event)];
-    console.log($event)
-    // const targetFrequencyFilter: FrequencyFilterParams[] = this.getFrequencyFilterRequest(frequencyFilterForm.population.split(","));
     this.dataSource.deleteFrequencyFilter(targetFrequencyFilter);
     await this.dataSource.updateVariantLine();
   }

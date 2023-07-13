@@ -113,7 +113,10 @@ export class RegionFilterComponent implements OnInit {
   }
 
   protected async onDeleteFilter($event: Filter) {
-
+    const targetRegionFilter: RegionFilterParams = this.generateTargetFilter($event);
+    console.log(targetRegionFilter);
+    this.dataSource.deleteRegionFilter(targetRegionFilter);
+    await this.dataSource.updateVariantLine();
   }
 
   private addFilterItem(regionFilter: RegionFilterParams) {
@@ -164,5 +167,15 @@ export class RegionFilterComponent implements OnInit {
       }
     );
     this.filter.filterString += filterStr;
+  }
+
+  private generateTargetFilter(filter: Filter) {
+    const params = filter.value.split(" ");
+    return {
+      chromosome: Number.parseInt(params[0]),
+      start: Number.parseInt(params[1]),
+      end: Number.parseInt(params[2]),
+      exclude: params[3] == "true"
+    };
   }
 }
