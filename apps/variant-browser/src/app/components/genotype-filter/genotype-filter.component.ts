@@ -6,7 +6,7 @@ import { GlobalConstants } from "../../services/common/global-constants";
 import { Individual } from "../../services/api/varcan-service/models/response/Individual";
 import { GenotypeType } from "../../services/api/varcan-service/models/response/GenotypeType";
 import { ScreenBreakpointAttributeValue } from "../../directives/device-width-breakpoint.directive";
-import { faDna, faHashtag, faPeopleGroup, faPlus, faVial } from "@fortawesome/free-solid-svg-icons";
+import { faDna, faHashtag, faLayerGroup, faPlus, faVial } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { Filter } from "../../models/event-object/filter";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
@@ -29,7 +29,7 @@ interface SampleSelectGroup {
 })
 export class GenotypeFilterComponent implements OnInit, OnDestroy {
   number: number;
-  protected faPeopleGroup: IconDefinition = faPeopleGroup;
+  protected faLayerGroup: IconDefinition = faLayerGroup;
   protected faHashtag: IconDefinition = faHashtag;
   protected faVial: IconDefinition = faVial;
   protected faDna: IconDefinition = faDna;

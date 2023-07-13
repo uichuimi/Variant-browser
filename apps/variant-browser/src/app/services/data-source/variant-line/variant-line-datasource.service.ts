@@ -406,6 +406,19 @@ export class VariantLineDatasourceService {
   }
 
   deleteFrequencyFilter(targetFrequencyFilter: FrequencyFilterParams[]) {
+    if (this.variantParams.frequencyFilters != null) {
+      const remainingFrequencyFilters = this.variantParams.frequencyFilters
+        .filter(item => {
+          return targetFrequencyFilter
+            .some(obj => obj.arity === item.arity && obj.population === item.population &&
+              obj.operation === item.operation && obj.af === item.af);
+      });
+      console.log(remainingFrequencyFilters);
+      this.variantParams.frequencyFilters = remainingFrequencyFilters;
 
+      if (this.variantParams.frequencyFilters.length === 0) {
+        delete this.variantParams.frequencyFilters;
+      }
+    }
   }
 }

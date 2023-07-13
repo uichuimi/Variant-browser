@@ -1,17 +1,13 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from "@angular/core";
-import { faPeopleGroup, faCodeCompare, faHashtag, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Filter } from "../../models/event-object/filter";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { Population } from "../../services/api/varcan-service/models/response/Population";
-import { GlobalConstants } from "../../services/common/global-constants";
-import { ScreenBreakpointAttributeValue } from "../../directives/device-width-breakpoint.directive";
-import { GenotypeFilterParams } from "../../services/api/varcan-service/models/request/genotype-filter-params";
-import { VariantParams } from "../../services/api/varcan-service/models/request/variant-params";
-import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
-import { FrequencyFilterParams } from "../../services/api/varcan-service/models/request/frequency-filter-params";
-import { Individual } from "../../services/api/varcan-service/models/response/Individual";
-import { addWarning } from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
+import {Component, EventEmitter, OnDestroy, OnInit} from "@angular/core";
+import {faCodeCompare, faHashtag, faLayerGroup, faPeopleGroup, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Filter} from "../../models/event-object/filter";
+import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import {Population} from "../../services/api/varcan-service/models/response/Population";
+import {GlobalConstants} from "../../services/common/global-constants";
+import {ScreenBreakpointAttributeValue} from "../../directives/device-width-breakpoint.directive";
+import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
+import {FrequencyFilterParams} from "../../services/api/varcan-service/models/request/frequency-filter-params";
 
 @Component({
   selector: 'app-frequency-filter',
@@ -22,6 +18,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   protected readonly faHashtag = faHashtag;
   protected readonly faPeopleGroup: IconDefinition = faPeopleGroup;
   protected readonly faCodeCompare: IconDefinition = faCodeCompare;
+  protected readonly faLayerGroup: IconDefinition = faLayerGroup;
   protected deviceBreakpointToggle: ScreenBreakpointAttributeValue = {
     lg: "horizontal",
     xl: "horizontal",
@@ -31,6 +28,12 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   protected appDeviceWidthBreakpointEvent: EventEmitter<string> = new EventEmitter<string>();
   protected frequencyFilterForm: FormGroup;
   protected filter: Filter;
+  protected allArityOperators: Array<object> = [
+    { code: "ANY", label: "Any" },
+    { code: "ALL", label: "All" },
+    { code: "NONE", label: "None" }
+  ];
+  protected selectedArityOperators: Array<string>;
   protected allPopulations: Array<object>;
   protected selectedPopulations: Array<number>;
   protected allNumericalComparators: Array<object> = [
@@ -48,10 +51,9 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
               private dataSource: VariantLineDatasourceService) {
     this.frequencyFilterForm = fb.group({
       frequencyFilters: fb.group({
-        population: fb.control([],
-          [Validators.required]),
-        operation: fb.control("",
-          [Validators.required]),
+        arity: fb.control("", [Validators.required]),
+        population: fb.control([], [Validators.required]),
+        operation: fb.control("", [Validators.required]),
         af: fb.control(null,
           [Validators.required, Validators.min(0.0), Validators.max(1.0)])
       })
@@ -82,6 +84,10 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
     }
   }
 
+  get arityCtrl(): FormControl {
+    return this.frequencyFilterForm.get("frequencyFilters.arity") as FormControl;
+  }
+
   get populationCtrl(): FormControl {
     return this.frequencyFilterForm.get("frequencyFilters.population") as FormControl;
   }
@@ -110,6 +116,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   private getFrequencyFilterRequest(population: Array<number>) {
     return population.map(populationId => {
       return {
+        arity: this.frequencyFilterForm.value.frequencyFilters.arity,
         population: populationId,
         operation: this.frequencyFilterForm.value.frequencyFilters.operation,
         af: this.frequencyFilterForm.value.frequencyFilters.af
@@ -121,10 +128,9 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
     const propertyName: string = $event.name;
     const propertyValue: any = $event.value;
     const frequencyFilterForm = this.generateTargetFilter($event);
-    const targetFrequencyFilter: FrequencyFilterParams[] = this.getFrequencyFilterRequest(frequencyFilterForm.population);
+    const targetFrequencyFilter: FrequencyFilterParams[] = this.getFrequencyFilterRequest(frequencyFilterForm.population.split(","));
     this.dataSource.deleteFrequencyFilter(targetFrequencyFilter);
     await this.dataSource.updateVariantLine();
-    console.log($event, propertyName, propertyValue);
   }
 
   protected readonly faPlus = faPlus;
@@ -132,12 +138,15 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   private addNewFilterItem() {
     const frequencyFilters = this.frequencyFilterForm.value.frequencyFilters;
     this.filter = {
-      name: "population,operation,af",
-      value: `${frequencyFilters.population} ${frequencyFilters.operation} ${frequencyFilters.af}`,
+      name: "arity,population,operation,af",
+      value: `${frequencyFilters.arity} ${frequencyFilters.population} ${frequencyFilters.operation} ${frequencyFilters.af}`,
       filterString: "",
       attributes: []
     }
 
+
+    this.addFilterAttribute(frequencyFilters.arity, "chip");
+    this.addFilterAttribute("of", "text");
     this.addFilterAttribute(frequencyFilters.operation, "chip");
     this.addFilterAttribute(frequencyFilters.af, "chip");
     this.addFilterAttribute("from", "text");
@@ -170,9 +179,10 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   private generateTargetFilter(filter: Filter) {
     const params = filter.value.split(" ");
     return {
-      population: params[0],
-      operation: params[1],
-      af: Number.parseFloat(params[2])
+      arity: params[0],
+      population: params[1],
+      operation: params[2],
+      af: Number.parseFloat(params[3])
     };
   }
 }
