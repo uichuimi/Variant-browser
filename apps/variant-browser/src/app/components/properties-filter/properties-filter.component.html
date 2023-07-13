@@ -30,25 +30,6 @@
           </span>
         </div>
 
-        <div class="flex col-12 justify-content-center align-items-center" *ngIf="comparatorCtrl">
-          <span class="p-float-label">
-            <p-dropdown
-              [formControl]="comparatorCtrl"
-              [options]="allSelectableComparators"
-              [(ngModel)]="selectedComparator"
-              placeholder="Select comparator"
-              optionLabel="label"
-              optionValue="name"
-              [showClear]="true"
-              inputId="comparator"
-            ></p-dropdown>
-            <label for="comparator">
-              <fa-icon [icon]="faCodeCompare"></fa-icon>
-              <span>Comparator</span>
-            </label>
-          </span>
-        </div>
-
         <div class="flex col-12 justify-content-center align-items-center" *ngIf="valueCtrl">
           <span class="p-float-label grip p-fluid">
             <p-multiSelect

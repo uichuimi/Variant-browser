@@ -28,6 +28,7 @@ import { FrequencyLine } from "../models/frequency-line";
 import { FrequencyLineDatasource } from "./frequency-line-datasource/frequency-line-datasource";
 import { CsvVariantReportParams } from "../../api/varcan-service/models/request/csv-variant-report-params";
 import { FrequencyFilterParams } from "../../api/varcan-service/models/request/frequency-filter-params";
+import {RegionFilterParams} from "../../api/varcan-service/models/request/region-filter-params";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
@@ -347,6 +348,16 @@ export class VariantLineDatasourceService {
     } else {
       this.variantParams.frequencyFilters = this.variantParams.frequencyFilters
         .concat(frequencyFilters);
+    }
+  }
+
+  addRegionFilter(regionFilters: RegionFilterParams[]) {
+    const variantRegionFilters = this.variantParams.regionFilters;
+    if (variantRegionFilters == null) {
+      this.variantParams.regionFilters = regionFilters;
+    } else {
+      this.variantParams.regionFilters = this.variantParams.regionFilters
+        .concat(regionFilters);
     }
   }
 

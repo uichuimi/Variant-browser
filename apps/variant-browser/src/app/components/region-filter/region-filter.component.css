@@ -1,0 +1,33 @@
+span {
+  margin: 0 .5rem
+}
+
+:host ::ng-deep .p-splitter {
+  height: 50%;
+}
+
+:host ::ng-deep .p-dropdown {
+  min-width: 15rem;
+  width: 18rem;
+}
+
+:host ::ng-deep .p-multiselect {
+  min-width: 15rem;
+  width: 18rem;
+}
+
+:host ::ng-deep .p-chips {
+  min-width: 15rem;
+  width: 18rem;
+  height: 6rem;
+  overflow: hidden;
+}
+
+:host ::ng-deep .p-inputNumber {
+  min-width: 15rem;
+  width: 18rem;
+}
+
+:host ::ng-deep .p-button {
+  margin-right: .5rem;
+}

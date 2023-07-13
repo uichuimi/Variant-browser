@@ -9,6 +9,14 @@
 
   <p-tabPanel>
     <ng-template pTemplate="header">
+      <fa-icon [icon]="faMapLocationDot"></fa-icon>
+      <span>Regions</span>
+    </ng-template>
+    <app-region-filter></app-region-filter>
+  </p-tabPanel>
+
+  <p-tabPanel>
+    <ng-template pTemplate="header">
       <fa-icon [icon]="faScrewdriverWrench"></fa-icon>
       <span>Properties</span>
     </ng-template>

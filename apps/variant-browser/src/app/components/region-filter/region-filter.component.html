@@ -1,0 +1,108 @@
+<div class="card">
+  <p-splitter
+    styleClass="flex justify-content-center mb-5 align-content-center"
+    [layout]="layout"
+    [appDeviceWidthBreakpoint]="appDeviceWidthBreakpointEvent"
+  >
+    <ng-template pTemplate>
+      <form
+        class="flex flex-column col-12"
+        [formGroup]="regionFilterForm"
+        (submit)="onSubmit()"
+      >
+        <div class="flex col-12 justify-content-center align-items-center">
+          <span class="p-float-label">
+            <p-dropdown
+              [formControl]="chromosomeCtrl"
+              [options]="allChromosomes"
+              appendTo="body"
+              [(ngModel)]="selectedChromosomes"
+              placeholder="Chromosome"
+              optionLabel="label"
+              optionValue="id"
+              [showClear]="true"
+              inputId="property"
+            ></p-dropdown>
+            <label for="property">
+              <fa-icon [icon]="faTag"></fa-icon>
+              <span>Chromosome</span>
+            </label>
+          </span>
+        </div>
+
+        <div class="flex col-12 justify-content-center align-items-center">
+          <span class="p-float-label grip p-fluid">
+            <p-inputNumber
+              [formControl]="startCtrl"
+              [(ngModel)]="start"
+              [showButtons]="true"
+              inputId="start"
+              [showClear]="true"
+              [min]="0"
+              mode="decimal"
+            ></p-inputNumber>
+            <label for="start">
+              <fa-icon [icon]="faHashtag"></fa-icon>
+              <span>Start</span>
+            </label>
+          </span>
+        </div>
+
+        <div class="flex col-12 justify-content-center align-items-center">
+          <span class="p-float-label grip p-fluid">
+            <p-inputNumber
+              [formControl]="endCtrl"
+              [(ngModel)]="end"
+              [showButtons]="true"
+              inputId="end"
+              [showClear]="true"
+              [min]="0"
+              mode="decimal"
+            ></p-inputNumber>
+            <label for="end">
+              <fa-icon [icon]="faHashtag"></fa-icon>
+              <span>End</span>
+            </label>
+          </span>
+        </div>
+
+        <div class="flex col-12 justify-content-center align-items-center">
+          <p-checkbox [formControl]="excludeCtrl" [(ngModel)]="isChecked"
+                      [binary]="true" inputId="exclude" [value]="false"></p-checkbox>
+          <label for="exclude">Exclude region?</label>
+        </div>
+
+        <!--<div class="flex col-12 justify-content-center align-items-center">
+          <span class="p-float-label grip p-fluid">
+            <p-inputNumber
+              [formControl]="valueCtrl"
+              [(ngModel)]="numericValue"
+              [showButtons]="true"
+              *ngIf="isValueTypeNumeric()"
+              inputId="value"
+              [showClear]="true"
+              mode="decimal"
+            ></p-inputNumber>
+            <label for="value">
+              <fa-icon [icon]="getValueIcon()"></fa-icon>
+              <span>{{propertyLabel}}</span>
+            </label>
+          </span>
+        </div>-->
+
+        <div class="flex col-12 justify-content-center align-items-center">
+          <button pButton pRipple class="p-button-rounded">
+            <fa-icon [icon]="faPlus"></fa-icon>
+            <span>Add</span>
+          </button>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template pTemplate>
+      <div class="flex flex-column col-12">
+        <app-filter-visualizer [filter]="filter" (deleteFilter)="onDeleteFilter($event)"></app-filter-visualizer>
+      </div>
+    </ng-template>
+  </p-splitter>
+</div>

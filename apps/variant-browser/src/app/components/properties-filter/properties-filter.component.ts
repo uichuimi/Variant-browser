@@ -1,26 +1,21 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from "@angular/core";
-import { GlobalConstants } from "../../services/common/global-constants";
-import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { faCodeCompare, faHashtag, faKeyboard, faListCheck, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { ScreenBreakpointAttributeValue } from "../../directives/device-width-breakpoint.directive";
-import { Subscription } from "rxjs";
-import { Chromosome } from "../../services/api/varcan-service/models/response/Chromosome";
-import { Effect } from "../../services/api/varcan-service/models/response/Effect";
-import { Biotype } from "../../services/api/varcan-service/models/response/Biotype";
-import { Filter, FilterAttribute } from "../../models/event-object/filter";
-import { VariantParams } from "../../services/api/varcan-service/models/request/variant-params";
-import { VarcanService } from "../../services/api/varcan-service/varcan.service";
-import { GeneBodyParams } from "../../services/api/varcan-service/models/request/gene-body-params";
-import { Gene } from "../../services/api/varcan-service/models/response/Gene";
-import { VarcanAPIEntities } from "../../services/api/varcan-service/misc/varcan-api-entities";
-import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
-
-interface DropListOption {
-  name: string;
-  label: string;
-  excludes?: Array<string>;
-}
+import {Component, EventEmitter, OnDestroy, OnInit} from "@angular/core";
+import {GlobalConstants} from "../../services/common/global-constants";
+import {FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {faCodeCompare, faHashtag, faKeyboard, faListCheck, faPlus, faTag} from "@fortawesome/free-solid-svg-icons";
+import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import {ScreenBreakpointAttributeValue} from "../../directives/device-width-breakpoint.directive";
+import {Subscription} from "rxjs";
+import {Chromosome} from "../../services/api/varcan-service/models/response/Chromosome";
+import {Effect} from "../../services/api/varcan-service/models/response/Effect";
+import {Biotype} from "../../services/api/varcan-service/models/response/Biotype";
+import {Filter, FilterAttribute} from "../../models/event-object/filter";
+import {VariantParams} from "../../services/api/varcan-service/models/request/variant-params";
+import {VarcanService} from "../../services/api/varcan-service/varcan.service";
+import {GeneBodyParams} from "../../services/api/varcan-service/models/request/gene-body-params";
+import {Gene} from "../../services/api/varcan-service/models/response/Gene";
+import {VarcanAPIEntities} from "../../services/api/varcan-service/misc/varcan-api-entities";
+import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
+import {DropListOption} from "../../models/droplist-option";
 
 enum InputValueTypeEnum {
   NUMERIC,
@@ -40,12 +35,9 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   protected faListCheck: IconDefinition = faListCheck;
   protected faHashtag: IconDefinition = faHashtag;
   protected faKeyboard: IconDefinition = faKeyboard;
-  protected faCodeCompare: IconDefinition = faCodeCompare;
   protected propertyFilterForm: FormGroup;
   protected allProperties: Array<DropListOption>;
   protected selectedProperty: Array<string>;
-  protected allComparators: Array<DropListOption>;
-  protected allSelectableComparators: Array<DropListOption>;
   protected allValues: Array<object>;
   protected selectedValues: Array<any>;
   protected stringValue: number;
@@ -53,7 +45,6 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   protected defaultValueLabel: string;
   protected inputValueType: InputValueTypeEnum;
   protected propertyLabel: string;
-  protected selectedComparator: Array<DropListOption>;
   protected appDeviceWidthBreakpointEvent: EventEmitter<string> = new EventEmitter<string>();
   protected propertyCtrlEvent: Subscription;
   protected layout: string;
@@ -68,23 +59,11 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
               private service: VarcanService,
               private dataSource: VariantLineDatasourceService) {
     this.allProperties = [
-      VarcanAPIEntities.START,
-      VarcanAPIEntities.END,
+      VarcanAPIEntities.IDENTIFIERS,
       VarcanAPIEntities.GENES,
       VarcanAPIEntities.BIOTYPES,
       VarcanAPIEntities.EFFECTS,
-      VarcanAPIEntities.IMPACTS,
-      VarcanAPIEntities.CHROMOSOMES,
-      VarcanAPIEntities.IDENTIFIERS
-    ];
-
-    this.allComparators = [
-      { name: "<", label: "Less than", excludes: ["start", "end"] },
-      { name: "<=", label: "Less or equal than", excludes: ["start"] },
-      { name: "==", label: "Equal to", excludes: ["start", "end"] },
-      { name: "=!", label: "Distinct to", excludes: ["start", "end"] },
-      { name: ">", label: "Greater than", excludes: ["start", "end"] },
-      { name: ">=", label: "Greater or equal than", excludes: ["end"] }
+      VarcanAPIEntities.IMPACTS
     ];
 
     this.propertyFilterForm = fb.group({
@@ -201,7 +180,6 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
           validators.push(Validators.min(start));
         }
       }
-      this.generateResponsiveComparatorField(property);
     } else if (!stringProperties.includes(property)) {
       this.inputValueType = InputValueTypeEnum.DROPLIST;
       this.propertyFilterForm.removeControl("comparator");
@@ -218,13 +196,6 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     console.log(valueInput, validators);
     this.propertyFilterForm
       .addControl("value", valueInput);
-  }
-
-  private generateResponsiveComparatorField(property: string) {
-    this.allSelectableComparators = this.allComparators.filter((comparator) => !comparator.excludes.includes(property));
-    const comparator: FormControl = new FormControl("", [Validators.required]);
-    this.propertyFilterForm
-      .addControl("comparator", comparator);
   }
 
   private generateResponsiveDropListField(property: string, capitalizeProperty: string) {

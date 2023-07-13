@@ -1,5 +1,6 @@
 import {GenotypeFilterParams} from './genotype-filter-params';
-import { FrequencyFilterParams } from "./frequency-filter-params";
+import {FrequencyFilterParams} from "./frequency-filter-params";
+import {RegionFilterParams} from "./region-filter-params";
 
 export interface VariantParams {
     page?: number;
@@ -14,4 +15,5 @@ export interface VariantParams {
     identifiers?: Array<number>;
     genotypeFilters?: Array<GenotypeFilterParams>;
     frequencyFilters?: Array<FrequencyFilterParams>;
+    regionFilters?: Array<RegionFilterParams>;
 }

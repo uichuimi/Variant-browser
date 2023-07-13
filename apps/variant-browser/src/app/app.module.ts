@@ -58,28 +58,32 @@ import { PickListModule } from 'primeng/picklist';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ToolbarModule } from 'primeng/toolbar';
 import { FrequencyFilterComponent } from './components/frequency-filter/frequency-filter.component';
+import { RegionFilterComponent } from './components/region-filter/region-filter.component';
+import {CheckboxModule} from "primeng/checkbox";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    TableComponent,
-    RegisterComponent,
-    GenotypeFilterComponent,
-    PropertiesFilterComponent,
-    NavbarComponent,
-    VariantDetailsComponent,
-    VariantFilterPanelComponent,
-    DeviceWidthBreakpointDirective,
-    FilterVisualizerComponent,
-    VariantInfoPanelComponent,
-    VariantPropertyTableComponent,
-    VariantFrequencyTableComponent,
-    VariantGenotypeTableComponent,
-    VariantConsequenceTableComponent,
-    DownloadCsvDialogComponent,
-    FrequencyFilterComponent,
-  ],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        TableComponent,
+        RegisterComponent,
+        GenotypeFilterComponent,
+        PropertiesFilterComponent,
+        NavbarComponent,
+        VariantDetailsComponent,
+        VariantFilterPanelComponent,
+        DeviceWidthBreakpointDirective,
+        FilterVisualizerComponent,
+        VariantInfoPanelComponent,
+        VariantPropertyTableComponent,
+        VariantFrequencyTableComponent,
+        VariantGenotypeTableComponent,
+        VariantConsequenceTableComponent,
+        DownloadCsvDialogComponent,
+        FrequencyFilterComponent,
+        RegionFilterComponent,
+        RegionFilterComponent,
+    ],
   imports: [
     AppRoutingModule,
     CommonModule,
@@ -116,6 +120,7 @@ import { FrequencyFilterComponent } from './components/frequency-filter/frequenc
     PickListModule,
     FieldsetModule,
     ToolbarModule,
+    CheckboxModule,
   ],
   bootstrap: [AppComponent],
   providers: [

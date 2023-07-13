@@ -19,8 +19,8 @@
             </p-multiSelect>
           </div>
           <div class="p-toolbar-group-end">
-            <p-button (click)="showVariantFilters = true" icon="pi pi-filter" class="mr-2"></p-button>
-            <p-splitButton icon="pi pi-download" [model]="this.items" (onClick)="onToggleShowCsvDownloadDialog()" class="mr-2"
+            <p-button (click)="showVariantFilters = true" icon="pi pi-filter" class="mr-2" pTooltip="Filter" tooltipPosition="bottom"></p-button>
+            <p-splitButton icon="pi pi-download" [model]="this.items" (onClick)="onToggleShowCsvDownloadDialog()" pTooltip="Download" tooltipPosition="bottom" class="mr-2"
             ></p-splitButton>
           </div>
         </p-toolbar>

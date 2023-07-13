@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faDna, faScrewdriverWrench, faPercentage } from "@fortawesome/free-solid-svg-icons";
+import {faDna, faScrewdriverWrench, faPercentage, faMapLocationDot} from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 @Component({
@@ -11,4 +11,5 @@ export class VariantFilterPanelComponent {
   protected faDna: IconDefinition = faDna;
   protected faScrewdriverWrench: IconDefinition = faScrewdriverWrench;
   protected faPercentage: IconDefinition = faPercentage;
+  protected readonly faMapLocationDot = faMapLocationDot;
 }

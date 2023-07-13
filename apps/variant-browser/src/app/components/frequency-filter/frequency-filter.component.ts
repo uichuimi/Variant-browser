@@ -102,10 +102,9 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
 
   protected async onSubmit() {
     if (this.frequencyFilterForm.valid) {
-      console.log(this.frequencyFilterForm.value)
       const frequencyFilter: FrequencyFilterParams[] = [this.frequencyFilterForm.value.frequencyFilters];
       this.dataSource.addFrequencyFilter(frequencyFilter);
-      this.addNewFilterItem();
+      this.addFilterItem();
       await this.dataSource.updateVariantLine();
     } else {
       console.error("Invalid submission: ", this.frequencyFilterForm.value);
@@ -124,7 +123,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
 
   protected readonly faPlus = faPlus;
 
-  private addNewFilterItem() {
+  private addFilterItem() {
     const frequencyFilters = this.frequencyFilterForm.value.frequencyFilters;
     this.filter = {
       name: "arity,population,operation,af",
@@ -155,12 +154,9 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   }
 
   private getPopulationNames(populationIds: Array<number>) {
-    console.log(populationIds);
-    console.log(this.allPopulations);
     return populationIds.map((populationId: number) => {
       const population = this.globalConstant.getPopulation()
         .find((population: Population) => population.id === populationId);
-      console.log(population);
       return population['code'];
     });
   }
