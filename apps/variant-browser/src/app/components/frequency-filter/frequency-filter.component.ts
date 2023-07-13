@@ -103,8 +103,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   protected async onSubmit() {
     if (this.frequencyFilterForm.valid) {
       console.log(this.frequencyFilterForm.value)
-      const population: Array<number> = this.frequencyFilterForm.value.frequencyFilters.population;
-      const frequencyFilter: FrequencyFilterParams[] = this.getFrequencyFilterRequest(population);
+      const frequencyFilter: FrequencyFilterParams[] = [this.frequencyFilterForm.value.frequencyFilters];
       this.dataSource.addFrequencyFilter(frequencyFilter);
       this.addNewFilterItem();
       await this.dataSource.updateVariantLine();
@@ -113,22 +112,12 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getFrequencyFilterRequest(population: Array<number>) {
-    return population.map(populationId => {
-      return {
-        arity: this.frequencyFilterForm.value.frequencyFilters.arity,
-        population: populationId,
-        operation: this.frequencyFilterForm.value.frequencyFilters.operation,
-        af: this.frequencyFilterForm.value.frequencyFilters.af
-      };
-    });
-  }
-
   async onDeleteFilter($event: Filter) {
     const propertyName: string = $event.name;
     const propertyValue: any = $event.value;
-    const frequencyFilterForm = this.generateTargetFilter($event);
-    const targetFrequencyFilter: FrequencyFilterParams[] = this.getFrequencyFilterRequest(frequencyFilterForm.population.split(","));
+    const targetFrequencyFilter: FrequencyFilterParams[] = [this.generateTargetFilter($event)];
+    console.log($event)
+    // const targetFrequencyFilter: FrequencyFilterParams[] = this.getFrequencyFilterRequest(frequencyFilterForm.population.split(","));
     this.dataSource.deleteFrequencyFilter(targetFrequencyFilter);
     await this.dataSource.updateVariantLine();
   }

@@ -1,6 +1,6 @@
 export interface FrequencyFilterParams {
   arity?: string;
-  population?: number;
+  population?: Array<number>;
   operation?: string;
   af?: number;
 }
