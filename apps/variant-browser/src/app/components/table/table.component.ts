@@ -29,6 +29,7 @@ export class TableComponent implements OnInit {
   protected variants: Array<VariantLine>;
   protected selectedVariant: VariantLine;
   protected showVariantFilters: boolean;
+  protected
   protected showVariantInfoPanel: boolean;
   protected showCsvDownloadDialog: boolean = false;
   protected variantParams: VariantParams;
@@ -41,7 +42,7 @@ export class TableComponent implements OnInit {
   protected frequencyColumns: any[];
   protected genotypeColumns: any[];
   protected readonly Object = Object;
-  items: any[] = [
+  protected downloadOptions: any[] = [
     { label: 'CSV', command: () => this.onToggleShowCsvDownloadDialog() },
     { label: 'VCF', command: () => console.log('http://angular.io') }
   ];

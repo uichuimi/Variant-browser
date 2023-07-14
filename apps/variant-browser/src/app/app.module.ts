@@ -59,31 +59,35 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { ToolbarModule } from 'primeng/toolbar';
 import { FrequencyFilterComponent } from './components/frequency-filter/frequency-filter.component';
 import { RegionFilterComponent } from './components/region-filter/region-filter.component';
-import {CheckboxModule} from "primeng/checkbox";
+import { CheckboxModule } from 'primeng/checkbox';
+import {MiscellaneousFilterComponent} from './components/miscellaneous-filter/miscellaneous-filter.component';
+import {SelectButtonModule} from "primeng/selectbutton";
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        LoginComponent,
-        TableComponent,
-        RegisterComponent,
-        GenotypeFilterComponent,
-        PropertiesFilterComponent,
-        NavbarComponent,
-        VariantDetailsComponent,
-        VariantFilterPanelComponent,
-        DeviceWidthBreakpointDirective,
-        FilterVisualizerComponent,
-        VariantInfoPanelComponent,
-        VariantPropertyTableComponent,
-        VariantFrequencyTableComponent,
-        VariantGenotypeTableComponent,
-        VariantConsequenceTableComponent,
-        DownloadCsvDialogComponent,
-        FrequencyFilterComponent,
-        RegionFilterComponent,
-        RegionFilterComponent,
-    ],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    TableComponent,
+    RegisterComponent,
+    GenotypeFilterComponent,
+    PropertiesFilterComponent,
+    NavbarComponent,
+    VariantDetailsComponent,
+    VariantFilterPanelComponent,
+    DeviceWidthBreakpointDirective,
+    FilterVisualizerComponent,
+    VariantInfoPanelComponent,
+    VariantPropertyTableComponent,
+    VariantFrequencyTableComponent,
+    VariantGenotypeTableComponent,
+    VariantConsequenceTableComponent,
+    DownloadCsvDialogComponent,
+    FrequencyFilterComponent,
+    RegionFilterComponent,
+    RegionFilterComponent,
+    MiscellaneousFilterComponent,
+    MiscellaneousFilterComponent,
+  ],
   imports: [
     AppRoutingModule,
     CommonModule,
@@ -121,6 +125,7 @@ import {CheckboxModule} from "primeng/checkbox";
     FieldsetModule,
     ToolbarModule,
     CheckboxModule,
+    SelectButtonModule,
   ],
   bootstrap: [AppComponent],
   providers: [

@@ -49,9 +49,9 @@ export class RegionFilterComponent implements OnInit {
     this.regionFilterForm = fb.group({
       regionFilters: fb.group({
         exclude: fb.control(false, [Validators.required]),
-        chromosome: fb.control(""),
-        start: fb.control("", [Validators.min(0)]),
-        end: fb.control("", [Validators.min(0)])
+        chromosome: fb.control(null),
+        start: fb.control(null, [Validators.min(0)]),
+        end: fb.control(null, [Validators.min(0)])
       })
     });
     this.allChromosomes = this.getAllChromosomes();
@@ -96,7 +96,7 @@ export class RegionFilterComponent implements OnInit {
     return this.globalConstants.getChromosomes().map((chromosome: Chromosome) => {
       return {
         label: `${chromosome.ucsc} / ${chromosome.genebank} / ${chromosome.refseq}`,
-        id: chromosome.id
+        value: chromosome.ncbi
       }
     });
   }
@@ -115,7 +115,7 @@ export class RegionFilterComponent implements OnInit {
   protected async onDeleteFilter($event: Filter) {
     const targetRegionFilter: RegionFilterParams = this.generateTargetFilter($event);
     console.log(targetRegionFilter);
-    this.dataSource.deleteRegionFilter(targetRegionFilter);
+    this.dataSource.deleteRegionFilter([targetRegionFilter]);
     await this.dataSource.updateVariantLine();
   }
 
@@ -132,9 +132,10 @@ export class RegionFilterComponent implements OnInit {
     this.addFilterAttribute(excludeText, "chip");
 
     let regionStr: string;
+    console.log(regionFilter.chromosome);
     if (regionFilter.chromosome) {
       regionStr = this.globalConstants.getChromosomes()
-        .find((chromosome: Chromosome) => chromosome.id === regionFilter.chromosome).ucsc;
+        .find((chromosome: Chromosome) => chromosome.ncbi === regionFilter.chromosome).ucsc;
     } else {
       regionStr = "*";
     }
@@ -172,7 +173,7 @@ export class RegionFilterComponent implements OnInit {
   private generateTargetFilter(filter: Filter) {
     const params = filter.value.split(" ");
     return {
-      chromosome: Number.parseInt(params[0]),
+      chromosome: params[0],
       start: Number.parseInt(params[1]),
       end: Number.parseInt(params[2]),
       exclude: params[3] == "true"

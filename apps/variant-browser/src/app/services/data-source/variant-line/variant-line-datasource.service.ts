@@ -1,33 +1,32 @@
-import { Injectable } from "@angular/core";
-import { VariantLine } from "../models/variant-line";
-import { VarcanService } from "../../api/varcan-service/varcan.service";
-import { GlobalConstants } from "../../common/global-constants";
-import { Page } from "../../api/varcan-service/models/response/Page";
-import { Variant } from "../../api/varcan-service/models/response/Variant";
-import { VariantParams } from "../../api/varcan-service/models/request/variant-params";
-import { Chromosome } from "../../api/varcan-service/models/response/Chromosome";
-import { Effect } from "../../api/varcan-service/models/response/Effect";
-import { Gene } from "../../api/varcan-service/models/response/Gene";
-import { Consequence } from "../../api/varcan-service/models/response/Consequence";
-import { Impact } from "../../api/varcan-service/models/response/Impact";
-import { Population } from "../../api/varcan-service/models/response/Population";
-import { Frequency } from "../../api/varcan-service/models/response/Frequency";
-import { Genotype } from "../../api/varcan-service/models/response/Genotype";
-import { VarcanAPIEntities } from "../../api/varcan-service/misc/varcan-api-entities";
-import { GenotypeFilterParams } from "../../api/varcan-service/models/request/genotype-filter-params";
-import { ConsequenceLineDataSource } from "./consequence-line-datasource/consequence-line-data-source";
-import { Biotype } from "../../api/varcan-service/models/response/Biotype";
-import { LazyLoadEvent } from "primeng/api";
-import { Observable, Subject } from "rxjs";
-import { GenotypeLineDataSource } from "./genotype-line-datasource/genotype-line-data-source";
-import { Individual } from "../../api/varcan-service/models/response/Individual";
-import { GenotypeType } from "../../api/varcan-service/models/response/GenotypeType";
-import { GenotypeLine } from "../models/genotype-line";
-import { ConsequenceLine } from "../models/consequence-line";
-import { FrequencyLine } from "../models/frequency-line";
-import { FrequencyLineDatasource } from "./frequency-line-datasource/frequency-line-datasource";
-import { CsvVariantReportParams } from "../../api/varcan-service/models/request/csv-variant-report-params";
-import { FrequencyFilterParams } from "../../api/varcan-service/models/request/frequency-filter-params";
+import {Injectable} from "@angular/core";
+import {VariantLine} from "../models/variant-line";
+import {VarcanService} from "../../api/varcan-service/varcan.service";
+import {GlobalConstants} from "../../common/global-constants";
+import {Page} from "../../api/varcan-service/models/response/Page";
+import {Variant} from "../../api/varcan-service/models/response/Variant";
+import {VariantParams} from "../../api/varcan-service/models/request/variant-params";
+import {Chromosome} from "../../api/varcan-service/models/response/Chromosome";
+import {Effect} from "../../api/varcan-service/models/response/Effect";
+import {Gene} from "../../api/varcan-service/models/response/Gene";
+import {Consequence} from "../../api/varcan-service/models/response/Consequence";
+import {Impact} from "../../api/varcan-service/models/response/Impact";
+import {Population} from "../../api/varcan-service/models/response/Population";
+import {Frequency} from "../../api/varcan-service/models/response/Frequency";
+import {Genotype} from "../../api/varcan-service/models/response/Genotype";
+import {GenotypeFilterParams} from "../../api/varcan-service/models/request/genotype-filter-params";
+import {ConsequenceLineDataSource} from "./consequence-line-datasource/consequence-line-data-source";
+import {Biotype} from "../../api/varcan-service/models/response/Biotype";
+import {LazyLoadEvent} from "primeng/api";
+import {Observable, Subject} from "rxjs";
+import {GenotypeLineDataSource} from "./genotype-line-datasource/genotype-line-data-source";
+import {Individual} from "../../api/varcan-service/models/response/Individual";
+import {GenotypeType} from "../../api/varcan-service/models/response/GenotypeType";
+import {GenotypeLine} from "../models/genotype-line";
+import {ConsequenceLine} from "../models/consequence-line";
+import {FrequencyLine} from "../models/frequency-line";
+import {FrequencyLineDatasource} from "./frequency-line-datasource/frequency-line-datasource";
+import {CsvVariantReportParams} from "../../api/varcan-service/models/request/csv-variant-report-params";
+import {FrequencyFilterParams} from "../../api/varcan-service/models/request/frequency-filter-params";
 import {RegionFilterParams} from "../../api/varcan-service/models/request/region-filter-params";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
@@ -314,20 +313,13 @@ export class VariantLineDatasourceService {
   }
 
   deletePropertyFilter(propertyKey: string, value: any){
-    switch (propertyKey) {
-      case VarcanAPIEntities.START.name || VarcanAPIEntities.END.name:
-        delete this.variantParams[propertyKey];
-        break;
-      default:
-        const allEntities = this.variantParams[propertyKey];
-        if (allEntities !== undefined) {
-          this.variantParams[propertyKey] = this.variantParams[propertyKey]
-            .filter((id: number) => !value.includes(id));
-          if (this.variantParams[propertyKey].length == 0) delete this.variantParams[propertyKey];
-        } else {
-          delete this.variantParams[propertyKey];
-        }
-        break;
+    const allEntities = this.variantParams[propertyKey];
+    if (allEntities !== undefined) {
+      this.variantParams[propertyKey] = this.variantParams[propertyKey]
+        .filter((id: number) => !value.includes(id));
+      if (this.variantParams[propertyKey].length == 0) delete this.variantParams[propertyKey];
+    } else {
+      delete this.variantParams[propertyKey];
     }
   }
 
@@ -418,14 +410,20 @@ export class VariantLineDatasourceService {
 
   deleteFrequencyFilter(targetFrequencyFilter: FrequencyFilterParams[]) {
     if (this.variantParams.frequencyFilters) {
-      const remainingFrequencyFilters = this.variantParams.frequencyFilters
+      this.variantParams.frequencyFilters = this.variantParams.frequencyFilters
         .filter(item => {
-          return targetFrequencyFilter
-            .some(obj => obj.arity === item.arity && obj.population === item.population &&
-              obj.operation === item.operation && obj.af === item.af);
-      });
-
-      this.variantParams.frequencyFilters = remainingFrequencyFilters;
+          return !targetFrequencyFilter
+            .some(obj => {
+              console.log(obj.arity, item.arity);
+              console.log(obj.population, item.population);
+              console.log(obj.operation, item.operation);
+              console.log(obj.af, item.af);
+              return obj.arity === item.arity &&
+                JSON.stringify(obj.population) === JSON.stringify(item.population) &&
+                obj.operation === item.operation &&
+                (obj.af === item.af || isNaN(obj.af) && isNaN(item.af))
+            });
+        });
 
       if (this.variantParams.frequencyFilters.length === 0) {
         delete this.variantParams.frequencyFilters;
@@ -433,16 +431,18 @@ export class VariantLineDatasourceService {
     }
   }
 
-  deleteRegionFilter(targetRegionFilter: RegionFilterParams) {
+  deleteRegionFilter(targetRegionFilter: RegionFilterParams[]) {
     if (this.variantParams.regionFilters) {
-      const remainingRegionFilters = this.variantParams.regionFilters
+      this.variantParams.regionFilters = this.variantParams.regionFilters
         .filter(item => {
-          return ![targetRegionFilter]
-            .some(obj => obj.chromosome === item.chromosome && obj.start === item.start &&
-              obj.end === item.end && obj.exclude === item.exclude);
+          return !targetRegionFilter
+            .some(obj => {
+              return obj.chromosome === item.chromosome &&
+                (obj.start === item.start || isNaN(obj.start) && isNaN(item.start)) &&
+                (obj.end === item.end || isNaN(obj.end) && isNaN(item.end)) &&
+                obj.exclude === item.exclude
+            });
         });
-
-      this.variantParams.regionFilters = remainingRegionFilters;
 
       if (this.variantParams.regionFilters.length === 0) {
         delete this.variantParams.regionFilters;

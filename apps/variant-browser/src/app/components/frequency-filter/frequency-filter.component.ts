@@ -30,7 +30,6 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   protected filter: Filter;
   protected allArityOperators: Array<object> = [
     { code: "ANY", label: "Any" },
-    { code: "ALL", label: "All" },
     { code: "NONE", label: "None" }
   ];
   protected selectedArityOperators: Array<string>;
@@ -161,7 +160,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
     const params = filter.value.split(" ");
     return {
       arity: params[0],
-      population: params[1],
+      population: params[1].split(",").map(popId => Number.parseInt(popId)),
       operation: params[2],
       af: Number.parseFloat(params[3])
     };

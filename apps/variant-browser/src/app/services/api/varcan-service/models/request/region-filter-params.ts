@@ -1,6 +1,6 @@
 export interface RegionFilterParams {
   exclude?: boolean;
-  chromosome?: number;
+  chromosome?: string;
   start?: number;
   end?: number;
 }
