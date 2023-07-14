@@ -1,29 +1,30 @@
 <div class="card flex justify-content-center">
-  <p-dialog header="Download CSV" [(visible)]="visible" (onHide)="cancel()" [style]="{ width: '50vw', height: '60vw' }">
+  <p-dialog header="Download CSV" [(visible)]="visible" (onHide)="cancel()" class="flex">
+    <p>Select the fields to display in the resulting CSV file.</p>
     <p-fieldset legend="Property fields">
       <span class="p-float-label m-2">
-            <p-multiSelect [options]="availablePropertyFields" [(ngModel)]="selectedPropertyFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }"></p-multiSelect>
+            <p-multiSelect [options]="availablePropertyFields" [(ngModel)]="selectedPropertyFields" display="chip" optionLabel="label" [style]="{ 'width': '40vw' }"></p-multiSelect>
             <label for="properties">Select properties</label>
       </span>
     </p-fieldset>
 
     <p-fieldset legend="Consequence fields">
       <span class="p-float-label m-2">
-            <p-multiSelect [options]="availableConsequenceFields" [(ngModel)]="selectedConsequenceFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }"></p-multiSelect>
+            <p-multiSelect [options]="availableConsequenceFields" [(ngModel)]="selectedConsequenceFields" display="chip" optionLabel="label" [style]="{ 'width': '40vw' }"></p-multiSelect>
             <label for="consequence">Select consequence</label>
       </span>
     </p-fieldset>
 
     <p-fieldset legend="Frequency fields">
       <span class="p-float-label m-2">
-            <p-multiSelect [options]="availableFrequencyFields" [(ngModel)]="selectedFrequencyFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }"></p-multiSelect>
+            <p-multiSelect [options]="availableFrequencyFields" [(ngModel)]="selectedFrequencyFields" display="chip" optionLabel="label" [style]="{ 'width': '40vw' }"></p-multiSelect>
             <label for="frequency">Select frequencies</label>
       </span>
     </p-fieldset>
 
     <p-fieldset legend="Sample fields">
       <span class="p-float-label m-2">
-            <p-multiSelect [options]="availableSampleFields" [(ngModel)]="selectedSampleFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }" [group]="true">
+            <p-multiSelect [options]="availableSampleFields" [(ngModel)]="selectedSampleFields" display="chip" optionLabel="label" [style]="{ 'width': '40vw' }" [group]="true">
               <ng-template let-group pTemplate="group">
                   <div class="flex align-items-center">
                       <span>{{ group.group }}</span>
