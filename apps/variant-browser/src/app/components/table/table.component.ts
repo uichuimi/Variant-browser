@@ -1,15 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { animate, state, style, transition, trigger } from "@angular/animations";
-import { GlobalConstants } from "../../services/common/global-constants";
-import { VarcanService } from "../../services/api/varcan-service/varcan.service";
-import { VariantParams } from "../../services/api/varcan-service/models/request/variant-params";
-import { Paginator } from "primeng/paginator";
-import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
-import { VariantLine } from "../../services/data-source/models/variant-line";
-import { FrequencyLine } from "../../services/data-source/models/frequency-line";
-import { SortEvent } from "primeng/api";
-
-
+import {Component, Input, OnInit, ViewChild} from "@angular/core";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {GlobalConstants} from "../../services/common/global-constants";
+import {VarcanService} from "../../services/api/varcan-service/varcan.service";
+import {VariantParams} from "../../services/api/varcan-service/models/request/variant-params";
+import {Paginator} from "primeng/paginator";
+import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
+import {VariantLine} from "../../services/data-source/models/variant-line";
+import {FrequencyLine} from "../../services/data-source/models/frequency-line";
+import {MenuItem, SortEvent} from "primeng/api";
 
 @Component({
   selector: 'app-table',
@@ -29,9 +27,9 @@ export class TableComponent implements OnInit {
   protected variants: Array<VariantLine>;
   protected selectedVariant: VariantLine;
   protected showVariantFilters: boolean;
-  protected
   protected showVariantInfoPanel: boolean;
-  protected showCsvDownloadDialog: boolean = false;
+  showCsvDownloadDialog: boolean = false;
+  showVcfDownloadDialog: boolean = false;
   protected variantParams: VariantParams;
   protected first: number = 0;
   protected rows: number = 10;
@@ -42,9 +40,9 @@ export class TableComponent implements OnInit {
   protected frequencyColumns: any[];
   protected genotypeColumns: any[];
   protected readonly Object = Object;
-  protected downloadOptions: any[] = [
-    { label: 'CSV', command: () => this.onToggleShowCsvDownloadDialog() },
-    { label: 'VCF', command: () => console.log('http://angular.io') }
+  protected downloadOptions: MenuItem[] = [
+    { label: 'CSV', command: () => this.openCsvDownloadDialog() },
+    { label: 'VCF', command: () => this.openShowVcfDownloadDialog() }
   ];
 
   constructor(private readonly service: VarcanService,
@@ -253,7 +251,21 @@ export class TableComponent implements OnInit {
     ];
   }
 
-  onToggleShowCsvDownloadDialog() {
-    this.showCsvDownloadDialog = !this.showCsvDownloadDialog;
+  onToggleShowCsvDownloadDialog($event: boolean) {
+    console.log($event);
+    this.showCsvDownloadDialog = $event;
+  }
+
+  onToggleShowVcfDownloadDialog($event: boolean) {
+    console.log($event);
+    this.showVcfDownloadDialog = $event;
+  }
+
+  openCsvDownloadDialog() {
+    this.showCsvDownloadDialog = true;
+  }
+
+  openShowVcfDownloadDialog() {
+    this.showVcfDownloadDialog = true;
   }
 }

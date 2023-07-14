@@ -20,7 +20,8 @@
           </div>
           <div class="p-toolbar-group-end">
             <p-button (click)="showVariantFilters = true" icon="pi pi-filter" class="mr-2" pTooltip="Filter" tooltipPosition="bottom"></p-button>
-            <p-splitButton icon="pi pi-download" [model]="this.downloadOptions" (onClick)="onToggleShowCsvDownloadDialog()" pTooltip="Download" tooltipPosition="bottom" class="mr-2"
+            <p-splitButton icon="pi pi-download" [model]="downloadOptions" (onClick)="openCsvDownloadDialog()"
+                           pTooltip="Download" tooltipPosition="bottom" class="mr-2"
             ></p-splitButton>
           </div>
         </p-toolbar>
@@ -60,4 +61,6 @@
 </p-sidebar>
 
 
-<app-download-csv-dialog [visible]="showCsvDownloadDialog" (cancelCsvDownload)="onToggleShowCsvDownloadDialog()"></app-download-csv-dialog>
+<app-download-csv-dialog [visible]="showCsvDownloadDialog" (dialogStateUpdated)="onToggleShowCsvDownloadDialog($event)"></app-download-csv-dialog>
+
+<app-download-vcf-dialog [visible]="showVcfDownloadDialog" (dialogStateUpdated)="onToggleShowVcfDownloadDialog($event)"></app-download-vcf-dialog>

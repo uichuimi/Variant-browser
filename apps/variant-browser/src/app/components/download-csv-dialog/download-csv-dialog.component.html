@@ -1,5 +1,5 @@
 <div class="card flex justify-content-center">
-  <p-dialog header="Select output CSV fields" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', height: '60vw' }" [draggable]="false" [resizable]="false">
+  <p-dialog header="Download CSV" [(visible)]="visible" (onHide)="cancel()" [style]="{ width: '50vw', height: '60vw' }">
     <p-fieldset legend="Property fields">
       <span class="p-float-label m-2">
             <p-multiSelect [options]="availablePropertyFields" [(ngModel)]="selectedPropertyFields" display="chip" optionLabel="label" [style]="{ 'width': '100%' }"></p-multiSelect>

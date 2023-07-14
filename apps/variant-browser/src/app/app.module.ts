@@ -60,8 +60,9 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { FrequencyFilterComponent } from './components/frequency-filter/frequency-filter.component';
 import { RegionFilterComponent } from './components/region-filter/region-filter.component';
 import { CheckboxModule } from 'primeng/checkbox';
-import {MiscellaneousFilterComponent} from './components/miscellaneous-filter/miscellaneous-filter.component';
-import {SelectButtonModule} from "primeng/selectbutton";
+import { MiscellaneousFilterComponent } from './components/miscellaneous-filter/miscellaneous-filter.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { DownloadVcfDialogComponent } from './components/download-vcf-dialog/download-vcf-dialog.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import {SelectButtonModule} from "primeng/selectbutton";
     RegionFilterComponent,
     MiscellaneousFilterComponent,
     MiscellaneousFilterComponent,
+    DownloadVcfDialogComponent,
   ],
   imports: [
     AppRoutingModule,

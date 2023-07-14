@@ -1,10 +1,8 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from "@angular/core";
-import { GlobalConstants } from "../../services/common/global-constants";
-import { FormGroup } from "@angular/forms";
-import { VariantParams } from "../../services/api/varcan-service/models/request/variant-params";
-import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
-import { VarcanService } from "../../services/api/varcan-service/varcan.service";
-import { CsvVariantReportParams } from "../../services/api/varcan-service/models/request/csv-variant-report-params";
+import {ChangeDetectorRef, Component, EventEmitter, Input, Output} from "@angular/core";
+import {GlobalConstants} from "../../services/common/global-constants";
+import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
+import {VarcanService} from "../../services/api/varcan-service/varcan.service";
+import {CsvVariantReportParams} from "../../services/api/varcan-service/models/request/csv-variant-report-params";
 
 @Component({
   selector: 'app-download-csv-dialog',
@@ -12,11 +10,8 @@ import { CsvVariantReportParams } from "../../services/api/varcan-service/models
   styleUrls: ['./download-csv-dialog.component.css'],
 })
 export class DownloadCsvDialogComponent {
-  @Input()
-  visible: boolean;
-  @Output()
-  cancelCsvDownload: EventEmitter<boolean> = new EventEmitter<boolean>()
-  protected genotypeFilterForm: FormGroup;
+  @Input() visible: boolean;
+  @Output() dialogStateUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();
   protected availablePropertyFields: any[] = [
     { name: "PROP.CHROM", label: "CHROM", category: "Property" },
     { name: "PROP.POS", label: "POS", category: "Property" },
@@ -110,11 +105,11 @@ export class DownloadCsvDialogComponent {
       a.remove();
     });
     this.visible = false;
-    this.cancelCsvDownload.emit(this.visible);
+    this.dialogStateUpdated.emit(this.visible);
   }
 
   cancel() {
     this.visible = false;
-    this.cancelCsvDownload.emit(this.visible);
+    this.dialogStateUpdated.emit(this.visible);
   }
 }
