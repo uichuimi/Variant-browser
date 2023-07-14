@@ -63,6 +63,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MiscellaneousFilterComponent } from './components/miscellaneous-filter/miscellaneous-filter.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DownloadVcfDialogComponent } from './components/download-vcf-dialog/download-vcf-dialog.component';
+import {MessageService} from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { DownloadVcfDialogComponent } from './components/download-vcf-dialog/dow
     VarcanService,
     TokenStorageService,
     AuthGuardService,
+    MessageService
   ],
 })
 export class AppModule {}

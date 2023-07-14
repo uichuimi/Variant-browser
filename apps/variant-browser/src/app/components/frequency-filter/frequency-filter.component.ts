@@ -8,11 +8,13 @@ import {GlobalConstants} from "../../services/common/global-constants";
 import {ScreenBreakpointAttributeValue} from "../../directives/device-width-breakpoint.directive";
 import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
 import {FrequencyFilterParams} from "../../services/api/varcan-service/models/request/frequency-filter-params";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-frequency-filter',
   templateUrl: './frequency-filter.component.html',
   styleUrls: ['./frequency-filter.component.css'],
+  providers: [MessageService]
 })
 export class FrequencyFilterComponent implements OnInit, OnDestroy {
   protected readonly faHashtag = faHashtag;
@@ -47,7 +49,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   protected af: number;
 
   constructor(private fb: FormBuilder, private globalConstant: GlobalConstants,
-              private dataSource: VariantLineDatasourceService) {
+              private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
     this.frequencyFilterForm = fb.group({
       frequencyFilters: fb.group({
         arity: fb.control("", [Validators.required]),
@@ -105,7 +107,9 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
       this.dataSource.addFrequencyFilter(frequencyFilter);
       this.addFilterItem();
       await this.dataSource.updateVariantLine();
+      this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter added', detail: 'A property filter have been added' });
     } else {
+      this.messageService.add({ key: 'ebc', severity: 'error', summary: 'Error', detail: 'Something went wrong with you filter settings' });
       console.error("Invalid submission: ", this.frequencyFilterForm.value);
     }
   }
@@ -114,6 +118,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
     const targetFrequencyFilter: FrequencyFilterParams[] = [this.generateTargetFilter($event)];
     this.dataSource.deleteFrequencyFilter(targetFrequencyFilter);
     await this.dataSource.updateVariantLine();
+    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter removed', detail: 'A frequency filter have been added' });
   }
 
   protected readonly faPlus = faPlus;

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Individual} from "../../services/api/varcan-service/models/response/Individual";
 import {GlobalConstants} from "../../services/common/global-constants";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-download-vcf-dialog',
@@ -13,13 +14,14 @@ export class DownloadVcfDialogComponent {
   protected availableSamples: Array<Individual>;
   protected selectedSamples: Array<Individual>;
 
-  constructor(private globalConstants: GlobalConstants) {
+  constructor(private globalConstants: GlobalConstants, private messageService: MessageService) {
     this.visible = false;
     this.availableSamples = this.globalConstants.getIndividuals();
   }
 
   async download() {
     this.visible = false;
+    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Downloading file...', detail: 'The file is being downloaded' });
     this.dialogStateUpdated.emit(this.visible);
   }
 

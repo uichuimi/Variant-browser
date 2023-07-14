@@ -72,25 +72,9 @@
           <label for="exclude">Exclude region?</label>
         </div>
 
-        <!--<div class="flex col-12 justify-content-center align-items-center">
-          <span class="p-float-label grip p-fluid">
-            <p-inputNumber
-              [formControl]="valueCtrl"
-              [(ngModel)]="numericValue"
-              [showButtons]="true"
-              *ngIf="isValueTypeNumeric()"
-              inputId="value"
-              [showClear]="true"
-              mode="decimal"
-            ></p-inputNumber>
-            <label for="value">
-              <fa-icon [icon]="getValueIcon()"></fa-icon>
-              <span>{{propertyLabel}}</span>
-            </label>
-          </span>
-        </div>-->
-
         <div class="flex col-12 justify-content-center align-items-center">
+          <p-toast position="bottom-center" key="bc"></p-toast>
+          <p-toast position="bottom-center" key="ebc"></p-toast>
           <button pButton pRipple class="p-button-rounded">
             <fa-icon [icon]="faPlus"></fa-icon>
             <span>Add</span>

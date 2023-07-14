@@ -3,11 +3,13 @@ import {GlobalConstants} from "../../services/common/global-constants";
 import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
 import {VarcanService} from "../../services/api/varcan-service/varcan.service";
 import {CsvVariantReportParams} from "../../services/api/varcan-service/models/request/csv-variant-report-params";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-download-csv-dialog',
   templateUrl: './download-csv-dialog.component.html',
   styleUrls: ['./download-csv-dialog.component.css'],
+  providers: [MessageService]
 })
 export class DownloadCsvDialogComponent {
   @Input() visible: boolean;
@@ -51,7 +53,7 @@ export class DownloadCsvDialogComponent {
   constructor(private cdr: ChangeDetectorRef,
               private globalConstants: GlobalConstants,
               private dataSource: VariantLineDatasourceService,
-              private service: VarcanService) {
+              private service: VarcanService, private messageService: MessageService) {
     this.visible = false;
     this.availableFrequencyFields = globalConstants.getPopulation()
       .map((population) => {
@@ -92,6 +94,9 @@ export class DownloadCsvDialogComponent {
     const fields: string[] = [].concat(properties, frequencies, consequences, samples);
     this.variantParams = this.dataSource.getCsvVariantReportParams();
     this.variantParams.fields = fields;
+
+    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Downloading file...', detail: 'The file is being downloaded' });
+
     const csvReport = await this.service.downloadCsvReport(this.variantParams).then(response => {
       const csvReport = response.data;
       const url = window.URL.createObjectURL(new Blob([csvReport], { type: 'text/csv' }));

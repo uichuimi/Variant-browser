@@ -10,11 +10,13 @@ import {ScreenBreakpointAttributeValue} from "../../directives/device-width-brea
 import {faHashtag, faPlus, faTag} from "@fortawesome/free-solid-svg-icons";
 import {Filter} from "../../models/event-object/filter";
 import {RegionFilterParams} from "../../services/api/varcan-service/models/request/region-filter-params";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-region-filter',
   templateUrl: './region-filter.component.html',
   styleUrls: ['./region-filter.component.css'],
+  providers: [MessageService]
 })
 export class RegionFilterComponent implements OnInit {
   protected readonly faTag = faTag;
@@ -40,7 +42,8 @@ export class RegionFilterComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private globalConstants: GlobalConstants,
               private service: VarcanService,
-              private dataSource: VariantLineDatasourceService) {
+              private dataSource: VariantLineDatasourceService,
+              private messageService: MessageService) {
     this.allProperties = [
       VarcanAPIEntities.CHROMOSOMES,
       VarcanAPIEntities.START,
@@ -107,7 +110,9 @@ export class RegionFilterComponent implements OnInit {
       this.dataSource.addRegionFilter([regionFilter]);
       this.addFilterItem(regionFilter);
       await this.dataSource.updateVariantLine();
+      await this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter added', detail: 'A property filter have been added' });
     } else {
+      this.messageService.add({ key: 'ebc', severity: 'error', summary: 'Error', detail: 'Something went wrong with you filter settings' });
       console.error("Invalid submission: ", this.regionFilterForm);
     }
   }
@@ -117,6 +122,7 @@ export class RegionFilterComponent implements OnInit {
     console.log(targetRegionFilter);
     this.dataSource.deleteRegionFilter([targetRegionFilter]);
     await this.dataSource.updateVariantLine();
+    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter removed', detail: 'A region filter have been added' });
   }
 
   private addFilterItem(regionFilter: RegionFilterParams) {

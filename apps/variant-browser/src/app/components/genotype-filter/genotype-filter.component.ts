@@ -10,6 +10,7 @@ import { faDna, faHashtag, faLayerGroup, faPlus, faVial } from "@fortawesome/fre
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { Filter } from "../../models/event-object/filter";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
+import {MessageService} from "primeng/api";
 
 interface Arity {
   selector: string;
@@ -25,7 +26,8 @@ interface SampleSelectGroup {
 @Component({
   selector: "app-genotype-filter",
   templateUrl: "./genotype-filter.component.html",
-  styleUrls: ["./genotype-filter.component.css"]
+  styleUrls: ["./genotype-filter.component.css"],
+  providers: [MessageService]
 })
 export class GenotypeFilterComponent implements OnInit, OnDestroy {
   number: number;
@@ -57,7 +59,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
   private selectorCtrlEvent: Subscription;
 
   constructor(private fb: FormBuilder, protected globalConstants: GlobalConstants,
-              private dataSource: VariantLineDatasourceService) {
+              private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
     this.genotypeFilterForm = fb.group({
       genotypeFilters: fb.group({
         individual: fb.control([], [Validators.required]),
@@ -109,7 +111,9 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
       this.addNewFilterItem();
       this.dataSource.addGenotypeFilter(genotypeFilter);
       await this.dataSource.updateVariantLine();
+      this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter added', detail: 'A genotype filter have been added' });
     } else {
+      this.messageService.add({ key: 'ebc', severity: 'error', summary: 'Error', detail: 'Something went wrong with you filter settings' });
       console.error("Invalid submission: ", this.genotypeFilterForm.value);
     }
   }
@@ -118,6 +122,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     const targetGenotypeFilter: GenotypeFilterParams = this.generateTargetFilter($event);
     this.dataSource.deleteGenotypeFilter(targetGenotypeFilter);
     await this.dataSource.updateVariantLine();
+    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter removed', detail: 'A genotype filter have been added' });
   }
 
   private generateSampleSelectOptions() {

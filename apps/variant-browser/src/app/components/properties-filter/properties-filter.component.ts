@@ -16,6 +16,7 @@ import {Gene} from "../../services/api/varcan-service/models/response/Gene";
 import {VarcanAPIEntities} from "../../services/api/varcan-service/misc/varcan-api-entities";
 import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
 import {DropListOption} from "../../models/droplist-option";
+import {MessageService} from "primeng/api";
 
 enum InputValueTypeEnum {
   NUMERIC,
@@ -26,7 +27,8 @@ enum InputValueTypeEnum {
 @Component({
   selector: "app-properties-filter",
   templateUrl: "./properties-filter.component.html",
-  styleUrls: ["./properties-filter.component.css"]
+  styleUrls: ["./properties-filter.component.css"],
+  providers: [MessageService]
 })
 export class PropertiesFilterComponent implements OnInit, OnDestroy {
   filter: Filter;
@@ -57,7 +59,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder,
               private globalConstants: GlobalConstants,
               private service: VarcanService,
-              private dataSource: VariantLineDatasourceService) {
+              private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
     this.allProperties = [
       VarcanAPIEntities.IDENTIFIERS,
       VarcanAPIEntities.GENES,
@@ -101,6 +103,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     console.log(propertyName, propertyValue);
     this.dataSource.deletePropertyFilter(propertyName, propertyValue);
     await this.dataSource.updateVariantLine();
+    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter removed', detail: 'A property filter have been added' });
   }
 
   protected async onSubmit() {
@@ -113,7 +116,9 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
       this.addFilterItem(propertyKey, propertyComparator, propertyValue);
       this.dataSource.addPropertyFilter(propertyKey, value);
       await this.dataSource.updateVariantLine();
+      this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter added', detail: 'A property filter have been added' });
     } else {
+      this.messageService.add({ key: 'ebc', severity: 'error', summary: 'Error', detail: 'Something went wrong with you filter settings' });
       console.error("Invalid submission: ", this.propertyFilterForm);
     }
   }
