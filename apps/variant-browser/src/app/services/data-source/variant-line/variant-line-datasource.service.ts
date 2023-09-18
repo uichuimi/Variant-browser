@@ -166,7 +166,11 @@ export class VariantLineDatasourceService {
         } else if (field === 'genotypes') {
           innerFieldNames = this.individualCache.map(individual => individual.code);
         } else {
-          innerFieldNames= Object.keys(this.cachedVariantLines[0][field][0]);
+          if(this.cachedVariantLines[0][field][0]) {
+            innerFieldNames = Object.keys(this.cachedVariantLines[0][field][0]);
+          } else {
+            innerFieldNames = []
+          }
         }
         const innerColumns = innerFieldNames.map((innerField: string) => {
           let innerLabel: string = this.labelize(innerField);

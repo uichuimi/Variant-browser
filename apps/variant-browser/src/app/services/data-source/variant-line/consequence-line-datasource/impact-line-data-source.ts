@@ -6,7 +6,11 @@ export class ImpactLineDataSource {
   private readonly name: string;
 
   constructor(impact: Impact) {
-    this.name = impact.name || "-";
+    if (impact == null) {
+      this.name = "-";
+    } else {
+      this.name = impact.name || "-";
+    }
   }
 
   get line(): ConsequenceLine {

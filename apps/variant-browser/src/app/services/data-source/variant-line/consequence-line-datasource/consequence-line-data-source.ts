@@ -38,7 +38,7 @@ export class ConsequenceLineDataSource {
     const gene: Gene = geneCache
       .find((gene: Gene) => gene.id === geneId);
 
-    if (gene.biotype) {
+    if (gene != null && gene.biotype) {
       this.biotypeLine = this.getBiotypeLineById(gene.biotype.id, biotypeCache);
     } else {
       this.biotypeLine = new BiotypeLineDataSource(null);

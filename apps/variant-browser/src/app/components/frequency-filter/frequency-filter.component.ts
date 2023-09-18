@@ -59,15 +59,18 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
           [Validators.required, Validators.min(0.0), Validators.max(1.0)])
       })
     })
+  }
+
+  ngOnInit(): void {
+    if (this.globalConstant.getPopulation() == null) return;
+
     this.allPopulations = this.globalConstant.getPopulation().map(population => {
       return {
         name: `${population.name} (${population.code})`,
         code: population.id
       }
     });
-  }
 
-  ngOnInit(): void {
     this.appDeviceWidthBreakpointEvent.subscribe((value) => {
       this.layout = this.getLayout(value);
     });

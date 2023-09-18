@@ -10,11 +10,19 @@ export class GeneLineDataSource {
   private readonly symbol: string;
 
   constructor(gene: Gene) {
-    this.name = gene.name || "-";
-    this.ensg = gene.ensg || "-";
-    this.hgnc = gene.hgnc || "-";
-    this.ncbi = gene.ncbi || "-";
-    this.symbol = gene.symbol || "-";
+    if (gene == null) {
+      this.name = "-";
+      this.ensg = "-";
+      this.hgnc = "-";
+      this.ncbi = "-";
+      this.symbol = "-";
+    } else {
+      this.name = gene.name || "-";
+      this.ensg = gene.ensg || "-";
+      this.hgnc = gene.hgnc || "-";
+      this.ncbi = gene.ncbi || "-";
+      this.symbol = gene.symbol || "-";
+    }
   }
 
   get line(): ConsequenceLine {

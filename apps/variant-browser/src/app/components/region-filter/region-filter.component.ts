@@ -57,12 +57,13 @@ export class RegionFilterComponent implements OnInit {
         end: fb.control(null, [Validators.min(0)])
       })
     });
-    this.allChromosomes = this.getAllChromosomes();
+
     this.layout = this.deviceBreakpointToggle.default;
   }
 
   ngOnInit(): void {
     this.onDeviceDeviceWidthBreakPointEvent();
+    this.allChromosomes = this.getAllChromosomes();
   }
 
   get excludeCtrl(): FormControl {
@@ -96,6 +97,8 @@ export class RegionFilterComponent implements OnInit {
   }
 
   private getAllChromosomes() {
+    if (this.globalConstants.getChromosomes() == null) return;
+
     return this.globalConstants.getChromosomes().map((chromosome: Chromosome) => {
       return {
         label: `${chromosome.ucsc} / ${chromosome.genebank} / ${chromosome.refseq}`,

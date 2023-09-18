@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, Output} from "@angular/core";
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {GlobalConstants} from "../../services/common/global-constants";
 import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
 import {VarcanService} from "../../services/api/varcan-service/varcan.service";
@@ -11,7 +11,7 @@ import {MessageService} from "primeng/api";
   styleUrls: ['./download-csv-dialog.component.css'],
   providers: [MessageService]
 })
-export class DownloadCsvDialogComponent {
+export class DownloadCsvDialogComponent implements OnInit {
   @Input() visible: boolean;
   @Output() dialogStateUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();
   protected availablePropertyFields: any[] = [
@@ -55,7 +55,14 @@ export class DownloadCsvDialogComponent {
               private dataSource: VariantLineDatasourceService,
               private service: VarcanService, private messageService: MessageService) {
     this.visible = false;
-    this.availableFrequencyFields = globalConstants.getPopulation()
+
+    this.variantParams = this.dataSource.getCsvVariantReportParams();
+  }
+
+  ngOnInit(): void {
+    if (this.globalConstants.getPopulation() == null || this.globalConstants.getIndividuals() == null) return;
+
+    this.availableFrequencyFields = this.globalConstants.getPopulation()
       .map((population) => {
         return {
           name: `FREQ.${population.code.toUpperCase()}`,
@@ -63,7 +70,7 @@ export class DownloadCsvDialogComponent {
           category: "Frequency"
         };
       });
-    this.availableSampleFields = globalConstants.getIndividuals()
+    this.availableSampleFields = this.globalConstants.getIndividuals()
       .reduce((result, sample) => {
         const group: string = sample.code.split("_")[0].toUpperCase();
         const targetGroup = result.find(groupElem => groupElem.group === group);
@@ -83,8 +90,7 @@ export class DownloadCsvDialogComponent {
         }
         return result;
       }, []);
-    this.variantParams = this.dataSource.getCsvVariantReportParams();
-  }
+    }
 
   async download() {
     const properties = this.selectedPropertyFields.map(property => property.name);

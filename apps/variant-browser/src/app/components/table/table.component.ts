@@ -98,6 +98,7 @@ export class TableComponent implements OnInit {
         "show": true
       }
     ];
+    if (!(this.dataSource.data$.subscribe instanceof Function)) window.location.reload();
   }
 
   async loadVariants(event) {
