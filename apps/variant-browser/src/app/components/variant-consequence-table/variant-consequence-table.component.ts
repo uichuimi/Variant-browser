@@ -10,19 +10,21 @@ export class VariantConsequenceTableComponent implements OnInit{
   @Input()
   consequences: Array<ConsequenceLine>;
   consequenceColumns: any[] = [
-    {name: 'biotypeAccession', label: 'Biotype accession'},
-    {name: 'biotypeDescription', label: 'Biotype description'},
-    {name: 'biotypeName', label: 'Biotype name'},
-    {name: 'effectAccession', label: 'Effect accession'},
-    {name: 'effectDescription', label: 'Effect description'},
     {name: 'ensg', label: 'ENSG'},
-    {name: 'geneName', label: 'Gene name'},
     {name: 'hgnc', label: 'HGNC'},
-    {name: 'hgvsp', label: 'HGVSP'},
+    {name: 'geneName', label: 'Gene name'},
+    {name: 'transcript', label: 'ENST'},
     {name: 'impact', label: 'Impact'},
+    {name: 'biotypeAccession', label: 'Biotype accession'},
+    {name: 'biotypeName', label: 'Biotype name'},
+    {name: 'biotypeDescription', label: 'Biotype description'},
+    {name: 'effectAccession', label: 'Effect accession'},
+    {name: 'effectName', label: 'Effect name'},
+    {name: 'effectDescription', label: 'Effect description'},
+    {name: 'hgvsp', label: 'HGVSP'},
     {name: 'ncbi', label: 'NCBI'},
     {name: 'polyphen', label: 'Polyphen'},
-    {name: 'sift', label: 'SIFT'},
+    {name: 'sift', label: 'SIFT'}
   ];
   _selectedColumns: any[];
 
@@ -42,7 +44,7 @@ export class VariantConsequenceTableComponent implements OnInit{
 
   ngOnInit(): void {
     this._selectedColumns = this.consequenceColumns
-      .filter(col => ['ensg', 'biotypeAccession', 'effectAccession', 'impact'].includes(col.name))
+      .filter(col => ['ensg', 'biotypeName', 'effectName', 'impact', 'transcript'].includes(col.name))
   }
 
   private sortConsequences(consequences: ConsequenceLine[], field: string, order: number) {
