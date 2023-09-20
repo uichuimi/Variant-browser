@@ -3,7 +3,14 @@
     <p>Select the samples to display in the resulting VCF file.</p>
     <p-fieldset legend="Samples">
       <span class="p-float-label m-2">
-            <p-multiSelect [options]="availableSamples" [(ngModel)]="selectedSamples" display="chip" optionLabel="code" optionValue="code" [style]="{ 'width': '40vw' }"></p-multiSelect>
+            <p-multiSelect [options]="availableSamples" [(ngModel)]="selectedSamples" appendTo="body"  [group]="true"
+                           display="chip" optionLabel="label" [style]="{ 'width': '40vw' }">
+              <ng-template let-group pTemplate="group">
+                  <div class="flex align-items-center">
+                      <span>{{ group.group }}</span>
+                  </div>
+              </ng-template>
+            </p-multiSelect>
             <label for="samples">Select samples</label>
       </span>
     </p-fieldset>

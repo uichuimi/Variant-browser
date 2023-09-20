@@ -72,7 +72,7 @@ export class DownloadCsvDialogComponent implements OnInit {
       });
     this.availableSampleFields = this.globalConstants.getIndividuals()
       .reduce((result, sample) => {
-        const group: string = sample.code.split("_")[0].toUpperCase();
+        const group: string = sample.code.toUpperCase().match(/[A-Z]+/)[0];
         const targetGroup = result.find(groupElem => groupElem.group === group);
         const sampleObject = {
           name: `GEN.${sample.code.toUpperCase()}`,
@@ -101,7 +101,7 @@ export class DownloadCsvDialogComponent implements OnInit {
     this.variantParams = this.dataSource.getCsvVariantReportParams();
     this.variantParams.fields = fields;
 
-    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Downloading file...', detail: 'The file will download soon...' });
+    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Downloading file...', detail: 'The CSV file will download soon...' });
 
     await this.service.downloadCsvReport(this.variantParams).then(response => {
       const csvReport = response.data;
