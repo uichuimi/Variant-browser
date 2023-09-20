@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Individual} from "../../services/api/varcan-service/models/response/Individual";
 import {GlobalConstants} from "../../services/common/global-constants";
 import {MessageService} from "primeng/api";
 
@@ -38,7 +37,6 @@ export class DownloadVcfDialogComponent implements OnInit {
           }
           return result;
         }, []);
-    console.log(this.availableSamples);
   }
 
   async download() {
