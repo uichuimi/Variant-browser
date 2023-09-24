@@ -55,7 +55,6 @@
           "optimization": true,
           "outputHashing": "all",
           "sourceMap": false,
-          "extractCss": true,
           "namedChunks": false,
           "extractLicenses": true,
           "vendorChunk": false,
@@ -85,28 +84,23 @@
           "browserTarget": "variant-browser:build:development"
         },
         "production": {
-          "browserTarget": "variant-browser:build:production",
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "extractCss": true,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false,
-          "buildOptimizer": true,
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "2mb",
-              "maximumError": "5mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "6kb",
-              "maximumError": "10kb"
-            }
-          ]
+          "browserTarget": "variant-browser:build:production"
         }
+      }
+    },
+    "docker": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "commands": [
+          "nx run variant-browser:build:{args.environment}",
+          "docker compose -f apps/variant-browser/docker-compose.yml build --build-arg ENVIRONMENT={args.environment}",
+          {
+            "command": "docker compose -f apps/variant-browser/docker-compose.yml up --force-recreate",
+            "forwardAllArgs": false
+          }
+        ],
+        "parallel": false
       }
     },
     "extract-i18n": {

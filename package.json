@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "nx",
-    "start": "nx serve -c=development",
+    "start": "nx serve",
     "test": "nx test",
     "lint": "nx lint",
     "e2e": "nx e2e",
