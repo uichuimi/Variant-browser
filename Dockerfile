@@ -19,4 +19,4 @@ RUN npm install --omit=dev
 
 RUN chown -R $PROJECT:$PROJECT .
 
-CMD npx http-server $PROJECT -p 80
+CMD npx http-server $PROJECT -g -p 80
