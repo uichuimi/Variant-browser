@@ -13,7 +13,7 @@ RUN addgroup --system $PROJECT && \
 COPY package.json .
 COPY package-lock.json .
 COPY decorate-angular-cli.js .
-COPY ./dist/apps/$PROJECT $PROJECT
+COPY dist/apps/$PROJECT $PROJECT
 
 RUN npm install --omit=dev
 

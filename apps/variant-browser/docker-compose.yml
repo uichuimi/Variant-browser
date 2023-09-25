@@ -2,7 +2,7 @@ version: '3.9'
 name: varcan
 
 services:
-  variant-browser:
+  frontend:
     extends:
       file: ../../docker-compose.base.yml
       service: app-base
