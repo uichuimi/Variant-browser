@@ -4,7 +4,6 @@
     <span class="brand-logo center">Variant browser</span>
     <ul id="nav-mobile" class="right">
       <li>
-        <a *ngIf="isSignUp" routerLink="/register">Sign Up</a>
         <a *ngIf="isLogOut" routerLink="/login" (click)="logOut()">Log Out</a>
         <a *ngIf="isGoBack" routerLink="/">Go back</a>
       </li>

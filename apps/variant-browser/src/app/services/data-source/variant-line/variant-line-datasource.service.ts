@@ -313,7 +313,7 @@ export class VariantLineDatasourceService {
   }
 
   addPropertyFilter(propertyKey: string, value: any) {
-    this.variantParams = {...this.variantParams, [propertyKey]: value};
+    this.variantParams = {...this.variantParams, [propertyKey]: value, page: 0};
   }
 
   deletePropertyFilter(propertyKey: string, value: any){
@@ -325,6 +325,7 @@ export class VariantLineDatasourceService {
     } else {
       delete this.variantParams[propertyKey];
     }
+    this.variantParams.page = 0;
   }
 
   addGenotypeFilter(genotype: GenotypeFilterParams) {
@@ -334,7 +335,7 @@ export class VariantLineDatasourceService {
     } else {
       genotypeFilters = [genotype];
     }
-    this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters };
+    this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters, page: 0 };
   }
 
   addFrequencyFilter(frequencyFilters: FrequencyFilterParams[]) {
@@ -345,6 +346,7 @@ export class VariantLineDatasourceService {
       this.variantParams.frequencyFilters = this.variantParams.frequencyFilters
         .concat(frequencyFilters);
     }
+    this.variantParams.page = 0;
   }
 
   addRegionFilter(regionFilters: RegionFilterParams[]) {
@@ -355,6 +357,7 @@ export class VariantLineDatasourceService {
       this.variantParams.regionFilters = this.variantParams.regionFilters
         .concat(regionFilters);
     }
+    this.variantParams.page = 0;
   }
 
   deleteGenotypeFilter(target: GenotypeFilterParams){
@@ -368,6 +371,7 @@ export class VariantLineDatasourceService {
 
         return !matchSelector || !matchNumber || !matchIndividuals || !matchGenotype;
       });
+    this.variantParams.page = 0;
   }
 
   getVariantParams(): VariantParams {
@@ -433,6 +437,7 @@ export class VariantLineDatasourceService {
         delete this.variantParams.frequencyFilters;
       }
     }
+    this.variantParams.page = 0;
   }
 
   deleteRegionFilter(targetRegionFilter: RegionFilterParams[]) {
@@ -452,5 +457,6 @@ export class VariantLineDatasourceService {
         delete this.variantParams.regionFilters;
       }
     }
+    this.variantParams.page = 0;
   }
 }

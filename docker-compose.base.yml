@@ -5,6 +5,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: ${ENVIRONMENT}
       args:
         - PROJECT=${PROJECT}
