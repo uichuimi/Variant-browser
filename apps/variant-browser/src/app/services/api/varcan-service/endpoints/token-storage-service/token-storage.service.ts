@@ -48,8 +48,8 @@ export class TokenStorageService {
   getToken(): Token {
     return {
       token_type: sessionStorage.getItem(TOKEN_TYPE),
-      refresh_token: sessionStorage.getItem(REFRESH_TOKEN),
-      access_token: sessionStorage.getItem(ACCESS_TOKEN),
+      refresh_token: sessionStorage.getItem(REFRESH_TOKEN) == 'null' ? null : sessionStorage.getItem(REFRESH_TOKEN),
+      access_token: sessionStorage.getItem(ACCESS_TOKEN) == 'null' ? null : sessionStorage.getItem(ACCESS_TOKEN),
       expires_in: parseInt(sessionStorage.getItem(EXPIRES_IN))
     };
   }
