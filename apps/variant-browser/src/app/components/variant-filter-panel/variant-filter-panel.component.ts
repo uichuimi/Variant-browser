@@ -8,9 +8,9 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
   styleUrls: ['./variant-filter-panel.component.css'],
 })
 export class VariantFilterPanelComponent {
-  protected faDna: IconDefinition = faDna;
-  protected faScrewdriverWrench: IconDefinition = faScrewdriverWrench;
-  protected faPercentage: IconDefinition = faPercentage;
+  protected readonly faDna: IconDefinition = faDna;
+  protected readonly faScrewdriverWrench: IconDefinition = faScrewdriverWrench;
+  protected readonly faPercentage: IconDefinition = faPercentage;
   protected readonly faMapLocationDot = faMapLocationDot;
   protected readonly faGear = faGear;
 }

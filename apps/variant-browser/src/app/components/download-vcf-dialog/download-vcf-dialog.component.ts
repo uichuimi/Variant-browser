@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {GlobalConstants} from "../../services/common/global-constants";
 import {MessageService} from "primeng/api";
 
@@ -17,8 +17,9 @@ export class DownloadVcfDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.availableSamples = this.globalConstants.getIndividuals()
-        .reduce((result, sample) => {
+    this.globalConstants.individuals$.subscribe((individuals) => {
+      if (individuals) {
+        this.availableSamples = individuals.reduce((result, sample) => {
           const group: string = sample.code.toUpperCase().match(/[A-Z]+/)[0];
           const targetGroup = result.find(groupElem => groupElem.group === group);
           const sampleObject = {
@@ -37,6 +38,8 @@ export class DownloadVcfDialogComponent implements OnInit {
           }
           return result;
         }, []);
+      }
+    });
   }
 
   async download() {

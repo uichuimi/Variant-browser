@@ -38,6 +38,7 @@ export class RegionFilterComponent implements OnInit {
   protected isChecked: boolean = false;
   protected start: number;
   protected end: number;
+  private chromosomes: Chromosome[];
 
   constructor(private fb: FormBuilder,
               private globalConstants: GlobalConstants,
@@ -63,7 +64,11 @@ export class RegionFilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.onDeviceDeviceWidthBreakPointEvent();
-    this.allChromosomes = this.getAllChromosomes();
+    this.globalConstants.chromosomes$.subscribe((chromosomes) => {
+      if (!chromosomes) return;
+      this.chromosomes = chromosomes;
+      this.allChromosomes = this.getAllChromosomes(chromosomes);
+    })
   }
 
   get excludeCtrl(): FormControl {
@@ -96,10 +101,8 @@ export class RegionFilterComponent implements OnInit {
     }
   }
 
-  private getAllChromosomes() {
-    if (this.globalConstants.getChromosomes() == null) return;
-
-    return this.globalConstants.getChromosomes().map((chromosome: Chromosome) => {
+  private getAllChromosomes(chromosomes: Chromosome[]) {
+    return chromosomes.map((chromosome: Chromosome) => {
       return {
         label: `${chromosome.ucsc} / ${chromosome.genebank} / ${chromosome.refseq}`,
         value: chromosome.ncbi
@@ -143,7 +146,7 @@ export class RegionFilterComponent implements OnInit {
     let regionStr: string;
     console.log(regionFilter.chromosome);
     if (regionFilter.chromosome) {
-      regionStr = this.globalConstants.getChromosomes()
+      regionStr = this.chromosomes
         .find((chromosome: Chromosome) => chromosome.ncbi === regionFilter.chromosome).ucsc;
     } else {
       regionStr = "*";

@@ -13,7 +13,6 @@ export class FetchService implements IReadable {
   }
 
   fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<AxiosResponse<U>> {
-    console.log("dummy");
     throw new Error('Method not implemented.');
   }
 

@@ -4,7 +4,7 @@
     dataKey="id" [paginator]="true" [rows]="rows" [totalRecords]="dataSource.totalRecords" [resizableColumns]="true"
     [loading]="loading" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 25, 50]"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(first)]="first" [autoLayout]="true"
-    styleClass="p-datatable-striped p-datatable-gridlines"
+    styleClass="p-datatable-striped p-datatable-gridlines" [reorderableColumns]="true"
     selectionMode="single" [(selection)]="selectedVariant" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect()"
     [tableStyle]="{'max-width': '100%'}" [globalFilterFields]="getFilterFields()"
   >
@@ -32,14 +32,18 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
         <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.name">
-            {{ col.label }}
+          <th style="width:3rem"></th>
+          <th *ngFor="let col of columns" pSortableColumn="{{col.name}}" pResizableColumn pReorderableColumn>
+            {{ col.label }} <p-sortIcon field="{{col.name}}"></p-sortIcon>
           </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-variant let-columns="columns">
-        <tr [pSelectableRow]="variant">
-          <td *ngFor="let col of columns" class="centered ellipsis">
+    <ng-template pTemplate="body" let-variant let-columns="columns" let-index="rowIndex">
+        <tr [pReorderableRow]="index">
+          <td>
+            <span class="pi pi-bars" pReorderableRowHandle></span>
+          </td>
+          <td *ngFor="let col of columns" class="centered ellipsis" [pSelectableRow]="variant">
             <a *ngIf="isSnpId(variant, col.name)" href="http://ncbi.nlm.nih.gov/snp/{{ variant.snpId }}" pTooltip="{{ variant.snpId }}" tooltipPosition="top">{{ variant.snpId }}</a>
             <span *ngIf="isMainVariantProperty(variant, col.name)" pTooltip="{{ variant[col.name] }}" tooltipPosition="top">{{ variant[col.name] }}</span>
             <span *ngIf="isGenotype(variant, col.name)" pTooltip="{{ extractGenotype(variant, col.name) }}} " tooltipPosition="top">{{ extractGenotype(variant, col.name) }}</span>
@@ -52,7 +56,7 @@
 </div>
 
 <p-sidebar [(visible)]="showVariantFilters" position="bottom"
-           [baseZIndex]="10000" style="float: right">
+           [baseZIndex]="10000">
   <app-variant-filter-panel></app-variant-filter-panel>
 </p-sidebar>
 

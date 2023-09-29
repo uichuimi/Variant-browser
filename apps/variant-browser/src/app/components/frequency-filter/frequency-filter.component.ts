@@ -47,6 +47,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   ];
   protected selectedNumericalComparators: Array<string>;
   protected af: number;
+  private populations: Population[];
 
   constructor(private fb: FormBuilder, private globalConstant: GlobalConstants,
               private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
@@ -62,14 +63,16 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.globalConstant.getPopulation() == null) return;
-
-    this.allPopulations = this.globalConstant.getPopulation().map(population => {
-      return {
-        name: `${population.name} (${population.code})`,
-        code: population.id
-      }
-    });
+    this.globalConstant.populations$.subscribe((populations) => {
+      if (!populations) return;
+      this.populations = populations;
+      this.allPopulations = this.globalConstant.populations.map(population => {
+        return {
+          name: `${population.name} (${population.code})`,
+          code: population.id
+        }
+      });
+    })
 
     this.appDeviceWidthBreakpointEvent.subscribe((value) => {
       this.layout = this.getLayout(value);
@@ -158,7 +161,7 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
 
   private getPopulationNames(populationIds: Array<number>) {
     return populationIds.map((populationId: number) => {
-      const population = this.globalConstant.getPopulation()
+      const population = this.globalConstant.populations
         .find((population: Population) => population.id === populationId);
       return population['code'];
     });

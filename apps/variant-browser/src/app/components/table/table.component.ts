@@ -66,8 +66,8 @@ export class TableComponent implements OnInit {
         this.updatedFrequencyColumns();
         this.updateGenotypeColumns()
       }
+      this.cols = this.dataSource.variantFields;
     });
-    this.cols = this.dataSource.variantFields;
     this._selectedColumns = [
       {
         "name": "snpId",
@@ -98,6 +98,7 @@ export class TableComponent implements OnInit {
   }
 
   loadVariants(event) {
+    this.loading = true;
     this.rows = event.rows;
     const dataSourceVariantParams = this.dataSource.getVariantParams();
     if (dataSourceVariantParams != null) this.variantParams = dataSourceVariantParams;
@@ -105,7 +106,13 @@ export class TableComponent implements OnInit {
     this.variantParams.size = event.rows;
 
     setTimeout(() => {
-      this.dataSource.updateVariantLine(this.variantParams).then((lines) => this.variants = lines);
+      this.dataSource.updateVariantLine(this.variantParams).then((lines) => {
+        this.variants = lines;
+        if (event.sortField) {
+          this.variants = this.variants
+            .sort((a, b) => event.sortOrder * this.onSort(a, b, event.sortField));
+        }
+      });
       this.loading = false;
     }, 1000)
 
@@ -121,14 +128,14 @@ export class TableComponent implements OnInit {
   }
 
   private updatedFrequencyColumns() {
-    const populationCodes = this.globalConstants.getPopulation()
+    const populationCodes = this.globalConstants.populations
       .map(population => population.code);
     this.frequencyColumns = this.dataSource.variantFields
       .filter(field => ['population'].concat(populationCodes).includes(field.name));
   }
 
   private updateGenotypeColumns() {
-    const individualCodes = this.globalConstants.getIndividuals()
+    const individualCodes = this.globalConstants.individuals
       .map(individual => individual.code);
     const baseColumns = [
       {name: 'individual', label: 'Individual', show: true},
@@ -148,8 +155,15 @@ export class TableComponent implements OnInit {
     this.first = 0;
   }
 
-  onSort($event: SortEvent) {
-    console.log($event);
+  onSort(a: VariantLine, b: VariantLine, field: string): number {
+    if (typeof a[field] === 'string' && typeof b[field] === 'string') return a[field].localeCompare(b[field]);
+
+    if (a[field] > b[field]) {
+      return 1;
+    } else if (a[field] < b[field]) {
+      return -1;
+    }
+    return 0;
   }
 
   protected isSnpId(variant: VariantLine, name: string) {
@@ -163,7 +177,7 @@ export class TableComponent implements OnInit {
 
   protected isGenotype(variant: VariantLine, name: string) {
     if (variant.genotypes[0] === undefined) return false;
-    return this.globalConstants.getIndividuals()
+    return this.globalConstants.individuals
         .map(individual => individual.code).includes(name);
   }
 
@@ -176,7 +190,7 @@ export class TableComponent implements OnInit {
 
   protected isFrequency(variant: VariantLine, name: string) {
     if (variant.frequencies[0] === undefined) return false;
-    return this.globalConstants.getPopulation()
+    return this.globalConstants.populations
       .map(population => population.code).includes(name)
       || name === 'population';
   }
@@ -208,7 +222,7 @@ export class TableComponent implements OnInit {
     this.showVariantInfoPanel = true;
   }
   onRowUnselect() {
-    this.selectedVariant = null;
+    this.selectedVariant = {};
     this.showVariantInfoPanel = false;
   }
 

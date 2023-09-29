@@ -50,8 +50,7 @@ export class DownloadCsvDialogComponent implements OnInit {
   protected selectedSampleFields: any[] = [];
   private variantParams: CsvVariantReportParams;
 
-  constructor(private cdr: ChangeDetectorRef,
-              private globalConstants: GlobalConstants,
+  constructor(private globalConstants: GlobalConstants,
               private dataSource: VariantLineDatasourceService,
               private service: VarcanService, private messageService: MessageService) {
     this.visible = false;
@@ -59,34 +58,41 @@ export class DownloadCsvDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.availableFrequencyFields = this.globalConstants.getPopulation()
-      .map((population) => {
-        return {
-          name: `FREQ.${population.code.toUpperCase()}`,
-          label: population.name,
-          category: "Frequency"
-        };
-      });
-    this.availableSampleFields = this.globalConstants.getIndividuals()
-      .reduce((result, sample) => {
-        const group: string = sample.code.toUpperCase().match(/[A-Z]+/)[0];
-        const targetGroup = result.find(groupElem => groupElem.group === group);
-        const sampleObject = {
-          name: `GEN.${sample.code.toUpperCase()}`,
-          label: sample.code,
-          category: "Genotype"
-        }
+    this.globalConstants.populations$.subscribe((populations) => {
+      if (populations) {
+        this.availableFrequencyFields = populations.map((population) => {
+          return {
+            name: `FREQ.${population.code.toUpperCase()}`,
+            label: population.name,
+            category: "Frequency"
+          };
+        });
+      }
+    });
 
-        if (targetGroup) {
-          targetGroup.items.push(sampleObject);
-        } else {
-          result.push({
-            group: group,
-            items: [sampleObject]
-          })
-        }
-        return result;
-      }, []);
+    this.globalConstants.individuals$.subscribe((individuals) => {
+      if (individuals) {
+        this.availableSampleFields = individuals.reduce((result, sample) => {
+          const group: string = sample.code.toUpperCase().match(/[A-Z]+/)[0];
+          const targetGroup = result.find(groupElem => groupElem.group === group);
+          const sampleObject = {
+            name: `GEN.${sample.code.toUpperCase()}`,
+            label: sample.code,
+            category: "Genotype"
+          }
+
+          if (targetGroup) {
+            targetGroup.items.push(sampleObject);
+          } else {
+            result.push({
+              group: group,
+              items: [sampleObject]
+            })
+          }
+          return result;
+        }, []);
+      }
+    });
   }
 
   async download() {

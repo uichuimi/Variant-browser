@@ -100,7 +100,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   async onDeleteFilter($event: Filter) {
     const propertyName: string = $event.name;
     const propertyValue: any = $event.value;
-    console.log(propertyName, propertyValue);
+
     this.dataSource.deletePropertyFilter(propertyName, propertyValue);
     await this.dataSource.updateVariantLine();
     this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter removed', detail: 'A property filter have been added' });
@@ -198,7 +198,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
       "",
       validators
     );
-    console.log(valueInput, validators);
+
     this.propertyFilterForm
       .addControl("value", valueInput);
   }

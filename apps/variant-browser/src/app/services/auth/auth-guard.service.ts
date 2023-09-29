@@ -6,12 +6,11 @@ import {GlobalConstants} from "../common/global-constants";
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-  constructor(private globalConstants: GlobalConstants, private tokenStorage: TokenStorageService, private router: Router) {}
+  constructor(private tokenStorage: TokenStorageService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const token: Token = this.tokenStorage.getToken();
     if (token.access_token != 'null' && token.refresh_token != 'null') {
-      this.globalConstants.initializeLocalStorage();
       return true;
     } else {
       this.router.navigate(['/login']);

@@ -53,10 +53,11 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
   protected selectedSetOperators: Arity;
   protected allSamples: Array<object>;
   protected selectedSamples: Array<number> = [];
-  protected allGenotypes: Array<GenotypeType>;
+  protected allGenotypeTypes: Array<GenotypeType>;
   protected selectedGenotypes: Array<number> = [];
   protected filter: Filter;
   private selectorCtrlEvent: Subscription;
+  private individuals: Individual[];
 
   constructor(private fb: FormBuilder, protected globalConstants: GlobalConstants,
               private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
@@ -67,9 +68,6 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
         selector: fb.control("", [Validators.required])
       })
     });
-
-    this.allGenotypes = this.globalConstants.getGenotypeTypes();
-    this.generateSampleSelectOptions();
     this.layout = this.deviceBreakpointToggle.default;
   }
 
@@ -98,6 +96,17 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     this.appDeviceWidthBreakpointEvent.subscribe((value) => {
       this.layout = this.getLayout(value);
     });
+
+    this.globalConstants.genotypeTypes$.subscribe((genotypeTypes) => {
+      if (!genotypeTypes) return;
+      this.allGenotypeTypes = genotypeTypes;
+    });
+
+    this.globalConstants.individuals$.subscribe((individuals) => {
+      if (!individuals) return;
+      this.individuals = individuals;
+      this.generateSampleSelectOptions(individuals);
+    })
   }
 
   ngOnDestroy(): void {
@@ -125,19 +134,16 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter removed', detail: 'A genotype filter have been added' });
   }
 
-  private generateSampleSelectOptions() {
-    const individuals = this.globalConstants.getIndividuals();
-    if (individuals != null) {
-      const sampleGroups = individuals
-        .map((individual: Individual) => individual.code.toUpperCase().match(/[A-Z]+/)[0])
-        .filter((group: string, index: number, array: Array<string>) => array.indexOf(group) === index);
-      this.allSamples = sampleGroups.map((group: string): SampleSelectGroup => {
-        return {
-          name: group,
-          value: individuals.filter((individual: Individual) => individual.code.toUpperCase().search(`^${group}[_0-9]*`) !== -1)
-        };
-      });
-    }
+  private generateSampleSelectOptions(individuals: Individual[]) {
+    const sampleGroups = individuals
+      .map((individual: Individual) => individual.code.toUpperCase().match(/[A-Z]+/)[0])
+      .filter((group: string, index: number, array: Array<string>) => array.indexOf(group) === index);
+    this.allSamples = sampleGroups.map((group: string): SampleSelectGroup => {
+      return {
+        name: group,
+        value: individuals.filter((individual: Individual) => individual.code.toUpperCase().search(`^${group}[_0-9]*`) !== -1)
+      };
+    });
   }
 
   private generateResponsiveNumberField() {
@@ -190,7 +196,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   private getSampleNames(sampleIds: Array<number>) {
     return sampleIds.map((sampleId: number) => {
-      const sample: Individual = this.globalConstants.getIndividuals()
+      const sample: Individual = this.individuals
         .find((sample: Individual) => sample.id === sampleId);
       return sample.code;
     });
@@ -198,7 +204,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   private getGenotypeNames(genotypeIds: Array<number>) {
     return genotypeIds.map((genotypeId: number) => {
-      const genotype: GenotypeType = this.allGenotypes
+      const genotype: GenotypeType = this.allGenotypeTypes
         .find((genotype: GenotypeType) => genotype.id === genotypeId);
       return genotype.name;
     });
