@@ -64,6 +64,8 @@ import { MiscellaneousFilterComponent } from './components/miscellaneous-filter/
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DownloadVcfDialogComponent } from './components/download-vcf-dialog/download-vcf-dialog.component';
 import {MessageService} from "primeng/api";
+import {GlobalConstants} from "./services/common/global-constants";
+import {VariantLineDatasourceService} from "./services/data-source/variant-line/variant-line-datasource.service";
 
 @NgModule({
   declarations: [
@@ -136,7 +138,9 @@ import {MessageService} from "primeng/api";
     VarcanService,
     TokenStorageService,
     AuthGuardService,
-    MessageService
+    MessageService,
+    GlobalConstants,
+    VariantLineDatasourceService
   ],
 })
 export class AppModule {}

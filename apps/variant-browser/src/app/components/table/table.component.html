@@ -2,7 +2,7 @@
   <p-table
     [columns]="selectedColumns" [value]="variants" [lazy]="true" (onLazyLoad)="loadVariants($event)"
     dataKey="id" [paginator]="true" [rows]="rows" [totalRecords]="dataSource.totalRecords" [resizableColumns]="true"
-    [loading]="dataSource.loading" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 25, 50]"
+    [loading]="loading" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 25, 50]"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(first)]="first" [autoLayout]="true"
     styleClass="p-datatable-striped p-datatable-gridlines"
     selectionMode="single" [(selection)]="selectedVariant" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect()"

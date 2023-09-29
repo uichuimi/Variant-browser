@@ -13,15 +13,7 @@ import { VarcanService } from "../api/varcan-service/varcan.service";
 })
 
 export class GlobalConstants {
-  private biotypes: Array<Biotype>;
-  private chromosomes: Array<Chromosome>;
-  private effects: Array<Effect>;
-  private genotypeTypes: Array<GenotypeType>;
-  private impacts: Array<Impact>;
-  private individuals: Array<Individual>;
-  private population: Array<Population>;
-
-  constructor(private readonly service: VarcanService) {
+  constructor(private service: VarcanService) {
     this.service.refreshLogin();
   }
 
@@ -115,15 +107,13 @@ export class GlobalConstants {
   }
 
   public initializeLocalStorage() {
-    const setValues: number = localStorage.length;
-    if (setValues == 0) {
-      this.initializeChromosomes();
-      this.initializeEffects();
-      this.initializeImpacts();
-      this.initializeGenotypeTypes();
-      this.initializeIndividuals();
-      this.initializeBiotypes();
-      this.initializePopulation();
-    }
+    console.log("INITIALIZING GLOBAL VARIABLES");
+    this.initializeChromosomes();
+    this.initializeEffects();
+    this.initializeImpacts();
+    this.initializeGenotypeTypes();
+    this.initializeIndividuals();
+    this.initializeBiotypes();
+    this.initializePopulation();
   }
 }

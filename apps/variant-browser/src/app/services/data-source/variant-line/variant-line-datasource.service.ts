@@ -35,7 +35,6 @@ const DECIMAL_CIPHER_APROXIMATION = 5;
   providedIn: "root"
 })
 export class VariantLineDatasourceService {
-  private _loading: boolean;
   private _totalRecords: number;
   private _variantFields: Array<{name: string, label: string, show:boolean}>;
   private variants: Array<Variant>;
@@ -53,13 +52,8 @@ export class VariantLineDatasourceService {
 
   constructor(private readonly service: VarcanService,
               private readonly globalConstants: GlobalConstants) {
-    this._loading = true;
     this._totalRecords = 0;
     this._variantFields = [];
-  }
-
-  get loading() {
-    return this._loading;
   }
 
   get totalRecords() {
@@ -92,9 +86,8 @@ export class VariantLineDatasourceService {
     let page: Page<Variant>;
     await this.service.getVariants(this.variantParams).then(res => page = res.data)
     await this.getVariantLine(page, event);
-    this._loading = false;
-    this.data$ = this.cachedVariantLines;
-    this.dataSubject.next(this.data$);
+    const data = this.cachedVariantLines;
+    this.dataSubject.next(data);
     return this.cachedVariantLines;
   }
 

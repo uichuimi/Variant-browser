@@ -1,14 +1,13 @@
-import { Consequence } from "../../../api/varcan-service/models/response/Consequence";
-import { Gene } from "../../../api/varcan-service/models/response/Gene";
-import { Biotype } from "../../../api/varcan-service/models/response/Biotype";
-import { Impact } from "../../../api/varcan-service/models/response/Impact";
-import { Effect } from "../../../api/varcan-service/models/response/Effect";
-import { GeneLineDataSource } from "./gene-line-data-source";
-import { BiotypeLineDataSource } from "./biotype-line-data-source";
-import { EffectLineDataSource } from "./effect-line-data-source";
-import { VariantLine } from "../../models/variant-line";
-import { ImpactLineDataSource } from "./impact-line-data-source";
-import { ConsequenceLine } from "../../models/consequence-line";
+import {Consequence} from "../../../api/varcan-service/models/response/Consequence";
+import {Gene} from "../../../api/varcan-service/models/response/Gene";
+import {Biotype} from "../../../api/varcan-service/models/response/Biotype";
+import {Impact} from "../../../api/varcan-service/models/response/Impact";
+import {Effect} from "../../../api/varcan-service/models/response/Effect";
+import {GeneLineDataSource} from "./gene-line-data-source";
+import {BiotypeLineDataSource} from "./biotype-line-data-source";
+import {EffectLineDataSource} from "./effect-line-data-source";
+import {ImpactLineDataSource} from "./impact-line-data-source";
+import {ConsequenceLine} from "../../models/consequence-line";
 
 export class ConsequenceLineDataSource {
   private geneLine: GeneLineDataSource;

@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {GlobalConstants} from "../../services/common/global-constants";
-import {VarcanService} from "../../services/api/varcan-service/varcan.service";
 import {VariantParams} from "../../services/api/varcan-service/models/request/variant-params";
 import {Paginator} from "primeng/paginator";
 import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
@@ -24,6 +23,7 @@ import {MenuItem, SortEvent} from "primeng/api";
 
 
 export class TableComponent implements OnInit {
+  protected loading: boolean = true;
   protected variants: Array<VariantLine>;
   protected selectedVariant: VariantLine;
   protected showVariantFilters: boolean;
@@ -45,11 +45,9 @@ export class TableComponent implements OnInit {
     { label: 'VCF', command: () => this.openShowVcfDownloadDialog() }
   ];
 
-  constructor(private readonly service: VarcanService,
-              private readonly globalConstants: GlobalConstants,
+  constructor(private readonly globalConstants: GlobalConstants,
               protected dataSource: VariantLineDatasourceService) {
     this.variantParams = { size: this.rows };
-    this.globalConstants.initializeLocalStorage();
   }
 
   @Input() get selectedColumns(): any[] {
@@ -61,7 +59,6 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadVariants({ first: 0, rows: this.rows });
     this.dataSource.data$.subscribe((data) => {
       this.variants = data;
       if (this.variants.length > 0) {
@@ -98,16 +95,20 @@ export class TableComponent implements OnInit {
         "show": true
       }
     ];
-    if (!(this.dataSource.data$.subscribe instanceof Function)) window.location.reload();
   }
 
-  async loadVariants(event) {
+  loadVariants(event) {
     this.rows = event.rows;
     const dataSourceVariantParams = this.dataSource.getVariantParams();
     if (dataSourceVariantParams != null) this.variantParams = dataSourceVariantParams;
     this.variantParams.page = event.first / event.rows;
     this.variantParams.size = event.rows;
-    this.variants = await this.dataSource.updateVariantLine(this.variantParams);
+
+    setTimeout(() => {
+      this.dataSource.updateVariantLine(this.variantParams).then((lines) => this.variants = lines);
+      this.loading = false;
+    }, 1000)
+
     this.cols = this.dataSource.variantFields;
   }
 
@@ -253,12 +254,10 @@ export class TableComponent implements OnInit {
   }
 
   onToggleShowCsvDownloadDialog($event: boolean) {
-    console.log($event);
     this.showCsvDownloadDialog = $event;
   }
 
   onToggleShowVcfDownloadDialog($event: boolean) {
-    console.log($event);
     this.showVcfDownloadDialog = $event;
   }
 

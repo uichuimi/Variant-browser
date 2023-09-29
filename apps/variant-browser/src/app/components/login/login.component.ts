@@ -8,6 +8,7 @@ import {
 } from '@angular/animations';
 import {VarcanService} from '../../services/api/varcan-service/varcan.service';
 import { Router } from "@angular/router";
+import {GlobalConstants} from "../../services/common/global-constants";
 
 @Component({
   selector: 'app-login',

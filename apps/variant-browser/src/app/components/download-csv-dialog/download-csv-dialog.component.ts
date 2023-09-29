@@ -55,13 +55,10 @@ export class DownloadCsvDialogComponent implements OnInit {
               private dataSource: VariantLineDatasourceService,
               private service: VarcanService, private messageService: MessageService) {
     this.visible = false;
-
     this.variantParams = this.dataSource.getCsvVariantReportParams();
   }
 
   ngOnInit(): void {
-    if (this.globalConstants.getPopulation() == null || this.globalConstants.getIndividuals() == null) return;
-
     this.availableFrequencyFields = this.globalConstants.getPopulation()
       .map((population) => {
         return {
@@ -90,7 +87,7 @@ export class DownloadCsvDialogComponent implements OnInit {
         }
         return result;
       }, []);
-    }
+  }
 
   async download() {
     const properties = this.selectedPropertyFields.map(property => property.name);
