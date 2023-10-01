@@ -64,7 +64,7 @@ export class VarcanService extends ApiService {
     this.tokenStorageService = new TokenStorageService();
     this.httpHandler = axios.create({
       baseURL: this.url,
-      timeout: 2000
+      timeout: 5*60*1000
     });
     this.loginService = new LoginService(this.httpHandler);
 
@@ -212,6 +212,6 @@ export class VarcanService extends ApiService {
   }
 
   downloadCsvReport(data?: CsvVariantReportParams): Promise<AxiosResponse<string>> {
-    return data !== null ? this.downloadCsvReportService.fetch(data) : this.downloadCsvReportService.fetch();
+    return this.downloadCsvReportService.fetch(data, {responseType: 'blob'});
   }
 }

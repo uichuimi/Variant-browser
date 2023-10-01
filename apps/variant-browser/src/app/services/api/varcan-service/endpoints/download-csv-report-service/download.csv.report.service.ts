@@ -23,11 +23,10 @@ export class DownloadCsvReportService {
    * Usa el método fetch de PostFetchService, especificando el punto
    * de ataque (/csv/variants) y el tipo que debe devolver un CSV
    * @param data modelo de entrada VariantsParams
+   * @param config parametros de configuración adicionales asociados a la petición
    * @returns Promise<AxiosResponse<String>>
    */
-  fetch(data?: CsvVariantReportParams): Promise<AxiosResponse<string>> {
-    return data !== null ?
-      this.postFetchService.fetch<CsvVariantReportParams, string>('/variants/csv', data) :
-      this.postFetchService.fetch<CsvVariantReportParams, string>('/variants/csv');
+  fetch(data?: CsvVariantReportParams, config?: object): Promise<AxiosResponse<string>> {
+    return this.postFetchService.fetch<CsvVariantReportParams, string>('/variants/csv', data, config);
   }
 }

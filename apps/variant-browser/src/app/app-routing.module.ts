@@ -9,7 +9,7 @@ import { TableComponent } from './components/table/table.component';
 import { AuthGuardService } from "./services/auth/auth-guard.service";
 
 const routes: Routes = [
-  { path: 'login', pathMatch: 'full', component: LoginComponent },
+  { path: '', pathMatch: 'full', component: LoginComponent },
   { path: '**', component: TableComponent, canActivate: [AuthGuardService]  },
   { path: 'login', component: LoginComponent  },
   { path: 'variants', component: TableComponent, canActivate: [AuthGuardService] }

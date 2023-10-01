@@ -105,7 +105,7 @@ export class DownloadCsvDialogComponent implements OnInit {
     this.variantParams.fields = fields;
 
     this.messageService.add({ key: 'bc', severity: 'success', summary: 'Downloading file...', detail: 'The CSV file will download soon...' });
-
+    
     await this.service.downloadCsvReport(this.variantParams).then(response => {
       const csvReport = response.data;
       const url = window.URL.createObjectURL(new Blob([csvReport], { type: 'text/csv' }));

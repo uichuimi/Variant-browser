@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {GlobalConstants} from "../../services/common/global-constants";
-import {VarcanService} from "../../services/api/varcan-service/varcan.service";
 import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
 import {VarcanAPIEntities} from "../../services/api/varcan-service/misc/varcan-api-entities";
 import {DropListOption} from "../../models/droplist-option";
@@ -42,7 +41,6 @@ export class RegionFilterComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private globalConstants: GlobalConstants,
-              private service: VarcanService,
               private dataSource: VariantLineDatasourceService,
               private messageService: MessageService) {
     this.allProperties = [
@@ -105,7 +103,7 @@ export class RegionFilterComponent implements OnInit {
     return chromosomes.map((chromosome: Chromosome) => {
       return {
         label: `${chromosome.ucsc} / ${chromosome.genebank} / ${chromosome.refseq}`,
-        value: chromosome.ncbi
+        value: chromosome.ucsc
       }
     });
   }
@@ -144,10 +142,9 @@ export class RegionFilterComponent implements OnInit {
     this.addFilterAttribute(excludeText, "chip");
 
     let regionStr: string;
-    console.log(regionFilter.chromosome);
     if (regionFilter.chromosome) {
       regionStr = this.chromosomes
-        .find((chromosome: Chromosome) => chromosome.ncbi === regionFilter.chromosome).ucsc;
+        .find((chromosome: Chromosome) => chromosome.ucsc === regionFilter.chromosome).ucsc;
     } else {
       regionStr = "*";
     }

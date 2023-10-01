@@ -20,10 +20,10 @@ export class PostFetchService extends FetchService {
    *
    * @param endpoint punto de la API al que ataca
    * @param data datos que van en el body de la llamada
-   * @param query datos que van en la query string de la llamada
+   * @param config parametros de configuración adicionales asociados a la petición
    * @returns Promise<AxiosResponse<U>> (Promesa genérica)
    */
-  fetch<T, U>(endpoint: string, data?: T, query?: object): Promise<AxiosResponse<U>> {
-    return this.httpHandler.post<U>(endpoint, data);
+  fetch<T, U>(endpoint: string, data?: T, config?: object): Promise<AxiosResponse<U>> {
+    return this.httpHandler.post<U>(endpoint, data, config);
   }
 }
