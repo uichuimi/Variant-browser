@@ -74,3 +74,8 @@ label {
     font-weight: bold;
     text-align: left;
 }
+
+.responsive {
+  width: 100%;
+  height: auto;
+}
