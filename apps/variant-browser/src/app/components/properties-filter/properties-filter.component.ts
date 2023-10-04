@@ -210,8 +210,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
 
   private extractPropertyAPIData(property: string, capitalizeProperty: string) {
     this.defaultValueLabel = `Select ${property}`;
-    const method: any = `get${capitalizeProperty}`;
-    this.allValues = this.globalConstants.run(this.globalConstants, method);
+    this.allValues = this.globalConstants[property];
   }
 
   private generateValueOptionLabels(property: string) {

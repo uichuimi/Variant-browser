@@ -126,10 +126,6 @@ export class GlobalConstants implements OnInit, OnDestroy {
     return JSON.parse(localStorage.getItem('biotypes')) || this._biotypesSubject.value;
   }
 
-  run(f: Record<string, any>, method: Exclude<keyof GlobalConstants, 'run'>): any {
-    return f[method]();
-  }
-
   private initializeChromosomes() {
     this.service.getChromosomes().then(response => {
       const chromosomes: Array<Chromosome> = response.data;
