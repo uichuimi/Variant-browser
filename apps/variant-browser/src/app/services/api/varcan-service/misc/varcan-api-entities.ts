@@ -17,6 +17,7 @@ interface VarcanAPIEntity {
   INDIVIDUALS: VarcanAPIEntityAttribute;
   VARIANTS: VarcanAPIEntityAttribute;
   BIOTYPES: VarcanAPIEntityAttribute;
+  PROJECTS: VarcanAPIEntityAttribute;
 }
 
 export const VarcanAPIEntities: VarcanAPIEntity = {
@@ -31,5 +32,6 @@ export const VarcanAPIEntities: VarcanAPIEntity = {
   POPULATIONS: { name: "population", label: "Populations" },
   INDIVIDUALS: { name: "individual", label: "Individuals" },
   VARIANTS: { name: "variants", label: "Variants" },
-  BIOTYPES: { name: "biotypes", label: "Biotypes" }
+  BIOTYPES: { name: "biotypes", label: "Biotypes" },
+  PROJECTS: { name: "projects", label: "Projects" }
 }

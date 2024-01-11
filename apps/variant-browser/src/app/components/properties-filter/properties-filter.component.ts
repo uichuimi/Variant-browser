@@ -61,6 +61,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
               private service: VarcanService,
               private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
     this.allProperties = [
+      VarcanAPIEntities.PROJECTS,
       VarcanAPIEntities.IDENTIFIERS,
       VarcanAPIEntities.GENES,
       VarcanAPIEntities.BIOTYPES,

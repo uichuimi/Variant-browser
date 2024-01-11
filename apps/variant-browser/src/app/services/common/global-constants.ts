@@ -8,12 +8,14 @@ import {Population} from '../api/varcan-service/models/response/Population';
 import {Injectable, OnDestroy, OnInit} from "@angular/core";
 import {VarcanService} from "../api/varcan-service/varcan.service";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {Project} from "../api/varcan-service/models/response/Project";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class GlobalConstants implements OnInit, OnDestroy {
+  private _projectsSubject = new BehaviorSubject<Project[]>(null);
   private _chromosomesSubject = new BehaviorSubject<Chromosome[]>(null);
   private _impactsSubject = new BehaviorSubject<Impact[]>(null);
   private _effectsSubject = new BehaviorSubject<Effect[]>(null);
@@ -26,6 +28,10 @@ export class GlobalConstants implements OnInit, OnDestroy {
     this.service.refreshLogin();
     console.log("INITIALIZING GLOBAL VARIABLES");
     this.initializeLocalStorage();
+  }
+
+  get projects$(): Observable<Project[]> {
+    return this._projectsSubject.asObservable();
   }
 
   get chromosomes$(): Observable<Chromosome[]> {
@@ -57,6 +63,11 @@ export class GlobalConstants implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._projectsSubject.subscribe((projects) => {
+      console.log(projects);
+      localStorage.setItem('projects', JSON.stringify(projects));
+    });
+
     this._chromosomesSubject.subscribe((chromosomes) => {
       console.log(chromosomes);
       localStorage.setItem('chromosomes', JSON.stringify(chromosomes));
@@ -88,6 +99,7 @@ export class GlobalConstants implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this._projectsSubject.unsubscribe();
     this._chromosomesSubject.unsubscribe();
     this._impactsSubject.unsubscribe();
     this._effectsSubject.unsubscribe();
@@ -97,6 +109,9 @@ export class GlobalConstants implements OnInit, OnDestroy {
     this._biotypesSubject.unsubscribe();
   }
 
+  get projects(): Project[] {
+    return JSON.parse(localStorage.getItem('projects')) || this._projectsSubject.value;
+  }
 
   get chromosomes(): Chromosome[] {
     return JSON.parse(localStorage.getItem('chromosomes')) || this._chromosomesSubject.value;
@@ -124,6 +139,14 @@ export class GlobalConstants implements OnInit, OnDestroy {
 
   get biotypes(): Biotype[] {
     return JSON.parse(localStorage.getItem('biotypes')) || this._biotypesSubject.value;
+  }
+
+  private initializeProjects() {
+    this.service.getProjects().then(response => {
+      const projects: Array<Project> = response.data;
+      projects.sort((a, b) => a.id - b.id);
+      this._projectsSubject.next(projects);
+    }).catch(error => console.error('Projects error: ' + error));
   }
 
   private initializeChromosomes() {
@@ -183,6 +206,7 @@ export class GlobalConstants implements OnInit, OnDestroy {
   }
 
   public initializeLocalStorage() {
+    this.initializeProjects();
     this.initializeChromosomes();
     this.initializeEffects();
     this.initializeImpacts();

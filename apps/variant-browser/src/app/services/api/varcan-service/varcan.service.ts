@@ -33,6 +33,8 @@ import { VariantParams } from "./models/request/variant-params";
 import { CsvVariantReportParams } from "./models/request/csv-variant-report-params";
 import { Variant } from "./models/response/Variant";
 import { DownloadCsvReportService } from "./endpoints/download-csv-report-service/download.csv.report.service";
+import {ProjectService} from "./endpoints/project-service/project.service";
+import {Project} from "./models/response/Project";
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +46,7 @@ import { DownloadCsvReportService } from "./endpoints/download-csv-report-servic
  */
 export class VarcanService extends ApiService {
   private httpHandler: AxiosInstance;
+  private projectService: ProjectService;
   private chromosomeService: ChromosomesService;
   private biotypeService: BiotypesService;
   private geneService: GenesService;
@@ -68,6 +71,7 @@ export class VarcanService extends ApiService {
     });
     this.loginService = new LoginService(this.httpHandler);
 
+    this.projectService = new ProjectService(this.httpHandler);
     this.chromosomeService = new ChromosomesService(this.httpHandler);
     this.biotypeService = new BiotypesService(this.httpHandler);
     this.geneService = new GenesService(this.httpHandler);
@@ -120,6 +124,15 @@ export class VarcanService extends ApiService {
    */
   logout(): void {
     this.tokenStorageService.signout();
+  }
+
+  /**
+   * Se encarga de crear una promesa que cuando
+   * se abra devolverá un listado de proyectos
+   * @returns Promise<AxiosResponse<Array<Project>>>
+   */
+  getProjects(): Promise<AxiosResponse<Array<Project>>> {
+    return this.projectService.fetch();
   }
 
   /**
