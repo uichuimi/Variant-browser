@@ -1,4 +1,4 @@
-import { Individual } from "../../../api/varcan-service/models/response/Individual";
+import { Sample } from "../../../api/varcan-service/models/response/Sample";
 import { GenotypeType } from "../../../api/varcan-service/models/response/GenotypeType";
 import { Genotype } from "../../../api/varcan-service/models/response/Genotype";
 import { VariantLine } from "../../models/variant-line";
@@ -12,7 +12,7 @@ export class GenotypeLineDataSource {
   private referenceCount: number;
   private alternativeCount: number;
 
-  constructor(reference: string, alternative: string, genotype: Genotype,individualCache: Array<Individual>,
+  constructor(reference: string, alternative: string, genotype: Genotype,individualCache: Array<Sample>,
               genotypeTypeCache: Array<GenotypeType>) {
     this.reference = reference;
     this.alternative = alternative;
@@ -22,9 +22,9 @@ export class GenotypeLineDataSource {
     this.alternativeCount = genotype.altCount;
   }
 
-  private getIndividualName(individualId: number, individualCache: Array<Individual>): string {
-    const individual: Individual = individualCache
-      .find((individual: Individual) => individual.id === individualId);
+  private getIndividualName(individualId: number, individualCache: Array<Sample>): string {
+    const individual: Sample = individualCache
+      .find((individual: Sample) => individual.id === individualId);
     return individual.code;
   }
 

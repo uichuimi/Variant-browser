@@ -6,7 +6,11 @@ import {GlobalConstants} from "../common/global-constants";
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-  constructor(private tokenStorage: TokenStorageService, private router: Router) {}
+  constructor(private tokenStorage: TokenStorageService, private router: Router) {
+    this.router.events.subscribe(event => {
+      console.log(event);
+    });
+  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const token: Token = this.tokenStorage.getToken();

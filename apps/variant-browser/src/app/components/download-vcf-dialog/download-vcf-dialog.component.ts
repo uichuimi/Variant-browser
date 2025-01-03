@@ -17,14 +17,14 @@ export class DownloadVcfDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.globalConstants.individuals$.subscribe((individuals) => {
-      if (individuals) {
-        this.availableSamples = individuals.reduce((result, sample) => {
-          const group: string = sample.code.toUpperCase().match(/[A-Z]+/)[0];
+    this.globalConstants.samples$.subscribe((samples) => {
+      if (samples) {
+        this.availableSamples = samples.reduce((result, sample) => {
+          const group: string = sample.chuimi.toUpperCase().match(/[A-Z]+/)[0];
           const targetGroup = result.find(groupElem => groupElem.group === group);
           const sampleObject = {
-            name: `GEN.${sample.code.toUpperCase()}`,
-            label: sample.code,
+            name: `GEN.${sample.chuimi.toUpperCase()}`,
+            label: sample.chuimi,
             category: "Genotype"
           }
 

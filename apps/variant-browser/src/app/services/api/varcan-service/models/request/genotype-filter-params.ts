@@ -1,5 +1,5 @@
 export interface GenotypeFilterParams {
-  individual?: Array<number>;
+  sample?: Array<number>;
   genotypeType?: Array<number>;
   selector?: string;
   number?: number;

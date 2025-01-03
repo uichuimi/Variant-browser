@@ -3,7 +3,7 @@ import { GenotypeFilterParams } from "../../services/api/varcan-service/models/r
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { GlobalConstants } from "../../services/common/global-constants";
-import { Individual } from "../../services/api/varcan-service/models/response/Individual";
+import { Sample } from "../../services/api/varcan-service/models/response/Sample";
 import { GenotypeType } from "../../services/api/varcan-service/models/response/GenotypeType";
 import { ScreenBreakpointAttributeValue } from "../../directives/device-width-breakpoint.directive";
 import { faDna, faHashtag, faLayerGroup, faPlus, faVial } from "@fortawesome/free-solid-svg-icons";
@@ -20,7 +20,7 @@ interface Arity {
 interface SampleSelectGroup {
   disabled?: boolean;
   name: string;
-  value: Array<Individual>;
+  value: Array<Sample>;
 }
 
 @Component({
@@ -57,7 +57,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
   protected selectedGenotypes: Array<number> = [];
   protected filter: Filter;
   private selectorCtrlEvent: Subscription;
-  private individuals: Individual[];
+  private samples: Sample[];
 
   constructor(private fb: FormBuilder, protected globalConstants: GlobalConstants,
               private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
@@ -102,10 +102,10 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
       this.allGenotypeTypes = genotypeTypes;
     });
 
-    this.globalConstants.individuals$.subscribe((individuals) => {
-      if (!individuals) return;
-      this.individuals = individuals;
-      this.generateSampleSelectOptions(individuals);
+    this.globalConstants.samples$.subscribe((samples) => {
+      if (!samples) return;
+      this.samples = samples;
+      this.generateSampleSelectOptions(samples);
     })
   }
 
@@ -134,14 +134,14 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter removed', detail: 'A genotype filter have been added' });
   }
 
-  private generateSampleSelectOptions(individuals: Individual[]) {
-    const sampleGroups = individuals
-      .map((individual: Individual) => individual.code.toUpperCase().match(/[A-Z]+/)[0])
+  private generateSampleSelectOptions(samples: Sample[]) {
+    const sampleGroups = samples
+      .map((individual: Sample) => individual.chuimi.toUpperCase().match(/[A-Z]+/)[0])
       .filter((group: string, index: number, array: Array<string>) => array.indexOf(group) === index);
     this.allSamples = sampleGroups.map((group: string): SampleSelectGroup => {
       return {
         name: group,
-        value: individuals.filter((individual: Individual) => individual.code.toUpperCase().search(`^${group}[_0-9]*`) !== -1)
+        value: samples.filter((individual: Sample) => individual.chuimi.toUpperCase().search(`^${group}[_0-9]*`) !== -1)
       };
     });
   }
@@ -173,8 +173,8 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
   private addNewFilterItem() {
     const genotypeFilters: GenotypeFilterParams = this.genotypeFilterForm.value.genotypeFilters;
     this.filter = {
-      name: "selector,number,individual,genotypeType",
-      value: `${genotypeFilters.selector} ${genotypeFilters.number} [${genotypeFilters.individual}] [${genotypeFilters.genotypeType}]`,
+      name: "selector,number,sample,genotypeType",
+      value: `${genotypeFilters.selector} ${genotypeFilters.number} [${genotypeFilters.sample}] [${genotypeFilters.genotypeType}]`,
       filterString: "",
       attributes: []
     };
@@ -186,7 +186,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     }
 
     this.addFilterAttribute("of", "text");
-    const individualNames = this.getSampleNames(genotypeFilters.individual);
+    const individualNames = this.getSampleNames(genotypeFilters.sample);
     this.addFilterAttribute(`[${individualNames}]`, "chip");
 
     this.addFilterAttribute("is", "text");
@@ -196,9 +196,9 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   private getSampleNames(sampleIds: Array<number>) {
     return sampleIds.map((sampleId: number) => {
-      const sample: Individual = this.individuals
-        .find((sample: Individual) => sample.id === sampleId);
-      return sample.code;
+      const sample: Sample = this.samples
+        .find((sample: Sample) => sample.id === sampleId);
+      return sample.chuimi;
     });
   }
 
@@ -226,7 +226,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     return {
       selector: params[0],
       number: Number.parseInt(params[1]),
-      individual: JSON.parse(params[2]),
+      sample: JSON.parse(params[2]),
       genotypeType: JSON.parse(params[3])
     };
   }

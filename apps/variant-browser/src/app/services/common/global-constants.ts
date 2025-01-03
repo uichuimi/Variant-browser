@@ -2,7 +2,7 @@ import {Chromosome} from '../api/varcan-service/models/response/Chromosome';
 import {Impact} from '../api/varcan-service/models/response/Impact';
 import {Effect} from '../api/varcan-service/models/response/Effect';
 import {GenotypeType} from '../api/varcan-service/models/response/GenotypeType';
-import {Individual} from '../api/varcan-service/models/response/Individual';
+import {Sample} from '../api/varcan-service/models/response/Sample';
 import {Biotype} from '../api/varcan-service/models/response/Biotype';
 import {Population} from '../api/varcan-service/models/response/Population';
 import {Injectable, OnDestroy, OnInit} from "@angular/core";
@@ -20,7 +20,7 @@ export class GlobalConstants implements OnInit, OnDestroy {
   private _impactsSubject = new BehaviorSubject<Impact[]>(null);
   private _effectsSubject = new BehaviorSubject<Effect[]>(null);
   private _genotypeTypesSubject = new BehaviorSubject<GenotypeType[]>(null);
-  private _individualsSubject = new BehaviorSubject<Individual[]>(null);
+  private _samplesSubject = new BehaviorSubject<Sample[]>(null);
   private _populationsSubject = new BehaviorSubject<Population[]>(null);
   private _biotypesSubject = new BehaviorSubject<Biotype[]>(null);
 
@@ -50,8 +50,8 @@ export class GlobalConstants implements OnInit, OnDestroy {
     return this._genotypeTypesSubject.asObservable();
   }
 
-  get individuals$(): Observable<Individual[]> {
-    return this._individualsSubject.asObservable();
+  get samples$(): Observable<Sample[]> {
+    return this._samplesSubject.asObservable();
   }
 
   get populations$(): Observable<Population[]> {
@@ -85,8 +85,8 @@ export class GlobalConstants implements OnInit, OnDestroy {
       localStorage.setItem('genotypeTypes', JSON.stringify(genotypeTypes));
     });
 
-    this._individualsSubject.subscribe((individuals) => {
-      localStorage.setItem('individuals', JSON.stringify(individuals));
+    this._samplesSubject.subscribe((samples) => {
+      localStorage.setItem('samples', JSON.stringify(samples));
     });
 
     this._populationsSubject.subscribe((populations) => {
@@ -104,7 +104,7 @@ export class GlobalConstants implements OnInit, OnDestroy {
     this._impactsSubject.unsubscribe();
     this._effectsSubject.unsubscribe();
     this._genotypeTypesSubject.unsubscribe();
-    this._individualsSubject.unsubscribe();
+    this._samplesSubject.unsubscribe();
     this._populationsSubject.unsubscribe();
     this._biotypesSubject.unsubscribe();
   }
@@ -129,8 +129,8 @@ export class GlobalConstants implements OnInit, OnDestroy {
     return JSON.parse(localStorage.getItem('genotypeTypes')) || this._genotypeTypesSubject.value;
   }
 
-  get individuals(): Individual[] {
-    return JSON.parse(localStorage.getItem('individuals')) || this._individualsSubject.value;
+  get samples(): Sample[] {
+    return JSON.parse(localStorage.getItem('samples')) || this._samplesSubject.value;
   }
 
   get populations(): Population[] {
@@ -181,12 +181,12 @@ export class GlobalConstants implements OnInit, OnDestroy {
     }).catch(error => console.error('Genotype types error: ' + error));
   }
 
-  private initializeIndividuals() {
-    this.service.getIndividuals().then(response => {
-      const individuals: Array<Individual> = response.data;
-      individuals.sort((a, b) => a.code.localeCompare(b.code));
-      this._individualsSubject.next(individuals);
-    }).catch(error => console.error('Individuals error: ' + error));
+  private initializeSamples() {
+    this.service.getSamples().then(response => {
+      const samples: Array<Sample> = response.data;
+      samples.sort((a, b) => a.chuimi.localeCompare(b.chuimi));
+      this._samplesSubject.next(samples);
+    }).catch(error => console.error('Samples error: ' + error));
   }
 
   private initializeBiotypes() {
@@ -211,7 +211,7 @@ export class GlobalConstants implements OnInit, OnDestroy {
     this.initializeEffects();
     this.initializeImpacts();
     this.initializeGenotypeTypes();
-    this.initializeIndividuals();
+    this.initializeSamples();
     this.initializeBiotypes();
     this.initializePopulations();
   }

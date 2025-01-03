@@ -14,7 +14,7 @@ interface VarcanAPIEntity {
   IMPACTS: VarcanAPIEntityAttribute;
   GENOTYPE_TYPE: VarcanAPIEntityAttribute;
   POPULATIONS: VarcanAPIEntityAttribute;
-  INDIVIDUALS: VarcanAPIEntityAttribute;
+  SAMPLES: VarcanAPIEntityAttribute;
   VARIANTS: VarcanAPIEntityAttribute;
   BIOTYPES: VarcanAPIEntityAttribute;
   PROJECTS: VarcanAPIEntityAttribute;
@@ -30,7 +30,7 @@ export const VarcanAPIEntities: VarcanAPIEntity = {
   IMPACTS: { name: "impacts", label: "Impacts" },
   GENOTYPE_TYPE: { name: "genotypeType", label: "Genotype" },
   POPULATIONS: { name: "population", label: "Populations" },
-  INDIVIDUALS: { name: "individual", label: "Individuals" },
+  SAMPLES: { name: "sample", label: "Samples" },
   VARIANTS: { name: "variants", label: "Variants" },
   BIOTYPES: { name: "biotypes", label: "Biotypes" },
   PROJECTS: { name: "projects", label: "Projects" }

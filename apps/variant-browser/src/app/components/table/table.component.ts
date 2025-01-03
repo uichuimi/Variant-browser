@@ -135,7 +135,7 @@ export class TableComponent implements OnInit {
   }
 
   private updateGenotypeColumns() {
-    const individualCodes = this.globalConstants.individuals
+    const individualCodes = this.globalConstants.samples
       .map(individual => individual.code);
     const baseColumns = [
       {name: 'individual', label: 'Individual', show: true},
@@ -177,7 +177,7 @@ export class TableComponent implements OnInit {
 
   protected isGenotype(variant: VariantLine, name: string) {
     if (variant.genotypes[0] === undefined) return false;
-    return this.globalConstants.individuals
+    return this.globalConstants.samples
         .map(individual => individual.code).includes(name);
   }
 

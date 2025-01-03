@@ -139,7 +139,7 @@ export class VariantLineDatasourceService {
           innerFieldNames = this.globalConstants.populations
             .map(population => population.code).concat(['population']);
         } else if (field === 'genotypes') {
-          innerFieldNames = this.globalConstants.individuals.map(individual => individual.code);
+          innerFieldNames = this.globalConstants.samples.map(individual => individual.chuimi);
         } else {
           if(this.cachedVariantLines[0][field][0]) {
             innerFieldNames = Object.keys(this.cachedVariantLines[0][field][0]);
@@ -341,10 +341,10 @@ export class VariantLineDatasourceService {
         const isTargetNumberPresent = value.number != null;
         const matchSelector = value.selector === target.selector;
         const matchNumber = isTargetNumberPresent ? value.number === target.number : true;
-        const matchIndividuals = this.cardinalSimilarity(target.individual, value.individual);
+        const matchSamples = this.cardinalSimilarity(target.sample, value.sample);
         const matchGenotype = this.cardinalSimilarity(target.genotypeType, value.genotypeType);
 
-        return !matchSelector || !matchNumber || !matchIndividuals || !matchGenotype;
+        return !matchSelector || !matchNumber || !matchSamples || !matchGenotype;
       });
     this.variantParams.page = 0;
   }
@@ -371,7 +371,7 @@ export class VariantLineDatasourceService {
   private getGenotypeLines(reference: string, alternative: string, genotypes: Array<Genotype>): Array<GenotypeLine> {
     const genotypeLines: Array<GenotypeLine> = genotypes
       .map((genotype: Genotype) =>
-        new GenotypeLineDataSource(reference, alternative, genotype, this.globalConstants.individuals,
+        new GenotypeLineDataSource(reference, alternative, genotype, this.globalConstants.samples,
           this.globalConstants.genotypeTypes).line)
     return genotypeLines;
   }

@@ -8,7 +8,7 @@ import { Biotype } from "./models/response/Biotype";
 import { Chromosome } from "./models/response/Chromosome";
 import { Impact } from "./models/response/Impact";
 import { GenotypeType } from "./models/response/GenotypeType";
-import { Individual } from "./models/response/Individual";
+import { Sample } from "./models/response/Sample";
 import { Effect } from "./models/response/Effect";
 import { Population } from "./models/response/Population";
 import { GeneQueryParams } from "./models/request/gene-query-params";
@@ -35,8 +35,8 @@ const impactOutputMockup: Array<Impact> = require("../../../../fixtures/varcanSe
 // GENOTYPE_TYPE
 const genotypeTypeOutputMockup: Array<GenotypeType> = require("../../../../fixtures/varcanService/genotypeType/response/genotypeTypeOutputMockup.json");
 
-// INDIVIDUALS
-const individualOutputMockup: Array<Individual> = require("../../../../fixtures/varcanService/individual/response/individualOutputMockup.json");
+// SAMPLES
+const sampleOutputMockup: Array<Sample> = require("../../../../fixtures/varcanService/sample/response/sampleOutputMockup.json");
 
 // EFFECTS
 const effectOutputMockup: Array<Effect> = require("../../../../fixtures/varcanService/effect/response/effectOutputMockup.json");
@@ -117,11 +117,11 @@ describe("VarCanService", () => {
     });
   });
 
-  it("should return an individuals list when a call is made to /individuals endpoint", () => {
-    service.getIndividuals().then(response => {
-      const individualsApi: Array<Individual> = response.data;
-      expect(individualsApi)
-        .toEqual(individualOutputMockup);
+  it("should return an samples list when a call is made to /samples endpoint", () => {
+    service.getSamples().then(response => {
+      const SamplesApi: Array<Sample> = response.data;
+      expect(SamplesApi)
+        .toEqual(sampleOutputMockup);
     });
   });
 

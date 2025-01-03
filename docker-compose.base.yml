@@ -1,9 +1,23 @@
 version: '3.9'
+name: varcan
 services:
-  app-base:
+  frontend:
     restart: always
     build:
-      context: .
       dockerfile: Dockerfile
-      args:
-        - PROJECT=${PROJECT}
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    networks:
+      net:
+        ipv4_address: 172.28.1.6
+
+networks:
+  net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.1.0/28
+          gateway: 172.28.1.1

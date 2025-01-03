@@ -1,38 +1,38 @@
-import { Injectable, Inject } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
-import { ApiService } from '../api.service';
-import { ChromosomesService } from './endpoints/chromosome-service/chromosomes.service';
-import { BiotypesService } from './endpoints/biotype-service/biotypes.service';
-import { GenesService } from './endpoints/genes-service/genes.service';
-import { ImpactsService } from './endpoints/impacts-service/impacts.service';
-import { EffectsService } from './endpoints/effects-service/effects.service';
-import { PopulationsService } from './endpoints/populations-service/populations.service';
-import { GenotypeTypesService } from './endpoints/genotype-types-service/genotype-types.service';
-import { VariantsService } from './endpoints/variants-service/variants.service';
-import { IndividualsService } from './endpoints/individuals-service/individuals.service';
-import { LoginService } from './endpoints/login-service/login.service';
-import { RegisterService } from './endpoints/register-service/register.service';
-import { TokenStorageService } from './endpoints/token-storage-service/token-storage.service';
-import { BatchGeneService } from './endpoints/batch-gene-service/batch-gene.service';
-import { environment } from "../../../../environments/environment";
-import { Login } from "./models/request/login";
-import { Token } from "./models/response/Token";
-import { Register } from "./models/request/register";
-import { ResponseStatus } from "./models/response/ResponseStatus";
-import { Chromosome } from "./models/response/Chromosome";
-import { Biotype } from "./models/response/Biotype";
-import { GeneQueryParams } from "./models/request/gene-query-params";
-import { Page } from "./models/response/Page";
-import { Gene } from "./models/response/Gene";
-import { Impact } from "./models/response/Impact";
-import { Effect } from "./models/response/Effect";
-import { Population } from "./models/response/Population";
-import { GenotypeType } from "./models/response/GenotypeType";
-import { Individual } from "./models/response/Individual";
-import { VariantParams } from "./models/request/variant-params";
-import { CsvVariantReportParams } from "./models/request/csv-variant-report-params";
-import { Variant } from "./models/response/Variant";
-import { DownloadCsvReportService } from "./endpoints/download-csv-report-service/download.csv.report.service";
+import {ApiService} from '../api.service';
+import {ChromosomesService} from './endpoints/chromosome-service/chromosomes.service';
+import {BiotypesService} from './endpoints/biotype-service/biotypes.service';
+import {GenesService} from './endpoints/genes-service/genes.service';
+import {ImpactsService} from './endpoints/impacts-service/impacts.service';
+import {EffectsService} from './endpoints/effects-service/effects.service';
+import {PopulationsService} from './endpoints/populations-service/populations.service';
+import {GenotypeTypesService} from './endpoints/genotype-types-service/genotype-types.service';
+import {VariantsService} from './endpoints/variants-service/variants.service';
+import {SampleService} from './endpoints/sample-service/sample.service';
+import {LoginService} from './endpoints/login-service/login.service';
+import {RegisterService} from './endpoints/register-service/register.service';
+import {TokenStorageService} from './endpoints/token-storage-service/token-storage.service';
+import {BatchGeneService} from './endpoints/batch-gene-service/batch-gene.service';
+import {environment} from "../../../../environments/environment";
+import {Login} from "./models/request/login";
+import {Token} from "./models/response/Token";
+import {Register} from "./models/request/register";
+import {ResponseStatus} from "./models/response/ResponseStatus";
+import {Chromosome} from "./models/response/Chromosome";
+import {Biotype} from "./models/response/Biotype";
+import {GeneQueryParams} from "./models/request/gene-query-params";
+import {Page} from "./models/response/Page";
+import {Gene} from "./models/response/Gene";
+import {Impact} from "./models/response/Impact";
+import {Effect} from "./models/response/Effect";
+import {Population} from "./models/response/Population";
+import {GenotypeType} from "./models/response/GenotypeType";
+import {Sample} from "./models/response/Sample";
+import {VariantParams} from "./models/request/variant-params";
+import {CsvVariantReportParams} from "./models/request/csv-variant-report-params";
+import {Variant} from "./models/response/Variant";
+import {DownloadCsvReportService} from "./endpoints/download-csv-report-service/download.csv.report.service";
 import {ProjectService} from "./endpoints/project-service/project.service";
 import {Project} from "./models/response/Project";
 
@@ -54,7 +54,7 @@ export class VarcanService extends ApiService {
   private effectService: EffectsService;
   private populationService: PopulationsService;
   private genotypeTypeService: GenotypeTypesService;
-  private individualService: IndividualsService;
+  private sampleService: SampleService;
   private variantService: VariantsService;
   private loginService: LoginService;
   private registerService: RegisterService;
@@ -79,7 +79,7 @@ export class VarcanService extends ApiService {
     this.effectService = new EffectsService(this.httpHandler);
     this.populationService = new PopulationsService(this.httpHandler);
     this.genotypeTypeService = new GenotypeTypesService(this.httpHandler);
-    this.individualService = new IndividualsService(this.httpHandler);
+    this.sampleService = new SampleService(this.httpHandler);
     this.variantService = new VariantsService(this.httpHandler);
     this.registerService = new RegisterService(this.httpHandler);
     this.batchGeneService = new BatchGeneService(this.httpHandler);
@@ -204,10 +204,10 @@ export class VarcanService extends ApiService {
   /**
    * Se encarga de crear una promesa que cuando
    * se abra devolverá un listado de individuos
-   * @returns Promise<AxiosResponse<Array<Individual>>>
+   * @returns Promise<AxiosResponse<Array<Sample>>>
    */
-  getIndividuals(): Promise<AxiosResponse<Array<Individual>>> {
-    return this.individualService.fetch();
+  getSamples(): Promise<AxiosResponse<Array<Sample>>> {
+    return this.sampleService.fetch();
   }
 
   /**

@@ -1,17 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { GetFetchService } from '../fetch-service/get-fetch-service/get-fetch.service';
-import { Individual } from "../../models/response/Individual";
+import { Sample } from "../../models/response/Sample";
 
 @Injectable({
   providedIn: 'root'
 })
 
 /**
- * La clase IndividualsService se encarga de instanciar a GetFetchService,
+ * La clase SampleService se encarga de instanciar a GetFetchService,
  * especificando el punto de ataque y el tipo que debe devolver
  */
-export class IndividualsService {
+export class SampleService {
   readonly httpHandler: AxiosInstance;
   readonly getFetchService: GetFetchService;
 
@@ -22,10 +22,10 @@ export class IndividualsService {
 
   /**
    * Usa el método fetch de GetFetchService, especificando el punto
-   * de ataque (/individuals) y el tipo que debe devolver (Individual)
-   * @returns Promise<AxiosResponse<Array<Individual>>>
+   * de ataque (/samples) y el tipo que debe devolver (Sample)
+   * @returns Promise<AxiosResponse<Array<Sample>>>
    */
-  fetch(): Promise<AxiosResponse<Array<Individual>>> {
-    return this.getFetchService.fetch<undefined, Array<Individual>>('/individuals');
+  fetch(): Promise<AxiosResponse<Array<Sample>>> {
+    return this.getFetchService.fetch<undefined, Array<Sample>>('/samples');
   }
 }
