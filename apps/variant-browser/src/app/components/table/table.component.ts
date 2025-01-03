@@ -135,16 +135,16 @@ export class TableComponent implements OnInit {
   }
 
   private updateGenotypeColumns() {
-    const individualCodes = this.globalConstants.samples
-      .map(individual => individual.code);
+    const sampleCodes = this.globalConstants.samples
+      .map(sample => sample.chuimi);
     const baseColumns = [
-      {name: 'individual', label: 'Individual', show: true},
+      {name: 'sample', label: 'Sample', show: true},
       {name: 'genotype', label: 'Genotype', show: true},
       {name: 'refCount', label: 'Reference count', show: true},
       {name: 'altCount', label: 'Alternative count', show: true}
     ]
     this.genotypeColumns = this.dataSource.variantFields
-      .filter(field => individualCodes.includes(field.name)).concat(baseColumns);
+      .filter(field => sampleCodes.includes(field.name)).concat(baseColumns);
   }
 
   protected updateCurrentPage(currentPage: number): void {
@@ -178,12 +178,12 @@ export class TableComponent implements OnInit {
   protected isGenotype(variant: VariantLine, name: string) {
     if (variant.genotypes[0] === undefined) return false;
     return this.globalConstants.samples
-        .map(individual => individual.code).includes(name);
+        .map(sample => sample.chuimi).includes(name);
   }
 
   protected extractGenotype(variant: VariantLine, name: string) {
     const targetGenotypeLine = variant.genotypes
-      .find(genotypeLine => genotypeLine.individual === name);
+      .find(genotypeLine => genotypeLine.sample === name);
     if (targetGenotypeLine === undefined) return "-";
     return targetGenotypeLine[name];
   }

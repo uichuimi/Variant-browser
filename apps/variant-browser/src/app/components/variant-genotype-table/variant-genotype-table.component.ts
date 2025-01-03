@@ -15,7 +15,7 @@ export class VariantGenotypeTableComponent implements OnInit {
   variant: VariantLine;
   protected readonly Object = Object;
   protected genotypeColumns: any[] = [
-    {name: 'individual', label: 'Sample'},
+    {name: 'sample', label: 'Sample'},
     {name: 'alleles', label: 'Alleles'},
     {name: 'genotype', label: 'Genotype'},
     {name: 'count', label: 'Counts'},
@@ -28,7 +28,7 @@ export class VariantGenotypeTableComponent implements OnInit {
   ngOnInit(): void {
     this.genotypeOptions = this.genotypes
       .map(genotype => {
-        return { value: genotype.individual, label: genotype.individual };
+        return { value: genotype.sample, label: genotype.sample };
       });
     this._selectedGenotypesOptions = this.genotypeOptions;
   }
@@ -41,7 +41,7 @@ export class VariantGenotypeTableComponent implements OnInit {
     this._selectedGenotypesOptions = this.genotypeOptions
       .filter((col) => val.includes(col));
     this._selectedGenotypes = this.genotypes
-      .filter(col => val['name'] === col.individual);
+      .filter(col => val['name'] === col.sample);
   }
 
   get selectedGenotypes(): any[] {
@@ -88,7 +88,7 @@ export class VariantGenotypeTableComponent implements OnInit {
   }
 
   getGenotypeDP(genotype: GenotypeLine) {
-    const fieldKey = `DP (${genotype.individual})`;
+    const fieldKey = `DP (${genotype.sample})`;
     return genotype[fieldKey];
   }
 }

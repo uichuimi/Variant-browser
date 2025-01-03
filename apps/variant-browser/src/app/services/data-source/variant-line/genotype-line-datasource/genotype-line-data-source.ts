@@ -7,25 +7,25 @@ import { GenotypeLine } from "../../models/genotype-line";
 export class GenotypeLineDataSource {
   private reference: string;
   private alternative: string;
-  private individual: string;
+  private sample: string;
   private genotypeType: string;
   private referenceCount: number;
   private alternativeCount: number;
 
-  constructor(reference: string, alternative: string, genotype: Genotype,individualCache: Array<Sample>,
+  constructor(reference: string, alternative: string, genotype: Genotype, sampleCache: Array<Sample>,
               genotypeTypeCache: Array<GenotypeType>) {
     this.reference = reference;
     this.alternative = alternative;
-    this.individual = this.getIndividualName(genotype.individual, individualCache);
+    this.sample = this.getSampleName(genotype.sample, sampleCache);
     this.genotypeType = this.getGenotypeTypeName(genotype.genotypeType, genotypeTypeCache);
     this.referenceCount = genotype.refCount;
     this.alternativeCount = genotype.altCount;
   }
 
-  private getIndividualName(individualId: number, individualCache: Array<Sample>): string {
-    const individual: Sample = individualCache
-      .find((individual: Sample) => individual.id === individualId);
-    return individual.code;
+  private getSampleName(SampleId: number, sampleCache: Array<Sample>): string {
+    const sample: Sample = sampleCache
+      .find((sample: Sample) => sample.id === SampleId);
+    return sample.chuimi;
   }
 
   private getGenotypeTypeName(genotypeTypeId: number, genotypeTypeCache: Array<GenotypeType>) {
@@ -39,9 +39,9 @@ export class GenotypeLineDataSource {
       `(${this.reference}=${this.referenceCount} | ` +
       `${this.alternative}=${this.alternativeCount})`;
     return {
-      [this.individual]: genotype,
-      [`DP (${this.individual})`]: `${this.referenceCount + this.alternativeCount}`,
-      individual: this.individual,
+      [this.sample]: genotype,
+      [`DP (${this.sample})`]: `${this.referenceCount + this.alternativeCount}`,
+      sample: this.sample,
       genotype: this.genotypeType,
       refCount: this.referenceCount,
       altCount: this.alternativeCount

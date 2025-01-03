@@ -1,5 +1,5 @@
 export interface Genotype {
-  individual: number;
+  sample: number;
   altCount: number;
   genotypeType: number;
   refCount: number;

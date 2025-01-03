@@ -139,7 +139,7 @@ export class VariantLineDatasourceService {
           innerFieldNames = this.globalConstants.populations
             .map(population => population.code).concat(['population']);
         } else if (field === 'genotypes') {
-          innerFieldNames = this.globalConstants.samples.map(individual => individual.chuimi);
+          innerFieldNames = this.globalConstants.samples.map(sample => sample.chuimi);
         } else {
           if(this.cachedVariantLines[0][field][0]) {
             innerFieldNames = Object.keys(this.cachedVariantLines[0][field][0]);

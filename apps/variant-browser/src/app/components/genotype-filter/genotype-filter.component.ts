@@ -63,7 +63,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
               private dataSource: VariantLineDatasourceService, private messageService: MessageService) {
     this.genotypeFilterForm = fb.group({
       genotypeFilters: fb.group({
-        individual: fb.control([], [Validators.required]),
+        sample: fb.control([], [Validators.required]),
         genotypeType: fb.control([], [Validators.required]),
         selector: fb.control("", [Validators.required])
       })
@@ -83,8 +83,8 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     return this.genotypeFilterForm.get("genotypeFilters.genotypeType") as FormControl;
   }
 
-  get individualCtrl(): FormControl {
-    return this.genotypeFilterForm.get("genotypeFilters.individual") as FormControl;
+  get sampleCtrl(): FormControl {
+    return this.genotypeFilterForm.get("genotypeFilters.sample") as FormControl;
   }
 
   get numberCtrl(): FormControl {
@@ -136,12 +136,12 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   private generateSampleSelectOptions(samples: Sample[]) {
     const sampleGroups = samples
-      .map((individual: Sample) => individual.chuimi.toUpperCase().match(/[A-Z]+/)[0])
+      .map((sample: Sample) => sample.chuimi.toUpperCase().match(/[A-Z]+/)[0])
       .filter((group: string, index: number, array: Array<string>) => array.indexOf(group) === index);
     this.allSamples = sampleGroups.map((group: string): SampleSelectGroup => {
       return {
         name: group,
-        value: samples.filter((individual: Sample) => individual.chuimi.toUpperCase().search(`^${group}[_0-9]*`) !== -1)
+        value: samples.filter((sample: Sample) => sample.chuimi.toUpperCase().search(`^${group}[_0-9]*`) !== -1)
       };
     });
   }
@@ -186,8 +186,8 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     }
 
     this.addFilterAttribute("of", "text");
-    const individualNames = this.getSampleNames(genotypeFilters.sample);
-    this.addFilterAttribute(`[${individualNames}]`, "chip");
+    const sampleNames = this.getSampleNames(genotypeFilters.sample);
+    this.addFilterAttribute(`[${sampleNames}]`, "chip");
 
     this.addFilterAttribute("is", "text");
     const genotypeNames = this.getGenotypeNames(genotypeFilters.genotypeType);

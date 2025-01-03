@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { SampleService } from './sample.service';
+import {SampleService} from './sample.service';
 
 describe('SampleService', () => {
   let service: SampleService;
