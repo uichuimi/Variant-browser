@@ -14,6 +14,27 @@ services:
       net:
         ipv4_address: 172.28.1.6
 
+  frontend-dev:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - type: bind
+        source: ${PROJECT_PATH}
+        target: /app
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    networks:
+      net:
+        ipv4_address: 172.28.1.6
+
+volumes:
+  frontend:
+    driver: local
+
 networks:
   net:
     ipam:

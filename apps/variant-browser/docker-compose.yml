@@ -4,7 +4,7 @@ name: varcan
 services:
   frontend:
     extends:
-      file: ../../docker-compose.base.yml
+      file: ../../docker-compose.yml
       service: app-base
     env_file:
       - .env
