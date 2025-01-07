@@ -102,7 +102,7 @@ export class RegionFilterComponent implements OnInit {
   private getAllChromosomes(chromosomes: Chromosome[]) {
     return chromosomes.map((chromosome: Chromosome) => {
       return {
-        label: `${chromosome.ucsc} / ${chromosome.genebank} / ${chromosome.refseq}`,
+        label: `${chromosome.ucsc} / ${chromosome.genbank} / ${chromosome.refseq}`,
         value: chromosome.ucsc
       }
     });

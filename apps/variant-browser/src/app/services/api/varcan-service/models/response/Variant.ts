@@ -1,10 +1,11 @@
 import { Consequence } from "./Consequence";
 import { Frequency } from "./Frequency";
 import { Genotype } from "./Genotype";
+import {Chromosome} from "./Chromosome";
 
 export interface Variant {
     id: number;
-    chromosome: number;
+    chromosome: Chromosome;
     position: number;
     reference: string;
     alternative: string;

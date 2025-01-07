@@ -260,7 +260,7 @@ export class VariantLineDatasourceService {
   }
 
   private generateVariantLine(variant: Variant): VariantLine {
-    const chromosome = this.getChromosomeNameFromId(variant.chromosome);
+    const chromosome = this.getChromosomeNameFromId(variant.chromosome.id);
     const consequenceLine: Array<ConsequenceLine> = this.getConsequenceLines(variant.consequence);
     const genotypeLines: Array<GenotypeLine> = this.getGenotypeLines(variant.reference,
       variant.alternative, variant.genotypes)

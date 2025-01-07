@@ -1,7 +1,7 @@
 export interface Chromosome {
     id: number;
     ncbi?: string;
-    genebank?: string;
+    genbank?: string;
     refseq?: string;
     ucsc: string;
     sequence?: number;

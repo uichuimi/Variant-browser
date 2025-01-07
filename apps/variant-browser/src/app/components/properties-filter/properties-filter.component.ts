@@ -218,7 +218,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     switch (property) {
       case VarcanAPIEntities.CHROMOSOMES.name:
         this.allValues = this.allValues.map((chromosome: Chromosome) => {
-          chromosome["label"] = `${chromosome.ucsc} / ${chromosome.genebank} / ${chromosome.refseq}`;
+          chromosome["label"] = `${chromosome.ucsc} / ${chromosome.genbank} / ${chromosome.refseq}`;
           return chromosome;
         });
         break;
