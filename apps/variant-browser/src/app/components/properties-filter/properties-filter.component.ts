@@ -225,7 +225,7 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
       case VarcanAPIEntities.EFFECTS.name:
         this.allValues = this.allValues.map((effect: Effect) => {
           const description = effect.description.replace(/_/g, " ");
-          effect["label"] = `${effect.accession} / ${description} (${effect.impact.name})`;
+          effect["label"] = `${effect.accession} / ${description} (${effect.synonyms})`;
           return effect;
         });
         break;

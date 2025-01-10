@@ -15,7 +15,7 @@ export class FrequencyLineDatasource {
       this.populationCode = "-";
       this.frequency = "-";
     } else {
-      const targetPopulation: Population = this.getPopulationNameById(frequency.population, populationCache);
+      const targetPopulation: Population = this.getPopulationNameById(frequency.population.id, populationCache);
       this.populationName = targetPopulation.name;
       this.populationCode = targetPopulation.code;
       let relativeFrequency: number = frequency.ac / frequency.an * 100;

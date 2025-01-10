@@ -16,8 +16,8 @@ export class GenotypeLineDataSource {
               genotypeTypeCache: Array<GenotypeType>) {
     this.reference = reference;
     this.alternative = alternative;
-    this.sample = this.getSampleName(genotype.sample, sampleCache);
-    this.genotypeType = this.getGenotypeTypeName(genotype.genotypeType, genotypeTypeCache);
+    this.sample = this.getSampleName(genotype.sample.id, sampleCache);
+    this.genotypeType = this.getGenotypeTypeName(genotype.genotypeType.id, genotypeTypeCache);
     this.referenceCount = genotype.refCount;
     this.alternativeCount = genotype.altCount;
   }
@@ -25,7 +25,7 @@ export class GenotypeLineDataSource {
   private getSampleName(SampleId: number, sampleCache: Array<Sample>): string {
     const sample: Sample = sampleCache
       .find((sample: Sample) => sample.id === SampleId);
-    return sample.chuimi;
+    return `${sample.chuimi} | ${sample.cnag}`;
   }
 
   private getGenotypeTypeName(genotypeTypeId: number, genotypeTypeCache: Array<GenotypeType>) {

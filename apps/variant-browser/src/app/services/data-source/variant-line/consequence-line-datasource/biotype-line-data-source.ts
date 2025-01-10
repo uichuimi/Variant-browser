@@ -7,10 +7,14 @@ export class BiotypeLineDataSource {
   private readonly description: string;
 
   constructor(biotype: Biotype) {
-    if (biotype) {
-      this.name = biotype.name;
-      this.accession = biotype.accession;
-      this.description = biotype.description;
+    if (biotype === null) {
+      this.name = "-";
+      this.accession = "-";
+      this.description = "-";
+    } else {
+      this.name = biotype.name || "-";
+      this.accession = biotype.accession || "-";
+      this.description = biotype.description || "-";
     }
   }
 

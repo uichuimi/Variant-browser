@@ -1,5 +1,7 @@
+import {Population} from "./Population";
+
 export interface Frequency {
-  population: number;
+  population: Population;
   an: number;
   af: number;
   ac: number;

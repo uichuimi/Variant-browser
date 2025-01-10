@@ -12,8 +12,8 @@ export class VariantDetailsComponent implements OnChanges {
 
   data = [
     {
-      id: 1,
-      value: "hola"
+      id: null,
+      value: null
     }
   ];
 
@@ -21,7 +21,6 @@ export class VariantDetailsComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("HOLA VARIANTE", this.variant, changes);
   }
 
 }

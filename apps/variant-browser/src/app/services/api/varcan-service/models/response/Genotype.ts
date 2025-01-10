@@ -1,6 +1,9 @@
+import {Sample} from "./Sample";
+import {GenotypeType} from "./GenotypeType";
+
 export interface Genotype {
-  sample: number;
+  sample: Sample;
   altCount: number;
-  genotypeType: number;
+  genotypeType: GenotypeType;
   refCount: number;
 }

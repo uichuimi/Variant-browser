@@ -5,5 +5,5 @@ export interface Effect {
     accession: string;
     description: string;
     name: string;
-    impact: Impact;
+    synonyms: Impact;
 }

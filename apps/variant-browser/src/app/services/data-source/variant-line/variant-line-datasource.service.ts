@@ -23,6 +23,7 @@ import {FrequencyLineDatasource} from "./frequency-line-datasource/frequency-lin
 import {CsvVariantReportParams} from "../../api/varcan-service/models/request/csv-variant-report-params";
 import {FrequencyFilterParams} from "../../api/varcan-service/models/request/frequency-filter-params";
 import {RegionFilterParams} from "../../api/varcan-service/models/request/region-filter-params";
+import {Transcript} from "../../api/varcan-service/models/response/Transcript";
 
 const DECIMAL_CIPHER_APROXIMATION = 5;
 
@@ -215,14 +216,14 @@ export class VariantLineDatasourceService {
   }
 
   private getGeneIdsFromVariant(variants: Array<Variant>) {
-    const geneIds: Array<Array<number>> = variants.map((variant: Variant) => {
+    const geneIds: Array<number> = variants.map((variant: Variant) => {
       return variant.consequence.map((consequence: Consequence) => {
-        return consequence.gene;
+        if (consequence.transcript === null || consequence.transcript.gene === null) return null;
+        return consequence.transcript.gene.id
       })
-    });
+    }).flat(2);
 
-    const flattenGeneIds = [].concat.apply([], geneIds);
-    return flattenGeneIds
+    return geneIds
       .filter((value, index, self) => self.indexOf(value) === index);
   }
 
@@ -244,7 +245,7 @@ export class VariantLineDatasourceService {
 
   private getFrequencyByPopulationCode(frequencies: Array<Frequency>, populationCode: string): string {
     const populationId: number = this.getPopulationIdFromCode(populationCode);
-    const targetFrequency: Frequency = frequencies.find((frequency: Frequency) => frequency.population === populationId);
+    const targetFrequency: Frequency = frequencies.find((frequency: Frequency) => frequency.population.id === populationId);
     if (targetFrequency != null) {
       let relativeFrequency: number = targetFrequency.ac / targetFrequency.an * 100;
       let roundRelativeFrequency = Math.round((relativeFrequency + Number.EPSILON) * 10 ** DECIMAL_CIPHER_APROXIMATION) / 10 ** DECIMAL_CIPHER_APROXIMATION;
@@ -388,10 +389,6 @@ export class VariantLineDatasourceService {
         .filter(item => {
           return !targetFrequencyFilter
             .some(obj => {
-              console.log(obj.arity, item.arity);
-              console.log(obj.population, item.population);
-              console.log(obj.operation, item.operation);
-              console.log(obj.af, item.af);
               return obj.arity === item.arity &&
                 JSON.stringify(obj.population) === JSON.stringify(item.population) &&
                 obj.operation === item.operation &&

@@ -1,10 +1,13 @@
+import {Effect} from "./Effect";
+import {Impact} from "./Impact";
+import {Transcript} from "./Transcript";
+
 export interface Consequence {
-  effect: number;
+  effect: Effect;
   polyphen: number;
   sift: number;
-  transcript: number;
+  transcript: Transcript;
   hgvsc: string;
   hgvsp: string;
-  gene: number;
-  impact: number;
+  impact: Impact;
 }

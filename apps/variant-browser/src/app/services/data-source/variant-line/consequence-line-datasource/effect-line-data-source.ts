@@ -8,9 +8,15 @@ export class EffectLineDataSource {
   private readonly description: string;
 
   constructor(effect: Effect) {
+    if (effect === null) {
+      this.name = "-";
+      this.accession = "-";
+      this.description = "-";
+    } else {
     this.name = effect.name || "-";
     this.accession = effect.accession || "-";
     this.description = effect.description || "-";
+    }
   }
 
   get line(): ConsequenceLine {

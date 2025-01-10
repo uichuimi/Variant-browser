@@ -10,7 +10,7 @@ export class GeneLineDataSource {
   private readonly symbol: string;
 
   constructor(gene: Gene) {
-    if (gene == null) {
+    if (gene === null) {
       this.name = "-";
       this.ensg = "-";
       this.hgnc = "-";

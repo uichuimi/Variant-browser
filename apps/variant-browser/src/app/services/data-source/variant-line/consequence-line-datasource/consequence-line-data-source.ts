@@ -8,12 +8,13 @@ import {BiotypeLineDataSource} from "./biotype-line-data-source";
 import {EffectLineDataSource} from "./effect-line-data-source";
 import {ImpactLineDataSource} from "./impact-line-data-source";
 import {ConsequenceLine} from "../../models/consequence-line";
+import {Transcript} from "../../../api/varcan-service/models/response/Transcript";
 
 export class ConsequenceLineDataSource {
-  private geneLine: GeneLineDataSource;
-  private biotypeLine: BiotypeLineDataSource;
-  private impactLine: ImpactLineDataSource;
-  private effectLine: EffectLineDataSource;
+  private geneLine: GeneLineDataSource = new GeneLineDataSource(null);
+  private biotypeLine: BiotypeLineDataSource = new BiotypeLineDataSource(null);
+  private impactLine: ImpactLineDataSource = new ImpactLineDataSource(null);
+  private effectLine: EffectLineDataSource = new EffectLineDataSource(null);
   private transcript: string;
   private sift: string;
   private hgvsp: string;
@@ -22,9 +23,9 @@ export class ConsequenceLineDataSource {
 
   constructor(consequence: Consequence, geneCache: Array<Gene>, biotypeCache: Array<Biotype>,
               impactCache: Array<Impact>, effectCache: Array<Effect>) {
-    this.geneLine = this.getGeneLineById(consequence.gene, geneCache, biotypeCache);
-    this.effectLine = this.getEffectLineById(consequence.effect, effectCache);
-    this.impactLine = this.getImpactLineById(consequence.impact, impactCache);
+    this.getGeneLineById(consequence.transcript, geneCache, biotypeCache);
+    this.getEffectLineById(consequence.effect.id, effectCache);
+    this.getImpactLineById(consequence.impact.id, impactCache);
     this.sift = `${consequence.sift || "-"}`;
     this.hgvsp = consequence.hgvsp || "-";
     this.hgvsc = consequence.hgvsc || "-";
@@ -33,31 +34,33 @@ export class ConsequenceLineDataSource {
   }
 
 
-  private getGeneLineById(geneId: number, geneCache: Array<Gene>, biotypeCache: Array<Biotype>): GeneLineDataSource {
-    const gene: Gene = geneCache
-      .find((gene: Gene) => gene.id === geneId);
+  private getGeneLineById(transcript: Transcript, geneCache: Array<Gene>, biotypeCache: Array<Biotype>): GeneLineDataSource {
+    if (transcript === null || transcript.gene === null) return;
 
-    if (gene != null && gene.biotype) {
-      this.biotypeLine = this.getBiotypeLineById(gene.biotype.id, biotypeCache);
-    } else {
-      this.biotypeLine = new BiotypeLineDataSource(null);
+    const gene: Gene = geneCache.find((gene: Gene) => transcript.gene.id === gene.id);
+
+    if (gene !== null && gene.biotype !== null) {
+      this.biotypeLine = this.getBiotypeLineById(transcript, biotypeCache);
     }
 
-    return new GeneLineDataSource(gene);
+    this.geneLine = new GeneLineDataSource(gene);
   }
 
-  private getEffectLineById(effectId: number, effectCache: Array<Effect>): EffectLineDataSource {
+  private getEffectLineById(effectId: number, effectCache: Array<Effect>) {
+    if (effectId === null) return;
     const effect: Effect = effectCache.find((effect: Effect) => effect.id === effectId);
-    return new EffectLineDataSource(effect);
+    this.effectLine = new EffectLineDataSource(effect);
   }
 
-  private getImpactLineById(impactId: number, impactCache: Array<Impact>): ImpactLineDataSource {
+  private getImpactLineById(impactId: number, impactCache: Array<Impact>) {
+    if (impactId === null) return;
     const impact: Impact = impactCache.find((impact: Impact) => impact.id === impactId);
-    return new ImpactLineDataSource(impact);
+    this.impactLine = new ImpactLineDataSource(impact);
   }
 
-  private getBiotypeLineById(biotypeId: number, biotypeCache: Array<Biotype>): BiotypeLineDataSource {
-    const biotype: Biotype = biotypeCache.find((biotype: Biotype) => biotype.id === biotypeId);
+  private getBiotypeLineById(transcript: Transcript, biotypeCache: Array<Biotype>) {
+    if (transcript === null || transcript.gene === null || transcript.gene.biotype === null) return;
+    const biotype: Biotype = biotypeCache.find((biotype: Biotype) => biotype.id === transcript.gene.biotype.id);
     return new BiotypeLineDataSource(biotype);
   }
 
