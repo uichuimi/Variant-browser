@@ -13,7 +13,11 @@ export class VariantConsequenceTableComponent implements OnInit{
     {name: 'ensg', label: 'ENSG'},
     {name: 'hgnc', label: 'HGNC'},
     {name: 'geneName', label: 'Gene name'},
-    {name: 'transcript', label: 'ENST'},
+    {name: 'enst', label: 'ENST'},
+    {name: 'dna_ncbi', label: 'DNA NCBI'},
+    {name: 'rna_ncbi', label: 'RNA NCBI'},
+    {name: 'start', label: 'Start'},
+    {name: 'end', label: 'End'},
     {name: 'impact', label: 'Impact'},
     {name: 'biotypeAccession', label: 'Biotype accession'},
     {name: 'biotypeName', label: 'Biotype name'},
@@ -44,7 +48,7 @@ export class VariantConsequenceTableComponent implements OnInit{
 
   ngOnInit(): void {
     this._selectedColumns = this.consequenceColumns
-      .filter(col => ['ensg', 'biotypeName', 'effectName', 'impact', 'transcript'].includes(col.name))
+      .filter(col => ['ensg', 'biotypeName', 'effectName', 'impact', 'enst', 'dna_ncbi', 'rna_ncbi', 'start', 'end'].includes(col.name))
   }
 
   private sortConsequences(consequences: ConsequenceLine[], field: string, order: number) {

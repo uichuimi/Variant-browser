@@ -15,7 +15,8 @@ export class VariantGenotypeTableComponent implements OnInit {
   variant: VariantLine;
   protected readonly Object = Object;
   protected genotypeColumns: any[] = [
-    {name: 'sample', label: 'Sample'},
+    {name: 'chuimi', label: 'CHUIMI ID'},
+    {name: 'cnag', label: 'CNAG ID'},
     {name: 'alleles', label: 'Alleles'},
     {name: 'genotype', label: 'Genotype'},
     {name: 'count', label: 'Counts'},
@@ -88,7 +89,7 @@ export class VariantGenotypeTableComponent implements OnInit {
   }
 
   getGenotypeDP(genotype: GenotypeLine) {
-    const fieldKey = `DP (${genotype.sample})`;
+    const fieldKey = `DP (${genotype.chuimi})`;
     return genotype[fieldKey];
   }
 }

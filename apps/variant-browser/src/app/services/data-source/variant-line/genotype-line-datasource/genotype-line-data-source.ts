@@ -7,7 +7,8 @@ import { GenotypeLine } from "../../models/genotype-line";
 export class GenotypeLineDataSource {
   private reference: string;
   private alternative: string;
-  private sample: string;
+  private chuimi: string;
+  private cnag: string;
   private genotypeType: string;
   private referenceCount: number;
   private alternativeCount: number;
@@ -16,16 +17,17 @@ export class GenotypeLineDataSource {
               genotypeTypeCache: Array<GenotypeType>) {
     this.reference = reference;
     this.alternative = alternative;
-    this.sample = this.getSampleName(genotype.sample.id, sampleCache);
+    this.chuimi = this.getSampleName(genotype.sample.id, sampleCache, 'chuimi');
+    this.cnag = this.getSampleName(genotype.sample.id, sampleCache, 'cnag');
     this.genotypeType = this.getGenotypeTypeName(genotype.genotypeType.id, genotypeTypeCache);
     this.referenceCount = genotype.refCount;
     this.alternativeCount = genotype.altCount;
   }
 
-  private getSampleName(SampleId: number, sampleCache: Array<Sample>): string {
+  private getSampleName(SampleId: number, sampleCache: Array<Sample>, fieldName: string): string {
     const sample: Sample = sampleCache
       .find((sample: Sample) => sample.id === SampleId);
-    return `${sample.chuimi} | ${sample.cnag}`;
+    return `${sample[fieldName]}`;
   }
 
   private getGenotypeTypeName(genotypeTypeId: number, genotypeTypeCache: Array<GenotypeType>) {
@@ -39,9 +41,10 @@ export class GenotypeLineDataSource {
       `(${this.reference}=${this.referenceCount} | ` +
       `${this.alternative}=${this.alternativeCount})`;
     return {
-      [this.sample]: genotype,
-      [`DP (${this.sample})`]: `${this.referenceCount + this.alternativeCount}`,
-      sample: this.sample,
+      [this.chuimi]: genotype,
+      [`DP (${this.chuimi})`]: `${this.referenceCount + this.alternativeCount}`,
+      chuimi: this.chuimi,
+      cnag: this.cnag,
       genotype: this.genotypeType,
       refCount: this.referenceCount,
       altCount: this.alternativeCount

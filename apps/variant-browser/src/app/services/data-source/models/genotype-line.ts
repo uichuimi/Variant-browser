@@ -1,6 +1,7 @@
 export interface GenotypeLine {
   [name: string]: any;
-  sample: string;
+  chuimi: string;
+  cnag: string;
   genotype: string;
   refCount: number;
   altCount: number;
