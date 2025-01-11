@@ -6,6 +6,6 @@ export interface Transcript {
   gene: Gene;
   dna_ncbi?: string;
   rna_ncbi?: string;
-  start?: number;
-  end?: number;
+  start?: string;
+  end?: string;
 }

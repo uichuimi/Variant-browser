@@ -7,6 +7,7 @@ import {GeneLineDataSource} from "./gene-line-data-source";
 import {BiotypeLineDataSource} from "./biotype-line-data-source";
 import {EffectLineDataSource} from "./effect-line-data-source";
 import {ImpactLineDataSource} from "./impact-line-data-source";
+import {TranscriptLineDataSource} from "./transcript-line-data-source";
 import {ConsequenceLine} from "../../models/consequence-line";
 import {Transcript} from "../../../api/varcan-service/models/response/Transcript";
 
@@ -15,7 +16,7 @@ export class ConsequenceLineDataSource {
   private biotypeLine: BiotypeLineDataSource = new BiotypeLineDataSource(null);
   private impactLine: ImpactLineDataSource = new ImpactLineDataSource(null);
   private effectLine: EffectLineDataSource = new EffectLineDataSource(null);
-  private transcript: string;
+  private transcriptLine: TranscriptLineDataSource = new TranscriptLineDataSource(null);
   private sift: string;
   private hgvsp: string;
   private hgvsc: string;
@@ -23,6 +24,8 @@ export class ConsequenceLineDataSource {
 
   constructor(consequence: Consequence, geneCache: Array<Gene>, biotypeCache: Array<Biotype>,
               impactCache: Array<Impact>, effectCache: Array<Effect>) {
+    console.log("Consequence", consequence);
+    this.getTranscriptLineById(consequence.transcript);
     this.getGeneLineById(consequence.transcript, geneCache, biotypeCache);
     this.getEffectLineById(consequence.effect.id, effectCache);
     this.getImpactLineById(consequence.impact.id, impactCache);
@@ -30,11 +33,13 @@ export class ConsequenceLineDataSource {
     this.hgvsp = consequence.hgvsp || "-";
     this.hgvsc = consequence.hgvsc || "-";
     this.polyphen = `${consequence.polyphen || "-"}`;
-    this.transcript = `${consequence.transcript || "-"}`;
   }
 
+  private getTranscriptLineById(transcript: Transcript) {
+    this.transcriptLine = new TranscriptLineDataSource(transcript);
+  }
 
-  private getGeneLineById(transcript: Transcript, geneCache: Array<Gene>, biotypeCache: Array<Biotype>): GeneLineDataSource {
+  private getGeneLineById(transcript: Transcript, geneCache: Array<Gene>, biotypeCache: Array<Biotype>) {
     if (transcript === null || transcript.gene === null) return;
 
     const gene: Gene = geneCache.find((gene: Gene) => transcript.gene.id === gene.id);
@@ -65,12 +70,14 @@ export class ConsequenceLineDataSource {
   }
 
   get line(): ConsequenceLine {
+    console.log(this.transcriptLine)
+    console.log(this.transcriptLine.line)
     return {
       ...this.geneLine.line,
       ...this.biotypeLine.line,
       ...this.effectLine.line,
       ...this.impactLine.line,
-      transcript: this.transcript,
+      ...this.transcriptLine.line,
       sift: this.sift,
       hgvsp: this.hgvsp,
       hgvsc: this.hgvsc,
