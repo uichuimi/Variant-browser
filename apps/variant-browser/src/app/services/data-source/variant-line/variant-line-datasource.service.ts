@@ -73,13 +73,62 @@ export class VariantLineDatasourceService {
     if (variantParams != null) {
       this.variantParams = variantParams;
     }
+
+    // Clona los parámetros y transforma lo necesario
+    const transformedParams = JSON.parse(JSON.stringify(this.variantParams));
+
+    // Define el mapeo de claves originales a claves transformadas
+    const keyMapping: { [key: string]: string } = {
+      impacts: "impactIdFilter",
+      biotypes: "biotypeFilter",
+      genes: "geneFilter",
+      identifiers: "identifierFilter",
+      effects: "effectFilter", // Añadimos `effects` al mapeo
+    };
+
+    for (const key in transformedParams) {
+      if (Array.isArray(transformedParams[key]) && keyMapping[key]) {
+        const filterKey = keyMapping[key];
+
+        // Si es effects, transforma en `effectName`
+        if (key === "effects") {
+          transformedParams[filterKey] = {
+            filters: transformedParams[key].map(value => ({
+              effectName: value, // Para effects, usamos "effectName"
+            })),
+          };
+        } else if (key === "biotypes") {
+          transformedParams[filterKey] = {
+            filters: transformedParams[key].map(value => ({
+              biotype: value, // Usamos `biotypeName`
+            })),
+          };
+        }
+        else {
+          transformedParams[filterKey] = {
+            filters: transformedParams[key].map(value => ({
+              [`${key.slice(0, -1)}Id`]: value, // Convierte a "impactId", "biotypeId", etc.
+            })),
+          };
+        }
+
+        delete transformedParams[key]; // Elimina la clave original
+      }
+    }
+
+    console.log("Transformed variantParams:", transformedParams);
+
     let page: Page<Variant>;
-    await this.service.getVariants(this.variantParams).then(res => page = res.data)
+    await this.service.getVariants(transformedParams).then(res => page = res.data);
     await this.getVariantLine(page, event);
+
     const data = this.cachedVariantLines;
     this.dataSubject.next(data);
     return this.cachedVariantLines;
   }
+
+
+
 
   private async getVariantLine(page: Page<Variant>, event?: LazyLoadEvent) {
     this._totalRecords = page.totalElements;

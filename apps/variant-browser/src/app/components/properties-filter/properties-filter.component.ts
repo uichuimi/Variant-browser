@@ -121,6 +121,14 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     } else {
       this.messageService.add({ key: 'ebc', severity: 'error', summary: 'Error', detail: 'Something went wrong with you filter settings' });
       console.error("Invalid submission: ", this.propertyFilterForm);
+      console.error("Form is: ", this.propertyFilterForm.value);
+      console.error("Controls: ", this.propertyFilterForm.controls);
+      console.error("Detailed Form Controls:");
+      Object.keys(this.propertyFilterForm.controls).forEach(key => {
+        const control = this.propertyFilterForm.get(key);
+        console.error(`Control: ${key}, Value: ${control?.value}, Errors: ${control?.errors}`);
+      });
+
     }
   }
 
