@@ -83,7 +83,8 @@ export class VariantLineDatasourceService {
       biotypes: "biotypeFilter",
       genes: "geneFilter",
       identifiers: "identifierFilter",
-      effects: "effectFilter", // Añadimos `effects` al mapeo
+      effects: "effectFilter",
+      frequencyFilters: "frequencyFilter",
     };
 
     for (const key in transformedParams) {
@@ -97,13 +98,28 @@ export class VariantLineDatasourceService {
               effectName: value, // Para effects, usamos "effectName"
             })),
           };
-        } else if (key === "biotypes") {
+        }
+        // Si es biotypes, transforma en `biotype`
+        else if (key === "biotypes") {
           transformedParams[filterKey] = {
             filters: transformedParams[key].map(value => ({
-              biotype: value, // Usamos `biotypeName`
+              biotype: value, // Usamos `biotype`
             })),
           };
         }
+        // Si es frequencyFilters, aplicamos la estructura directamente
+        else if (key === "frequencyFilters") {
+          transformedParams[filterKey] = {
+            filters: transformedParams[key].map(value => ({
+              operation: value.operation,
+              ac: value.ac,
+              an: value.an,
+              af: value.af,
+              population: value.population, // Directamente las claves requeridas
+            })),
+          };
+        }
+        // Casos generales
         else {
           transformedParams[filterKey] = {
             filters: transformedParams[key].map(value => ({
@@ -126,6 +142,7 @@ export class VariantLineDatasourceService {
     this.dataSubject.next(data);
     return this.cachedVariantLines;
   }
+
 
 
 
