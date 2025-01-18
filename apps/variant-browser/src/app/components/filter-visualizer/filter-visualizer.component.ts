@@ -22,9 +22,26 @@ export class FilterVisualizerComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!changes.filter.firstChange) {
+    if (changes.filter && !changes.filter.firstChange) {
       this.filter = changes.filter.currentValue;
-      this.allFilters = [...this.allFilters, this.filter];
+      const newAttributes = [...this.filter.attributes];
+
+      if (this.filter.value.sample) {
+        newAttributes.push({ filter: this.filter.value.sample, type: 'text' });
+      }
+
+      if (Array.isArray(this.filter.value.genotypeType)) {
+        newAttributes.push({
+          filter: this.filter.value.genotypeType.join(", "),
+          type: 'chip',
+        });
+      }
+      const transformedFilter = {
+        ...this.filter,
+        attributes: newAttributes,
+      };
+
+      this.allFilters = [...this.allFilters, transformedFilter];
       this.allFilters = this.getUniqueListOfFilters();
     }
   }

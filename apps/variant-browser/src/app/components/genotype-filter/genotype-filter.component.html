@@ -29,7 +29,25 @@
               </label>
             </span>
           </div>
-
+          <div class="flex col-12 align-items-center justify-content-center">
+            <span class="p-float-label">
+              <p-dropdown
+                [options]="allProjects"
+                appendTo="body"
+                [(ngModel)]="selectedProject"
+                placeholder="Select project"
+                optionValue="name"
+                optionLabel="label"
+                [showClear]="true"
+                inputId="project"
+                [formControl]="this.projectCtrl"
+              ></p-dropdown>
+              <label for="project">
+                <fa-icon [icon]="faProjectDiagram"></fa-icon>
+                <span>Project</span>
+              </label>
+            </span>
+                    </div>
           <div class="flex col-12 align-items-center justify-content-center" *ngIf="numberCtrl">
             <span class="p-float-label">
               <p-inputNumber

@@ -12,7 +12,7 @@
       <div class="filter-item flex flex-row col-12">
         <div class="item-list-detail flex col-1" *ngFor="let detail of item.attributes">
           <p-chip [label]="detail.filter" styleClass="mr-2" *ngIf="detail.type === 'chip'"></p-chip>
-          <span *ngIf="detail.type === 'text'">{{detail.filter}}</span>
+          <span *ngIf="detail?.filter && detail.type !== 'chip' && detail?.filter !== ''">{{detail.filter}}</span>
         </div>
 
         <div class="item-list-action flex col-1">

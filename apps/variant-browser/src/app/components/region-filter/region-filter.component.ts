@@ -114,12 +114,26 @@ export class RegionFilterComponent implements OnInit {
       this.dataSource.addRegionFilter([regionFilter]);
       this.addFilterItem(regionFilter);
       await this.dataSource.updateVariantLine();
-      await this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter added', detail: 'A property filter have been added' });
+
+      this.messageService.add({
+        key: 'bc',
+        severity: 'success',
+        summary: 'Filter added',
+        detail: 'A position filter has been added',
+      });
     } else {
-      this.messageService.add({ key: 'ebc', severity: 'error', summary: 'Error', detail: 'Something went wrong with you filter settings' });
-      console.error("Invalid submission: ", this.regionFilterForm);
+      this.messageService.add({
+        key: 'ebc',
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Something went wrong with your filter settings',
+      });
+      console.error('Invalid submission:', this.regionFilterForm.value);
     }
   }
+
+
+
 
   protected async onDeleteFilter($event: Filter) {
     const targetRegionFilter: RegionFilterParams = this.generateTargetFilter($event);

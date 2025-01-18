@@ -13,7 +13,7 @@ export interface VariantParams {
     effects?: Array<number>;
     impacts?: Array<number>;
     identifiers?: Array<number>;
-    genotypeFilters?: Array<GenotypeFilterParams>;
+    genotypeFilter?: Array<GenotypeFilterParams>;
     frequencyFilters?: Array<FrequencyFilterParams>;
     regionFilters?: Array<RegionFilterParams>;
 }

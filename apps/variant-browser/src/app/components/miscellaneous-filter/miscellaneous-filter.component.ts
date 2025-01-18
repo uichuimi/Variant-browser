@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import {DropListOption} from "../../models/droplist-option";
 import {CENTROMERIC_REGIONS_FILTERS} from "../../utils/globals/centromeric-regions-filters";
 import {VariantLineDatasourceService} from "../../services/data-source/variant-line/variant-line-datasource.service";
-import {dasherize} from "@nrwl/workspace/src/utils/strings";
 import {MessageService} from "primeng/api";
 
 @Component({

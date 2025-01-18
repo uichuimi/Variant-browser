@@ -6,7 +6,7 @@ import { GlobalConstants } from "../../services/common/global-constants";
 import { Sample } from "../../services/api/varcan-service/models/response/Sample";
 import { GenotypeType } from "../../services/api/varcan-service/models/response/GenotypeType";
 import { ScreenBreakpointAttributeValue } from "../../directives/device-width-breakpoint.directive";
-import { faDna, faHashtag, faLayerGroup, faPlus, faVial } from "@fortawesome/free-solid-svg-icons";
+import {faDna, faHashtag, faLayerGroup, faPlus, faProjectDiagram, faVial} from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { Filter } from "../../models/event-object/filter";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
@@ -50,6 +50,15 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     { selector: "NONE", label: "None" }
   ];
 
+  protected allProjects = [
+    { name: "HCF", label: "HCF" },
+    { name: "Project2", label: "Project 2" },
+    { name: "Project3", label: "Project 3" },
+    { name: "Project4", label: "Project 4" }
+  ];
+
+  protected selectedProject: string | null = null;
+
   protected selectedSetOperators: Arity;
   protected allSamples: Array<object>;
   protected selectedSamples: Array<number> = [];
@@ -65,7 +74,8 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
       genotypeFilters: fb.group({
         sample: fb.control([], [Validators.required]),
         genotypeType: fb.control([], [Validators.required]),
-        selector: fb.control("", [Validators.required])
+        selector: fb.control("", [Validators.required]),
+        project: fb.control("", [Validators.required])
       })
     });
     this.layout = this.deviceBreakpointToggle.default;
@@ -89,6 +99,10 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   get numberCtrl(): FormControl {
     return this.genotypeFilterForm.get("genotypeFilters.number") as FormControl;
+  }
+
+  get projectCtrl(): FormControl {
+    return this.genotypeFilterForm.get("genotypeFilters.project") as FormControl;
   }
 
   ngOnInit(): void {
@@ -116,15 +130,82 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
 
   protected async onSubmit() {
     if (this.genotypeFilterForm.valid) {
-      const genotypeFilter: GenotypeFilterParams = { ...this.genotypeFilterForm.value.genotypeFilters };
-      this.addNewFilterItem();
-      this.dataSource.addGenotypeFilter(genotypeFilter);
+      const genotypeFilters = this.genotypeFilterForm.value.genotypeFilters;
+
+      const project = this.selectedProject
+      const selector = this.selectorCtrl.value;
+      const number = this.genotypeFiltersCtrl.get("number")?.value;
+
+      const transformedPayload = {
+        filters: genotypeFilters.sample.flatMap((sample: number) =>
+          genotypeFilters.genotypeType.map((genotypeType: number) => ({
+            project: project,
+            sample: this.getSampleNameById(sample),
+            genotypeType: genotypeType.toString(),
+          }))
+        ),
+        selector: selector,
+        number: number,
+      };
+
+      this.dataSource.addGenotypeFilter({ filters: transformedPayload.filters });
       await this.dataSource.updateVariantLine();
-      this.messageService.add({ key: 'bc', severity: 'success', summary: 'Filter added', detail: 'A genotype filter have been added' });
+
+      this.filter = {
+        name: "Genotype Filter",
+        value: {
+          project: project,
+          selector: selector,
+          number: number,
+          sample: genotypeFilters.sample.map((sampleId: number) => this.getSampleNameById(sampleId)),
+          genotypeType: genotypeFilters.genotypeType.map((id: number) => this.getGenotypeNameById(id)),
+        },
+        filterString: `${genotypeFilters.sample.join(",")}|${genotypeFilters.genotypeType.join(",")}|${selector}|${number}`,
+        attributes: [
+          { filter: genotypeFilters.sample, type: "sample" },
+          { filter: genotypeFilters.genotypeType, type: "genotypeType" },
+          { filter: selector, type: "text" },
+          { filter: number, type: "text" },
+          { filter: project, type: "text" },
+        ],
+      };
+
+      console.log("Generated Filter: ", this.filter);
+      this.messageService.add({
+        key: 'bc',
+        severity: 'success',
+        summary: 'Filter added',
+        detail: 'A genotype filter has been added',
+      });
     } else {
-      this.messageService.add({ key: 'ebc', severity: 'error', summary: 'Error', detail: 'Something went wrong with you filter settings' });
+      this.messageService.add({
+        key: 'ebc',
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Something went wrong with your filter settings',
+      });
       console.error("Invalid submission: ", this.genotypeFilterForm.value);
     }
+  }
+
+
+
+  private getSampleNameById(sampleId: number): string {
+    const sample = this.samples.find((sample: Sample) => sample.id === sampleId);
+    if (!sample) {
+      console.error(`Sample ID ${sampleId} not found in samples`);
+      return "Unknown";
+    }
+    return sample.chuimi;
+  }
+
+  private getGenotypeNameById(genotypeId: number): string {
+    const genotype = this.allGenotypeTypes.find((genotype: GenotypeType) => genotype.id === genotypeId);
+    if (!genotype) {
+      console.error(`Genotype ID ${genotypeId} not found in allGenotypeTypes`);
+      return "Unknown";
+    }
+    return genotype.name;
   }
 
   async onDeleteFilter($event: Filter) {
@@ -230,4 +311,6 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
       genotypeType: JSON.parse(params[3])
     };
   }
+
+  protected readonly faProjectDiagram = faProjectDiagram; // Imagen del projecto, el icono.
 }

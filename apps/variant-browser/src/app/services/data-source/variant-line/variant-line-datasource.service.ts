@@ -304,14 +304,17 @@ export class VariantLineDatasourceService {
     this.variantParams.page = 0;
   }
 
-  addGenotypeFilter(genotype: GenotypeFilterParams) {
-    let genotypeFilters;
-    if (this.variantParams.genotypeFilters != null) {
-      genotypeFilters = [...this.variantParams.genotypeFilters, genotype];
+  addGenotypeFilter(genotype: { filters: any }) {
+    let genotypeFilter;
+    if (this.variantParams.genotypeFilter != null) {
+      genotypeFilter = {
+        ...this.variantParams.genotypeFilter,
+        filters: genotype.filters,
+      };
     } else {
-      genotypeFilters = [genotype];
+      genotypeFilter = { filters: genotype.filters };
     }
-    this.variantParams = { ...this.variantParams, genotypeFilters: genotypeFilters, page: 0 };
+    this.variantParams = { ...this.variantParams, genotypeFilter: genotypeFilter, page: 0 };
   }
 
   addFrequencyFilter(frequencyFilters: FrequencyFilterParams[]) {
@@ -326,27 +329,56 @@ export class VariantLineDatasourceService {
   }
 
   addRegionFilter(regionFilters: RegionFilterParams[]) {
-    const variantRegionFilters = this.variantParams.regionFilters;
-    if (variantRegionFilters == null) {
-      this.variantParams.regionFilters = regionFilters;
+    let positionFilter;
+
+    if (this.variantParams.regionFilters && 'filters' in this.variantParams.regionFilters) {
+      const existingFilters = (this.variantParams.regionFilters as any).filters;
+
+      const uniqueFilters = regionFilters.filter(newFilter =>
+        !existingFilters.some(existingFilter =>
+          existingFilter.chromosome === newFilter.chromosome &&
+          existingFilter.start === newFilter.start &&
+          existingFilter.end === newFilter.end &&
+          existingFilter.exclude === newFilter.exclude
+        )
+      );
+
+      positionFilter = {
+        filters: [...existingFilters, ...uniqueFilters],
+      };
     } else {
-      this.variantParams.regionFilters = this.variantParams.regionFilters
-        .concat(regionFilters);
+      // Si no existe, inicializamos con los nuevos filtros
+      positionFilter = {
+        filters: [...regionFilters],
+      };
     }
-    this.variantParams.page = 0;
+
+    this.variantParams = {
+      ...this.variantParams,
+      regionFilters: positionFilter,
+      page: 0,
+    };
   }
 
-  deleteGenotypeFilter(target: GenotypeFilterParams){
-    this.variantParams.genotypeFilters = this.variantParams.genotypeFilters
-      .filter((value: GenotypeFilterParams) => {
-        const isTargetNumberPresent = value.number != null;
-        const matchSelector = value.selector === target.selector;
-        const matchNumber = isTargetNumberPresent ? value.number === target.number : true;
-        const matchSamples = this.cardinalSimilarity(target.sample, value.sample);
-        const matchGenotype = this.cardinalSimilarity(target.genotypeType, value.genotypeType);
+  deleteGenotypeFilter(target: GenotypeFilterParams) {
+    if (!Array.isArray(this.variantParams.genotypeFilter)) {
+      console.error("genotypeFilter is not an array:", this.variantParams.genotypeFilter);
+      return;
+    }
 
-        return !matchSelector || !matchNumber || !matchSamples || !matchGenotype;
-      });
+    this.variantParams.genotypeFilter = this.variantParams.genotypeFilter.filter((value: GenotypeFilterParams) => {
+      const isTargetNumberPresent = value.number != null;
+      const matchSelector = value.selector === target.selector;
+      const matchNumber = isTargetNumberPresent ? value.number === target.number : true;
+      const matchSamples = Array.isArray(value.sample) && Array.isArray(target.sample)
+        ? this.cardinalSimilarity(target.sample, value.sample)
+        : false;
+      const matchGenotype = Array.isArray(value.genotypeType) && Array.isArray(target.genotypeType)
+        ? this.cardinalSimilarity(target.genotypeType, value.genotypeType)
+        : false;
+
+      return !matchSelector || !matchNumber || !matchSamples || !matchGenotype;
+    });
     this.variantParams.page = 0;
   }
 
@@ -404,21 +436,31 @@ export class VariantLineDatasourceService {
   }
 
   deleteRegionFilter(targetRegionFilter: RegionFilterParams[]) {
-    if (this.variantParams.regionFilters) {
-      this.variantParams.regionFilters = this.variantParams.regionFilters
-        .filter(item => {
-          return !targetRegionFilter
-            .some(obj => {
-              return obj.chromosome === item.chromosome &&
-                (obj.start === item.start || isNaN(obj.start) && isNaN(item.start)) &&
-                (obj.end === item.end || isNaN(obj.end) && isNaN(item.end)) &&
-                obj.exclude === item.exclude
-            });
-        });
+    if (
+      this.variantParams.regionFilters &&
+      typeof this.variantParams.regionFilters === 'object' &&
+      Array.isArray((this.variantParams.regionFilters as any).filters)
+    ) {
+      const filters = (this.variantParams.regionFilters as any).filters;
 
-      if (this.variantParams.regionFilters.length === 0) {
+      const updatedFilters = filters.filter(item => {
+        return !targetRegionFilter.some(target => {
+          return (
+            item.chromosome === target.chromosome &&
+            (item.start === target.start || (isNaN(item.start) && isNaN(target.start))) &&
+            (item.end === target.end || (isNaN(item.end) && isNaN(target.end))) &&
+            item.exclude === target.exclude
+          );
+        });
+      });
+
+      (this.variantParams.regionFilters as any).filters = updatedFilters;
+
+      if ((this.variantParams.regionFilters as any).filters.length === 0) {
         delete this.variantParams.regionFilters;
       }
+    } else {
+      console.warn("regionFilters is not properly initialized or does not contain filters.");
     }
     this.variantParams.page = 0;
   }
