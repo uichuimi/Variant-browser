@@ -11,6 +11,8 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { Filter } from "../../models/event-object/filter";
 import { VariantLineDatasourceService } from "../../services/data-source/variant-line/variant-line-datasource.service";
 import {MessageService} from "primeng/api";
+import {allProjects} from "apps/variant-browser/src/app/utils/globals/projects";
+
 
 interface Arity {
   selector: string;
@@ -50,13 +52,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
     { selector: "NONE", label: "None" }
   ];
 
-  protected allProjects = [
-    { name: "HCF", label: "HCF" },
-    { name: "Project2", label: "Project 2" },
-    { name: "Project3", label: "Project 3" },
-    { name: "Project4", label: "Project 4" }
-  ];
-
+  protected allProjects = allProjects;
   protected selectedProject: string | null = null;
 
   protected selectedSetOperators: Arity;
@@ -142,13 +138,15 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
             project: project,
             sample: this.getSampleNameById(sample),
             genotypeType: genotypeType.toString(),
+            selector: selector,
+            number: number
           }))
         ),
         selector: selector,
         number: number,
       };
 
-      this.dataSource.addGenotypeFilter({ filters: transformedPayload.filters });
+      this.dataSource.addGenotypeFilter( transformedPayload );
       await this.dataSource.updateVariantLine();
 
       this.filter = {
@@ -165,7 +163,7 @@ export class GenotypeFilterComponent implements OnInit, OnDestroy {
           { filter: genotypeFilters.sample, type: "sample" },
           { filter: genotypeFilters.genotypeType, type: "genotypeType" },
           { filter: selector, type: "text" },
-          { filter: number, type: "text" },
+          ...(number !== undefined ? [{ filter: number, type: "number" }] : []),
           { filter: project, type: "text" },
         ],
       };

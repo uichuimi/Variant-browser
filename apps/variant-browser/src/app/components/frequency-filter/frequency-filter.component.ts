@@ -38,12 +38,12 @@ export class FrequencyFilterComponent implements OnInit, OnDestroy {
   protected allPopulations: Array<object>;
   protected selectedPopulations: Array<number>;
   protected allNumericalComparators: Array<object> = [
-    { code: "lt", label: "Less than (<)" },
-    { code: "le", label: "Less than or equal (≤)" },
-    { code: "eq", label: "Equals (=)" },
-    { code: "nq", label: "Non equals (≠)" },
-    { code: "ge", label: "Greater than or equal (≥)" },
-    { code: "gt", label: "Greater than (>)" },
+    { code: "<", label: "Less than (<)" },
+    { code: "<=", label: "Less than or equal (≤)" },
+    { code: "==", label: "Equals (=)" },
+    { code: "!=", label: "Non equals (≠)" },
+    { code: ">=", label: "Greater than or equal (≥)" },
+    { code: ">", label: "Greater than (>)" },
   ];
   protected selectedNumericalComparators: Array<string>;
   protected af: number;

@@ -82,7 +82,7 @@ export class VariantLineDatasourceService {
       impacts: "impactIdFilter",
       biotypes: "biotypeFilter",
       genes: "geneFilter",
-      identifiers: "identifierFilter",
+      identifiers: "variantIdFilter",
       effects: "effectFilter",
       frequencyFilters: "frequencyFilter",
     };
@@ -95,7 +95,7 @@ export class VariantLineDatasourceService {
         if (key === "effects") {
           transformedParams[filterKey] = {
             filters: transformedParams[key].map(value => ({
-              effectName: value, // Para effects, usamos "effectName"
+              effectName: value,
             })),
           };
         }
@@ -103,7 +103,7 @@ export class VariantLineDatasourceService {
         else if (key === "biotypes") {
           transformedParams[filterKey] = {
             filters: transformedParams[key].map(value => ({
-              biotype: value, // Usamos `biotype`
+              biotype: value,
             })),
           };
         }
@@ -115,7 +115,7 @@ export class VariantLineDatasourceService {
               ac: value.ac,
               an: value.an,
               af: value.af,
-              population: value.population, // Directamente las claves requeridas
+              population: value.population,
             })),
           };
         }
@@ -123,13 +123,20 @@ export class VariantLineDatasourceService {
         else {
           transformedParams[filterKey] = {
             filters: transformedParams[key].map(value => ({
-              [`${key.slice(0, -1)}Id`]: value, // Convierte a "impactId", "biotypeId", etc.
+              [`${key.slice(0, -1)}Id`]: value,
             })),
           };
         }
 
         delete transformedParams[key]; // Elimina la clave original
       }
+    }
+
+    // Caso especial: genotypeFilter
+    if (transformedParams.genotypeFilter && !transformedParams.genotypeFilter.filters) {
+      transformedParams.genotypeFilter = {
+        filters: transformedParams.genotypeFilter, // Envolver en `filters`
+      };
     }
 
     console.log("Transformed variantParams:", transformedParams);
@@ -142,6 +149,7 @@ export class VariantLineDatasourceService {
     this.dataSubject.next(data);
     return this.cachedVariantLines;
   }
+
 
 
 
@@ -370,18 +378,21 @@ export class VariantLineDatasourceService {
     this.variantParams.page = 0;
   }
 
-  addGenotypeFilter(genotype: { filters: any }) {
-    let genotypeFilter;
-    if (this.variantParams.genotypeFilter != null) {
-      genotypeFilter = {
+  addGenotypeFilter(genotype: { filters: any[] }) {
+    if (this.variantParams.genotypeFilter) {
+      // Concatenar los nuevos filtros con los existentes
+      this.variantParams.genotypeFilter = [
         ...this.variantParams.genotypeFilter,
-        filters: genotype.filters,
-      };
+        ...genotype.filters,
+      ];
     } else {
-      genotypeFilter = { filters: genotype.filters };
+      // Si no existe, inicializamos con los nuevos filtros
+      this.variantParams.genotypeFilter = [...genotype.filters];
     }
-    this.variantParams = { ...this.variantParams, genotypeFilter: genotypeFilter, page: 0 };
+    this.variantParams.page = 0; // Reiniciar la paginación
   }
+
+
 
   addFrequencyFilter(frequencyFilters: FrequencyFilterParams[]) {
     const variantFrequencyFilters = this.variantParams.frequencyFilters;

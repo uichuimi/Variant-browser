@@ -1,4 +1,4 @@
 export interface GenotypeType {
     id: number;
-    name: string;    
+    name: string;
 }
