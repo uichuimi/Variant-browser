@@ -76,7 +76,6 @@ export class VariantLineDatasourceService {
 
     // Clona los parámetros y transforma lo necesario
     const transformedParams = JSON.parse(JSON.stringify(this.variantParams));
-
     // Define el mapeo de claves originales a claves transformadas
     const keyMapping: { [key: string]: string } = {
       impacts: "impactIdFilter",
@@ -88,10 +87,14 @@ export class VariantLineDatasourceService {
     };
 
     for (const key in transformedParams) {
+      if (key === "effects" && typeof transformedParams[key] === "string") {
+        transformedParams[key] = transformedParams[key].split(",").map(e => e.trim());
+      }
+
       if (Array.isArray(transformedParams[key]) && keyMapping[key]) {
         const filterKey = keyMapping[key];
 
-        // Si es effects, transforma en `effectName`
+        // Si es effects, se transforma en `effectName`
         if (key === "effects") {
           transformedParams[filterKey] = {
             filters: transformedParams[key].map(value => ({
@@ -104,6 +107,14 @@ export class VariantLineDatasourceService {
           transformedParams[filterKey] = {
             filters: transformedParams[key].map(value => ({
               biotype: value,
+            })),
+          };
+        }
+        else if (key === "impacts"){
+          console.log("entreeee")
+          transformedParams[filterKey] = {
+            filters: transformedParams[key].map(value => ({
+              impactId: value,
             })),
           };
         }

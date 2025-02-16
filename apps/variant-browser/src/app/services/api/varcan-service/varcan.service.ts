@@ -217,7 +217,17 @@ export class VarcanService extends ApiService {
    * @returns Page<Variant>
    */
   getVariants(data?: VariantParams): Promise<AxiosResponse<Page<Variant>>> {
-    return data !== null ? this.variantService.fetch(data) : this.variantService.fetch();
+    if (!data || Object.keys(data).length === 0) {
+      const savedFilters = localStorage.getItem("savedFilters");
+      if (savedFilters) {
+        const parsedFilters = JSON.parse(savedFilters);
+        console.log("Applying saved filters from localStorage:", parsedFilters);
+        data = { ...data, ...parsedFilters };
+      }
+    }
+
+    console.log("Final data sent to API:", data);
+    return this.variantService.fetch(data);
   }
 
   getBatchGenes(data?): Promise<AxiosResponse<Array<Gene>>> {

@@ -91,6 +91,11 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.onPropertyCtrlValueChangeEvent();
     this.onDeviceDeviceWidthBreakPointEvent();
+    const savedFilters = localStorage.getItem("savedFilters");
+    if (savedFilters) {
+      const parsedFilters = JSON.parse(savedFilters);
+      this.propertyFilterForm.patchValue(parsedFilters);
+    }
   }
 
   ngOnDestroy(): void {
@@ -111,8 +116,11 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     if (this.propertyFilterForm.valid) {
       const propertyKey = this.propertyFilterForm.value.property;
       const propertyComparator = this.propertyFilterForm.value.comparator;
-      const propertyValue = this.propertyFilterForm.value.value;
+      const propertyValueRaw = this.propertyFilterForm.value.value;
+      const propertyValue = Array.isArray(propertyValueRaw) ? propertyValueRaw.join(", ") : propertyValueRaw;
       const value = await this.managePropertyValues(propertyKey, propertyValue);
+      const filterData = { propertyKey, propertyComparator, propertyValue };
+      localStorage.setItem("savedFilters", JSON.stringify(filterData));
 
       this.addFilterItem(propertyKey, propertyComparator, propertyValue);
       this.dataSource.addPropertyFilter(propertyKey, value);
@@ -263,20 +271,31 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
 
   private addFilterItem(propertyKey: string, propertyComparator: string, propertyValue: any) {
     let filterStr: string;
+    const propertyValueNames = this.getPropertyValueNames(propertyKey, propertyValue);
+
+    console.log("Property Value Names:", propertyValueNames);
+
     switch (this.inputValueType) {
       case InputValueTypeEnum.NUMERIC:
         filterStr = `${propertyKey} ${propertyComparator} ${propertyValue}`;
         break;
       default:
-        const propertyValueNames = this.getPropertyValueNames(propertyKey, propertyValue);
-        filterStr = `${propertyKey} in [${propertyValueNames}]`;
+        if (propertyKey === VarcanAPIEntities.EFFECTS.name) {
+          // 🔹 Mostrar solo los valores seleccionados sin corchetes
+          filterStr = `${propertyKey} ${propertyValueNames.join("\n")}`;
+        } else {
+          filterStr = `${propertyKey} ${propertyValueNames.join("\n")}`;
+        }
         break;
     }
 
-    const attributes: Array<FilterAttribute> = filterStr.split(" ")
-      .map((word: string) => {
-        return { filter: word, type: word === "in" ? "text" : "chip" };
-      });
+    console.log("Final Filter String:", filterStr);
+
+    const attributes: Array<FilterAttribute> = [
+      { filter: propertyKey, type: "chip" },
+      { filter: filterStr.split(" ").slice(1).join(" "), type: "text" } // Agrupar en una burbuja
+    ];
+
     this.filter = {
       name: propertyKey,
       value: propertyValue,
@@ -285,22 +304,45 @@ export class PropertiesFilterComponent implements OnInit, OnDestroy {
     };
   }
 
-  private getPropertyValueNames(propertyKey: string, propertyValue: Array<number>) {
-    if (propertyKey == VarcanAPIEntities.GENES.name || propertyKey == VarcanAPIEntities.IDENTIFIERS.name) {
-      return propertyValue;
+
+
+  private getPropertyValueNames(propertyKey: string, propertyValue: any) {
+    if (!propertyValue) return [];
+
+    if (typeof propertyValue === "string") {
+      propertyValue = propertyValue.split(",").map(val => val.trim());
     }
 
-    const filteredValues = this.allValues
-      .filter((object) => propertyValue.includes(object["id"]));
+    // 🔹 Convertimos los valores a números si corresponde
+    propertyValue = propertyValue.map(val => isNaN(val) ? val : Number(val));
+
+    console.log("Property Key:", propertyKey);
+    console.log("Property Values (Processed):", propertyValue);
+    console.log("Available Values:", this.allValues);
+
+    // 🔹 Filtramos solo los valores que coinciden EXACTAMENTE con los seleccionados
+    const filteredValues = this.allValues.filter((object) =>
+      propertyValue.includes(object["id"]) // 🔹 Usamos includes() en vez de some() para coincidencia exacta
+    );
+
+    console.log("Filtered Values:", filteredValues);
+
     switch (propertyKey) {
       case VarcanAPIEntities.CHROMOSOMES.name:
         return filteredValues.map((chromosome: Chromosome) => chromosome.ucsc);
       case VarcanAPIEntities.EFFECTS.name:
-        return filteredValues.map((effect: Effect) => effect.description);
+      case VarcanAPIEntities.BIOTYPES.name:
+        return filteredValues.map((effect: Effect) => `${effect.accession} / ${effect.description}`);
       default:
         return filteredValues.map((object) => object["name"]);
     }
   }
+
+
+
+
+
+
 
   private async managePropertyValues(propertyKey: string, propertyValue: any) {
     const variantParams: VariantParams = this.dataSource.getVariantParams();
